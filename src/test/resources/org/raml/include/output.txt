@@ -1,0 +1,17 @@
+RamlRootNode
+    RamlKeyValueNode
+        RamlScalarNode: "title"
+        RamlScalarNode: "hola"
+    RamlKeyValueNode
+        RamlScalarNode: "/top"
+        RamlMappingNode
+            <Source>:
+                RamlIncludeNode: "basic-resource.raml"
+            RamlKeyValueNode
+                RamlScalarNode: "get"
+                RamlMappingNode
+                    RamlKeyValueNode
+                        RamlScalarNode: "description"
+                        RamlScalarNode: "some description"
+                            <Source>:
+                                RamlIncludeNode: "description.txt"
