@@ -1,8 +1,8 @@
 package org.raml.nodes.impl;
 
-import org.raml.nodes.RamlStringNode;
+import org.raml.nodes.StringNode;
 
-public class RamlStringNodeImpl extends AbstractRamlNode implements RamlStringNode {
+public class RamlStringNodeImpl extends AbstractRamlNode implements StringNode {
 
     private String value;
 

@@ -1,10 +1,10 @@
 package org.raml.phase;
 
-import org.raml.nodes.RamlNode;
+import org.raml.nodes.Node;
 
 public class GrammarPhase implements Phase {
     @Override
-    public RamlNode apply(RamlNode tree) {
+    public Node apply(Node tree) {
 
         return tree;
     }

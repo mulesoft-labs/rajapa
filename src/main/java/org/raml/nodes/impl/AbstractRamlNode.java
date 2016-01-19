@@ -1,9 +1,9 @@
 package org.raml.nodes.impl;
 
-import org.raml.nodes.BaseRamlNode;
+import org.raml.nodes.BaseNode;
 import org.raml.nodes.Position;
 
-public abstract class AbstractRamlNode extends BaseRamlNode {
+public abstract class AbstractRamlNode extends BaseNode {
 
     @Override
     public Position getEndMark() {

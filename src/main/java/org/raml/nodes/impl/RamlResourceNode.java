@@ -1,19 +1,18 @@
 package org.raml.nodes.impl;
 
 import org.raml.nodes.*;
-import org.raml.nodes.impl.RamlKeyValueNodeImpl;
 
 public class RamlResourceNode extends RamlKeyValueNodeImpl {
 
 
-    private RamlStringNode resourceName;
+    private StringNode resourceName;
 
-    public RamlResourceNode(RamlStringNode resourceName, RamlNode value) {
+    public RamlResourceNode(StringNode resourceName, Node value) {
         super(resourceName, value);
         this.resourceName = resourceName;
     }
 
-    public RamlStringNode getResourceName() {
+    public StringNode getResourceName() {
         return resourceName;
     }
 

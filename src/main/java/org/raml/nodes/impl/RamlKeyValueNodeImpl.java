@@ -1,15 +1,14 @@
 package org.raml.nodes.impl;
 
-import org.raml.nodes.BaseRamlNode;
+import org.raml.nodes.BaseNode;
 import org.raml.nodes.Position;
-import org.raml.nodes.RamlKeyValueNode;
-import org.raml.nodes.RamlNode;
-import org.raml.nodes.snakeyaml.SYScalarNode;
+import org.raml.nodes.KeyValueNode;
+import org.raml.nodes.Node;
 
-public class RamlKeyValueNodeImpl extends BaseRamlNode implements RamlKeyValueNode
+public class RamlKeyValueNodeImpl extends BaseNode implements KeyValueNode
 {
 
-    public RamlKeyValueNodeImpl(RamlNode keyNode, RamlNode valueNode)
+    public RamlKeyValueNodeImpl(Node keyNode, Node valueNode)
     {
         addChild(keyNode);
         addChild(valueNode);
@@ -17,16 +16,16 @@ public class RamlKeyValueNodeImpl extends BaseRamlNode implements RamlKeyValueNo
 
     @Override
     public Position getStartMark() {
-        return null;
+        return getKey().getStartMark();
     }
 
     @Override
     public Position getEndMark() {
-        return null;
+        return getValue().getEndMark();
     }
 
     @Override
-    public void addChild(RamlNode node)
+    public void addChild(Node node)
     {
         if (getChildren().size() >= 2)
         {
@@ -35,18 +34,13 @@ public class RamlKeyValueNodeImpl extends BaseRamlNode implements RamlKeyValueNo
         super.addChild(node);
     }
 
-    public String getKeyNodeValue()
-    {
-        return ((SYScalarNode) getChildren().iterator().next()).getValue();
-    }
-
     @Override
-    public RamlNode getKey() {
+    public Node getKey() {
         return getChildren().get(0);
     }
 
     @Override
-    public RamlNode getValue() {
+    public Node getValue() {
         return getChildren().get(1);
     }
 }

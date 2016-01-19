@@ -1,12 +1,11 @@
 package org.raml.nodes.snakeyaml;
 
-import org.raml.nodes.RamlSequenceNode;
-import org.yaml.snakeyaml.nodes.SequenceNode;
+import org.raml.nodes.SequenceNode;
 
-public class SYSequenceNode extends SYBaseRamlNode implements RamlSequenceNode
+public class SYSequenceNode extends SYBaseRamlNode implements SequenceNode
 {
 
-    public SYSequenceNode(SequenceNode sequenceNode)
+    public SYSequenceNode(org.yaml.snakeyaml.nodes.SequenceNode sequenceNode)
     {
         super(sequenceNode);
     }

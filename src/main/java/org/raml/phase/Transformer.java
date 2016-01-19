@@ -1,14 +1,14 @@
 package org.raml.phase;
 
-import org.raml.nodes.RamlNode;
+import org.raml.nodes.Node;
 
 /**
  * Applies a transformation to a specific node and returns the new node.
  */
 public interface Transformer {
 
-    boolean matches(RamlNode node);
+    boolean matches(Node node);
 
-    RamlNode transform(RamlNode node);
+    Node transform(Node node);
 
 }

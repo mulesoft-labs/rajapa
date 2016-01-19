@@ -1,6 +1,6 @@
 package org.raml.phase;
 
-import org.raml.nodes.RamlNode;
+import org.raml.nodes.Node;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +17,9 @@ public class TransformationPhase implements Phase {
     }
 
     @Override
-    public RamlNode apply(RamlNode tree) {
+    public Node apply(Node tree) {
         //first pass may replace child nodes
-        RamlNode result = tree;
+        Node result = tree;
         for (Transformer transformer : transformers) {
             if (transformer.matches(result)) {
                 result = transformer.transform(result);
@@ -28,8 +28,8 @@ public class TransformationPhase implements Phase {
         if (tree != result && tree.getParent() != null) {
             tree.getParent().replaceChildWith(tree, result);
         }
-        for (RamlNode ramlNode : result.getChildren()) {
-            apply(ramlNode);
+        for (Node node : result.getChildren()) {
+            apply(node);
         }
         return result;
     }

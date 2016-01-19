@@ -3,13 +3,10 @@ package org.raml.utils;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.nodes.RamlNode;
-import org.raml.nodes.RamlStringNode;
+import org.raml.nodes.Node;
+import org.raml.nodes.StringNode;
 
 
-/**
- * Created by santiagovacas on 1/18/16.
- */
 public class TreeDumper
 {
 
@@ -27,7 +24,7 @@ public class TreeDumper
         this(new StringBuilder());
     }
 
-    public String dump(RamlNode node)
+    public String dump(Node node)
     {
         printIndent();
         dumpNode(node);
@@ -44,8 +41,8 @@ public class TreeDumper
             dedent();
         }
         indent();
-        Collection<RamlNode> children = node.getChildren();
-        for (RamlNode child : children)
+        Collection<Node> children = node.getChildren();
+        for (Node child : children)
         {
             dump(child);
         }
@@ -53,12 +50,12 @@ public class TreeDumper
         return dump.toString();
     }
 
-    private void dumpNode(RamlNode node)
+    private void dumpNode(Node node)
     {
 
         dump.append(node.getClass().getSimpleName());
-        if(node instanceof RamlStringNode){
-            dump.append(": \"").append(((RamlStringNode) node).getValue()).append("\"");
+        if(node instanceof StringNode){
+            dump.append(": \"").append(((StringNode) node).getValue()).append("\"");
         }
     }
 

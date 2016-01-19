@@ -2,11 +2,11 @@ package org.raml.nodes;
 
 import org.raml.nodes.impl.AbstractRamlNode;
 
-public class RamlErrorNode extends AbstractRamlNode
+public class ErrorNode extends AbstractRamlNode
 {
     private final String errorMessage;
 
-    public RamlErrorNode(String msg)
+    public ErrorNode(String msg)
     {
         this.errorMessage = msg;
     }

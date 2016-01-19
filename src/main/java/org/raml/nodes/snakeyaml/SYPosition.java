@@ -3,11 +3,11 @@ package org.raml.nodes.snakeyaml;
 import org.raml.nodes.Position;
 import org.yaml.snakeyaml.error.Mark;
 
-public class SYPositionImpl implements Position {
+public class SYPosition implements Position {
 
     private Mark mark;
 
-    public SYPositionImpl(Mark mark) {
+    public SYPosition(Mark mark) {
         this.mark = mark;
     }
 
@@ -28,7 +28,7 @@ public class SYPositionImpl implements Position {
 
     @Override
     public String getResource() {
-        //Todo add the resource where this position belongs too
+        //TODO add the resource where this position belongs too
         return null;
     }
 }

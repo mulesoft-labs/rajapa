@@ -1,15 +1,15 @@
-SYMappingNodeImpl
+SYMappingNode
     RamlKeyValueNodeImpl
         SYScalarNode: "title"
         SYScalarNode: "hola"
     RamlKeyValueNodeImpl
         SYScalarNode: "/top"
-        SYMappingNodeImpl
+        SYMappingNode
             <Source>:
                 SYIncludeNode: "basic-resource.raml"
             RamlKeyValueNodeImpl
                 SYScalarNode: "get"
-                SYMappingNodeImpl
+                SYMappingNode
                     RamlKeyValueNodeImpl
                         SYScalarNode: "description"
                         RamlStringNodeImpl: "some description"

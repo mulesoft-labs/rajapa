@@ -15,6 +15,7 @@
  */
 package org.raml.loader;
 
+import java.io.File;
 import java.io.InputStream;
 
 public class DefaultResourceLoader implements ResourceLoader
@@ -25,7 +26,7 @@ public class DefaultResourceLoader implements ResourceLoader
     public DefaultResourceLoader()
     {
         resourceLoader = new CompositeResourceLoader(
-                new UrlResourceLoader(), new ClassPathResourceLoader(), new FileResourceLoader("."));
+                new UrlResourceLoader(), new ClassPathResourceLoader(), new FileResourceLoader("."), new FileResourceLoader((File) null));
     }
 
     @Override

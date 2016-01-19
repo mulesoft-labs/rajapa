@@ -1,6 +1,6 @@
 package org.raml.phase;
 
-import org.raml.nodes.RamlNode;
+import org.raml.nodes.Node;
 
 /**
  * A phase applies a given logic into a node recursively.
@@ -8,5 +8,5 @@ import org.raml.nodes.RamlNode;
 public interface Phase
 {
 
-    RamlNode apply(RamlNode tree);
+    Node apply(Node tree);
 }

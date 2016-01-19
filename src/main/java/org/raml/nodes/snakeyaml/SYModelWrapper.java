@@ -5,9 +5,8 @@ import static org.yaml.snakeyaml.nodes.NodeId.scalar;
 import static org.yaml.snakeyaml.nodes.NodeId.sequence;
 
 import org.raml.nodes.impl.RamlKeyValueNodeImpl;
-import org.raml.nodes.RamlNode;
+import org.raml.nodes.Node;
 import org.yaml.snakeyaml.nodes.MappingNode;
-import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.NodeTuple;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
@@ -18,7 +17,7 @@ public class SYModelWrapper
 
     public static final Tag INCLUDE_TAG = new Tag("!include");
 
-    public RamlNode wrap(Node node)
+    public Node wrap(org.yaml.snakeyaml.nodes.Node node)
     {
         if (node.getNodeId() == mapping)
         {
@@ -38,13 +37,13 @@ public class SYModelWrapper
         }
     }
 
-    private SYMappingNodeImpl wrap(MappingNode mappingNode)
+    private SYMappingNode wrap(MappingNode mappingNode)
     {
-        SYMappingNodeImpl mapping = new SYMappingNodeImpl(mappingNode);
+        SYMappingNode mapping = new SYMappingNode(mappingNode);
         for (NodeTuple nodeTuple : mappingNode.getValue())
         {
-            RamlNode key = wrap(nodeTuple.getKeyNode());
-            RamlNode value = wrap(nodeTuple.getValueNode());
+            Node key = wrap(nodeTuple.getKeyNode());
+            Node value = wrap(nodeTuple.getValueNode());
             RamlKeyValueNodeImpl keyValue = new RamlKeyValueNodeImpl(key, value);
             mapping.addChild(keyValue);
         }
@@ -63,7 +62,7 @@ public class SYModelWrapper
     private SYSequenceNode wrap(SequenceNode sequenceNode)
     {
         SYSequenceNode sequence = new SYSequenceNode(sequenceNode);
-        for (Node node : sequenceNode.getValue())
+        for (org.yaml.snakeyaml.nodes.Node node : sequenceNode.getValue())
         {
             sequence.addChild(wrap(node));
         }

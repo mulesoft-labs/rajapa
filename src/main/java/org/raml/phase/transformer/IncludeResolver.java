@@ -1,11 +1,11 @@
 package org.raml.phase.transformer;
 
 import org.raml.loader.ResourceLoader;
-import org.raml.nodes.RamlErrorNode;
-import org.raml.nodes.RamlNode;
+import org.raml.nodes.ErrorNode;
+import org.raml.nodes.Node;
 import org.raml.nodes.impl.RamlStringNodeImpl;
 import org.raml.nodes.snakeyaml.SYIncludeNode;
-import org.raml.nodes.RamlNodeParser;
+import org.raml.nodes.snakeyaml.RamlNodeParser;
 import org.raml.phase.Transformer;
 import org.raml.utils.StreamUtils;
 
@@ -25,23 +25,23 @@ public class IncludeResolver implements Transformer
     }
 
     @Override
-    public boolean matches(RamlNode tree) {
+    public boolean matches(Node tree) {
         return tree instanceof SYIncludeNode;
     }
 
     @Override
-    public RamlNode transform(RamlNode tree)
+    public Node transform(Node tree)
     {
 
         SYIncludeNode includeNode = (SYIncludeNode) tree;
         String resourcePath = resolvePath(includeNode.getIncludePath());
         InputStream inputStream = resourceLoader.fetchResource(resourcePath);
 
-        RamlNode result;
+        Node result;
         if (inputStream == null)
         {
             String msg = "Include cannot be resolved: " + resourcePath;
-            result = new RamlErrorNode(msg);
+            result = new ErrorNode(msg);
         }
         else if (resourcePath.endsWith(".raml") || resourcePath.endsWith(".yaml") || resourcePath.endsWith(".yml"))
         {
@@ -56,7 +56,7 @@ public class IncludeResolver implements Transformer
         if (result == null)
         {
             String msg = "Include file is empty: " + resourcePath;
-            result = new RamlErrorNode(msg);
+            result = new ErrorNode(msg);
         }
 
         return result;

@@ -13,13 +13,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.text.IsEqualIgnoringWhiteSpace;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.raml.nodes.RamlNode;
+import org.raml.nodes.Node;
 import org.raml.utils.TreeDumper;
 
 @RunWith(Parameterized.class)
@@ -41,10 +40,10 @@ public class RamlBuilderTestCase
     public void runTest() throws IOException
     {
         final RamlBuilder builder = new RamlBuilder();
-        final RamlNode raml = builder.build(input);
+        final Node raml = builder.build(input);
         assertThat(raml, notNullValue());
-        final String dump = new TreeDumper().dump(raml);
-        final String expected = IOUtils.toString(new FileInputStream(this.expected));
+        String dump = new TreeDumper().dump(raml);
+        String expected = IOUtils.toString(new FileInputStream(this.expected));
         System.out.println("dump = \n" + dump);
         Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(expected));
 
