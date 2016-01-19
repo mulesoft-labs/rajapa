@@ -1,28 +1,8 @@
 package org.raml.nodes;
 
-public class RamlKeyValueNode extends RamlAbstractNode
-{
+public interface RamlKeyValueNode extends RamlNode {
 
-    public RamlKeyValueNode(RamlNode keyNode, RamlNode valueNode)
-    {
-        super(keyNode.getYamlNode());
-        addChild(keyNode);
-        addChild(valueNode);
-    }
+    RamlNode getKey();
 
-    @Override
-    public void addChild(RamlNode node)
-    {
-        if (getChildren().size() >= 2)
-        {
-            throw new IllegalStateException();
-        }
-        super.addChild(node);
-    }
-
-    public String getKeyNodeValue()
-    {
-        return ((RamlScalarNode) getChildren().iterator().next()).getValue();
-    }
+    RamlNode getValue();
 }
-

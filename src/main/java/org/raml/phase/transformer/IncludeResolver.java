@@ -1,70 +1,64 @@
-package org.raml.visitor;
+package org.raml.phase.transformer;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import org.raml.SnakeYamlModelWrapper;
 import org.raml.loader.ResourceLoader;
 import org.raml.nodes.RamlErrorNode;
-import org.raml.nodes.RamlIncludeNode;
 import org.raml.nodes.RamlNode;
+import org.raml.nodes.impl.RamlStringNodeImpl;
+import org.raml.nodes.snakeyaml.SYIncludeNode;
+import org.raml.nodes.RamlNodeParser;
+import org.raml.phase.Transformer;
 import org.raml.utils.StreamUtils;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.nodes.Node;
-import org.yaml.snakeyaml.nodes.ScalarNode;
 
-public class IncludeResolverPhase implements Phase
+import java.io.InputStream;
+
+
+public class IncludeResolver implements Transformer
 {
 
     private final ResourceLoader resourceLoader;
     private final String resourceLocation;
 
-    public IncludeResolverPhase(ResourceLoader resourceLoader, String resourceLocation)
+    public IncludeResolver(ResourceLoader resourceLoader, String resourceLocation)
     {
         this.resourceLoader = resourceLoader;
         this.resourceLocation = resourceLocation;
     }
 
     @Override
-    public RamlNode apply(RamlNode node)
+    public boolean matches(RamlNode tree) {
+        return tree instanceof SYIncludeNode;
+    }
+
+    @Override
+    public RamlNode transform(RamlNode tree)
     {
-        if (!(node instanceof RamlIncludeNode))
-        {
-            return node;
-        }
-        RamlIncludeNode includeNode = (RamlIncludeNode) node;
+
+        SYIncludeNode includeNode = (SYIncludeNode) tree;
         String resourcePath = resolvePath(includeNode.getIncludePath());
         InputStream inputStream = resourceLoader.fetchResource(resourcePath);
-        Node composedNode = null;
-        RamlNode result;
 
+        RamlNode result;
         if (inputStream == null)
         {
             String msg = "Include cannot be resolved: " + resourcePath;
             result = new RamlErrorNode(msg);
-            node.getParent().replaceChildWith(node, result);
         }
         else if (resourcePath.endsWith(".raml") || resourcePath.endsWith(".yaml") || resourcePath.endsWith(".yml"))
         {
-            Yaml yamlParser = new Yaml();
-            composedNode = yamlParser.compose(new InputStreamReader(inputStream));
+            result = RamlNodeParser.parse(inputStream);
         }
         else //scalar value
         {
             String newValue = StreamUtils.toString(inputStream);
-            composedNode = new ScalarNode(org.yaml.snakeyaml.nodes.Tag.STR, newValue, node.getStartMark(), node.getEndMark(), null);
+            result = new RamlStringNodeImpl(newValue);
         }
-        if (composedNode == null)
+
+        if (result == null)
         {
             String msg = "Include file is empty: " + resourcePath;
             result = new RamlErrorNode(msg);
-            node.getParent().replaceChildWith(node, result);
         }
-        else
-        {
-            result = new SnakeYamlModelWrapper().wrap(composedNode);
-            node.getParent().replaceChildWith(node, result);
-        }
+
         return result;
     }
 

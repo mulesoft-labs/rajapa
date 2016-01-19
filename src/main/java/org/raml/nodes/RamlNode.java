@@ -1,19 +1,21 @@
 package org.raml.nodes;
 
-import java.util.Collection;
-
-import org.yaml.snakeyaml.error.Mark;
-import org.yaml.snakeyaml.nodes.Node;
+import javax.annotation.Nullable;
+import java.util.List;
 
 public interface RamlNode
 {
 
-    Node getYamlNode();
-    Mark getStartMark();
-    Mark getEndMark();
+    @Nullable
+    Position getStartMark();
 
+    @Nullable
+    Position getEndMark();
+
+    @Nullable
     RamlNode getParent();
-    Collection<RamlNode> getChildren();
+
+    List<RamlNode> getChildren();
 
     void addChild(RamlNode node);
 
@@ -23,5 +25,6 @@ public interface RamlNode
 
     void setSource(RamlNode source);
 
+    @Nullable
     RamlNode getSource();
 }

@@ -40,15 +40,14 @@ public class RamlBuilderTestCase
     @Test
     public void runTest() throws IOException
     {
-        RamlBuilder builder = new RamlBuilder();
-        RamlNode raml = builder.build(input);
+        final RamlBuilder builder = new RamlBuilder();
+        final RamlNode raml = builder.build(input);
         assertThat(raml, notNullValue());
-
-        String dump = new TreeDumper().dump(raml);
-
-        String expected = IOUtils.toString(new FileInputStream(this.expected));
-        Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(expected));
+        final String dump = new TreeDumper().dump(raml);
+        final String expected = IOUtils.toString(new FileInputStream(this.expected));
         System.out.println("dump = \n" + dump);
+        Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(expected));
+
     }
 
 

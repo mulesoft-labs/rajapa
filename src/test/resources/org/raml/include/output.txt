@@ -1,17 +1,17 @@
-RamlRootNode
-    RamlKeyValueNode
-        RamlScalarNode: "title"
-        RamlScalarNode: "hola"
-    RamlKeyValueNode
-        RamlScalarNode: "/top"
-        RamlMappingNode
+SYMappingNodeImpl
+    RamlKeyValueNodeImpl
+        SYScalarNode: "title"
+        SYScalarNode: "hola"
+    RamlKeyValueNodeImpl
+        SYScalarNode: "/top"
+        SYMappingNodeImpl
             <Source>:
-                RamlIncludeNode: "basic-resource.raml"
-            RamlKeyValueNode
-                RamlScalarNode: "get"
-                RamlMappingNode
-                    RamlKeyValueNode
-                        RamlScalarNode: "description"
-                        RamlScalarNode: "some description"
+                SYIncludeNode: "basic-resource.raml"
+            RamlKeyValueNodeImpl
+                SYScalarNode: "get"
+                SYMappingNodeImpl
+                    RamlKeyValueNodeImpl
+                        SYScalarNode: "description"
+                        RamlStringNodeImpl: "some description"
                             <Source>:
-                                RamlIncludeNode: "description.txt"
+                                SYIncludeNode: "description.txt"

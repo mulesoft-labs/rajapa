@@ -1,44 +1,14 @@
 package org.raml.nodes;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.yaml.snakeyaml.error.Mark;
-import org.yaml.snakeyaml.nodes.Node;
+public abstract class BaseRamlNode implements RamlNode {
 
-public class RamlAbstractNode implements RamlNode
-{
-
-    private Node yamlNode;
     private RamlNode source;
     private RamlNode parent;
     private List<RamlNode> children = new ArrayList<>();
-
-    public RamlAbstractNode(Node yamlNode)
-    {
-        this.yamlNode = yamlNode;
-    }
-
-    @Override
-    public Node getYamlNode()
-    {
-        //TODO isolate snakeyaml node access to this class
-        return yamlNode;
-    }
-
-    @Override
-    public Mark getStartMark()
-    {
-        return yamlNode.getStartMark();
-    }
-
-    @Override
-    public Mark getEndMark()
-    {
-        return yamlNode.getEndMark();
-    }
 
     @Override
     public RamlNode getParent()
@@ -47,7 +17,7 @@ public class RamlAbstractNode implements RamlNode
     }
 
     @Override
-    public Collection<RamlNode> getChildren()
+    public List<RamlNode> getChildren()
     {
         return Collections.unmodifiableList(new ArrayList<>(children));
     }
@@ -67,8 +37,7 @@ public class RamlAbstractNode implements RamlNode
         children.set(idx, newNode);
         oldNode.setParent(null);
         newNode.setSource(oldNode);
-        for (RamlNode child : oldNode.getChildren())
-        {
+        for (RamlNode child : oldNode.getChildren()) {
             newNode.addChild(child);
         }
     }
@@ -90,5 +59,4 @@ public class RamlAbstractNode implements RamlNode
     {
         return source;
     }
-
 }
