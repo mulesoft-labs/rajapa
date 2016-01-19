@@ -6,12 +6,8 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.io.Reader;
 
-import org.raml.loader.ClassPathResourceLoader;
-import org.raml.loader.CompositeResourceLoader;
 import org.raml.loader.DefaultResourceLoader;
-import org.raml.loader.FileResourceLoader;
 import org.raml.loader.ResourceLoader;
-import org.raml.loader.UrlResourceLoader;
 import org.raml.nodes.RamlMappingNode;
 import org.raml.nodes.RamlNode;
 import org.raml.nodes.RamlRootNode;
@@ -28,9 +24,7 @@ public class RamlBuilder
 
     public RamlNode build(File ramlFile) throws FileNotFoundException
     {
-        resourceLoader = new CompositeResourceLoader(
-                new UrlResourceLoader(), new ClassPathResourceLoader(), new FileResourceLoader("."), new FileResourceLoader(ramlFile.getParent()));
-        return build(new FileReader(ramlFile), "");
+        return build(new FileReader(ramlFile), ramlFile.getPath());
     }
 
     public RamlNode build(String resourceLocation)
@@ -43,18 +37,9 @@ public class RamlBuilder
     {
         Yaml yamlParser = new Yaml();
         Node yamlRootNode = yamlParser.compose(content);
-        //if (yamlRootNode.getNodeId() != mapping)
-        //{
-        //    throw new IllegalStateException("Invalid root node");
-        //}
         RamlNode rootNode = new RamlRootNode((RamlMappingNode) new SnakeYamlModelWrapper().wrap(yamlRootNode));
         rootNode = resolveIncludes(rootNode, resourceLocation);
         rootNode = resourceNormalization(rootNode);
-        return rootNode;
-    }
-
-    private RamlNode resourceNormalization(RamlNode rootNode)
-    {
         return rootNode;
     }
 
@@ -64,13 +49,17 @@ public class RamlBuilder
         return apply(rootNode, includeResolver);
     }
 
-    private RamlNode apply(RamlNode rootNode, Phase phase)
+    private RamlNode resourceNormalization(RamlNode rootNode)
     {
-        //first pass may replace child nodes
-        RamlNode result = phase.apply(rootNode);
-        for (RamlNode ramlNode : result.getChildren())
+        return rootNode;
+    }
+
+    private RamlNode apply(RamlNode ramlNode, Phase phase)
+    {
+        RamlNode result = phase.apply(ramlNode);
+        for (RamlNode childNode : result.getChildren())
         {
-            apply(ramlNode, phase);
+            apply(childNode, phase);
         }
         return result;
     }

@@ -6,9 +6,6 @@ import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.RamlNode;
 import org.raml.nodes.RamlScalarNode;
 
-/**
- * Created by santiagovacas on 1/18/16.
- */
 public class TreeDumper
 {
 
@@ -56,7 +53,8 @@ public class TreeDumper
     {
 
         dump.append(node.getClass().getSimpleName());
-        if(node instanceof RamlScalarNode){
+        if (node instanceof RamlScalarNode)
+        {
             dump.append(": \"").append(((RamlScalarNode) node).getValue()).append("\"");
         }
     }
