@@ -14,6 +14,7 @@ import org.raml.nodes.RamlRootNode;
 import org.raml.utils.StreamUtils;
 import org.raml.visitor.IncludeResolverPhase;
 import org.raml.visitor.Phase;
+import org.raml.visitor.ResourceNormalizationPhase;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.nodes.Node;
 
@@ -51,7 +52,8 @@ public class RamlBuilder
 
     private RamlNode resourceNormalization(RamlNode rootNode)
     {
-        return rootNode;
+        Phase resourceNormalizer = new ResourceNormalizationPhase();
+        return apply(rootNode, resourceNormalizer);
     }
 
     private RamlNode apply(RamlNode ramlNode, Phase phase)

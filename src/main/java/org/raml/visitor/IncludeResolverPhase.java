@@ -42,7 +42,7 @@ public class IncludeResolverPhase implements Phase
         {
             String msg = "Include cannot be resolved: " + resourcePath;
             result = new RamlErrorNode(msg);
-            node.getParent().replaceChildWith(node, result);
+            node.replaceWith(result);
         }
         else if (resourcePath.endsWith(".raml") || resourcePath.endsWith(".yaml") || resourcePath.endsWith(".yml"))
         {
@@ -58,12 +58,12 @@ public class IncludeResolverPhase implements Phase
         {
             String msg = "Include file is empty: " + resourcePath;
             result = new RamlErrorNode(msg);
-            node.getParent().replaceChildWith(node, result);
+            node.replaceWith(result);
         }
         else
         {
             result = new SnakeYamlModelWrapper().wrap(composedNode);
-            node.getParent().replaceChildWith(node, result);
+            node.replaceWith(result);
         }
         return result;
     }

@@ -1,14 +1,30 @@
 package org.raml.nodes;
 
-import org.yaml.snakeyaml.nodes.Node;
-
-public class RamlResourceNode extends RamlNodeHandler
+public class RamlResourceNode extends RamlKeyValueNode
 {
-
-    private RamlKeyValueNode decoratee;
 
     public RamlResourceNode(RamlKeyValueNode node)
     {
-        decoratee = node;
+        super(node);
+    }
+
+    public String getRelativePath()
+    {
+        return getKeyNodeValue();
+    }
+
+    public String getFullPath()
+    {
+        StringBuilder builder = new StringBuilder(getRelativePath());
+        RamlNode current = this;
+        while(current.getParent() != null)
+        {
+            current = current.getParent();
+            if (current instanceof RamlResourceNode)
+            {
+                builder.insert(0, ((RamlResourceNode) current).getRelativePath());
+            }
+        }
+        return builder.toString();
     }
 }

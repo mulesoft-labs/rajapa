@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.text.IsEqualIgnoringWhiteSpace;
 import org.junit.Assert;
 import org.junit.Test;
@@ -47,8 +46,8 @@ public class RamlBuilderTestCase
         String dump = new TreeDumper().dump(raml);
 
         String expected = IOUtils.toString(new FileInputStream(this.expected));
-        Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(expected));
         System.out.println("dump = \n" + dump);
+        Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(expected));
     }
 
 

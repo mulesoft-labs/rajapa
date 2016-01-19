@@ -11,35 +11,43 @@ public class ResourceNormalizationPhase implements Phase
     @Override
     public RamlNode apply(RamlNode node)
     {
-        //if (!maybeResource(node))
-        //{
-        //    return;
-        //}
+        if (isResource(node))
+        {
+            node.replaceWith(new RamlResourceNode((RamlKeyValueNode) node));
+        }
 
-    return node;
+        return node;
     }
 
-    //private boolean isResource(RamlNode node)
-    //{
-    //    RamlNode parent = node.getParent();
-    //    if (parent != null && (parent instanceof RamlRootNode || parent instanceof RamlResourceNode))
-    //    {
-    //        if (!(node instanceof RamlKeyValueNode))
-    //        {
-    //            throw new IllegalStateException();
-    //        }
-    //        if (((RamlKeyValueNode) node).getKeyNodeValue().startsWith("/"))
-    //        {
-    //            node.replaceWith(new RamlResourceNode((RamlKeyValueNode) node));
-    //        }
-    //    }
-    //    return false;
-    //}
-    //
-    //private boolean maybeResource(RamlNode node)
-    //{
-    //    RamlNode parent = node.getParent();
-    //    return parent != null && (parent instanceof RamlRootNode || parent instanceof RamlResourceNode);
-    //}
+    /*
+     * being a resource:
+     *  - node is KeyValue
+     *  - parent is Root or grampa is Resource
+     *  - key starts with slash
+     */
+    private boolean isResource(RamlNode node)
+    {
+        if (!(node instanceof RamlKeyValueNode))
+        {
+            return false;
+        }
+
+        RamlNode parent = node.getParent();
+        if (parent == null)
+        {
+            return false;
+        }
+        if (!(parent instanceof RamlRootNode))
+        {
+            RamlNode grampa = parent.getParent();
+            if (!(grampa instanceof RamlResourceNode))
+            {
+                return false;
+            }
+        }
+
+        String keyNodeValue = ((RamlKeyValueNode) node).getKeyNodeValue();
+        return keyNodeValue != null && keyNodeValue.startsWith("/");
+    }
 
 }

@@ -19,9 +19,13 @@ public interface RamlNode
 
     void replaceChildWith(RamlNode oldNode, RamlNode newNode);
 
+    void replaceWith(RamlNode newNode);
+
     void setParent(RamlNode parent);
 
     void setSource(RamlNode source);
 
     RamlNode getSource();
+
+    void setAsSourceOf(RamlNode ramlNode);
 }

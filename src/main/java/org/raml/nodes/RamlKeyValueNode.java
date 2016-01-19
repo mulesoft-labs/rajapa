@@ -1,7 +1,14 @@
 package org.raml.nodes;
 
+import java.util.Iterator;
+
 public class RamlKeyValueNode extends RamlAbstractNode
 {
+
+    public RamlKeyValueNode(RamlKeyValueNode node)
+    {
+        super(node.getYamlNode());
+    }
 
     public RamlKeyValueNode(RamlNode keyNode, RamlNode valueNode)
     {
@@ -23,6 +30,18 @@ public class RamlKeyValueNode extends RamlAbstractNode
     public String getKeyNodeValue()
     {
         return ((RamlScalarNode) getChildren().iterator().next()).getValue();
+    }
+
+    public RamlNode getKeyNode()
+    {
+        return getChildren().iterator().next();
+    }
+
+    public RamlNode getValueNode()
+    {
+        Iterator<RamlNode> iterator = getChildren().iterator();
+        iterator.next();
+        return iterator.next();
     }
 }
 

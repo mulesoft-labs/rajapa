@@ -65,12 +65,13 @@ public class RamlAbstractNode implements RamlNode
         int idx = children.indexOf(oldNode);
         newNode.setParent(this);
         children.set(idx, newNode);
-        oldNode.setParent(null);
-        newNode.setSource(oldNode);
-        for (RamlNode child : oldNode.getChildren())
-        {
-            newNode.addChild(child);
-        }
+        oldNode.setAsSourceOf(newNode);
+    }
+
+    @Override
+    public void replaceWith(RamlNode newNode)
+    {
+        parent.replaceChildWith(this, newNode);
     }
 
     @Override
@@ -89,6 +90,18 @@ public class RamlAbstractNode implements RamlNode
     public RamlNode getSource()
     {
         return source;
+    }
+
+    @Override
+    public void setAsSourceOf(RamlNode ramlNode)
+    {
+        ramlNode.setSource(this);
+        for (RamlNode child : children)
+        {
+            ramlNode.addChild(child);
+        }
+        this.children.clear();
+        this.parent = null;
     }
 
 }
