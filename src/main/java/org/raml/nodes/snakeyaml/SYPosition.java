@@ -31,4 +31,8 @@ public class SYPosition implements Position {
         //TODO add the resource where this position belongs too
         return null;
     }
+
+    public String getSourceCode(){
+        return mark.get_snippet();
+    }
 }

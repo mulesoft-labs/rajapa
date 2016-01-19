@@ -37,9 +37,9 @@ public class SYModelWrapper
         }
     }
 
-    private SYMappingNode wrap(MappingNode mappingNode)
+    private SYObjectNode wrap(MappingNode mappingNode)
     {
-        SYMappingNode mapping = new SYMappingNode(mappingNode);
+        SYObjectNode mapping = new SYObjectNode(mappingNode);
         for (NodeTuple nodeTuple : mappingNode.getValue())
         {
             Node key = wrap(nodeTuple.getKeyNode());
@@ -59,9 +59,9 @@ public class SYModelWrapper
         return new SYScalarNode(scalarNode);
     }
 
-    private SYSequenceNode wrap(SequenceNode sequenceNode)
+    private SYArrayNode wrap(SequenceNode sequenceNode)
     {
-        SYSequenceNode sequence = new SYSequenceNode(sequenceNode);
+        SYArrayNode sequence = new SYArrayNode(sequenceNode);
         for (org.yaml.snakeyaml.nodes.Node node : sequenceNode.getValue())
         {
             sequence.addChild(wrap(node));

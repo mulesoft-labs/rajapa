@@ -3,6 +3,7 @@ package org.raml.utils;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.raml.nodes.ErrorNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
 
@@ -56,6 +57,8 @@ public class TreeDumper
         dump.append(node.getClass().getSimpleName());
         if(node instanceof StringNode){
             dump.append(": \"").append(((StringNode) node).getValue()).append("\"");
+        }else if (node instanceof ErrorNode){
+            dump.append(": \"").append(((ErrorNode) node).getErrorMessage()).append("\"");
         }
     }
 

@@ -12,4 +12,6 @@ public interface Position
     int getColumn();
 
     String getResource();
+
+    String getSourceCode();
 }

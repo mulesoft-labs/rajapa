@@ -42,7 +42,11 @@ public abstract class BaseNode implements Node {
     @Override
     public void replaceWith(Node newNode)
     {
-        parent.replaceChildWith(this, newNode);
+        if(parent != null) {
+            parent.replaceChildWith(this, newNode);
+        }else {
+            this.setAsSourceOf(newNode);
+        }
     }
 
     @Override

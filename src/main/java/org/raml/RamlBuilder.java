@@ -1,5 +1,7 @@
 package org.raml;
 
+import org.raml.grammar.Raml1_0;
+import org.raml.grammar.RulePhase;
 import org.raml.loader.*;
 import org.raml.nodes.Node;
 import org.raml.nodes.snakeyaml.RamlNodeParser;
@@ -34,7 +36,8 @@ public class RamlBuilder {
         final TransformationPhase firstPhase = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation));
         rootNode = firstPhase.apply(rootNode);
         //Runs Schema. Applies the Raml rules and changes each node for a more specific.
-
+        final RulePhase secondPhase = new RulePhase(Raml1_0.raml());
+        rootNode = secondPhase.apply(rootNode);
         //Detect references and mark invalid references. Library resourceTypes and Traits. This point the nodes are good enough for Editors.
 
         //Normalize resources and detects duplicated ones and more than one use of url parameters.
