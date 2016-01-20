@@ -34,7 +34,7 @@ public class UrlResourceLoader implements ResourceLoader
         }
         catch (IOException e)
         {
-            //ignore on resource not found
+            // ignore on resource not found
         }
         return inputStream;
 

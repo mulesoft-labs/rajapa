@@ -9,25 +9,34 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 
-public class RamlNodeParser {
+public class RamlNodeParser
+{
 
     @Nullable
-    public static Node parse(InputStream inputStream) {
-        try {
+    public static Node parse(InputStream inputStream)
+    {
+        try
+        {
             return parse(new InputStreamReader(inputStream, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
+        }
+        catch (UnsupportedEncodingException e)
+        {
             return parse(new InputStreamReader(inputStream));
         }
     }
 
 
     @Nullable
-    public static Node parse(Reader reader) {
+    public static Node parse(Reader reader)
+    {
         Yaml yamlParser = new Yaml();
         org.yaml.snakeyaml.nodes.Node composedNode = yamlParser.compose(reader);
-        if (composedNode == null) {
+        if (composedNode == null)
+        {
             return null;
-        } else {
+        }
+        else
+        {
             return new SYModelWrapper().wrap(composedNode);
         }
     }

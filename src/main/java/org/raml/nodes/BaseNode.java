@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class BaseNode implements Node {
+public abstract class BaseNode implements Node
+{
 
     private Node source;
     private Node parent;
@@ -42,10 +43,16 @@ public abstract class BaseNode implements Node {
     @Override
     public void replaceWith(Node newNode)
     {
-        if(parent != null) {
-            parent.replaceChildWith(this, newNode);
-        }else {
-            this.setAsSourceOf(newNode);
+        if (this != newNode)
+        {
+            if (parent != null)
+            {
+                parent.replaceChildWith(this, newNode);
+            }
+            else
+            {
+                this.setAsSourceOf(newNode);
+            }
         }
     }
 

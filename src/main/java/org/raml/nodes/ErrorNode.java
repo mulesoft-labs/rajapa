@@ -11,7 +11,8 @@ public class ErrorNode extends AbstractRamlNode
         this.errorMessage = msg;
     }
 
-    public String getErrorMessage(){
+    public String getErrorMessage()
+    {
         return errorMessage;
     }
 

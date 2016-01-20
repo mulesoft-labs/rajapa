@@ -4,15 +4,18 @@ import org.raml.nodes.BaseNode;
 import org.raml.nodes.Position;
 import org.yaml.snakeyaml.nodes.Node;
 
-public class SYBaseRamlNode extends BaseNode {
+public class SYBaseRamlNode extends BaseNode
+{
 
     private Node yamlNode;
 
-    public SYBaseRamlNode(Node yamlNode) {
+    public SYBaseRamlNode(Node yamlNode)
+    {
         this.yamlNode = yamlNode;
     }
 
-    protected Node getYamlNode() {
+    protected Node getYamlNode()
+    {
         return yamlNode;
     }
 

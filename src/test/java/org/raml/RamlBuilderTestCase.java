@@ -59,12 +59,12 @@ public class RamlBuilderTestCase
         List<Object[]> result = new ArrayList<>();
         for (File scenario : scenarios)
         {
-            if(scenario.isDirectory())
+            if (scenario.isDirectory())
             {
                 result.add(new Object[] {
-                        new File(scenario, "input.raml"),
-                        new File(scenario, "output.txt"),
-                        scenario.getName()
+                                         new File(scenario, "input.raml"),
+                                         new File(scenario, "output.txt"),
+                                         scenario.getName()
                 });
             }
         }

@@ -3,7 +3,7 @@ package org.raml.phase.transformer;
 import org.raml.loader.ResourceLoader;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.Node;
-import org.raml.nodes.impl.RamlStringNodeImpl;
+import org.raml.nodes.impl.StringNodeImpl;
 import org.raml.nodes.snakeyaml.SYIncludeNode;
 import org.raml.nodes.snakeyaml.RamlNodeParser;
 import org.raml.phase.Transformer;
@@ -25,7 +25,8 @@ public class IncludeResolver implements Transformer
     }
 
     @Override
-    public boolean matches(Node tree) {
+    public boolean matches(Node tree)
+    {
         return tree instanceof SYIncludeNode;
     }
 
@@ -47,10 +48,11 @@ public class IncludeResolver implements Transformer
         {
             result = RamlNodeParser.parse(inputStream);
         }
-        else //scalar value
+        else
+        // scalar value
         {
             String newValue = StreamUtils.toString(inputStream);
-            result = new RamlStringNodeImpl(newValue);
+            result = new StringNodeImpl(newValue);
         }
 
         if (result == null)
@@ -64,7 +66,7 @@ public class IncludeResolver implements Transformer
 
     private String resolvePath(String includePath)
     {
-        //TODO works for relative only for now
+        // TODO works for relative only for now
         int lastSlash = resourceLocation.lastIndexOf("/");
         if (lastSlash != -1)
         {

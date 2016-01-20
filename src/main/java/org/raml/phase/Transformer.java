@@ -5,7 +5,8 @@ import org.raml.nodes.Node;
 /**
  * Applies a transformation to a specific node and returns the new node.
  */
-public interface Transformer {
+public interface Transformer
+{
 
     boolean matches(Node node);
 

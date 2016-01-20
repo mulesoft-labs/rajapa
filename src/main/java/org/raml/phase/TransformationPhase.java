@@ -8,27 +8,34 @@ import java.util.List;
 /**
  * Applies a list of Transformers in a pipeline way
  */
-public class TransformationPhase implements Phase {
+public class TransformationPhase implements Phase
+{
 
     private List<Transformer> transformers;
 
-    public TransformationPhase(Transformer... transformers) {
+    public TransformationPhase(Transformer... transformers)
+    {
         this.transformers = Arrays.asList(transformers);
     }
 
     @Override
-    public Node apply(Node tree) {
-        //first pass may replace child nodes
+    public Node apply(Node tree)
+    {
+        // first pass may replace child nodes
         Node result = tree;
-        for (Transformer transformer : transformers) {
-            if (transformer.matches(result)) {
+        for (Transformer transformer : transformers)
+        {
+            if (transformer.matches(result))
+            {
                 result = transformer.transform(result);
             }
         }
-        if (tree != result && tree.getParent() != null) {
+        if (tree != result && tree.getParent() != null)
+        {
             tree.getParent().replaceChildWith(tree, result);
         }
-        for (Node node : result.getChildren()) {
+        for (Node node : result.getChildren())
+        {
             apply(node);
         }
         return result;

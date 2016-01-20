@@ -4,7 +4,7 @@ import static org.yaml.snakeyaml.nodes.NodeId.mapping;
 import static org.yaml.snakeyaml.nodes.NodeId.scalar;
 import static org.yaml.snakeyaml.nodes.NodeId.sequence;
 
-import org.raml.nodes.impl.RamlKeyValueNodeImpl;
+import org.raml.nodes.impl.KeyValueNodeImpl;
 import org.raml.nodes.Node;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.NodeTuple;
@@ -44,19 +44,35 @@ public class SYModelWrapper
         {
             Node key = wrap(nodeTuple.getKeyNode());
             Node value = wrap(nodeTuple.getValueNode());
-            RamlKeyValueNodeImpl keyValue = new RamlKeyValueNodeImpl(key, value);
+            KeyValueNodeImpl keyValue = new KeyValueNodeImpl(key, value);
             mapping.addChild(keyValue);
         }
         return mapping;
     }
 
-    private SYScalarNode wrap(ScalarNode scalarNode)
+    private Node wrap(ScalarNode scalarNode)
     {
-        if (INCLUDE_TAG.equals(scalarNode.getTag()))
+        final Tag tag = scalarNode.getTag();
+        if (INCLUDE_TAG.equals(tag))
         {
             return new SYIncludeNode(scalarNode);
         }
-        return new SYScalarNode(scalarNode);
+        else if (Tag.NULL.equals(tag))
+        {
+            return new SYNullNode(scalarNode);
+        }
+        else if (Tag.FLOAT.equals(tag))
+        {
+            return new SYFloatingNode(scalarNode);
+        }
+        else if (Tag.INT.equals(tag))
+        {
+            return new SYIntegerNode(scalarNode);
+        }
+        else
+        {
+            return new SYStringNode(scalarNode);
+        }
     }
 
     private SYArrayNode wrap(SequenceNode sequenceNode)

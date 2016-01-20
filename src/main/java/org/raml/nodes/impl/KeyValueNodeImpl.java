@@ -5,22 +5,24 @@ import org.raml.nodes.Position;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 
-public class RamlKeyValueNodeImpl extends BaseNode implements KeyValueNode
+public class KeyValueNodeImpl extends BaseNode implements KeyValueNode
 {
 
-    public RamlKeyValueNodeImpl(Node keyNode, Node valueNode)
+    public KeyValueNodeImpl(Node keyNode, Node valueNode)
     {
         addChild(keyNode);
         addChild(valueNode);
     }
 
     @Override
-    public Position getStartMark() {
+    public Position getStartMark()
+    {
         return getKey().getStartMark();
     }
 
     @Override
-    public Position getEndMark() {
+    public Position getEndMark()
+    {
         return getValue().getEndMark();
     }
 
@@ -35,13 +37,14 @@ public class RamlKeyValueNodeImpl extends BaseNode implements KeyValueNode
     }
 
     @Override
-    public Node getKey() {
+    public Node getKey()
+    {
         return getChildren().get(0);
     }
 
     @Override
-    public Node getValue() {
+    public Node getValue()
+    {
         return getChildren().get(1);
     }
 }
-

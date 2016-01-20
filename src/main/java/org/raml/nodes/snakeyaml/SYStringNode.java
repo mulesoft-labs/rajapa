@@ -3,10 +3,10 @@ package org.raml.nodes.snakeyaml;
 import org.raml.nodes.StringNode;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
-public class SYScalarNode extends SYBaseRamlNode implements StringNode
+public class SYStringNode extends SYBaseRamlNode implements StringNode
 {
 
-    public SYScalarNode(ScalarNode scalarNode)
+    public SYStringNode(ScalarNode scalarNode)
     {
         super(scalarNode);
     }

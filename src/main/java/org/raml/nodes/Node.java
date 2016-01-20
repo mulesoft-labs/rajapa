@@ -19,16 +19,17 @@ public interface Node
 
     void addChild(Node node);
 
-    void replaceChildWith(Node oldNode, Node newNode);
-
-    void replaceWith(Node newNode);
-
     void setParent(Node parent);
 
     void setSource(Node source);
 
     @Nullable
     Node getSource();
+
+    // TODO review this utility methods
+    void replaceChildWith(Node oldNode, Node newNode);
+
+    void replaceWith(Node newNode);
 
     void setAsSourceOf(Node node);
 }

@@ -47,7 +47,6 @@
                 <configuration>
                     <header>LICENSE_HEADER.txt</header>
                     <excludes>
-                        <exclude>**/org/raml/parser/utils/Inflector.java</exclude>
                         <exclude>target/**</exclude>
                         <exclude>**/.gitignore</exclude>
                         <exclude>.idea/**</exclude>
@@ -70,6 +69,21 @@
                     <execution>
                         <goals>
                             <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.revelc.code</groupId>
+                <artifactId>formatter-maven-plugin</artifactId>
+                <version>0.5.2</version>
+                <configuration>
+                    <configFile>${project.basedir}/mule_eclipse_formatter.xml</configFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>format</goal>
                         </goals>
                     </execution>
                 </executions>

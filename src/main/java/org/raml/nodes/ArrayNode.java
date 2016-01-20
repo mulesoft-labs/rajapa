@@ -1,4 +1,5 @@
 package org.raml.nodes;
 
-public interface ArrayNode extends Node {
+public interface ArrayNode extends Node
+{
 }

@@ -54,7 +54,7 @@ public class FileResourceLoader implements ResourceLoader
         }
         catch (FileNotFoundException e)
         {
-            //ignore
+            // ignore
         }
         return inputStream;
     }

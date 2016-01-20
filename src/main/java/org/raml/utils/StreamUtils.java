@@ -74,7 +74,7 @@ public class StreamUtils
         int bomSize = 0;
         if (content.length > 4)
         {
-            //check for UTF_32BE and UTF_32LE BOMs
+            // check for UTF_32BE and UTF_32LE BOMs
             if (content[0] == 0x00 && content[1] == 0x00 && content[2] == (byte) 0xFE && content[3] == (byte) 0xFF ||
                 content[0] == (byte) 0xFF && content[1] == (byte) 0xFE && content[2] == 0x00 && content[3] == 0x00)
             {
@@ -83,7 +83,7 @@ public class StreamUtils
         }
         if (content.length > 3 && bomSize == 0)
         {
-            //check for UTF-8 BOM
+            // check for UTF-8 BOM
             if (content[0] == (byte) 0xEF && content[1] == (byte) 0xBB && content[2] == (byte) 0xBF)
             {
                 bomSize = 3;
@@ -91,7 +91,7 @@ public class StreamUtils
         }
         if (content.length > 2 && bomSize == 0)
         {
-            //check for UTF_16BE and UTF_16LE BOMs
+            // check for UTF_16BE and UTF_16LE BOMs
             if (content[0] == (byte) 0xFE && content[1] == (byte) 0xFF || content[0] == (byte) 0xFF && content[1] == (byte) 0xFE)
             {
                 bomSize = 2;

@@ -1,17 +1,31 @@
-SYMappingNode
+RamlDocumentNode
+    <Source>: 
+        SYObjectNode
     RamlKeyValueNodeImpl
-        SYScalarNode: "title"
-        SYScalarNode: "hola"
+        SYStringNode: "title"
+        SYStringNode: "hola"
     RamlKeyValueNodeImpl
-        SYScalarNode: "/top"
-        SYMappingNode
-            <Source>:
-                SYIncludeNode: "basic-resource.raml"
+        SYStringNode: "/top"
+        ResourceNode
+            <Source>: 
+                SYObjectNode
+                    <Source>: 
+                        SYIncludeNode: "basic-resource.raml"
             RamlKeyValueNodeImpl
-                SYScalarNode: "get"
-                SYMappingNode
+                SYStringNode: "get"
+                MethodNode
+                    <Source>: 
+                        SYObjectNode
                     RamlKeyValueNodeImpl
-                        SYScalarNode: "description"
+                        SYStringNode: "description"
                         RamlStringNodeImpl: "some description"
-                            <Source>:
+                            <Source>: 
                                 SYIncludeNode: "description.txt"
+            RamlKeyValueNodeImpl
+                SYStringNode: "/{id}"
+                ResourceNode
+                    <Source>: 
+                        SYObjectNode
+                    RamlKeyValueNodeImpl
+                        SYStringNode: "put"
+                        SYNullNode
