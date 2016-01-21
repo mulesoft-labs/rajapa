@@ -67,6 +67,11 @@ public class BaseGrammar
         return new StringTypeRule();
     }
 
+    public BooleanTypeRule booleanType()
+    {
+        return new BooleanTypeRule();
+    }
+
     public StringValueRule string(String value)
     {
         return new StringValueRule(value);
