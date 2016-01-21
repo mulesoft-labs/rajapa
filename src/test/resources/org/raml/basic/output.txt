@@ -1,19 +1,13 @@
-RamlDocumentNode
-    <Source>:
-        SYObjectNode
-    RamlKeyValueNodeImpl
-        SYStringNode: "title"
-        SYStringNode: "hola"
-    RamlKeyValueNodeImpl
-        SYStringNode: "/top"
-        ResourceNode
-            <Source>:
-                SYObjectNode
-            RamlKeyValueNodeImpl
-                SYStringNode: "get"
-                MethodNode
-                    <Source>:
-                        SYObjectNode
-                    RamlKeyValueNodeImpl
-                        SYStringNode: "description"
-                        SYStringNode: "get something"
+RamlDocumentNode (Start: 11 , End: 75, Source: SYObjectNode)
+    KeyValueNodeImpl (Start: 11 , End: 22)
+        SYStringNode: "title" (Start: 11 , End: 16)
+        SYStringNode: "hola" (Start: 18 , End: 22)
+    KeyValueNodeImpl (Start: 23 , End: 75)
+        SYStringNode: "/top" (Start: 23 , End: 27)
+        ResourceNode (Start: 33 , End: 75, Source: SYObjectNode)
+            KeyValueNodeImpl (Start: 33 , End: 75)
+                SYStringNode: "get" (Start: 33 , End: 36)
+                MethodNode (Start: 46 , End: 75, Source: SYObjectNode)
+                    KeyValueNodeImpl (Start: 46 , End: 74)
+                        SYStringNode: "description" (Start: 46 , End: 57)
+                        SYStringNode: "get something" (Start: 59 , End: 74)

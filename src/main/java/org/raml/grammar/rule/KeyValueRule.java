@@ -33,6 +33,12 @@ public class KeyValueRule extends Rule
         return valueRule;
     }
 
+    public KeyValueRule then(Class<? extends Node> clazz)
+    {
+        super.then(clazz);
+        return this;
+    }
+
     @Override
     public Node transform(Node node)
     {

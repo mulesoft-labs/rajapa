@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.ReferenceNode;
 import org.raml.nodes.StringNode;
 
 
@@ -29,18 +30,23 @@ public class TreeDumper
     {
         printIndent();
         dumpNode(node);
-        dump.append("\n");
+        dump.append(" (");
+        if (node.getStartPosition() != null)
+        {
+            dump.append("Start: ").append(node.getStartPosition().getIndex());
+        }
+
+        if (node.getEndPosition() != null)
+        {
+            dump.append(" , End: ").append(node.getEndPosition().getIndex());
+        }
         if (node.getSource() != null)
         {
-            indent();
-            printIndent();
-            dump.append("<Source>: ");
-            indent();
-            dump.append("\n");
-            dump(node.getSource());
-            dedent();
-            dedent();
+            dump.append(", Source: ");
+            dump.append(node.getSource().getClass().getSimpleName());
         }
+        dump.append(")");
+        dump.append("\n");
         indent();
         Collection<Node> children = node.getChildren();
         for (Node child : children)
@@ -62,6 +68,24 @@ public class TreeDumper
         else if (node instanceof ErrorNode)
         {
             dump.append(": \"").append(((ErrorNode) node).getErrorMessage()).append("\"");
+        }
+        else if (node instanceof ReferenceNode)
+        {
+            final Node refNode = ((ReferenceNode) node).getRefNode();
+            dump.append(" -> {").append(refNode == null ? "null" : refNode.getClass().getSimpleName());
+            if (refNode != null)
+            {
+                if (refNode.getStartPosition() != null)
+                {
+                    dump.append(" RefStart: ").append(refNode.getStartPosition().getIndex());
+                }
+
+                if (refNode.getEndPosition() != null)
+                {
+                    dump.append(" , RefEnd: ").append(refNode.getEndPosition().getIndex());
+                }
+            }
+            dump.append("}");
         }
     }
 

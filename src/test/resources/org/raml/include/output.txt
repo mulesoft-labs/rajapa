@@ -1,31 +1,19 @@
-RamlDocumentNode
-    <Source>: 
-        SYObjectNode
-    RamlKeyValueNodeImpl
-        SYStringNode: "title"
-        SYStringNode: "hola"
-    RamlKeyValueNodeImpl
-        SYStringNode: "/top"
-        ResourceNode
-            <Source>: 
-                SYObjectNode
-                    <Source>: 
-                        SYIncludeNode: "basic-resource.raml"
-            RamlKeyValueNodeImpl
-                SYStringNode: "get"
-                MethodNode
-                    <Source>: 
-                        SYObjectNode
-                    RamlKeyValueNodeImpl
-                        SYStringNode: "description"
-                        RamlStringNodeImpl: "some description"
-                            <Source>: 
-                                SYIncludeNode: "description.txt"
-            RamlKeyValueNodeImpl
-                SYStringNode: "/{id}"
-                ResourceNode
-                    <Source>: 
-                        SYObjectNode
-                    RamlKeyValueNodeImpl
-                        SYStringNode: "put"
-                        SYNullNode
+RamlDocumentNode (Start: 11 , End: 58, Source: SYObjectNode)
+    KeyValueNodeImpl (Start: 11 , End: 22)
+        SYStringNode: "title" (Start: 11 , End: 16)
+        SYStringNode: "hola" (Start: 18 , End: 22)
+    KeyValueNodeImpl (Start: 23 , End: 63)
+        SYStringNode: "/top" (Start: 23 , End: 27)
+        ResourceNode (Start: 0 , End: 63, Source: SYObjectNode)
+            KeyValueNodeImpl (Start: 0 , End: 47)
+                SYStringNode: "get" (Start: 0 , End: 3)
+                MethodNode (Start: 9 , End: 47, Source: SYObjectNode)
+                    KeyValueNodeImpl (Start: 9 , End: 46)
+                        SYStringNode: "description" (Start: 9 , End: 20)
+                        StringNodeImpl: "some description" (Start: 22 , End: 46, Source: SYIncludeNode)
+            KeyValueNodeImpl (Start: 47 , End: 63)
+                SYStringNode: "/{id}" (Start: 47 , End: 52)
+                ResourceNode (Start: 58 , End: 63, Source: SYObjectNode)
+                    KeyValueNodeImpl (Start: 58 , End: 62)
+                        SYStringNode: "put" (Start: 58 , End: 61)
+                        SYNullNode (Start: 62 , End: 62)

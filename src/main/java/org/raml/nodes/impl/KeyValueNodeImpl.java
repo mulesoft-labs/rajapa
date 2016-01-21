@@ -14,16 +14,20 @@ public class KeyValueNodeImpl extends BaseNode implements KeyValueNode
         addChild(valueNode);
     }
 
-    @Override
-    public Position getStartMark()
+    public KeyValueNodeImpl()
     {
-        return getKey().getStartMark();
     }
 
     @Override
-    public Position getEndMark()
+    public Position getStartPosition()
     {
-        return getValue().getEndMark();
+        return getKey().getStartPosition();
+    }
+
+    @Override
+    public Position getEndPosition()
+    {
+        return getValue().getEndPosition();
     }
 
     @Override

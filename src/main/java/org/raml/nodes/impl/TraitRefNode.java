@@ -1,13 +1,21 @@
 package org.raml.nodes.impl;
 
-import org.raml.nodes.Node;
+import java.util.List;
 
 public class TraitRefNode extends AbstractReferenceNode
 {
 
     @Override
-    public Node getRefNode()
+    public TraitNode getRefNode()
     {
+        final List<TraitNode> childrenWith = getRootNode().findChildrenWith(TraitNode.class);
+        for (TraitNode typeNode : childrenWith)
+        {
+            if (typeNode.getName().equals(getRefName()))
+            {
+                return typeNode;
+            }
+        }
         return null;
     }
 }

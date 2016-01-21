@@ -17,6 +17,7 @@ public class Raml10Grammar extends BaseGrammar
                         .with(field(string("baseUriParameters"), parameters()))
                         .with(field(string("schemas"), schemas()))
                         .with(field(string("resourceTypes"), resourceTypes()))
+                        .with(field(string("traits"), traits()))
                         .with(protocolsField())
                         .with(field(resourceKey(), resource()))
                         .then(RamlDocumentNode.class);
@@ -37,10 +38,21 @@ public class Raml10Grammar extends BaseGrammar
         return anyOf(array(resourceType()), resourceType());
     }
 
+    private Rule traits()
+    {
+        return anyOf(array(trait()), trait());
+    }
+
+    private Rule trait()
+    {
+        // TODO resourceRule().with(parameterKey(), any())
+        return mapping().with(field(stringType(), any()).then(TraitNode.class));
+    }
+
     private Rule resourceType()
     {
         // TODO resourceRule().with(parameterKey(), any())
-        return mapping().with(field(stringType(), any()));
+        return mapping().with(field(stringType(), any()).then(ResourceTypeNode.class));
     }
 
     private Rule schemas()

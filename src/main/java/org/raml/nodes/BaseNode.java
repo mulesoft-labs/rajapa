@@ -31,13 +31,25 @@ public abstract class BaseNode implements Node
     }
 
     @Override
-    public void replaceChildWith(Node oldNode, Node newNode)
+    public Node getRootNode()
     {
-        int idx = children.indexOf(oldNode);
-        newNode.setParent(this);
-        children.set(idx, newNode);
-        newNode.setSource(oldNode);
-        oldNode.setAsSourceOf(newNode);
+        return getParent() == null ? this : getParent().getRootNode();
+    }
+
+    @Override
+    public <T extends Node> List<T> findChildrenWith(Class<T> nodeType)
+    {
+        final List<T> result = new ArrayList<>();
+        final List<Node> children = getChildren();
+        for (Node child : children)
+        {
+            if (nodeType.isAssignableFrom(child.getClass()))
+            {
+                result.add(nodeType.cast(child));
+            }
+            result.addAll(child.findChildrenWith(nodeType));
+        }
+        return result;
     }
 
     @Override
@@ -45,15 +57,26 @@ public abstract class BaseNode implements Node
     {
         if (this != newNode)
         {
-            if (parent != null)
+            if (getParent() != null)
             {
-                parent.replaceChildWith(this, newNode);
+                // If it has a parent replace it and the same idx
+                int idx = getParent().getChildren().indexOf(this);
+                getParent().setChild(idx, newNode);
             }
-            else
+            newNode.setSource(this);
+            for (Node child : getChildren())
             {
-                this.setAsSourceOf(newNode);
+                newNode.addChild(child);
             }
+            this.children.clear();
         }
+    }
+
+    @Override
+    public void setChild(int idx, Node newNode)
+    {
+        children.set(idx, newNode);
+        newNode.setParent(this);
     }
 
     @Override
@@ -72,18 +95,6 @@ public abstract class BaseNode implements Node
     public Node getSource()
     {
         return source;
-    }
-
-    @Override
-    public void setAsSourceOf(Node node)
-    {
-        node.setSource(this);
-        for (Node child : children)
-        {
-            node.addChild(child);
-        }
-        this.children.clear();
-        this.parent = null;
     }
 
 

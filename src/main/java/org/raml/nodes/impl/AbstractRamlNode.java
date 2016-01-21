@@ -7,14 +7,14 @@ public abstract class AbstractRamlNode extends BaseNode
 {
 
     @Override
-    public Position getEndMark()
+    public Position getEndPosition()
     {
-        return getSource() != null ? getSource().getEndMark() : null;
+        return getSource() != null ? getSource().getEndPosition() : null;
     }
 
     @Override
-    public Position getStartMark()
+    public Position getStartPosition()
     {
-        return getSource() != null ? getSource().getStartMark() : null;
+        return getSource() != null ? getSource().getStartPosition() : null;
     }
 }

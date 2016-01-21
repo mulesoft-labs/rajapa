@@ -20,13 +20,13 @@ public class SYBaseRamlNode extends BaseNode
     }
 
     @Override
-    public Position getStartMark()
+    public Position getStartPosition()
     {
         return new SYPosition(yamlNode.getStartMark());
     }
 
     @Override
-    public Position getEndMark()
+    public Position getEndPosition()
     {
         return new SYPosition(yamlNode.getEndMark());
     }

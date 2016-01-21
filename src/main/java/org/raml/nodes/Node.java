@@ -7,10 +7,12 @@ public interface Node
 {
 
     @Nullable
-    Position getStartMark();
+    Position getStartPosition();
 
     @Nullable
-    Position getEndMark();
+    Position getEndPosition();
+
+    Node getRootNode();
 
     @Nullable
     Node getParent();
@@ -23,13 +25,12 @@ public interface Node
 
     void setSource(Node source);
 
+    <T extends Node> List<T> findChildrenWith(Class<T> nodeType);
+
     @Nullable
     Node getSource();
 
-    // TODO review this utility methods
-    void replaceChildWith(Node oldNode, Node newNode);
-
     void replaceWith(Node newNode);
 
-    void setAsSourceOf(Node node);
+    void setChild(int idx, Node newNode);
 }

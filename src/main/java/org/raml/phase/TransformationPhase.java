@@ -32,7 +32,7 @@ public class TransformationPhase implements Phase
         }
         if (tree != result && tree.getParent() != null)
         {
-            tree.getParent().replaceChildWith(tree, result);
+            tree.replaceWith(result);
         }
         for (Node node : result.getChildren())
         {
