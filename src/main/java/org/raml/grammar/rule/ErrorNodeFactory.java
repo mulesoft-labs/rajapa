@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package org.raml.grammar.rule;
 
 import org.apache.commons.lang.StringUtils;

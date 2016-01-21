@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package org.raml.nodes;
 
 import org.raml.nodes.impl.AbstractRamlNode;

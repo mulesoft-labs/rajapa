@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package org.raml;
 
 import static org.hamcrest.CoreMatchers.notNullValue;

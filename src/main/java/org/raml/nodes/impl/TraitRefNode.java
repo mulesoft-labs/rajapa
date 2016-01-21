@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package org.raml.nodes.impl;
 
 import java.util.List;

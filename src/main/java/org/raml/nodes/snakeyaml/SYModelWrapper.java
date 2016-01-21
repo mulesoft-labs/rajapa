@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package org.raml.nodes.snakeyaml;
 
 import static org.yaml.snakeyaml.nodes.NodeId.mapping;

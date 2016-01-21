@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package org.raml.nodes.snakeyaml;
 
 import org.yaml.snakeyaml.nodes.ScalarNode;

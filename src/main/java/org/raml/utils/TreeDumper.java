@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package org.raml.utils;
 
 import java.util.Collection;

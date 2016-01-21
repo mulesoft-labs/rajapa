@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package org.raml.grammar;
 
 import org.raml.grammar.rule.Rule;

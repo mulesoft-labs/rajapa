@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package org.raml.phase;
 
 import org.raml.nodes.Node;
