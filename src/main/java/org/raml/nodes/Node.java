@@ -9,10 +9,8 @@ import java.util.List;
 public interface Node
 {
 
-    @Nullable
     Position getStartPosition();
 
-    @Nullable
     Position getEndPosition();
 
     Node getRootNode();

@@ -3,13 +3,14 @@
  */
 package org.raml;
 
-import org.raml.grammar.Raml10Grammar;
 import org.raml.grammar.GrammarPhase;
+import org.raml.grammar.Raml10Grammar;
 import org.raml.loader.*;
 import org.raml.nodes.Node;
 import org.raml.nodes.snakeyaml.RamlNodeParser;
-import org.raml.phase.TransformationPhase;
-import org.raml.phase.transformer.IncludeResolver;
+import org.raml.transformer.StringTemplateExpressionTransformer;
+import org.raml.transformer.TransformationPhase;
+import org.raml.transformer.IncludeResolver;
 import org.raml.utils.StreamUtils;
 
 import java.io.*;
@@ -43,7 +44,7 @@ public class RamlBuilder
     {
         Node rootNode = RamlNodeParser.parse(content);
         // The first phase expands the includes.
-        final TransformationPhase firstPhase = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation));
+        final TransformationPhase firstPhase = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation), new StringTemplateExpressionTransformer());
         rootNode = firstPhase.apply(rootNode);
         // Runs Schema. Applies the Raml rules and changes each node for a more specific.
         final GrammarPhase secondPhase = new GrammarPhase(new Raml10Grammar().raml());

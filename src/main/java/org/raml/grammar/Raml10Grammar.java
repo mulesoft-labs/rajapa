@@ -60,18 +60,13 @@ public class Raml10Grammar extends BaseGrammar
     private Rule types()
     {
         // TODO implement types
-        return mapping();
+        return any();
     }
 
 
     private Rule protocols()
     {
         return array(anyOf(string("http"), string("https")));
-    }
-
-    private Rule resourceTypes()
-    {
-        return anyOf(array(resourceType()), resourceType());
     }
 
     private Rule traits()
@@ -95,24 +90,32 @@ public class Raml10Grammar extends BaseGrammar
     private Rule trait()
     {
         // TODO resourceRule().with(parameterKey(), any())
-        return mapping().with(field(stringType(), any()).then(TraitNode.class));
+        return mapping("trait")
+                               .with(field(stringType(), any())
+                                                               .then(TraitNode.class));
     }
 
-    private Rule resourceType()
+    private Rule resourceTypes()
     {
         // TODO resourceRule().with(parameterKey(), any())
         return mapping().with(field(stringType(), any()).then(ResourceTypeNode.class));
     }
 
-    private Rule schemas()
-    {
-        return anyOf(array(schema()), schema());
-    }
-
-    private MappingRule schema()
-    {
-        return mapping().with(field(stringType(), stringType()));
-    }
+    // private Rule resourceType() {
+    // return mapping("resourceType")
+    // .with(field(template(), any()))
+    // .with(field(displayNameKey(), anyOf(template(), stringType())))
+    // .with(field(descriptionKey(), anyOf(template(), stringType())))
+    // .with(field(annotationKey(), any()))
+    // .with(field(anyMethod(), any()))
+    // .with(field(isKey(), array(anyOf(template(), stringType()))))
+    // .with(field(typeKey(), anyOf(template(), stringType())))
+    // .with(field(securedByKey(), array(anyOf(template(), stringType()))))
+    // .with(field(uriParametersKey(), any()))
+    // .with(field(resourceKey(), ref("resourceType")))
+    // ;
+    // return any();
+    // }
 
     private Rule resource()
     {
@@ -122,12 +125,29 @@ public class Raml10Grammar extends BaseGrammar
                                   .with(annotationField())
                                   .with(field(anyMethod(), method()))
                                   .with(isField())
-                                  .with(field(string("type"), stringType().then(ResourceTypeRefNode.class)))
+                                  .with(field(typeKey(), stringType().then(ResourceTypeRefNode.class)))
                                   .with(securedByField())
-                                  .with(field(string("uriParameters"), parameters()))
+                                  .with(field(uriParametersKey(), parameters()))
                                   .with(field(resourceKey(), ref("resource")))
                                   .then(ResourceNode.class);
     }
+
+    private StringValueRule displayNameKey()
+    {
+        return string("displayName");
+    }
+
+    private Rule schemas()
+    {
+        return anyOf(array(schema()), schema());
+    }
+
+    private Rule schema()
+    {
+        return mapping()
+                        .with(field(stringType(), stringType()));
+    }
+
 
     private Rule method()
     {
@@ -192,7 +212,7 @@ public class Raml10Grammar extends BaseGrammar
         return mapping()
                         .with(displayNameField())
                         .with(descriptionField())
-                        .with(field(string("type"), stringType()))
+                        .with(field(typeKey(), stringType()))
                         .with(field(string("required"), booleanType()))
                         .with(field(string("default"), any()))
                         .with(field(string("example"), stringType()));
@@ -202,7 +222,7 @@ public class Raml10Grammar extends BaseGrammar
     // Common fields between rules
     private KeyValueRule annotationField()
     {
-        return field(regex("\\(.+\\)"), any());
+        return field(annotationKey(), any());
     }
 
     private KeyValueRule securitySchemesField()
@@ -228,7 +248,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private KeyValueRule resourceTypesField()
     {
-        return field(string("resourceTypes"), resourceTypes());
+        return field(string("resourceTypes"), anyOf(array(resourceTypes()), resourceTypes()));
     }
 
     private KeyValueRule traitsField()
@@ -253,22 +273,22 @@ public class Raml10Grammar extends BaseGrammar
 
     private KeyValueRule descriptionField()
     {
-        return field(string("description"), stringType());
+        return field(descriptionKey(), stringType());
     }
 
     private KeyValueRule displayNameField()
     {
-        return field(string("displayName"), stringType());
+        return field(displayNameKey(), stringType());
     }
 
     private KeyValueRule securedByField()
     {
-        return field(string("securedBy"), array(stringType().then(SecurityRefNode.class)));
+        return field(securedByKey(), array(stringType().then(SecurityRefNode.class)));
     }
 
     private KeyValueRule isField()
     {
-        return field(string("is"), array(stringType().then(TraitRefNode.class)));
+        return field(isKey(), array(stringType().then(TraitRefNode.class)));
     }
 
     private RegexValueRule resourceKey()
@@ -279,6 +299,37 @@ public class Raml10Grammar extends BaseGrammar
     private StringValueRule usesKey()
     {
         return string("uses");
+    }
+
+
+    private StringValueRule uriParametersKey()
+    {
+        return string("uriParameters");
+    }
+
+    private StringValueRule securedByKey()
+    {
+        return string("securedBy");
+    }
+
+    private StringValueRule typeKey()
+    {
+        return string("type");
+    }
+
+    private StringValueRule isKey()
+    {
+        return string("is");
+    }
+
+    private RegexValueRule annotationKey()
+    {
+        return regex("\\(.+\\)");
+    }
+
+    private StringValueRule descriptionKey()
+    {
+        return string("description");
     }
 
     private AnyOfRule anyMethod()

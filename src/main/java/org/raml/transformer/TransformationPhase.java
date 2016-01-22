@@ -1,9 +1,10 @@
 /*
  *
  */
-package org.raml.phase;
+package org.raml.transformer;
 
 import org.raml.nodes.Node;
+import org.raml.phase.Phase;
 
 import java.util.Arrays;
 import java.util.List;

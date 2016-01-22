@@ -1,15 +1,14 @@
 /*
  *
  */
-package org.raml.phase.transformer;
+package org.raml.transformer;
 
 import org.raml.loader.ResourceLoader;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.impl.StringNodeImpl;
-import org.raml.nodes.snakeyaml.SYIncludeNode;
 import org.raml.nodes.snakeyaml.RamlNodeParser;
-import org.raml.phase.Transformer;
+import org.raml.nodes.snakeyaml.SYIncludeNode;
 import org.raml.utils.StreamUtils;
 
 import java.io.InputStream;

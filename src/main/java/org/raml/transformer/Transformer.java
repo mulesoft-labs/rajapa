@@ -1,7 +1,7 @@
 /*
  *
  */
-package org.raml.phase;
+package org.raml.transformer;
 
 import org.raml.nodes.Node;
 

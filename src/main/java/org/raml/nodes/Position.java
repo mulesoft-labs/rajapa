@@ -16,5 +16,5 @@ public interface Position
 
     String getResource();
 
-    String getSourceCode();
+    Position rightShift(int offset);
 }

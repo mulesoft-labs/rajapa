@@ -71,7 +71,6 @@ public abstract class BaseNode implements Node
             {
                 newNode.addChild(child);
             }
-            this.children.clear();
         }
     }
 
