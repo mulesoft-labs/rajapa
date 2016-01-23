@@ -17,7 +17,7 @@ public class IntegerTypeRule extends Rule
     @Nullable
     private Range<BigInteger> range;
 
-    public IntegerTypeRule(Range range)
+    public IntegerTypeRule(@Nullable Range<BigInteger> range)
     {
         this.range = range;
     }

@@ -7,6 +7,8 @@ import com.google.common.collect.Range;
 import org.raml.grammar.rule.*;
 import org.raml.nodes.impl.*;
 
+import java.math.BigInteger;
+
 public class Raml10Grammar extends BaseGrammar
 {
 
@@ -85,8 +87,8 @@ public class Raml10Grammar extends BaseGrammar
                         .with(displayNameField())
                         .with(descriptionField())
                         .with(annotationField())
-                        .with(field(string("header"), parameter()))
-                        .with(field(string("queryParameters"), parameter()))
+                        .with(field(string("headers"), parameters()))
+                        .with(field(string("queryParameters"), parameters()))
                         .with(field(string("responses"), responses()));
     }
 
@@ -396,6 +398,6 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule responseCodes()
     {
-        return range(Range.closed(100, 599));
+        return range(Range.closed(new BigInteger("100"), new BigInteger("599")));
     }
 }

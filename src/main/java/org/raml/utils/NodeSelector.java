@@ -6,11 +6,12 @@ package org.raml.utils;
 import org.raml.nodes.*;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class NodeSelector
-{
+public class NodeSelector {
 
     public static final String PARENT_EXPR = "..";
     public static final String WILDCARD_SELECTOR = "*";
@@ -27,83 +28,64 @@ public class NodeSelector
      * @return The result null if no match
      */
     @Nullable
-    public static Node selectFrom(String path, Node from)
-    {
-        final StringTokenizer pathTokens = new StringTokenizer(path, "/");
-        return selectFrom(pathTokens, from);
+    public static Node selectFrom(String path, Node from) {
+        final String[] tokens = path.split("/");
+        return selectFrom(Arrays.asList(tokens), from);
     }
 
     @Nullable
-    private static Node selectFrom(StringTokenizer pathTokens, Node from)
-    {
+    private static Node selectFrom(List<String> pathTokens, Node from) {
         Node currentNode = from;
-        while (pathTokens.hasMoreElements() && currentNode != null)
-        {
-            final String token = pathTokens.nextToken();
-            if (token.equals(WILDCARD_SELECTOR))
-            {
-                if (currentNode instanceof ArrayNode)
-                {
+        for (int i = 0; i < pathTokens.size() && currentNode != null; i++) {
+            String token = pathTokens.get(i);
+            if (token.equals(WILDCARD_SELECTOR)) {
+                if (currentNode instanceof ArrayNode) {
                     final List<Node> children = currentNode.getChildren();
-                    for (Node child : children)
-                    {
-                        final Node resolve = selectFrom(pathTokens, child);
-                        if (resolve != null)
-                        {
+                    final List<String> remainingTokens = pathTokens.subList(i + 1, pathTokens.size());
+                    for (Node child : children) {
+                        final Node resolve = selectFrom(remainingTokens, child);
+                        if (resolve != null) {
                             currentNode = resolve;
                             break;
                         }
                     }
+                    break;
                 }
                 // else we ignore the *
-            }
-            else if (token.equals(PARENT_EXPR))
-            {
+            } else if (token.equals(PARENT_EXPR)) {
                 currentNode = currentNode.getParent();
-            }
-            else if (currentNode instanceof ObjectNode)
-            {
+            } else if (currentNode instanceof ObjectNode) {
                 currentNode = findValueWithName(currentNode, token);
-            }
-            else if (currentNode instanceof ArrayNode)
-            {
+            } else if (currentNode instanceof ArrayNode) {
                 final int index = Integer.parseInt(token);
                 currentNode = findElementAtIndex(currentNode, index);
-            }
-            else
-            {
+            } else {
                 currentNode = null;
             }
         }
+
         return currentNode;
     }
 
     @Nullable
-    private static Node findElementAtIndex(final Node currentNode, int index)
-    {
+    private static Node findElementAtIndex(final Node currentNode, int index) {
         Node result = null;
         final List<Node> children = currentNode.getChildren();
-        if (children.size() > index)
-        {
+        if (children.size() > index) {
             result = children.get(index);
         }
         return result;
     }
 
     @Nullable
-    private static Node findValueWithName(final Node currentNode, String token)
-    {
+    private static Node findValueWithName(final Node currentNode, String token) {
         Node result = null;
         final List<Node> children = currentNode.getChildren();
-        for (Node child : children)
-        {
-            if (child instanceof KeyValueNode)
-            {
+        for (Node child : children) {
+            if (child instanceof KeyValueNode) {
                 final Node key = ((KeyValueNode) child).getKey();
-                if (key instanceof SimpleTypeNode)
-                {
-                    if (token.equals(String.valueOf(((SimpleTypeNode) key).getValue())))
-                    {
+                if (key instanceof SimpleTypeNode) {
+                    if (token.equals(String.valueOf(((SimpleTypeNode) key).getValue()))) {
                         result = ((KeyValueNode) child).getValue();
                         break;
                     }

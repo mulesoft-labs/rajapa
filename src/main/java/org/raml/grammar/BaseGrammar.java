@@ -47,7 +47,7 @@ public class BaseGrammar
         return new IntegerTypeRule(null);
     }
 
-    public IntegerTypeRule range(Range range)
+    public IntegerTypeRule range(Range<BigInteger> range)
     {
         return new IntegerTypeRule(range);
     }
