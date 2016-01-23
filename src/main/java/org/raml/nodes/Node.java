@@ -3,6 +3,7 @@
  */
 package org.raml.nodes;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -26,7 +27,15 @@ public interface Node
 
     void setSource(Node source);
 
-    <T extends Node> List<T> findChildrenWith(Class<T> nodeType);
+    /**
+     * Returns the list of descendants nodes that is instance of with the specified class
+     * @param nodeType The class that the node should implement
+     * @param <T> The type of the class
+     * @return The matching types
+     */
+    @Nonnull
+    <T extends Node> List<T> findDescendantsWith(Class<T> nodeType);
+
 
     @Nullable
     Node getSource();

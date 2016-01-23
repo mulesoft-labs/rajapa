@@ -40,7 +40,7 @@ public abstract class BaseNode implements Node
     }
 
     @Override
-    public <T extends Node> List<T> findChildrenWith(Class<T> nodeType)
+    public <T extends Node> List<T> findDescendantsWith(Class<T> nodeType)
     {
         final List<T> result = new ArrayList<>();
         final List<Node> children = getChildren();
@@ -50,7 +50,7 @@ public abstract class BaseNode implements Node
             {
                 result.add(nodeType.cast(child));
             }
-            result.addAll(child.findChildrenWith(nodeType));
+            result.addAll(child.findDescendantsWith(nodeType));
         }
         return result;
     }

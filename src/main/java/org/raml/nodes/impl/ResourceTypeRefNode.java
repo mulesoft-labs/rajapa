@@ -3,24 +3,41 @@
  */
 package org.raml.nodes.impl;
 
+import org.raml.grammar.Raml10Grammar;
+import org.raml.nodes.Node;
+import org.raml.utils.NodeSelector;
+
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class ResourceTypeRefNode extends AbstractReferenceNode
 {
+
+    private String name;
+
+    public ResourceTypeRefNode(String name)
+    {
+        this.name = name;
+    }
+
+    @Override
+    public String getRefName()
+    {
+        return name;
+    }
 
     @Override
     @Nullable
     public ResourceTypeNode getRefNode()
     {
-        final List<ResourceTypeNode> childrenWith = getRootNode().findChildrenWith(ResourceTypeNode.class);
-        for (ResourceTypeNode typeNode : childrenWith)
+        // We add the .. as the node selector selects the value and we want the key value pair
+        final Node resolve = NodeSelector.selectFrom(Raml10Grammar.RESOURCE_TYPES_KEY_NAME + "/*/" + getRefName() + "/..", getRelativeNode());
+        if (resolve instanceof ResourceTypeNode)
         {
-            if (typeNode.getName().equals(getRefName()))
-            {
-                return typeNode;
-            }
+            return (ResourceTypeNode) resolve;
         }
-        return null;
+        else
+        {
+            return null;
+        }
     }
 }
