@@ -36,7 +36,7 @@ public class Raml10Grammar extends BaseGrammar
                         .with(protocolsField())
                         .with(field(string("mediaType"), stringType()))
                         .with(securedByField())
-                        .with(field(resourceKey(), resource()))
+                        .with(field(resourceKey(), resourceValue()).then(ResourceNode.class))
                         .with(field(string("documentation"), documentations()))
                         .then(RamlDocumentNode.class);
     }
@@ -256,19 +256,18 @@ public class Raml10Grammar extends BaseGrammar
 
 
     // Resources
-    private Rule resource()
+    private Rule resourceValue()
     {
-        return mapping("resource")
-                                  .with(displayNameField())
-                                  .with(descriptionField())
-                                  .with(annotationField())
-                                  .with(field(anyMethod(), method()))
-                                  .with(isField())
-                                  .with(field(typeKey(), stringType().then(new NodeReferenceFactory(ResourceTypeRefNode.class))))
-                                  .with(securedByField())
-                                  .with(field(uriParametersKey(), parameters()))
-                                  .with(field(resourceKey(), ref("resource")))
-                                  .then(ResourceNode.class);
+        return mapping("resourceValue")
+                                       .with(displayNameField())
+                                       .with(descriptionField())
+                                       .with(annotationField())
+                                       .with(field(anyMethod(), methodValue()).then(MethodNode.class))
+                                       .with(isField())
+                                       .with(field(typeKey(), stringType().then(new NodeReferenceFactory(ResourceTypeRefNode.class))))
+                                       .with(securedByField())
+                                       .with(field(uriParametersKey(), parameters()))
+                                       .with(field(resourceKey(), ref("resourceValue")).then(ResourceNode.class));
     }
 
 
@@ -279,7 +278,7 @@ public class Raml10Grammar extends BaseGrammar
     }
 
     // Method
-    private Rule method()
+    private Rule methodValue()
     {
         // TODO query string
         return mapping()
@@ -293,8 +292,7 @@ public class Raml10Grammar extends BaseGrammar
                         .with(bodyField())
                         .with(protocolsField())
                         .with(isField())
-                        .with(securedByField())
-                        .then(MethodNode.class);
+                        .with(securedByField());
     }
 
 

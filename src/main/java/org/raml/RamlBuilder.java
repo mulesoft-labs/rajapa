@@ -46,14 +46,18 @@ public class RamlBuilder
         // The first phase expands the includes.
         final TransformationPhase firstPhase = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation), new StringTemplateExpressionTransformer());
         rootNode = firstPhase.apply(rootNode);
-        // Runs Schema. Applies the Raml rules and changes each node for a more specific.
+        // Overlays and extensions.
+
+        // Runs Schema. Applies the Raml rules and changes each node for a more specific. Annotations Library TypeSystem
         final GrammarPhase secondPhase = new GrammarPhase(new Raml10Grammar().raml());
         rootNode = secondPhase.apply(rootNode);
-        // Detect references and mark invalid references. Library resourceTypes and Traits. This point the nodes are good enough for Editors.
+        // Detect invalid references. Library resourceTypes and Traits. This point the nodes are good enough for Editors.
 
-        // Normalize resources and detects duplicated ones and more than one use of url parameters.
+        // Normalize resources and detects duplicated ones and more than one use of url parameters. ???
 
         // Applies resourceTypes and Traits Library
+
+        // Schema Types example validation
 
         return rootNode;
     }
