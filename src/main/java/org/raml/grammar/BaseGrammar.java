@@ -96,4 +96,15 @@ public class BaseGrammar
     {
         return anyOf(rule, new NullValueRule());
     }
+
+    public ConditionalRules when(String expr, ConditionalRule... cases)
+    {
+        return new ConditionalRules(expr, cases);
+    }
+
+    public ConditionalRule is(Rule rule)
+    {
+        return new ConditionalRule(rule);
+    }
+
 }

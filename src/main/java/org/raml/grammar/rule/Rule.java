@@ -5,6 +5,7 @@ package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class Rule
@@ -18,9 +19,9 @@ public abstract class Rule
 
     }
 
-    public abstract boolean matches(Node node);
+    public abstract boolean matches(@Nonnull Node node);
 
-    public abstract Node transform(Node node);
+    public abstract Node transform(@Nonnull Node node);
 
     public abstract String getDescription();
 
@@ -41,5 +42,6 @@ public abstract class Rule
         this.factory = factory;
         return this;
     }
+
 
 }

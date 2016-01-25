@@ -107,13 +107,98 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule types()
     {
-        // TODO implement types
-        return any();
+        return mapping()
+                        .with(field(stringType(), type()));
     }
 
     private Rule type()
     {
-        return any();
+        // TODO schema example examples missing
+        return mapping("type")
+                              .with(field(typeKey(), typeReference()))
+                              .with(displayNameField())
+                              .with(descriptionField())
+                              .with(annotationField())
+                              .with(
+                                      when("type",
+                                              is(objectTypeLiteral()) // todo what to do with inherited does not match object
+                                              .add(field(string("properties"), properties()))
+                                                                     .add(field(string("minProperties"), integerType()))
+                                                                     .add(field(string("maxProperties"), integerType()))
+                                                                     .add(field(string("additionalProperties"), anyOf(stringType(), ref("type"))))
+                                                                     .add(field(string("patternProperties"), properties()))
+                                                                     .add(field(string("discriminator"), stringType()))
+                                                                     .add(field(string("discriminatorValue"), stringType())),
+                                              is(arrayTypeLiteral())
+                                                                    .add(field(string("uniqueItems"), booleanType()))
+                                                                    .add(field(string("items"), any())) // todo review this don't get what it is
+                                                                    .add(field(string("minItems"), integerType()))
+                                                                    .add(field(string("maxItems"), integerType())),
+                                              is(stringTypeLiteral())
+                                                                     .add(field(string("pattern"), stringType()))
+                                                                     .add(field(string("minLength"), integerType()))
+                                                                     .add(field(string("maxLength"), integerType()))
+                                                                     .add(field(string("enum"), array(stringType()))),
+                                              is(numberTypeLiteral())
+                                                                     .add(field(string("minimum"), integerType()))
+                                                                     .add(field(string("maximum"), integerType()))
+                                                                     .add(field(string("format"), stringType()))
+                                                                     .add(field(string("multipleOf"), integerType()))
+                                                                     .add(field(string("enum"), array(integerType()))),
+                                              is(fileTypeLiteral())
+                                                                   .add(field(string("fileTypes"), any())) // todo finish
+                                                                   .add(field(string("minLength"), integerType()))
+                                                                   .add(field(string("maxLength"), integerType()))
+
+
+                                      )
+                              )
+
+        ;
+    }
+
+    private AnyOfRule typeReference()
+    {
+        return anyOf(objectTypeLiteral(),
+                arrayTypeLiteral(),
+                stringTypeLiteral(),
+                numberTypeLiteral(),
+                string("boolean"),
+                string("date"),
+                fileTypeLiteral(),
+                regex("[A-z]+|[A-z]+"),
+                stringType());
+    }
+
+    private StringValueRule fileTypeLiteral()
+    {
+        return string("file");
+    }
+
+    private Rule numberTypeLiteral()
+    {
+        return anyOf(string("number"), string("integer"));
+    }
+
+    private StringValueRule stringTypeLiteral()
+    {
+        return string("string");
+    }
+
+    private RegexValueRule arrayTypeLiteral()
+    {
+        return regex(".+\\[\\]");
+    }
+
+    private MappingRule properties()
+    {
+        return mapping()
+                        .with(field(stringType(), ref("type")));
+    }
+
+    private StringValueRule objectTypeLiteral()
+    {
+        return string("object");
     }
 
     // Traits
