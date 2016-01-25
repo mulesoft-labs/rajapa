@@ -29,7 +29,7 @@ public class Raml10Grammar extends BaseGrammar
                         .with(annotationTypesField())
                         .with(securitySchemesField())
                         .with(field(usesKey(), library()))
-                        .with(field(string("title"), stringType()))
+                        .with(titleField())
                         .with(field(string("version"), stringType()))
                         .with(field(string("baseUri"), stringType()))
                         .with(field(string("baseUriParameters"), parameters()))
@@ -50,9 +50,10 @@ public class Raml10Grammar extends BaseGrammar
     private Rule documentation()
     {
         return mapping()
-                        .with(field(string("title"), stringType()))
+                        .with(titleField())
                         .with(field(string("content"), stringType()));
     }
+
 
     // Security scheme
 
@@ -120,15 +121,16 @@ public class Raml10Grammar extends BaseGrammar
                               .with(descriptionField())
                               .with(annotationField())
                               .with(
-                                      when("type",
-                                              is(objectTypeLiteral()) // todo what to do with inherited does not match object
-                                              .add(field(string("properties"), properties()))
+                                      when("type", // todo what to do with inherited does not match object
+                                              is(objectTypeLiteral())
+                                                                     .add(field(string("properties"), properties()))
                                                                      .add(field(string("minProperties"), integerType()))
                                                                      .add(field(string("maxProperties"), integerType()))
                                                                      .add(field(string("additionalProperties"), anyOf(stringType(), ref("type"))))
                                                                      .add(field(string("patternProperties"), properties()))
-                                                                     .add(field(string("discriminator"), stringType()))
+                                                                     .add(field(string("discriminator"), anyOf(stringType(), booleanType())))
                                                                      .add(field(string("discriminatorValue"), stringType())),
+
                                               is(arrayTypeLiteral())
                                                                     .add(field(string("uniqueItems"), booleanType()))
                                                                     .add(field(string("items"), any())) // todo review this don't get what it is
@@ -420,6 +422,12 @@ public class Raml10Grammar extends BaseGrammar
     {
         return field(string("types"), types());
     }
+
+    private KeyValueRule titleField()
+    {
+        return field(string("title"), stringType());
+    }
+
 
     // Repeated keys
 
