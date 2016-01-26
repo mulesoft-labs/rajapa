@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import org.raml.nodes.impl.KeyValueNodeImpl;
+
 public interface Node
 {
 
@@ -43,4 +45,6 @@ public interface Node
     void replaceWith(Node newNode);
 
     void setChild(int idx, Node newNode);
+
+    void insertChild(int idx, Node newNode);
 }

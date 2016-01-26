@@ -1,0 +1,24 @@
+{
+    "title": "hola",
+    "resources": [
+        {
+            "relativeUri": "/top",
+            "methods": [
+                {
+                    "method": "get",
+                    "description": "some description"
+                }
+            ],
+            "resources": [
+                {
+                    "relativeUri": "/{id}",
+                    "methods": [
+                        {
+                            "method": "put"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

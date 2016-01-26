@@ -1,0 +1,14 @@
+{
+    "title": "hola",
+    "resources": [
+        {
+            "relativeUri": "/top",
+            "methods": [
+                {
+                    "method": "get",
+                    "description": "get something"
+                }
+            ]
+        }
+    ]
+}

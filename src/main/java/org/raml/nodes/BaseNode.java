@@ -82,6 +82,13 @@ public abstract class BaseNode implements Node
     }
 
     @Override
+    public void insertChild(int idx, Node newNode)
+    {
+        children.add(idx, newNode);
+        newNode.setParent(this);
+    }
+
+    @Override
     public void setParent(Node parent)
     {
         this.parent = parent;
