@@ -66,9 +66,17 @@
                     <strictCheck>true</strictCheck>
                 </configuration>
                 <executions>
+			<!-- TODO - should only be done in bamboo 
                     <execution>
                         <goals>
                             <goal>check</goal>
+                        </goals>
+                    </execution>
+-->
+                    <execution>
+			<phase>generate-sources</phase>
+                        <goals>
+                            <goal>format</goal>
                         </goals>
                     </execution>
                 </executions>
