@@ -16,12 +16,18 @@
 package org.raml.nodes.snakeyaml;
 
 import org.raml.nodes.FloatingNode;
+import org.raml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
 import java.math.BigDecimal;
 
 public class SYFloatingNode extends SYBaseRamlNode implements FloatingNode
 {
+    public SYFloatingNode(SYFloatingNode node)
+    {
+        super(node);
+    }
+
     public SYFloatingNode(ScalarNode yamlNode)
     {
         super(yamlNode);
@@ -32,5 +38,11 @@ public class SYFloatingNode extends SYBaseRamlNode implements FloatingNode
     {
         final String value = ((ScalarNode) getYamlNode()).getValue();
         return new BigDecimal(value);
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new SYFloatingNode(this);
     }
 }

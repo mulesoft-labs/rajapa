@@ -15,13 +15,16 @@
  */
 package org.raml.utils;
 
-import org.raml.nodes.*;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
+
+import org.raml.nodes.ArrayNode;
+import org.raml.nodes.KeyValueNode;
+import org.raml.nodes.Node;
+import org.raml.nodes.ObjectNode;
+import org.raml.nodes.SimpleTypeNode;
 
 public class NodeSelector
 {
@@ -33,7 +36,7 @@ public class NodeSelector
      * Resolves a path in the specified node. The path uses a very simple expression system like xpath where each element is separated by /.
      * <p><b>"name"</b> -> return the value of field with key that matches the specified name. <br/>
      * <b>..</b>        -> returns the parent <br/>
-     * <b>*</b>        -> wilde card selector <br/>
+     * <b>*</b>         -> wild card selector <br/>
      * <b>number</b>    -> returns the element at that index zero base index. The number should be bigger than zero</p><br/>
      *
      * @param path The path example schemas/foo

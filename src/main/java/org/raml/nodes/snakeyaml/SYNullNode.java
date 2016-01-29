@@ -20,6 +20,11 @@ import org.yaml.snakeyaml.nodes.Node;
 
 public class SYNullNode extends SYBaseRamlNode implements NullNode
 {
+    public SYNullNode(SYNullNode node)
+    {
+        super(node);
+    }
+
     public SYNullNode(Node yamlNode)
     {
         super(yamlNode);
@@ -29,5 +34,11 @@ public class SYNullNode extends SYBaseRamlNode implements NullNode
     public Object getValue()
     {
         return null;
+    }
+
+    @Override
+    public org.raml.nodes.Node copy()
+    {
+        return new SYNullNode(this);
     }
 }

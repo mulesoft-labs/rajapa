@@ -26,6 +26,19 @@ public abstract class BaseNode implements Node
     private Node parent;
     private List<Node> children = new ArrayList<>();
 
+    public BaseNode()
+    {
+    }
+
+    public BaseNode(BaseNode node)
+    {
+        this.source = node.source;
+        for (Node child : node.children)
+        {
+            addChild(child.copy());
+        }
+    }
+
     @Override
     public Node getParent()
     {
@@ -117,6 +130,5 @@ public abstract class BaseNode implements Node
     {
         return source;
     }
-
 
 }

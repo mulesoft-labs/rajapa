@@ -31,4 +31,9 @@ public class ErrorNode extends AbstractRamlNode
         return errorMessage;
     }
 
+    @Override
+    public Node copy()
+    {
+        return this;
+    }
 }

@@ -15,10 +15,16 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import org.raml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
 public class SYIncludeNode extends SYStringNode
 {
+
+    public SYIncludeNode(SYIncludeNode node)
+    {
+        super(node);
+    }
 
     public SYIncludeNode(ScalarNode scalarNode)
     {
@@ -29,5 +35,11 @@ public class SYIncludeNode extends SYStringNode
     {
         // TODO go up tree to get the whole path if there are other includes
         return getValue();
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new SYIncludeNode(this);
     }
 }

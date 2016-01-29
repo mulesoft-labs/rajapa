@@ -15,6 +15,7 @@
  */
 package org.raml.nodes.impl;
 
+import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
 
 public class StringNodeImpl extends AbstractRamlNode implements StringNode
@@ -27,9 +28,21 @@ public class StringNodeImpl extends AbstractRamlNode implements StringNode
         this.value = value;
     }
 
+    public StringNodeImpl(StringNodeImpl node)
+    {
+        super(node);
+        this.value = node.value;
+    }
+
     @Override
     public String getValue()
     {
         return value;
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new StringNodeImpl(this);
     }
 }

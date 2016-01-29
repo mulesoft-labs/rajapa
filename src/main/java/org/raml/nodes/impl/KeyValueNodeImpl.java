@@ -25,15 +25,19 @@ import javax.annotation.Nonnull;
 public class KeyValueNodeImpl extends BaseNode implements KeyValueNode
 {
 
+    public KeyValueNodeImpl()
+    {
+    }
+
     public KeyValueNodeImpl(@Nonnull Node keyNode, @Nonnull Node valueNode)
     {
         addChild(keyNode);
         addChild(valueNode);
     }
 
-    public KeyValueNodeImpl()
+    public KeyValueNodeImpl(KeyValueNodeImpl node)
     {
-
+        super(node);
     }
 
     @Override
@@ -56,6 +60,12 @@ public class KeyValueNodeImpl extends BaseNode implements KeyValueNode
             throw new IllegalStateException();
         }
         super.addChild(node);
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new KeyValueNodeImpl(this);
     }
 
     @Override

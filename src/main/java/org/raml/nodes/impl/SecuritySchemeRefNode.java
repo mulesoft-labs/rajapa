@@ -28,6 +28,12 @@ public class SecuritySchemeRefNode extends AbstractReferenceNode
         this.name = name;
     }
 
+    public SecuritySchemeRefNode(SecuritySchemeRefNode node)
+    {
+        super(node);
+        this.name = node.name;
+    }
+
     @Override
     public String getRefName()
     {
@@ -47,5 +53,11 @@ public class SecuritySchemeRefNode extends AbstractReferenceNode
         {
             return null;
         }
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new SecuritySchemeRefNode(this);
     }
 }

@@ -15,14 +15,30 @@
  */
 package org.raml.nodes.impl;
 
+import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
 
 public class TraitNode extends KeyValueNodeImpl
 {
 
+    public TraitNode()
+    {
+    }
+
+    public TraitNode(TraitNode node)
+    {
+        super(node);
+    }
+
     public String getName()
     {
         final StringNode key = (StringNode) getKey();
         return key.getValue();
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new TraitNode(this);
     }
 }

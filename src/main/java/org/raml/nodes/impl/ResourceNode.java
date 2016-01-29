@@ -21,6 +21,15 @@ import org.raml.nodes.StringNode;
 public class ResourceNode extends KeyValueNodeImpl
 {
 
+    public ResourceNode()
+    {
+    }
+
+    public ResourceNode(ResourceNode node)
+    {
+        super(node);
+    }
+
     public String getRelativeUri()
     {
         Node key = getKey();
@@ -32,5 +41,11 @@ public class ResourceNode extends KeyValueNodeImpl
         {
             throw new IllegalStateException("Key must be a string but was a " + key.getClass());
         }
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new ResourceNode(this);
     }
 }

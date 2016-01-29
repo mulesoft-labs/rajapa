@@ -15,6 +15,7 @@
  */
 package org.raml.nodes.impl;
 
+import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
 
 public class SecuritySchemeNode extends KeyValueNodeImpl
@@ -24,9 +25,20 @@ public class SecuritySchemeNode extends KeyValueNodeImpl
     {
     }
 
+    public SecuritySchemeNode(SecuritySchemeNode node)
+    {
+        super(node);
+    }
+
     public String getName()
     {
         final StringNode key = (StringNode) getKey();
         return key.getValue();
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new SecuritySchemeNode(this);
     }
 }

@@ -27,6 +27,11 @@ public class StringTemplateNode extends StringNodeImpl implements ExecutableNode
         super(value);
     }
 
+    public StringTemplateNode(StringTemplateNode node)
+    {
+        super(node);
+    }
+
     @Override
     public void addChild(Node node)
     {
@@ -61,5 +66,11 @@ public class StringTemplateNode extends StringNodeImpl implements ExecutableNode
             }
         }
         return new StringNodeImpl(content.toString());
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new StringTemplateNode(this);
     }
 }

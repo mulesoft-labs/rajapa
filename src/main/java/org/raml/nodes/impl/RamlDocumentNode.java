@@ -15,8 +15,24 @@
  */
 package org.raml.nodes.impl;
 
+import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
 
 public class RamlDocumentNode extends AbstractRamlNode implements ObjectNode
 {
+
+    public RamlDocumentNode()
+    {
+    }
+
+    public RamlDocumentNode(RamlDocumentNode node)
+    {
+        super(node);
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new RamlDocumentNode(this);
+    }
 }

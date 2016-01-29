@@ -16,13 +16,25 @@
 package org.raml.nodes.snakeyaml;
 
 import org.raml.nodes.ArrayNode;
+import org.raml.nodes.Node;
+import org.yaml.snakeyaml.nodes.SequenceNode;
 
 public class SYArrayNode extends SYBaseRamlNode implements ArrayNode
 {
 
-    public SYArrayNode(org.yaml.snakeyaml.nodes.SequenceNode sequenceNode)
+    public SYArrayNode(SYArrayNode node)
+    {
+        super(node);
+    }
+
+    public SYArrayNode(SequenceNode sequenceNode)
     {
         super(sequenceNode);
     }
 
+    @Override
+    public Node copy()
+    {
+        return new SYArrayNode(this);
+    }
 }

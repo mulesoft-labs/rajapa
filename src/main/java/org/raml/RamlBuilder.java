@@ -20,6 +20,7 @@ import org.raml.grammar.Raml10Grammar;
 import org.raml.loader.*;
 import org.raml.nodes.Node;
 import org.raml.nodes.snakeyaml.RamlNodeParser;
+import org.raml.transformer.ResourceTypesTraitsTransformer;
 import org.raml.transformer.StringTemplateExpressionTransformer;
 import org.raml.transformer.TransformationPhase;
 import org.raml.transformer.IncludeResolver;
@@ -68,6 +69,8 @@ public class RamlBuilder
         // Normalize resources and detects duplicated ones and more than one use of url parameters. ???
 
         // Applies resourceTypes and Traits Library
+        TransformationPhase thirdPhase = new TransformationPhase(new ResourceTypesTraitsTransformer());
+        rootNode = thirdPhase.apply(rootNode);
 
         // Schema Types example validation
 

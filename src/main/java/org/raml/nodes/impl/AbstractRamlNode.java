@@ -23,6 +23,17 @@ import javax.annotation.Nullable;
 public abstract class AbstractRamlNode extends BaseNode
 {
 
+    public AbstractRamlNode()
+    {
+    }
+
+    public AbstractRamlNode(AbstractRamlNode node)
+    {
+        super(node);
+        this.startPosition = node.startPosition;
+        this.endPosition = node.endPosition;
+    }
+
     @Nullable
     private Position endPosition;
 

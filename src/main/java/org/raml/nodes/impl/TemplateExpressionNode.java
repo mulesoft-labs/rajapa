@@ -33,6 +33,11 @@ public class TemplateExpressionNode extends StringNodeImpl implements Executable
         super(value);
     }
 
+    public TemplateExpressionNode(TemplateExpressionNode node)
+    {
+        super(node);
+    }
+
     @Nullable
     public String getVariableName()
     {
@@ -85,5 +90,11 @@ public class TemplateExpressionNode extends StringNodeImpl implements Executable
     {
         final String value = getValue();
         return new StringTokenizer(value, "|");
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new TemplateExpressionNode(this);
     }
 }

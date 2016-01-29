@@ -19,10 +19,16 @@ import org.raml.nodes.BaseNode;
 import org.raml.nodes.Position;
 import org.yaml.snakeyaml.nodes.Node;
 
-public class SYBaseRamlNode extends BaseNode
+public abstract class SYBaseRamlNode extends BaseNode
 {
 
     private Node yamlNode;
+
+    public SYBaseRamlNode(SYBaseRamlNode node)
+    {
+        super(node);
+        this.yamlNode = node.yamlNode;
+    }
 
     public SYBaseRamlNode(Node yamlNode)
     {

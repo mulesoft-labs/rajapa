@@ -31,6 +31,12 @@ public class ResourceTypeRefNode extends AbstractReferenceNode
         this.name = name;
     }
 
+    public ResourceTypeRefNode(ResourceTypeRefNode node)
+    {
+        super(node);
+        this.name = node.name;
+    }
+
     @Override
     public String getRefName()
     {
@@ -51,5 +57,11 @@ public class ResourceTypeRefNode extends AbstractReferenceNode
         {
             return null;
         }
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new ResourceTypeRefNode(this);
     }
 }

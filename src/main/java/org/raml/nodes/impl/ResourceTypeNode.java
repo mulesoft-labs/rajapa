@@ -15,6 +15,7 @@
  */
 package org.raml.nodes.impl;
 
+import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
 
 public class ResourceTypeNode extends KeyValueNodeImpl
@@ -24,10 +25,20 @@ public class ResourceTypeNode extends KeyValueNodeImpl
     {
     }
 
+    public ResourceTypeNode(ResourceTypeNode node)
+    {
+        super(node);
+    }
+
     public String getName()
     {
         final StringNode key = (StringNode) getKey();
         return key.getValue();
     }
 
+    @Override
+    public Node copy()
+    {
+        return new ResourceTypeNode(this);
+    }
 }

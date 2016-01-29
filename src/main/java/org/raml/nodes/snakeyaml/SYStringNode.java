@@ -15,11 +15,17 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
 public class SYStringNode extends SYBaseRamlNode implements StringNode
 {
+
+    public SYStringNode(SYStringNode node)
+    {
+        super(node);
+    }
 
     public SYStringNode(ScalarNode scalarNode)
     {
@@ -29,5 +35,17 @@ public class SYStringNode extends SYBaseRamlNode implements StringNode
     public String getValue()
     {
         return ((ScalarNode) getYamlNode()).getValue();
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new SYStringNode(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return getValue();
     }
 }

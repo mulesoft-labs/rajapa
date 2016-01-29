@@ -31,6 +31,12 @@ public class LibraryRefNode extends AbstractReferenceNode
         this.name = name;
     }
 
+    public LibraryRefNode(LibraryRefNode node)
+    {
+        super(node);
+        this.name = node.name;
+    }
+
     @Override
     public String getRefName()
     {
@@ -42,5 +48,11 @@ public class LibraryRefNode extends AbstractReferenceNode
     public Node getRefNode()
     {
         return NodeSelector.selectFrom(Raml10Grammar.USES_KEY_NAME + "/" + name, getRelativeNode());
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new LibraryRefNode(this);
     }
 }

@@ -15,11 +15,10 @@
  */
 package org.raml.nodes;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
-import org.raml.nodes.impl.KeyValueNodeImpl;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public interface Node
 {
@@ -43,8 +42,9 @@ public interface Node
 
     /**
      * Returns the list of descendants nodes that is instance of with the specified class
+     *
      * @param nodeType The class that the node should implement
-     * @param <T> The type of the class
+     * @param <T>      The type of the class
      * @return The matching types
      */
     @Nonnull
@@ -59,4 +59,6 @@ public interface Node
     void setChild(int idx, Node newNode);
 
     void insertChild(int idx, Node newNode);
+
+    Node copy();
 }

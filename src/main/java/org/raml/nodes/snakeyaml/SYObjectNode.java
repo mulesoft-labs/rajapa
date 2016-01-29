@@ -15,12 +15,26 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
+import org.yaml.snakeyaml.nodes.MappingNode;
 
 public class SYObjectNode extends SYBaseRamlNode implements ObjectNode
 {
-    public SYObjectNode(org.yaml.snakeyaml.nodes.MappingNode mappingNode)
+
+    public SYObjectNode(SYObjectNode node)
+    {
+        super(node);
+    }
+
+    public SYObjectNode(MappingNode mappingNode)
     {
         super(mappingNode);
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new SYObjectNode(this);
     }
 }

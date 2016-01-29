@@ -26,11 +26,13 @@ import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
+import org.raml.nodes.ReferenceNode;
 import org.raml.nodes.StringNode;
 import org.raml.nodes.impl.KeyValueNodeImpl;
 import org.raml.nodes.impl.MethodNode;
 import org.raml.nodes.impl.ResourceNode;
 import org.raml.nodes.impl.StringNodeImpl;
+import org.raml.nodes.snakeyaml.SYArrayNode;
 import org.raml.nodes.snakeyaml.SYNullNode;
 import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.yaml.snakeyaml.nodes.MappingNode;
@@ -54,6 +56,7 @@ public class TckEmitter
         int depth = 0;
         StringBuilder dump = new StringBuilder();
         dumpObject((ObjectNode) raml, dump, depth);
+        removeLastSeparator(dump);
         return dump.toString();
     }
 
@@ -62,6 +65,14 @@ public class TckEmitter
         if (node instanceof ObjectNode)
         {
             dumpObject((ObjectNode) node, dump, depth);
+        }
+        else if (node instanceof SYArrayNode)
+        {
+            dumpArray((SYArrayNode) node, dump, depth);
+        }
+        else if (node instanceof ReferenceNode)
+        {
+            dumpReference((ReferenceNode) node, dump, depth);
         }
         else if (node instanceof StringNode)
         {
@@ -75,6 +86,21 @@ public class TckEmitter
         {
             throw new RuntimeException("Unsupported node type: " + node.getClass().getSimpleName());
         }
+    }
+
+    private void dumpReference(ReferenceNode node, StringBuilder dump, int depth)
+    {
+        dump.append(sanitizeScalarValue(node.getRefName()));
+    }
+
+    private void dumpArray(SYArrayNode arrayNode, StringBuilder dump, int depth)
+    {
+        dump.append(START_ARRAY);
+        for (Node node : arrayNode.getChildren())
+        {
+            dumpNode(node, dump, depth + 1);
+        }
+        dump.append(END_ARRAY).append(COMMA_SEP);
     }
 
     private void dumpNullNode(StringBuilder dump)
@@ -119,7 +145,7 @@ public class TckEmitter
 
 
         removeLastSeparator(dump);
-        dump.append(addNewline(dump) + indent(depth) + END_MAP + NEWLINE);
+        dump.append(addNewline(dump) + indent(depth) + END_MAP + COMMA_SEP);
     }
 
     private void dumpCustomArrayIfPresent(StringBuilder dump, int depth, List<KeyValueNode> keyValueNodes, String key, String innerKey)
@@ -139,7 +165,7 @@ public class TckEmitter
                 copy.insertChild(0, new KeyValueNodeImpl(new StringNodeImpl(innerKey), node.getKey()));
                 dumpObject((ObjectNode) copy, dump, depth + 1);
             }
-
+            removeLastSeparator(dump);
             dump.append(addNewline(dump) + indent(depth) + END_ARRAY + COMMA_SEP);
         }
     }

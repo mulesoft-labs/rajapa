@@ -15,6 +15,23 @@
  */
 package org.raml.nodes.impl;
 
+import org.raml.nodes.Node;
+
 public class MethodNode extends KeyValueNodeImpl
 {
+
+    public MethodNode()
+    {
+    }
+
+    public MethodNode(MethodNode node)
+    {
+        super(node);
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new MethodNode(this);
+    }
 }
