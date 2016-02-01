@@ -34,10 +34,13 @@ import org.raml.nodes.impl.ResourceTypeRefNode;
 import org.raml.nodes.impl.TraitNode;
 import org.raml.nodes.impl.TraitRefNode;
 import org.raml.utils.NodeSelector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ResourceTypesTraitsTransformer implements Transformer
 {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private Set<ResourceNode> mergedResources = new HashSet<>();
 
     @Override
@@ -59,7 +62,7 @@ public class ResourceTypesTraitsTransformer implements Transformer
             List<TraitRefNode> traitRefs = findTraitReferences(methodNode);
             for (TraitRefNode traitRef : traitRefs)
             {
-                System.out.println("applying trait = " + traitRef.getRefName());
+                logger.info("applying trait '{}' to '{}.{}'", traitRef.getRefName(), resourceNode.getRelativeUri(), methodNode.getName());
                 applyTrait(methodNode, traitRef);
             }
         }

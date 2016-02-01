@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 public class FileResourceLoader implements ResourceLoader
 {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private File parentPath;
 
     public FileResourceLoader(String path)
@@ -44,10 +44,7 @@ public class FileResourceLoader implements ResourceLoader
     {
         File includedFile = new File(parentPath, resourceName);
         FileInputStream inputStream = null;
-        if (logger.isDebugEnabled())
-        {
-            logger.debug(String.format("Looking for resource: %s on directory: %s...", resourceName, parentPath));
-        }
+        logger.debug("Looking for resource: {} on directory: {}...", resourceName, parentPath);
         try
         {
             return new FileInputStream(includedFile);

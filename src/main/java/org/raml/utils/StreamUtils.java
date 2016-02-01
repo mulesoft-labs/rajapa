@@ -100,7 +100,7 @@ public class StreamUtils
 
         if (bomSize > 0)
         {
-            LOGGER.debug(String.format("Trimming %s-byte BOM\n", bomSize));
+            LOGGER.debug("Trimming {}-byte BOM", bomSize);
             int trimmedSize = content.length - bomSize;
             byte[] trimmedArray = new byte[trimmedSize];
             System.arraycopy(content, bomSize, trimmedArray, 0, trimmedSize);
@@ -117,12 +117,12 @@ public class StreamUtils
         String encoding = detector.getDetectedCharset();
         if (encoding != null)
         {
-            LOGGER.debug(String.format("Detected encoding: %s\n", encoding));
+            LOGGER.debug("Detected encoding: {}", encoding);
         }
         else
         {
             encoding = getDefaultEncoding();
-            LOGGER.debug(String.format("No encoding detected, using default: %s\n", encoding));
+            LOGGER.debug("No encoding detected, using default: {}", encoding);
         }
         detector.reset();
         return encoding;
