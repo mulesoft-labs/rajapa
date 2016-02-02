@@ -24,6 +24,7 @@ import com.flipkart.zjsonpatch.JsonDiff;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -104,20 +105,38 @@ public class TckTestCase
     {
         final URI baseFolder = TckTestCase.class.getResource("").toURI();
         final File testFolder = new File(baseFolder);
-        final File[] scenarios = testFolder.listFiles();
         List<Object[]> result = new ArrayList<>();
+        addScenarios(testFolder.listFiles(), result, "output.json", "");
+        return result;
+    }
+
+    private static void addScenarios(File[] scenarios, List<Object[]> result, String outputFileName, String parentScenario)
+    {
         for (File scenario : scenarios)
         {
             if (scenario.isDirectory())
             {
-                result.add(new Object[] {
-                                         new File(scenario, "input.raml"),
-                                         new File(scenario, "output.json"),
-                                         scenario.getName()
+                String scenarioName = parentScenario + scenario.getName();
+                File input = new File(scenario, "input.raml");
+                File output = new File(scenario, outputFileName);
+                if (input.isFile() && output.isFile())
+                {
+                    result.add(new Object[] {input, output, scenarioName});
+                }
+                File[] subdirs = scenario.listFiles(new FilenameFilter()
+                {
+                    @Override
+                    public boolean accept(File dir, String name)
+                    {
+                        return new File(dir, name).isDirectory();
+                    }
                 });
+                if (subdirs != null && subdirs.length > 0)
+                {
+                    addScenarios(subdirs, result, outputFileName, scenarioName + "/");
+                }
             }
         }
-        return result;
     }
 
 }

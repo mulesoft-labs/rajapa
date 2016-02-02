@@ -21,4 +21,6 @@ public interface KeyValueNode extends Node
     Node getKey();
 
     Node getValue();
+
+    void setValue(Node valueNode);
 }

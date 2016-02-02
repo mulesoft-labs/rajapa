@@ -100,6 +100,7 @@ public class TckEmitter
         {
             dumpNode(node, dump, depth + 1);
         }
+        removeLastSeparator(dump);
         dump.append(END_ARRAY).append(COMMA_SEP);
     }
 

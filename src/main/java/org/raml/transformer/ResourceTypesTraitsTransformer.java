@@ -33,6 +33,9 @@ import org.raml.nodes.impl.ResourceNode;
 import org.raml.nodes.impl.ResourceTypeRefNode;
 import org.raml.nodes.impl.TraitNode;
 import org.raml.nodes.impl.TraitRefNode;
+import org.raml.nodes.snakeyaml.SYBaseRamlNode;
+import org.raml.nodes.snakeyaml.SYNullNode;
+import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.raml.utils.NodeSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,23 +57,30 @@ public class ResourceTypesTraitsTransformer implements Transformer
     public Node transform(Node node)
     {
         ResourceNode resourceNode = findResourceNode((ReferenceNode) node);
+        if (mergedResources.contains(resourceNode))
+        {
+            return node;
+        }
         List<MethodNode> methodNodes = findMethodNodes(resourceNode);
+        List<TraitRefNode> resourceTraitRefs = findTraitReferences(resourceNode);
 
-        // apply method traits
+        // apply method and resource traits
         for (MethodNode methodNode : methodNodes)
         {
             List<TraitRefNode> traitRefs = findTraitReferences(methodNode);
+            traitRefs.addAll(resourceTraitRefs);
             for (TraitRefNode traitRef : traitRefs)
             {
-                logger.info("applying trait '{}' to '{}.{}'", traitRef.getRefName(), resourceNode.getRelativeUri(), methodNode.getName());
+                String traitLevel = resourceTraitRefs.contains(traitRef) ? "resource" : "method";
+                logger.info("applying {} level trait '{}' to '{}.{}'", traitLevel, traitRef.getRefName(), resourceNode.getRelativeUri(), methodNode.getName());
                 applyTrait(methodNode, traitRef);
             }
         }
 
-        // TODO:
-        // apply resource traits
+        // TODO
         // apply resource type
 
+        mergedResources.add(resourceNode);
         return node;
     }
 
@@ -85,7 +95,18 @@ public class ResourceTypesTraitsTransformer implements Transformer
         // TODO resolve parameters
         TraitNode copy = (TraitNode) refNode.copy();
 
+        replaceNullValueWithObject(methodNode);
         merge(methodNode.getValue(), copy.getValue());
+    }
+
+    private void replaceNullValueWithObject(KeyValueNode keyValueNode)
+    {
+        Node valueNode = keyValueNode.getValue();
+        if (valueNode instanceof SYNullNode)
+        {
+            valueNode = new SYObjectNode((SYBaseRamlNode) valueNode);
+            keyValueNode.setValue(valueNode);
+        }
     }
 
     private List<TraitRefNode> findTraitReferences(KeyValueNode keyValueNode)

@@ -502,7 +502,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule protocols()
     {
-        return array(anyOf(string("http"), string("https")));
+        return array(anyOf(string("HTTP"), string("HTTPS")));
     }
 
     private Rule responseCodes()

@@ -32,6 +32,11 @@ public class SYObjectNode extends SYBaseRamlNode implements ObjectNode
         super(mappingNode);
     }
 
+    public SYObjectNode(SYBaseRamlNode baseRamlNode)
+    {
+        super(baseRamlNode);
+    }
+
     @Override
     public Node copy()
     {

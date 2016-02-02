@@ -2,13 +2,6 @@
     "title": "Example API",
     "version": "v1",
     "traits": {
-        "paged": {
-            "headers": {
-                "page": {
-                    "type": "integer"
-                }
-            }
-        },
         "secured": {
             "usage": "Apply this to any method that needs to be secured",
             "description": "Some requests require authentication.",
@@ -24,16 +17,12 @@
     "resources": [
         {
             "relativeUri": "/users",
-            "is": ["paged"],
+            "is": ["secured"],
             "methods": [
                 {
                     "method": "get",
-                    "is": ["secured"],
                     "description": "Some requests require authentication.",
                     "headers": {
-                        "page": {
-                            "type": "integer"
-                        },
                         "access_token": {
                             "description": "Access Token",
                             "example": "5757gh76",

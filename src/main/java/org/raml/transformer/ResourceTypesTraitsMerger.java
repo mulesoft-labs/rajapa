@@ -20,36 +20,67 @@ package org.raml.transformer;
 
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.snakeyaml.SYArrayNode;
+import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.raml.utils.NodeSelector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ResourceTypesTraitsMerger
 {
 
+    private static final Logger logger = LoggerFactory.getLogger(ResourceTypesTraitsMerger.class);
+
     static void merge(Node baseNode, Node copyNode)
     {
-        if (baseNode == null || copyNode == null)
+        if (baseNode instanceof SYObjectNode && copyNode instanceof SYObjectNode)
         {
-            throw new IllegalArgumentException();
+            merge((SYObjectNode) baseNode, (SYObjectNode) copyNode);
         }
+        else if (baseNode instanceof SYArrayNode && copyNode instanceof SYArrayNode)
+        {
+            merge((SYArrayNode) baseNode, (SYArrayNode) copyNode);
+        }
+        else
+        {
+            throw new RuntimeException(String.format("Merging not supported for nodes of type %s and %s",
+                    baseNode.getClass().getSimpleName(), copyNode.getClass().getSimpleName()));
+        }
+    }
 
+    static void merge(SYArrayNode baseNode, SYArrayNode copyNode)
+    {
         for (Node child : copyNode.getChildren())
         {
-            if (child instanceof KeyValueNode)
+            baseNode.addChild(child);
+        }
+    }
+
+    static void merge(SYObjectNode baseNode, SYObjectNode copyNode)
+    {
+        for (Node child : copyNode.getChildren())
+        {
+            if (!(child instanceof KeyValueNode))
             {
-                if (shouldIgnoreKey((KeyValueNode) child))
-                {
-                    continue;
-                }
-                String key = ((KeyValueNode) child).getKey().toString();
-                Node node = NodeSelector.selectFrom(key, baseNode);
-                if (node == null)
-                {
-                    baseNode.addChild(child);
-                }
-                else
-                {
-                    merge(node, child);
-                }
+                throw new RuntimeException("only expecting KeyValueNode");
+            }
+
+            String key = ((KeyValueNode) child).getKey().toString();
+            if (shouldIgnoreKey((KeyValueNode) child))
+            {
+                logger.info("Ignoring key '{}'", key);
+                continue;
+            }
+            Node node = NodeSelector.selectFrom(key, baseNode);
+            if (node == null)
+            {
+                logger.info("Adding key '{}'", key);
+                baseNode.addChild(child);
+            }
+            else
+            {
+                logger.info("Merging values '{}' and '{}'", node.getParent(), child);
+                merge(node, ((KeyValueNode) child).getValue());
             }
         }
     }

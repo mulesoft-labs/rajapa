@@ -2,10 +2,6 @@
 title: Example API
 version: v1
 traits:
-  paged:
-    headers:
-      page:
-        type: integer
   secured:
     usage: Apply this to any method that needs to be secured
     description: Some requests require authentication.
@@ -15,6 +11,5 @@ traits:
         example: 5757gh76
         required: true
 /users:
-  is: [paged]
+  is: [ secured ]
   get:
-    is: [ secured ]

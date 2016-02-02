@@ -87,4 +87,17 @@ public class KeyValueNodeImpl extends BaseNode implements KeyValueNode
         }
         return getChildren().get(1);
     }
+
+    @Override
+    public void setValue(Node valueNode)
+    {
+        setChild(1, valueNode);
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("{%s: %s}", getKey(), getValue());
+    }
+
 }
