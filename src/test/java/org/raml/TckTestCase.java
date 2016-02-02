@@ -18,6 +18,10 @@ package org.raml;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flipkart.zjsonpatch.JsonDiff;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,7 +32,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.text.IsEqualIgnoringWhiteSpace;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,9 +72,30 @@ public class TckTestCase
         String expected = IOUtils.toString(new FileInputStream(this.expected));
         System.out.println("dump = \n" + dump);
 
-        // TODO use json comparison
-        Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(expected));
+        Assert.assertTrue(jsonEquals(dump, expected));
 
+    }
+
+    private boolean jsonEquals(String produced, String expected)
+    {
+        ObjectMapper mapper = new ObjectMapper();
+        try
+        {
+            JsonNode beforeNode = mapper.readTree(expected);
+            JsonNode afterNode = mapper.readTree(produced);
+            JsonNode patch = JsonDiff.asJson(beforeNode, afterNode);
+            String diffs = patch.toString();
+            if ("[]".equals(diffs))
+            {
+                return true;
+            }
+            System.out.println("json diff: " + diffs);
+            return false;
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
 
