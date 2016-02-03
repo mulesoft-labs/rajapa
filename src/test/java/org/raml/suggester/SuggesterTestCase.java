@@ -13,18 +13,21 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml;
-
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+package org.raml.suggester;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.flipkart.zjsonpatch.JsonDiff;
+import org.apache.commons.io.IOUtils;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.raml.RamlSuggester;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -32,49 +35,35 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.raml.emitter.tck.TckEmitter;
-import org.raml.nodes.Node;
-
 @RunWith(Parameterized.class)
-public class TckTestCase
+public class SuggesterTestCase
 {
 
-
+    public static final String CURSOR_KEYWORD = "<cursor>";
     private File input;
     private File expected;
-    private String name;
 
-    public TckTestCase(File input, File expected, String name)
+
+    public SuggesterTestCase(File input, File output, String name)
     {
         this.input = input;
-        this.expected = expected;
-        this.name = name;
+        this.expected = output;
     }
 
+
     @Test
-    public void runTest() throws IOException
+    public void verifySuggestion() throws IOException
     {
-        if (!expected.exists())
-        {
-            return;
-        }
-
-        final RamlBuilder builder = new RamlBuilder();
-        final Node raml = builder.build(input);
-        assertThat(raml, notNullValue());
-        String dump = new TckEmitter().dump(raml);
-
-
-        String expected = IOUtils.toString(new FileInputStream(this.expected));
+        final RamlSuggester ramlSuggester = new RamlSuggester();
+        final String content = IOUtils.toString(new FileInputStream(input), "UTF-8");
+        final int offset = content.indexOf(CURSOR_KEYWORD);
+        final String document = content.substring(0, offset) + content.substring(offset + CURSOR_KEYWORD.length());
+        final List<Suggestion> suggestions = ramlSuggester.suggestions(document, offset);
+        final ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        final String dump = ow.writeValueAsString(suggestions);
+        final String expected = IOUtils.toString(new FileInputStream(this.expected));
         System.out.println("dump = \n" + dump);
-
         Assert.assertTrue(jsonEquals(dump, expected));
-
     }
 
     private boolean jsonEquals(String produced, String expected)
@@ -99,44 +88,24 @@ public class TckTestCase
         }
     }
 
-
     @Parameterized.Parameters(name = "{2}")
     public static Collection<Object[]> data() throws URISyntaxException
     {
-        final URI baseFolder = TckTestCase.class.getResource("").toURI();
+        final URI baseFolder = SuggesterTestCase.class.getResource("").toURI();
         final File testFolder = new File(baseFolder);
+        final File[] scenarios = testFolder.listFiles();
         List<Object[]> result = new ArrayList<>();
-        addScenarios(testFolder.listFiles(), result, "output.json", "");
-        return result;
-    }
-
-    private static void addScenarios(File[] scenarios, List<Object[]> result, String outputFileName, String parentScenario)
-    {
         for (File scenario : scenarios)
         {
             if (scenario.isDirectory())
             {
-                String scenarioName = parentScenario + scenario.getName();
-                File input = new File(scenario, "input.raml");
-                File output = new File(scenario, outputFileName);
-                if (input.isFile() && output.isFile())
-                {
-                    result.add(new Object[] {input, output, scenarioName});
-                }
-                File[] subdirs = scenario.listFiles(new FilenameFilter()
-                {
-                    @Override
-                    public boolean accept(File dir, String name)
-                    {
-                        return new File(dir, name).isDirectory();
-                    }
+                result.add(new Object[] {
+                                         new File(scenario, "input.raml"),
+                                         new File(scenario, "output.json"),
+                                         scenario.getName()
                 });
-                if (subdirs != null && subdirs.length > 0)
-                {
-                    addScenarios(subdirs, result, outputFileName, scenarioName + "/");
-                }
             }
         }
+        return result;
     }
-
 }

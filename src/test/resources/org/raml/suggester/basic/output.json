@@ -1,0 +1,65 @@
+[ {
+  "label" : "",
+  "description" : "",
+  "value" : "description"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "schemas"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "types"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "traits"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "resourceTypes"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "annotationTypes"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "securitySchemes"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "uses"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "title"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "version"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "baseUri"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "baseUriParameters"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "protocols"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "mediaType"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "securedBy"
+}, {
+  "label" : "",
+  "description" : "",
+  "value" : "documentation"
+} ]

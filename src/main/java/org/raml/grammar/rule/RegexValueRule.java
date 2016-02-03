@@ -18,8 +18,12 @@ package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
+import org.raml.suggester.Suggestion;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,8 +38,22 @@ public class RegexValueRule extends Rule
         this.value = value;
     }
 
+    @Nonnull
     @Override
-    public boolean matches(Node node)
+    public List<Suggestion> getSuggestions(Node node)
+    {
+        return Collections.emptyList();
+    }
+
+    @Nullable
+    @Override
+    public Rule getInnerRule(Node node)
+    {
+        return null;
+    }
+
+    @Override
+    public boolean matches(@Nonnull Node node)
     {
         return node instanceof StringNode && getMatcher((StringNode) node).matches();
     }
@@ -46,7 +64,7 @@ public class RegexValueRule extends Rule
     }
 
     @Override
-    public Node transform(Node node)
+    public Node transform(@Nonnull Node node)
     {
         if (getFactory() != null)
         {

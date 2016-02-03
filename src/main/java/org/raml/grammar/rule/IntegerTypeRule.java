@@ -19,9 +19,13 @@ import com.google.common.collect.Range;
 import org.raml.nodes.IntegerNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
+import org.raml.suggester.Suggestion;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.math.BigInteger;
+import java.util.Collections;
+import java.util.List;
 
 public class IntegerTypeRule extends Rule
 {
@@ -34,8 +38,22 @@ public class IntegerTypeRule extends Rule
         this.range = range;
     }
 
+    @Nonnull
     @Override
-    public boolean matches(Node node)
+    public List<Suggestion> getSuggestions(Node node)
+    {
+        return Collections.emptyList();
+    }
+
+    @Nullable
+    @Override
+    public Rule getInnerRule(Node node)
+    {
+        return null;
+    }
+
+    @Override
+    public boolean matches(@Nonnull Node node)
     {
         if (node instanceof IntegerNode)
         {
@@ -55,7 +73,7 @@ public class IntegerTypeRule extends Rule
     }
 
     @Override
-    public Node transform(Node node)
+    public Node transform(@Nonnull Node node)
     {
         if (getFactory() != null)
         {

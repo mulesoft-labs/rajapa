@@ -17,15 +17,16 @@ package org.raml.grammar.rule;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
+import org.raml.suggester.DefaultSuggestion;
+import org.raml.suggester.Suggestion;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class MappingRule extends Rule
@@ -38,14 +39,43 @@ public class MappingRule extends Rule
         this.fields = new ArrayList<>();
     }
 
+    @Nonnull
     @Override
-    public boolean matches(Node node)
+    public List<Suggestion> getSuggestions(Node node)
+    {
+        List<Suggestion> result = new ArrayList<>();
+        final List<KeyValueRule> allFields = getAllFields(node);
+        for (KeyValueRule field : allFields)
+        {
+            result.addAll(field.getSuggestions(node));
+        }
+        return result;
+    }
+
+    @Nullable
+    @Override
+    public Rule getInnerRule(Node node)
+    {
+        final List<KeyValueRule> allFields = getAllFields(node);
+        for (KeyValueRule field : allFields)
+        {
+            if (field.matches(node))
+            {
+                return field;
+            }
+        }
+        return null;
+    }
+
+
+    @Override
+    public boolean matches(@Nonnull Node node)
     {
         return node instanceof ObjectNode;
     }
 
     @Override
-    public Node transform(Node node)
+    public Node transform(@Nonnull Node node)
     {
         Node result = node;
         if (getFactory() != null)

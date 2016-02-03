@@ -13,7 +13,10 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml;
+
+
+package org.raml.parser;
+
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -33,6 +36,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.raml.RamlBuilder;
 import org.raml.nodes.Node;
 import org.raml.utils.TreeDumper;
 

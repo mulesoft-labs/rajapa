@@ -19,10 +19,7 @@ import org.raml.nodes.Node;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.Nullable;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 
 public class RamlNodeParser
 {
@@ -46,6 +43,21 @@ public class RamlNodeParser
     {
         Yaml yamlParser = new Yaml();
         org.yaml.snakeyaml.nodes.Node composedNode = yamlParser.compose(reader);
+        if (composedNode == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new SYModelWrapper().wrap(composedNode);
+        }
+    }
+
+    @Nullable
+    public static Node parse(String content)
+    {
+        Yaml yamlParser = new Yaml();
+        org.yaml.snakeyaml.nodes.Node composedNode = yamlParser.compose(new StringReader(content));
         if (composedNode == null)
         {
             return null;

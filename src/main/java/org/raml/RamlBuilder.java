@@ -31,29 +31,30 @@ import java.io.*;
 public class RamlBuilder
 {
 
-    private ResourceLoader resourceLoader;
-
     public RamlBuilder()
     {
-        this.resourceLoader = new DefaultResourceLoader();
     }
 
     public Node build(File ramlFile) throws FileNotFoundException
     {
-        resourceLoader = new CompositeResourceLoader(new UrlResourceLoader(),
+        final ResourceLoader resourceLoader = new CompositeResourceLoader(new UrlResourceLoader(),
                 new ClassPathResourceLoader(),
                 new FileResourceLoader("."),
                 new FileResourceLoader(ramlFile.getParent()));
-        return build(new FileReader(ramlFile), "");
+        return build(new FileReader(ramlFile), resourceLoader, "");
     }
 
-    public Node build(String resourceLocation)
+    public Node build(String content)
     {
-        InputStream inputStream = resourceLoader.fetchResource(resourceLocation);
-        return build(StreamUtils.reader(inputStream), resourceLocation);
+        final ResourceLoader resourceLoader = new CompositeResourceLoader(new UrlResourceLoader(),
+                new ClassPathResourceLoader(),
+                new FileResourceLoader(".")
+                );
+        return build(new StringReader(content), resourceLoader, "");
     }
 
-    public Node build(Reader content, String resourceLocation)
+
+    public Node build(Reader content, ResourceLoader resourceLoader, String resourceLocation)
     {
         Node rootNode = RamlNodeParser.parse(content);
         // The first phase expands the includes.

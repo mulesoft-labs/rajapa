@@ -17,6 +17,12 @@ package org.raml.grammar.rule;
 
 import org.raml.grammar.GrammarContext;
 import org.raml.nodes.Node;
+import org.raml.suggester.Suggestion;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 public class ReferenceRule extends Rule
 {
@@ -50,14 +56,28 @@ public class ReferenceRule extends Rule
     }
 
 
+    @Nonnull
     @Override
-    public boolean matches(Node node)
+    public List<Suggestion> getSuggestions(Node node)
+    {
+        return Collections.emptyList();
+    }
+
+    @Nullable
+    @Override
+    public Rule getInnerRule(Node node)
+    {
+        return null;
+    }
+
+    @Override
+    public boolean matches(@Nonnull Node node)
     {
         return getRef().matches(node);
     }
 
     @Override
-    public Node transform(Node node)
+    public Node transform(@Nonnull Node node)
     {
         return getRef().transform(node);
     }

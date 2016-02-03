@@ -17,6 +17,11 @@ package org.raml.grammar.rule;
 
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
+import org.raml.suggester.Suggestion;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class KeyValueRule extends Rule
 {
@@ -32,8 +37,22 @@ public class KeyValueRule extends Rule
         this.valueRule = valueRule;
     }
 
+    @Nonnull
     @Override
-    public boolean matches(Node node)
+    public List<Suggestion> getSuggestions(Node node)
+    {
+        return keyRule.getSuggestions(node);
+    }
+
+    @Nullable
+    @Override
+    public Rule getInnerRule(Node node)
+    {
+        return valueRule;
+    }
+
+    @Override
+    public boolean matches(@Nonnull Node node)
     {
         return node instanceof KeyValueNode && getKeyRule().matches(((KeyValueNode) node).getKey());
     }
@@ -55,7 +74,7 @@ public class KeyValueRule extends Rule
     }
 
     @Override
-    public Node transform(Node node)
+    public Node transform(@Nonnull Node node)
     {
         Node result = node;
         if (getFactory() != null)

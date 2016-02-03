@@ -16,9 +16,12 @@
 package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
+import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class Rule
 {
@@ -30,6 +33,12 @@ public abstract class Rule
     {
 
     }
+
+    @Nonnull
+    public abstract List<Suggestion> getSuggestions(Node node);
+
+    @Nullable
+    public abstract Rule getInnerRule(Node node);
 
     public abstract boolean matches(@Nonnull Node node);
 

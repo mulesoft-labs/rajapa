@@ -17,17 +17,37 @@ package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
 import org.raml.nodes.NullNode;
+import org.raml.suggester.Suggestion;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 public class NullValueRule extends Rule
 {
+    @Nonnull
     @Override
-    public boolean matches(Node node)
+    public List<Suggestion> getSuggestions(Node node)
+    {
+        return Collections.emptyList();
+    }
+
+    @Nullable
+    @Override
+    public Rule getInnerRule(Node node)
+    {
+        return null;
+    }
+
+    @Override
+    public boolean matches(@Nonnull Node node)
     {
         return node instanceof NullNode;
     }
 
     @Override
-    public Node transform(Node node)
+    public Node transform(@Nonnull Node node)
     {
         if (getFactory() != null)
         {

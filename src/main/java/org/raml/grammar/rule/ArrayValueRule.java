@@ -17,7 +17,12 @@ package org.raml.grammar.rule;
 
 import org.raml.nodes.ArrayNode;
 import org.raml.nodes.Node;
+import org.raml.suggester.DefaultSuggestion;
+import org.raml.suggester.Suggestion;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 
 public class ArrayValueRule extends Rule
@@ -30,14 +35,28 @@ public class ArrayValueRule extends Rule
         this.of = of;
     }
 
+    @Nonnull
     @Override
-    public boolean matches(Node node)
+    public List<Suggestion> getSuggestions(Node node)
+    {
+        return Collections.<Suggestion> singletonList(new DefaultSuggestion("-", "Item list", ""));
+    }
+
+    @Nullable
+    @Override
+    public Rule getInnerRule(Node node)
+    {
+        return of;
+    }
+
+    @Override
+    public boolean matches(@Nonnull Node node)
     {
         return node instanceof ArrayNode;
     }
 
     @Override
-    public Node transform(Node node)
+    public Node transform(@Nonnull Node node)
     {
         Node result = node;
         if (getFactory() != null)

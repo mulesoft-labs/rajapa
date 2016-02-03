@@ -16,7 +16,11 @@
 package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
+import org.raml.suggester.Suggestion;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnyOfRule extends Rule
@@ -30,7 +34,33 @@ public class AnyOfRule extends Rule
     }
 
     @Override
-    public boolean matches(Node node)
+    @Nonnull
+    public List<Suggestion> getSuggestions(Node node)
+    {
+        final List<Suggestion> result = new ArrayList<>();
+        for (Rule rule : rules)
+        {
+            result.addAll(rule.getSuggestions(node));
+        }
+        return result;
+    }
+
+    @Override
+    @Nullable
+    public Rule getInnerRule(Node node)
+    {
+        for (Rule rule : rules)
+        {
+            if (rule.matches(node))
+            {
+                return rule;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean matches(@Nonnull Node node)
     {
         for (Rule rule : rules)
         {
@@ -43,7 +73,7 @@ public class AnyOfRule extends Rule
     }
 
     @Override
-    public Node transform(Node node)
+    public Node transform(@Nonnull Node node)
     {
         if (getFactory() != null)
         {

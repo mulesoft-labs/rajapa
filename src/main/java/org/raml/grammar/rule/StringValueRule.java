@@ -17,6 +17,13 @@ package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
+import org.raml.suggester.DefaultSuggestion;
+import org.raml.suggester.Suggestion;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 
 public class StringValueRule extends Rule
 {
@@ -28,14 +35,28 @@ public class StringValueRule extends Rule
         this.value = value;
     }
 
+    @Nonnull
     @Override
-    public boolean matches(Node node)
+    public List<Suggestion> getSuggestions(Node node)
+    {
+        return Arrays.<Suggestion> asList(new DefaultSuggestion(value, "", ""));
+    }
+
+    @Nullable
+    @Override
+    public Rule getInnerRule(Node node)
+    {
+        return null;
+    }
+
+    @Override
+    public boolean matches(@Nonnull Node node)
     {
         return node instanceof StringNode && ((StringNode) node).getValue().equals(value);
     }
 
     @Override
-    public Node transform(Node node)
+    public Node transform(@Nonnull Node node)
     {
         if (getFactory() != null)
         {
