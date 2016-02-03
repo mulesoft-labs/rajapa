@@ -36,10 +36,6 @@
   "value" : "uses"
 }, {
   "label" : "",
-  "description" : "Short plain-text label for the API.",
-  "value" : "title"
-}, {
-  "label" : "",
   "description" : "The version of the API, e.g. \"v1\".",
   "value" : "version"
 }, {

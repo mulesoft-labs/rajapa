@@ -20,7 +20,6 @@ import com.google.common.collect.Collections2;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
-import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
@@ -44,19 +43,34 @@ public class MappingRule extends Rule
     public List<Suggestion> getSuggestions(Node node)
     {
         List<Suggestion> result = new ArrayList<>();
-        final List<KeyValueRule> allFields = getAllFields(node);
-        for (KeyValueRule field : allFields)
+        final List<KeyValueRule> fieldRules = getAllFieldRules(node);
+        for (KeyValueRule rule : fieldRules)
         {
-            result.addAll(field.getSuggestions(node));
+            if (rule.repeated() || !matchesAny(rule, node.getChildren()))
+            {
+                result.addAll(rule.getSuggestions(node));
+            }
         }
         return result;
+    }
+
+    private boolean matchesAny(KeyValueRule rule, List<Node> children)
+    {
+        for (Node child : children)
+        {
+            if (rule.matches(child))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Nullable
     @Override
     public Rule getInnerRule(Node node)
     {
-        final List<KeyValueRule> allFields = getAllFields(node);
+        final List<KeyValueRule> allFields = getAllFieldRules(node);
         for (KeyValueRule field : allFields)
         {
             if (field.matches(node))
@@ -85,7 +99,7 @@ public class MappingRule extends Rule
         final List<Node> children = node.getChildren();
         for (Node child : children)
         {
-            final Rule matchingRule = findMatchingRule(getAllFields(node), child);
+            final Rule matchingRule = findMatchingRule(getAllFieldRules(node), child);
             if (matchingRule != null)
             {
                 final Node newChild = matchingRule.transform(child);
@@ -93,7 +107,7 @@ public class MappingRule extends Rule
             }
             else
             {
-                final Collection<String> options = Collections2.transform(getAllFields(node), new Function<KeyValueRule, String>()
+                final Collection<String> options = Collections2.transform(getAllFieldRules(node), new Function<KeyValueRule, String>()
                 {
                     @Override
                     public String apply(KeyValueRule rule)
@@ -108,7 +122,7 @@ public class MappingRule extends Rule
         return result;
     }
 
-    private List<KeyValueRule> getAllFields(Node node)
+    private List<KeyValueRule> getAllFieldRules(Node node)
     {
         if (conditionalRules != null)
         {

@@ -56,6 +56,11 @@ public class KeyValueRule extends Rule
         return node instanceof KeyValueNode && getKeyRule().matches(((KeyValueNode) node).getKey());
     }
 
+    public boolean repeated()
+    {
+        return !(getKeyRule() instanceof StringValueRule);
+    }
+
     public Rule getKeyRule()
     {
         return keyRule;
