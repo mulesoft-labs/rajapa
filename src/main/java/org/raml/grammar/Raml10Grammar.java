@@ -42,16 +42,17 @@ public class Raml10Grammar extends BaseGrammar
                         .with(securitySchemesField())
                         .with(field(usesKey(), library()))
                         .with(titleField())
-                        .with(field(string("version"), stringType()))
-                        .with(field(string("baseUri"), stringType()))
-                        .with(field(string("baseUriParameters"), parameters()))
+                        .with(field(versionKey(), stringType()))
+                        .with(field(baseUriKey(), stringType()))
+                        .with(field(baseUriParametersKey(), parameters()))
                         .with(protocolsField())
-                        .with(field(string("mediaType"), stringType()))
+                        .with(field(mediaTypeKey(), stringType()))
                         .with(securedByField())
                         .with(field(resourceKey(), resourceValue()).then(ResourceNode.class))
-                        .with(field(string("documentation"), documentations()))
+                        .with(field(documentationKey(), documentations()))
                         .then(RamlDocumentNode.class);
     }
+
 
     // Documentation
     private Rule documentations()
@@ -236,23 +237,6 @@ public class Raml10Grammar extends BaseGrammar
         return mapping().with(field(stringType(), any()).then(ResourceTypeNode.class));
     }
 
-
-    // private Rule resourceType() {
-    // return mapping("resourceType")
-    // .with(field(template(), any()))
-    // .with(field(displayNameKey(), anyOf(template(), stringType())))
-    // .with(field(descriptionKey(), anyOf(template(), stringType())))
-    // .with(field(annotationKey(), any()))
-    // .with(field(anyMethod(), any()))
-    // .with(field(isKey(), array(anyOf(template(), stringType()))))
-    // .with(field(typeKey(), anyOf(template(), stringType())))
-    // .with(field(securedByKey(), array(anyOf(template(), stringType()))))
-    // .with(field(uriParametersKey(), any()))
-    // .with(field(resourceKey(), ref("resourceType")))
-    // ;
-    // return any();
-    // }
-
     // Library
     private Rule library()
     {
@@ -370,12 +354,22 @@ public class Raml10Grammar extends BaseGrammar
 
     private KeyValueRule securitySchemesField()
     {
-        return field(string(SECURITY_SCHEMES_KEY_NAME), anyOf(array(securitySchemes()), securitySchemes()));
+        return field(securitySchemesKey(), anyOf(array(securitySchemes()), securitySchemes()));
+    }
+
+    private StringValueRule securitySchemesKey()
+    {
+        return string(SECURITY_SCHEMES_KEY_NAME).description("Declarations of security schemes for use within this API.");
     }
 
     private KeyValueRule annotationTypesField()
     {
-        return field(string("annotationTypes"), annotationTypes());
+        return field(annotationTypesKey(), annotationTypes());
+    }
+
+    private StringValueRule annotationTypesKey()
+    {
+        return string("annotationTypes").description("Declarations of annotation types for use by annotations.");
     }
 
     private Rule annotationTypes()
@@ -386,22 +380,46 @@ public class Raml10Grammar extends BaseGrammar
 
     private KeyValueRule schemasField()
     {
-        return field(string("schemas"), anyOf(array(schemas()), schemas()));
+        return field(schemasKey(), anyOf(array(schemas()), schemas()));
+    }
+
+    private StringValueRule schemasKey()
+    {
+        return string("schemas")
+                                .description("Alias for the equivalent \"types\" property, for compatibility " +
+                                             "with RAML 0.8. Deprecated - API definitions should use the \"types\" property, " +
+                                             "as the \"schemas\" alias for that property name may be removed in a future RAML version. " +
+                                             "The \"types\" property allows for XML and JSON schemas.");
     }
 
     private KeyValueRule resourceTypesField()
     {
-        return field(string(RESOURCE_TYPES_KEY_NAME), anyOf(array(resourceTypes()), resourceTypes()));
+        return field(resourceTypesKey(), anyOf(array(resourceTypes()), resourceTypes()));
+    }
+
+    private StringValueRule resourceTypesKey()
+    {
+        return string(RESOURCE_TYPES_KEY_NAME).description("Declarations of resource types for use within this API.");
     }
 
     private KeyValueRule traitsField()
     {
-        return field(string(TRAITS_KEY_NAME), traits());
+        return field(traitsKey(), traits());
+    }
+
+    private StringValueRule traitsKey()
+    {
+        return string(TRAITS_KEY_NAME).description("Declarations of traits for use within this API.");
     }
 
     private KeyValueRule protocolsField()
     {
-        return field(string("protocols"), protocols());
+        return field(protocolsKey(), protocols());
+    }
+
+    private StringValueRule protocolsKey()
+    {
+        return string("protocols").description("The protocols supported by the API.");
     }
 
     private KeyValueRule bodyField()
@@ -436,12 +454,22 @@ public class Raml10Grammar extends BaseGrammar
 
     private KeyValueRule typesField()
     {
-        return field(string("types"), types());
+        return field(typesKey(), types());
+    }
+
+    private StringValueRule typesKey()
+    {
+        return string("types").description("Declarations of (data) types for use within this API.");
     }
 
     private KeyValueRule titleField()
     {
-        return field(string("title"), stringType());
+        return field(titleKey(), stringType());
+    }
+
+    private StringValueRule titleKey()
+    {
+        return string("title").description("Short plain-text label for the API.");
     }
 
 
@@ -449,12 +477,17 @@ public class Raml10Grammar extends BaseGrammar
 
     private RegexValueRule resourceKey()
     {
-        return regex("/.+");
+        return regex("/.+")
+                           .label("/Resource")
+                           .suggest("/<cursor>")
+                           .description("The resources of the API, identified as relative URIs that begin with a slash (/). " +
+                                        "Every property whose key begins with a slash (/), and is either at the root of the API definition " +
+                                        "or is the child property of a resource property, is a resource property, e.g.: /users, /{groupId}, etc");
     }
 
     private StringValueRule usesKey()
     {
-        return string(USES_KEY_NAME);
+        return string(USES_KEY_NAME).description("Importing libraries.");
     }
 
 
@@ -465,7 +498,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private StringValueRule securedByKey()
     {
-        return string("securedBy");
+        return string("securedBy").description("The security schemes that apply to every resource and method in the API.");
     }
 
     private StringValueRule typeKey()
@@ -485,13 +518,49 @@ public class Raml10Grammar extends BaseGrammar
 
     private RegexValueRule annotationKey()
     {
-        return regex("\\(.+\\)");
+        return regex("\\(.+\\)")
+                                .label("(Annotation)")
+                                .suggest("(<cursor>)")
+                                .description("Annotations to be applied to this API. " +
+                                             "Annotations are any property whose key begins with \"(\" and ends with \")\" " +
+                                             "and whose name (the part between the beginning and ending parentheses) " +
+                                             "is a declared annotation name..");
     }
 
     private StringValueRule descriptionKey()
     {
-        return string("description");
+        return string("description").description("A longer, human-friendly description of the API");
     }
+
+    private StringValueRule documentationKey()
+    {
+        return string("documentation")
+                                      .description("Additional overall documentation for the API.");
+    }
+
+    private StringValueRule mediaTypeKey()
+    {
+        return string("mediaType")
+                                  .description("The default media type to use for request and response bodies (payloads), e.g. \"application/json\".");
+    }
+
+    private StringValueRule baseUriParametersKey()
+    {
+        return string("baseUriParameters").description("Named parameters used in the baseUri (template).");
+    }
+
+    private StringValueRule baseUriKey()
+    {
+        return string("baseUri").description("A URI that's to be used as the base of all the resources' URIs." +
+                                             " Often used as the base of the URL of each resource, containing the location of the API. " +
+                                             "Can be a template URI.");
+    }
+
+    private StringValueRule versionKey()
+    {
+        return string("version").description("The version of the API, e.g. \"v1\".");
+    }
+
 
     // Enum of values
 

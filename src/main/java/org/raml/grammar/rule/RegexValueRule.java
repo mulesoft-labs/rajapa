@@ -16,13 +16,16 @@
 package org.raml.grammar.rule;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
+import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -32,6 +35,9 @@ public class RegexValueRule extends Rule
 {
 
     private Pattern value;
+    private String description;
+    private String suggestion;
+    private String label;
 
     public RegexValueRule(Pattern value)
     {
@@ -42,7 +48,14 @@ public class RegexValueRule extends Rule
     @Override
     public List<Suggestion> getSuggestions(Node node)
     {
-        return Collections.emptyList();
+        if (StringUtils.isEmpty(suggestion))
+        {
+            return Collections.emptyList();
+        }
+        else
+        {
+            return Collections.<Suggestion> singletonList(new DefaultSuggestion(suggestion, description, label));
+        }
     }
 
     @Nullable
@@ -61,6 +74,24 @@ public class RegexValueRule extends Rule
     private Matcher getMatcher(StringNode node)
     {
         return value.matcher(node.getValue());
+    }
+
+    public RegexValueRule label(String value)
+    {
+        this.label = value;
+        return this;
+    }
+
+    public RegexValueRule suggest(String value)
+    {
+        this.suggestion = value;
+        return this;
+    }
+
+    public RegexValueRule description(String description)
+    {
+        this.description = description;
+        return this;
     }
 
     @Override

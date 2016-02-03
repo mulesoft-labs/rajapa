@@ -29,6 +29,7 @@ public class StringValueRule extends Rule
 {
 
     private String value;
+    private String description;
 
     public StringValueRule(String value)
     {
@@ -39,7 +40,7 @@ public class StringValueRule extends Rule
     @Override
     public List<Suggestion> getSuggestions(Node node)
     {
-        return Arrays.<Suggestion> asList(new DefaultSuggestion(value, "", ""));
+        return Arrays.<Suggestion> asList(new DefaultSuggestion(value, description, ""));
     }
 
     @Nullable
@@ -53,6 +54,12 @@ public class StringValueRule extends Rule
     public boolean matches(@Nonnull Node node)
     {
         return node instanceof StringNode && ((StringNode) node).getValue().equals(value);
+    }
+
+    public StringValueRule description(String description)
+    {
+        this.description = description;
+        return this;
     }
 
     @Override

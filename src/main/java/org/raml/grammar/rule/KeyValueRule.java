@@ -26,7 +26,6 @@ import java.util.List;
 public class KeyValueRule extends Rule
 {
 
-
     private final Rule keyRule;
     private final Rule valueRule;
 
