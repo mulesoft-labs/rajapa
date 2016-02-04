@@ -1,0 +1,39 @@
+{
+    "title": "Example API",
+    "version": "v1",
+    "traits": {
+        "optional": {
+            "headers": {
+                "fixed": {
+                    "example": "yes"
+                },
+                "present?": {
+                    "example": "yes"
+                },
+                "absent?": {
+                    "example": "no"
+                }
+            }
+        }
+    },
+    "resources": [
+        {
+            "relativeUri": "/users",
+            "methods": [
+                {
+                    "method": "get",
+                    "is": ["optional"],
+                    "headers": {
+                        "present": {
+                            "type": "string",
+                            "example": "yes"
+                        },
+                        "fixed": {
+                            "example": "yes"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

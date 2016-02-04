@@ -71,7 +71,18 @@ public class ResourceTypesTraitsMerger
                 logger.info("Ignoring key '{}'", key);
                 continue;
             }
+
+            boolean optional = key.endsWith("?");
+            if (optional)
+            {
+                key = key.substring(0, key.length() - 1);
+            }
             Node node = NodeSelector.selectFrom(key, baseNode);
+            if (node == null && optional)
+            {
+                logger.info("Ignoring optional key {}", key);
+                continue;
+            }
             if (node == null)
             {
                 logger.info("Adding key '{}'", key);

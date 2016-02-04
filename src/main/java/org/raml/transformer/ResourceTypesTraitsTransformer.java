@@ -25,11 +25,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.raml.grammar.GrammarPhase;
+import org.raml.grammar.Raml10Grammar;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.ReferenceNode;
 import org.raml.nodes.impl.MethodNode;
 import org.raml.nodes.impl.ResourceNode;
+import org.raml.nodes.impl.ResourceTypeNode;
 import org.raml.nodes.impl.ResourceTypeRefNode;
 import org.raml.nodes.impl.TraitNode;
 import org.raml.nodes.impl.TraitRefNode;
@@ -77,16 +80,38 @@ public class ResourceTypesTraitsTransformer implements Transformer
             }
         }
 
-        // TODO
         // apply resource type
+        ResourceTypeRefNode resourceTypeReference = findResourceTypeReference(resourceNode);
+        if (resourceTypeReference != null)
+        {
+            applyResourceType(resourceNode, resourceTypeReference);
+        }
 
         mergedResources.add(resourceNode);
         return node;
     }
 
-    private void applyTrait(MethodNode methodNode, TraitRefNode traitRef)
+    private void applyResourceType(ResourceNode resourceNode, ResourceTypeRefNode resourceTypeReference)
     {
-        TraitNode refNode = traitRef.getRefNode();
+        ResourceTypeNode templateNode = (ResourceTypeNode) resourceTypeReference.getRefNode().copy();
+
+        // TODO
+        // resolve parameters
+
+        // apply grammar phase to generate method nodes
+        GrammarPhase parseMethodsPhase = new GrammarPhase(new Raml10Grammar().resourceType());
+        parseMethodsPhase.apply(templateNode.getValue());
+
+        // TODO
+        // apply traits
+        // resolve inheritance
+
+        merge(resourceNode.getValue(), templateNode.getValue());
+    }
+
+    private void applyTrait(MethodNode methodNode, TraitRefNode traitReference)
+    {
+        TraitNode refNode = traitReference.getRefNode();
         if (refNode == null)
         {
             throw new RuntimeException("validated before?");
@@ -122,6 +147,11 @@ public class ResourceTypesTraitsTransformer implements Transformer
             }
         }
         return result;
+    }
+
+    private ResourceTypeRefNode findResourceTypeReference(ResourceNode resourceNode)
+    {
+        return (ResourceTypeRefNode) NodeSelector.selectFrom("type", resourceNode.getValue());
     }
 
     private List<MethodNode> findMethodNodes(ResourceNode resourceNode)

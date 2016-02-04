@@ -27,12 +27,14 @@ import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
 import org.raml.nodes.ReferenceNode;
+import org.raml.nodes.SimpleTypeNode;
 import org.raml.nodes.StringNode;
 import org.raml.nodes.impl.KeyValueNodeImpl;
 import org.raml.nodes.impl.MethodNode;
 import org.raml.nodes.impl.ResourceNode;
 import org.raml.nodes.impl.StringNodeImpl;
 import org.raml.nodes.snakeyaml.SYArrayNode;
+import org.raml.nodes.snakeyaml.SYIntegerNode;
 import org.raml.nodes.snakeyaml.SYNullNode;
 import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.yaml.snakeyaml.nodes.MappingNode;
@@ -74,9 +76,9 @@ public class TckEmitter
         {
             dumpReference((ReferenceNode) node, dump, depth);
         }
-        else if (node instanceof StringNode)
+        else if (node instanceof StringNode || node instanceof SYIntegerNode)
         {
-            dumpString((StringNode) node, dump, depth);
+            dumpString((SimpleTypeNode) node, dump, depth);
         }
         else if (node instanceof SYNullNode)
         {
@@ -90,7 +92,7 @@ public class TckEmitter
 
     private void dumpReference(ReferenceNode node, StringBuilder dump, int depth)
     {
-        dump.append(sanitizeScalarValue(node.getRefName()));
+        dump.append(sanitizeScalarValue(node.getRefName())).append(COMMA_SEP);
     }
 
     private void dumpArray(SYArrayNode arrayNode, StringBuilder dump, int depth)
@@ -109,7 +111,7 @@ public class TckEmitter
         dump.append(START_MAP).append(END_MAP).append(COMMA_SEP);
     }
 
-    private void dumpString(StringNode node, StringBuilder dump, int depth)
+    private void dumpString(SimpleTypeNode node, StringBuilder dump, int depth)
     {
         dump.append(sanitizeScalarValue(node.getValue())).append(COMMA_SEP);
     }
@@ -119,7 +121,7 @@ public class TckEmitter
         List<KeyValueNode> resourceNodes = new ArrayList<>();
         List<KeyValueNode> methodNodes = new ArrayList<>();
 
-        dump.append(START_MAP).append(NEWLINE);
+        startMap(dump, depth);
 
         for (Node node : objectNode.getChildren())
         {
@@ -196,6 +198,15 @@ public class TckEmitter
     // *******
     // helpers
     // *******
+
+    private void startMap(StringBuilder dump, int depth)
+    {
+        if (dump.toString().endsWith(COMMA_SEP))
+        {
+            dump.append(indent(depth));
+        }
+        dump.append(START_MAP).append(NEWLINE);
+    }
 
     private void removeLastSeparator(StringBuilder dump)
     {

@@ -53,6 +53,12 @@ public class Raml10Grammar extends BaseGrammar
                         .then(RamlDocumentNode.class);
     }
 
+    public Rule resourceType()
+    {
+        return mapping()
+                        .with(field(anyResourceTypeMethod(), methodValue()).then(MethodNode.class))
+                        .with(field(stringType(), any())); // match anything else
+    }
 
     // Documentation
     private Rule documentations()
@@ -567,6 +573,16 @@ public class Raml10Grammar extends BaseGrammar
     private AnyOfRule anyMethod()
     {
         return anyOf(string("get"), string("patch"), string("put"), string("post"), string("delete"), string("options"), string("head"));
+    }
+
+    private AnyOfRule anyOptionalMethod()
+    {
+        return anyOf(string("get?"), string("patch?"), string("put?"), string("post?"), string("delete?"), string("options?"), string("head?"));
+    }
+
+    private AnyOfRule anyResourceTypeMethod()
+    {
+        return anyOf(anyMethod(), anyOptionalMethod());
     }
 
     private Rule protocols()
