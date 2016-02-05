@@ -64,23 +64,11 @@ public class ResourceTypesTraitsTransformer implements Transformer
         {
             return node;
         }
-        List<MethodNode> methodNodes = findMethodNodes(resourceNode);
-        List<TraitRefNode> resourceTraitRefs = findTraitReferences(resourceNode);
 
-        // apply method and resource traits
-        for (MethodNode methodNode : methodNodes)
-        {
-            List<TraitRefNode> traitRefs = findTraitReferences(methodNode);
-            traitRefs.addAll(resourceTraitRefs);
-            for (TraitRefNode traitRef : traitRefs)
-            {
-                String traitLevel = resourceTraitRefs.contains(traitRef) ? "resource" : "method";
-                logger.info("applying {} level trait '{}' to '{}.{}'", traitLevel, traitRef.getRefName(), resourceNode.getRelativeUri(), methodNode.getName());
-                applyTrait(methodNode, traitRef);
-            }
-        }
+        // apply method and resource traits if defined
+        checkTraits(resourceNode);
 
-        // apply resource type
+        // apply resource type if defined
         ResourceTypeRefNode resourceTypeReference = findResourceTypeReference(resourceNode);
         if (resourceTypeReference != null)
         {
@@ -89,6 +77,24 @@ public class ResourceTypesTraitsTransformer implements Transformer
 
         mergedResources.add(resourceNode);
         return node;
+    }
+
+    private void checkTraits(KeyValueNode resourceNode)
+    {
+        List<MethodNode> methodNodes = findMethodNodes(resourceNode);
+        List<TraitRefNode> resourceTraitRefs = findTraitReferences(resourceNode);
+
+        for (MethodNode methodNode : methodNodes)
+        {
+            List<TraitRefNode> traitRefs = findTraitReferences(methodNode);
+            traitRefs.addAll(resourceTraitRefs);
+            for (TraitRefNode traitRef : traitRefs)
+            {
+                String traitLevel = resourceTraitRefs.contains(traitRef) ? "resource" : "method";
+                logger.info("applying {} level trait '{}' to '{}.{}'", traitLevel, traitRef.getRefName(), resourceNode.getKey(), methodNode.getName());
+                applyTrait(methodNode, traitRef);
+            }
+        }
     }
 
     private void applyResourceType(KeyValueNode resourceNode, ResourceTypeRefNode resourceTypeReference)
@@ -104,8 +110,8 @@ public class ResourceTypesTraitsTransformer implements Transformer
         GrammarPhase parseMethodsPhase = new GrammarPhase(new Raml10Grammar().resourceType());
         parseMethodsPhase.apply(templateNode.getValue());
 
-        // TODO
         // apply traits
+        checkTraits(templateNode);
 
         // resolve inheritance
         ResourceTypeRefNode parentTypeReference = findResourceTypeReference(templateNode);
@@ -162,7 +168,7 @@ public class ResourceTypesTraitsTransformer implements Transformer
         return (ResourceTypeRefNode) NodeSelector.selectFrom("type", resourceNode.getValue());
     }
 
-    private List<MethodNode> findMethodNodes(ResourceNode resourceNode)
+    private List<MethodNode> findMethodNodes(KeyValueNode resourceNode)
     {
         List<MethodNode> methodNodes = new ArrayList<>();
         for (Node node : resourceNode.getValue().getChildren())

@@ -58,6 +58,7 @@ public class Raml10Grammar extends BaseGrammar
         return mapping()
                         .with(field(anyResourceTypeMethod(), methodValue()).then(MethodNode.class))
                         .with(resourceTypeReferenceField())
+                        .with(isField())
                         .with(field(stringType(), any())); // match anything else
     }
 
