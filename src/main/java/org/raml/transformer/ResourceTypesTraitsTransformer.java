@@ -91,9 +91,11 @@ public class ResourceTypesTraitsTransformer implements Transformer
         return node;
     }
 
-    private void applyResourceType(ResourceNode resourceNode, ResourceTypeRefNode resourceTypeReference)
+    private void applyResourceType(KeyValueNode resourceNode, ResourceTypeRefNode resourceTypeReference)
     {
-        ResourceTypeNode templateNode = (ResourceTypeNode) resourceTypeReference.getRefNode().copy();
+        ResourceTypeNode refNode = resourceTypeReference.getRefNode();
+        ResourceTypeNode templateNode = (ResourceTypeNode) refNode.copy();
+        templateNode.setParent(refNode.getParent());
 
         // TODO
         // resolve parameters
@@ -104,7 +106,13 @@ public class ResourceTypesTraitsTransformer implements Transformer
 
         // TODO
         // apply traits
+
         // resolve inheritance
+        ResourceTypeRefNode parentTypeReference = findResourceTypeReference(templateNode);
+        if (parentTypeReference != null)
+        {
+            applyResourceType(templateNode, parentTypeReference);
+        }
 
         merge(resourceNode.getValue(), templateNode.getValue());
     }
@@ -149,7 +157,7 @@ public class ResourceTypesTraitsTransformer implements Transformer
         return result;
     }
 
-    private ResourceTypeRefNode findResourceTypeReference(ResourceNode resourceNode)
+    private ResourceTypeRefNode findResourceTypeReference(KeyValueNode resourceNode)
     {
         return (ResourceTypeRefNode) NodeSelector.selectFrom("type", resourceNode.getValue());
     }

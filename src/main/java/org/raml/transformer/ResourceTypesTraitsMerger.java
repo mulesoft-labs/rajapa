@@ -18,8 +18,13 @@
  */
 package org.raml.transformer;
 
+import com.google.common.collect.ImmutableSet;
+
+import java.util.Set;
+
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.SimpleTypeNode;
 import org.raml.nodes.snakeyaml.SYArrayNode;
 import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.raml.utils.NodeSelector;
@@ -81,12 +86,15 @@ public class ResourceTypesTraitsMerger
             if (node == null && optional)
             {
                 logger.info("Ignoring optional key {}", key);
-                continue;
             }
-            if (node == null)
+            else if (node == null)
             {
                 logger.info("Adding key '{}'", key);
                 baseNode.addChild(child);
+            }
+            else if (((KeyValueNode) child).getValue() instanceof SimpleTypeNode)
+            {
+                logger.info("Scalar key already exists '{}'", key);
             }
             else
             {
@@ -98,6 +106,11 @@ public class ResourceTypesTraitsMerger
 
     private static boolean shouldIgnoreKey(KeyValueNode child)
     {
-        return "usage".equals(child.getKey().toString());
+        Set<String> ignoreSet = ImmutableSet.<String> builder()
+                                            .add("usage")
+                                            .add("type")
+                                            .build();
+        String key = child.getKey().toString();
+        return ignoreSet.contains(key);
     }
 }

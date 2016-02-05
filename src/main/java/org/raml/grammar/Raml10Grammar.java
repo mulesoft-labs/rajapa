@@ -57,6 +57,7 @@ public class Raml10Grammar extends BaseGrammar
     {
         return mapping()
                         .with(field(anyResourceTypeMethod(), methodValue()).then(MethodNode.class))
+                        .with(resourceTypeReferenceField())
                         .with(field(stringType(), any())); // match anything else
     }
 
@@ -272,7 +273,7 @@ public class Raml10Grammar extends BaseGrammar
                                        .with(annotationField())
                                        .with(field(anyMethod(), methodValue()).then(MethodNode.class))
                                        .with(isField())
-                                       .with(field(typeKey(), stringType().then(new NodeReferenceFactory(ResourceTypeRefNode.class))))
+                                       .with(resourceTypeReferenceField())
                                        .with(securedByField())
                                        .with(field(uriParametersKey(), parameters()))
                                        .with(field(resourceKey(), ref("resourceValue")).then(ResourceNode.class));
@@ -456,6 +457,11 @@ public class Raml10Grammar extends BaseGrammar
     private KeyValueRule isField()
     {
         return field(isKey(), array(stringType().then(new NodeReferenceFactory(TraitRefNode.class))));
+    }
+
+    private KeyValueRule resourceTypeReferenceField()
+    {
+        return field(typeKey(), stringType().then(new NodeReferenceFactory(ResourceTypeRefNode.class)));
     }
 
     private KeyValueRule typesField()
