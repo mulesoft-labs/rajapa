@@ -21,7 +21,6 @@ import org.raml.nodes.StringNode;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
@@ -43,12 +42,6 @@ public class IntegerValueRule extends Rule
         return Collections.emptyList();
     }
 
-    @Nullable
-    @Override
-    public Rule getInnerRule(Node node)
-    {
-        return null;
-    }
 
     @Override
     public boolean matches(@Nonnull Node node)

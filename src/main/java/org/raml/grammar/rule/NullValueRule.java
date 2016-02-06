@@ -20,7 +20,6 @@ import org.raml.nodes.NullNode;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,12 +32,6 @@ public class NullValueRule extends Rule
         return Collections.emptyList();
     }
 
-    @Nullable
-    @Override
-    public Rule getInnerRule(Node node)
-    {
-        return null;
-    }
 
     @Override
     public boolean matches(@Nonnull Node node)

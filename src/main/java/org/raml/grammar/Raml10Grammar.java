@@ -47,7 +47,7 @@ public class Raml10Grammar extends BaseGrammar
                         .with(field(baseUriParametersKey(), parameters()))
                         .with(protocolsField())
                         .with(field(mediaTypeKey(), stringType()))
-                        .with(securedByField())
+                        .with(securedByField().description("The security schemes that apply to every resource and method in the API."))
                         .with(field(resourceKey(), resourceValue()).then(ResourceNode.class))
                         .with(field(documentationKey(), documentations()))
                         .then(RamlDocumentNode.class);
@@ -108,9 +108,9 @@ public class Raml10Grammar extends BaseGrammar
                         .with(displayNameField())
                         .with(descriptionField())
                         .with(annotationField())
-                        .with(field(string("headers"), parameters()))
-                        .with(field(string("queryParameters"), parameters()))
-                        .with(field(string("responses"), responses()));
+                        .with(field(headersKey(), parameters()))
+                        .with(field(queryParametersKey(), parameters()))
+                        .with(field(responseKey(), responses()));
     }
 
     private Rule securitySchemeSettings()
@@ -272,9 +272,9 @@ public class Raml10Grammar extends BaseGrammar
                                        .with(descriptionField())
                                        .with(annotationField())
                                        .with(field(anyMethod(), methodValue()).then(MethodNode.class))
-                                       .with(isField())
+                                       .with(isField().description("A list of the traits to apply to all methods declared (implicitly or explicitly) for this resource. "))
                                        .with(resourceTypeReferenceField())
-                                       .with(securedByField())
+                                       .with(securedByField().description("The security schemes that apply to all methods declared (implicitly or explicitly) for this resource."))
                                        .with(field(uriParametersKey(), parameters()))
                                        .with(field(resourceKey(), ref("resourceValue")).then(ResourceNode.class));
     }
@@ -294,14 +294,32 @@ public class Raml10Grammar extends BaseGrammar
                         .with(descriptionField())
                         .with(displayNameField())
                         .with(annotationField())
-                        .with(field(string("queryParameters"), parameters()))
+                        .with(field(queryParametersKey(), parameters()))
                         .with(headersField())
-                        .with(field(string("queryString"), anyOf(stringType(), type())))
-                        .with(field(string("responses"), responses()))
+                        .with(field(queryStringKey(), anyOf(stringType(), type())))
+                        .with(field(responseKey(), responses()))
                         .with(bodyField())
-                        .with(protocolsField())
-                        .with(isField())
-                        .with(securedByField());
+                        .with(protocolsField().description("A method can override the protocols specified in the resource or at the API root, by employing this property."))
+                        .with(isField()
+                                .description("A list of the traits to apply to this method."))
+                        .with(securedByField().description("The security schemes that apply to this method."));
+    }
+
+    private StringValueRule responseKey() {
+        return string("responses")
+                .description("Information about the expected responses to a request");
+    }
+
+    private StringValueRule queryStringKey() {
+        return string("queryString")
+                .description("Specifies the query string needed by this method." +
+                " Mutually exclusive with queryParameters.");
+    }
+
+    private StringValueRule queryParametersKey() {
+        return string("queryParameters")
+                .description("Detailed information about any query parameters needed by this method. " +
+                "Mutually exclusive with queryString.");
     }
 
 
@@ -431,12 +449,22 @@ public class Raml10Grammar extends BaseGrammar
 
     private KeyValueRule bodyField()
     {
-        return field(string("body"), body());
+        return field(bodyKey(), body());
+    }
+
+    private StringValueRule bodyKey() {
+        return string("body")
+                .description("Some methods admit request bodies, which are described by this property.");
     }
 
     private KeyValueRule headersField()
     {
-        return field(string("headers"), parameters());
+        return field(headersKey(), parameters());
+    }
+
+    private StringValueRule headersKey() {
+        return string("headers")
+                .description("Detailed information about any request headers needed by this method.");
     }
 
     private KeyValueRule descriptionField()
@@ -505,17 +533,18 @@ public class Raml10Grammar extends BaseGrammar
 
     private StringValueRule uriParametersKey()
     {
-        return string("uriParameters");
+        return string("uriParameters").description("Detailed information about any URI parameters of this resourc");
     }
 
     private StringValueRule securedByKey()
     {
-        return string("securedBy").description("The security schemes that apply to every resource and method in the API.");
+        return string("securedBy");
     }
 
     private StringValueRule typeKey()
     {
-        return string("type");
+        return string("type")
+                .description("The resource type which this resource inherits.");
     }
 
     private StringValueRule isKey()
@@ -525,7 +554,8 @@ public class Raml10Grammar extends BaseGrammar
 
     private StringValueRule displayNameKey()
     {
-        return string("displayName");
+        return string("displayName")
+                .description("An alternate, human-friendly name for the method (in the resource's context).");
     }
 
     private RegexValueRule annotationKey()
@@ -578,7 +608,14 @@ public class Raml10Grammar extends BaseGrammar
 
     private AnyOfRule anyMethod()
     {
-        return anyOf(string("get"), string("patch"), string("put"), string("post"), string("delete"), string("options"), string("head"));
+        return anyOf(
+                string("get"),
+                string("patch"),
+                string("put"),
+                string("post"),
+                string("delete"),
+                string("options"),
+                string("head"));
     }
 
     private AnyOfRule anyOptionalMethod()

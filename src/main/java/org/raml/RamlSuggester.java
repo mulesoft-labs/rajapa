@@ -27,24 +27,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RamlSuggester
-{
+public class RamlSuggester {
 
 
-    public List<Suggestion> suggestions(String document, int offset)
-    {
+    public List<Suggestion> suggestions(String document, int offset) {
         final StringBuilder contextLine = new StringBuilder();
         int location = offset;
         char character = document.charAt(location);
-        while (location > 0)
-        {
+        while (location > 0 && character != '\n') {
             location--;
-            if (character == '\n')
-            {
-                break;
-            }
             contextLine.append(character);
             character = document.charAt(location);
+
         }
         int columnNumber = getColumnNumber(contextLine);
 
@@ -52,82 +46,72 @@ public class RamlSuggester
 
         final String footer = getFooter(document, offset);
 
-        /**
-         * foo:
-         *  soo:
-         *     Z:
-         *
-         */
-        final Node root = new RamlBuilder().build(header + footer);
-        Node node = searchNodeAt(root, location);
-        if (node != null)
-        {
-            int column = node.getStartPosition().getColumn();
-            while (column > columnNumber && node != null)
-            {
-                node = node.getParent();
-                if (node != null)
-                {
-                    column = node.getStartPosition().getColumn();
-                }
-            }
-            if (node != null)
-            {
-                //
-                if (node instanceof KeyValueNode)
-                {
-                    node = node.getParent();
-                }
-                final List<Node> path = new ArrayList<>();
-                Node parent = node.getParent();
-                while (parent != null)
-                {
-                    path.add(0, parent);
-                    parent = parent.getParent();
-                }
 
-                final Raml10Grammar raml10Grammar = new Raml10Grammar();
-                Rule rule = raml10Grammar.raml();
-                for (Node element : path)
-                {
-                    rule = rule.getInnerRule(element);
-                    if (rule == null)
-                    {
-                        return Collections.emptyList();
-                    }
-                }
-                return rule.getSuggestions(node);
-            }
+        final String realDocument = header + footer;
+
+        final Node root = new RamlBuilder().build(realDocument);
+        Node node = searchNodeAt(root, location);
+        if (node != null) {
+            node = getValueNodeAtColumn(columnNumber, node);
+            //Recreate path with the node at the correct indentation
+            final List<Node> pathToRoot = createPathToRoot(node);
+            final Raml10Grammar raml10Grammar = new Raml10Grammar();
+            //Follow the path from the root to the node and apply the rules for auto-completion.
+            final Rule rootRule = raml10Grammar.raml();
+            return rootRule.getSuggestions(pathToRoot);
         }
         return Collections.emptyList();
 
     }
 
-    @Nonnull
-    private String getFooter(String document, int offset)
-    {
-        int loc = offset;
-        char current = document.charAt(loc);
-        while (loc < document.length() && current != '\n')
-        {
-            loc++;
-            current = document.charAt(loc);
+    private Node getValueNodeAtColumn(int columnNumber, Node node) {
+        if (columnNumber == 0) {
+            return node.getRootNode();
+        } else {
+            //Create the path from the selected node to the root.
+            final List<Node> path = createPathToRoot(node);
+            //Find the node with the indentation in the path
+            for (Node element : path) {
+                if (element instanceof KeyValueNode) {
+                    if (element.getStartPosition().getColumn() <= columnNumber) {
+                        node = ((KeyValueNode) element).getValue();
+                    }
+                }
+            }
+            return node;
         }
-
-        return document.substring(loc);
     }
 
-    private int getColumnNumber(StringBuilder contextLine)
-    {
+    @Nonnull
+    private List<Node> createPathToRoot(Node node) {
+        final List<Node> path = new ArrayList<>();
+        Node parent = node;
+        while (parent != null) {
+            path.add(0, parent);
+            parent = parent.getParent();
+        }
+        return path;
+    }
+
+    @Nonnull
+    private String getFooter(String document, int offset) {
+        int loc = offset;
+        char current = document.charAt(loc);
+        loc++;
+        while (loc < document.length() && current != '\n') {
+            current = document.charAt(loc);
+            loc++;
+        }
+
+        return loc < document.length() ? document.substring(loc) : "";
+    }
+
+    private int getColumnNumber(StringBuilder contextLine) {
         int columnNumber = 0;
-        for (int i = 0; i < contextLine.length(); i++)
-        {
-            if (Character.isWhitespace(contextLine.charAt(i)))
-            {
+        for (int i = 0; i < contextLine.length(); i++) {
+            if (Character.isWhitespace(contextLine.charAt(i))) {
                 columnNumber++;
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
@@ -135,33 +119,22 @@ public class RamlSuggester
     }
 
     @Nullable
-    private Node searchNodeAt(Node root, int location)
-    {
-        if (root.getEndPosition().getIndex() != location || !root.getChildren().isEmpty())
-        {
+    private Node searchNodeAt(Node root, int location) {
+        if (root.getEndPosition().getIndex() != location || !root.getChildren().isEmpty()) {
             final List<Node> children = root.getChildren();
-            for (Node child : children)
-            {
-                if (child.getEndPosition().getIndex() == location)
-                {
-                    if (child.getChildren().isEmpty())
-                    {
+            for (Node child : children) {
+                if (child.getEndPosition().getIndex() == location) {
+                    if (child.getChildren().isEmpty()) {
                         return child;
-                    }
-                    else
-                    {
+                    } else {
                         return searchNodeAt(child, location);
                     }
-                }
-                else if (child.getEndPosition().getIndex() > location)
-                {
+                } else if (child.getEndPosition().getIndex() > location) {
                     return searchNodeAt(child, location);
                 }
             }
             return null;
-        }
-        else
-        {
+        } else {
             return root;
         }
     }

@@ -26,92 +26,62 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-public class MappingRule extends Rule
-{
+public class MappingRule extends Rule {
     private List<KeyValueRule> fields;
     private ConditionalRules conditionalRules;
 
-    public MappingRule()
-    {
+    public MappingRule() {
         this.fields = new ArrayList<>();
     }
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
-    {
+    public List<Suggestion> getSuggestions(Node node) {
         List<Suggestion> result = new ArrayList<>();
         final List<KeyValueRule> fieldRules = getAllFieldRules(node);
-        for (KeyValueRule rule : fieldRules)
-        {
-            if (rule.repeated() || !matchesAny(rule, node.getChildren()))
-            {
-                result.addAll(rule.getSuggestions(node));
+        for (KeyValueRule rule : fieldRules) {
+            if (rule.repeated() || !matchesAny(rule, node.getChildren())) {
+                // We return the suggestions of the key
+                result.addAll(rule.getKeySuggestions(node));
             }
         }
         return result;
     }
 
-    private boolean matchesAny(KeyValueRule rule, List<Node> children)
-    {
-        for (Node child : children)
-        {
-            if (rule.matches(child))
-            {
+    private boolean matchesAny(KeyValueRule rule, List<Node> children) {
+        for (Node child : children) {
+            if (rule.matches(child)) {
                 return true;
             }
         }
         return false;
     }
 
-    @Nullable
-    @Override
-    public Rule getInnerRule(Node node)
-    {
-        final List<KeyValueRule> allFields = getAllFieldRules(node);
-        for (KeyValueRule field : allFields)
-        {
-            if (field.matches(node))
-            {
-                return field;
-            }
-        }
-        return null;
-    }
-
 
     @Override
-    public boolean matches(@Nonnull Node node)
-    {
+    public boolean matches(@Nonnull Node node) {
         return node instanceof ObjectNode;
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
-    {
+    public Node transform(@Nonnull Node node) {
         Node result = node;
-        if (getFactory() != null)
-        {
+        if (getFactory() != null) {
             result = getFactory().create();
         }
         final List<Node> children = node.getChildren();
-        for (Node child : children)
-        {
+        for (Node child : children) {
             final Rule matchingRule = findMatchingRule(getAllFieldRules(node), child);
-            if (matchingRule != null)
-            {
+            if (matchingRule != null) {
                 final Node newChild = matchingRule.transform(child);
                 child.replaceWith(newChild);
-            }
-            else
-            {
-                final Collection<String> options = Collections2.transform(getAllFieldRules(node), new Function<KeyValueRule, String>()
-                {
+            } else {
+                final Collection<String> options = Collections2.transform(getAllFieldRules(node), new Function<KeyValueRule, String>() {
                     @Override
-                    public String apply(KeyValueRule rule)
-                    {
+                    public String apply(KeyValueRule rule) {
                         return rule.getKeyRule().getDescription();
                     }
                 });
@@ -122,28 +92,21 @@ public class MappingRule extends Rule
         return result;
     }
 
-    private List<KeyValueRule> getAllFieldRules(Node node)
-    {
-        if (conditionalRules != null)
-        {
+    private List<KeyValueRule> getAllFieldRules(Node node) {
+        if (conditionalRules != null) {
             final List<KeyValueRule> rulesNode = conditionalRules.getRulesNode(node);
             final ArrayList<KeyValueRule> rules = new ArrayList<>(rulesNode);
             rules.addAll(fields);
             return rules;
-        }
-        else
-        {
+        } else {
             return fields;
         }
     }
 
     @Nullable
-    private Rule findMatchingRule(List<? extends Rule> rootRule, Node node)
-    {
-        for (Rule rule : rootRule)
-        {
-            if (rule.matches(node))
-            {
+    private Rule findMatchingRule(List<? extends Rule> rootRule, Node node) {
+        for (Rule rule : rootRule) {
+            if (rule.matches(node)) {
                 return rule;
             }
         }
@@ -151,20 +114,34 @@ public class MappingRule extends Rule
     }
 
 
-    public MappingRule with(KeyValueRule field)
-    {
+    public MappingRule with(KeyValueRule field) {
         this.fields.add(field);
         return this;
     }
 
     @Override
-    public String getDescription()
-    {
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot) {
+        if (pathToRoot.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            final Node mappingNode = pathToRoot.get(0);
+            switch (pathToRoot.size()) {
+                case 1:
+                    return getSuggestions(mappingNode);
+                default:
+                    final Node node = pathToRoot.get(1);
+                    final Rule matchingRule = findMatchingRule(getAllFieldRules(mappingNode), node);
+                    return matchingRule == null ? Collections.<Suggestion>emptyList() : matchingRule.getSuggestions(pathToRoot.subList(1, pathToRoot.size()));
+            }
+        }
+    }
+
+    @Override
+    public String getDescription() {
         return "Mapping";
     }
 
-    public MappingRule with(ConditionalRules conditional)
-    {
+    public MappingRule with(ConditionalRules conditional) {
         this.conditionalRules = conditional;
         return this;
     }

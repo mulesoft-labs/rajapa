@@ -21,38 +21,32 @@ import org.raml.suggester.Suggestion;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class AnyOfRule extends Rule
-{
+public class AnyOfRule extends Rule {
 
     private List<Rule> rules;
 
-    public AnyOfRule(List<Rule> rules)
-    {
+
+    public AnyOfRule(List<Rule> rules) {
         this.rules = rules;
     }
 
     @Override
     @Nonnull
-    public List<Suggestion> getSuggestions(Node node)
-    {
+    public List<Suggestion> getSuggestions(Node node) {
         final List<Suggestion> result = new ArrayList<>();
-        for (Rule rule : rules)
-        {
+        for (Rule rule : rules) {
             result.addAll(rule.getSuggestions(node));
         }
         return result;
     }
 
-    @Override
     @Nullable
-    public Rule getInnerRule(Node node)
-    {
-        for (Rule rule : rules)
-        {
-            if (rule.matches(node))
-            {
+    public Rule getMatchingRule(Node node) {
+        for (Rule rule : rules) {
+            if (rule.matches(node)) {
                 return rule;
             }
         }
@@ -60,12 +54,9 @@ public class AnyOfRule extends Rule
     }
 
     @Override
-    public boolean matches(@Nonnull Node node)
-    {
-        for (Rule rule : rules)
-        {
-            if (rule.matches(node))
-            {
+    public boolean matches(@Nonnull Node node) {
+        for (Rule rule : rules) {
+            if (rule.matches(node)) {
                 return true;
             }
         }
@@ -73,18 +64,12 @@ public class AnyOfRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
-    {
-        if (getFactory() != null)
-        {
+    public Node transform(@Nonnull Node node) {
+        if (getFactory() != null) {
             return getFactory().create();
-        }
-        else
-        {
-            for (Rule rule : rules)
-            {
-                if (rule.matches(node))
-                {
+        } else {
+            for (Rule rule : rules) {
+                if (rule.matches(node)) {
                     return rule.transform(node);
                 }
             }
@@ -93,20 +78,38 @@ public class AnyOfRule extends Rule
     }
 
     @Override
-    public String getDescription()
-    {
+    public String getDescription() {
         final StringBuilder desc = new StringBuilder();
         desc.append("Any of :");
         int i = 0;
-        for (Rule rule : rules)
-        {
-            if (i > 0)
-            {
+        for (Rule rule : rules) {
+            if (i > 0) {
                 desc.append(",");
             }
             desc.append(rule.getDescription());
             i++;
         }
         return desc.toString();
+    }
+
+    @Override
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot) {
+        if (!pathToRoot.isEmpty()) {
+            final Node peek = pathToRoot.get(0);
+            final Rule innerRule = getMatchingRule(peek);
+            if (innerRule != null) {
+                final List<Suggestion> suggestions = innerRule.getSuggestions(pathToRoot);
+                if (suggestions.isEmpty()) {
+                    return getSuggestions(peek);
+                } else {
+                    return suggestions;
+                }
+            } else {
+                return getSuggestions(peek);
+            }
+
+        } else {
+            return Collections.emptyList();
+        }
     }
 }

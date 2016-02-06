@@ -32,4 +32,11 @@ public interface Suggestion
      * @return actual value added by the editor
      */
     String getValue();
+
+    /**
+     * Creates an new Suggestion based on this suggestion but changing the description to the specified
+     * @param description The new description
+     * @return A new suggestion with the new description.
+     */
+    Suggestion withDescription(String description);
 }

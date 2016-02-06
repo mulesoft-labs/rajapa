@@ -21,8 +21,8 @@ import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class StringValueRule extends Rule
@@ -40,15 +40,9 @@ public class StringValueRule extends Rule
     @Override
     public List<Suggestion> getSuggestions(Node node)
     {
-        return Arrays.<Suggestion> asList(new DefaultSuggestion(value, description, ""));
+        return Collections.<Suggestion>singletonList(new DefaultSuggestion(value, description, ""));
     }
 
-    @Nullable
-    @Override
-    public Rule getInnerRule(Node node)
-    {
-        return null;
-    }
 
     @Override
     public boolean matches(@Nonnull Node node)

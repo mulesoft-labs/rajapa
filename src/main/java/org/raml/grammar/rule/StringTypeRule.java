@@ -20,7 +20,6 @@ import org.raml.nodes.StringNode;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,13 +30,6 @@ public class StringTypeRule extends Rule
     public List<Suggestion> getSuggestions(Node node)
     {
         return Collections.emptyList();
-    }
-
-    @Nullable
-    @Override
-    public Rule getInnerRule(Node node)
-    {
-        return null;
     }
 
     @Override

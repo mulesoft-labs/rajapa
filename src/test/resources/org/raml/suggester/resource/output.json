@@ -1,0 +1,61 @@
+[ {
+  "label" : "",
+  "description" : "An alternate, human-friendly name for the method (in the resource's context).",
+  "value" : "displayName"
+}, {
+  "label" : "",
+  "description" : "A longer, human-friendly description of the API",
+  "value" : "description"
+}, {
+  "label" : "(Annotation)",
+  "description" : "Annotations to be applied to this API. Annotations are any property whose key begins with \"(\" and ends with \")\" and whose name (the part between the beginning and ending parentheses) is a declared annotation name..",
+  "value" : "(<cursor>)"
+}, {
+  "label" : "",
+  "description" : null,
+  "value" : "get"
+}, {
+  "label" : "",
+  "description" : null,
+  "value" : "patch"
+}, {
+  "label" : "",
+  "description" : null,
+  "value" : "put"
+}, {
+  "label" : "",
+  "description" : null,
+  "value" : "post"
+}, {
+  "label" : "",
+  "description" : null,
+  "value" : "delete"
+}, {
+  "label" : "",
+  "description" : null,
+  "value" : "options"
+}, {
+  "label" : "",
+  "description" : null,
+  "value" : "head"
+}, {
+  "label" : "",
+  "description" : "A list of the traits to apply to all methods declared (implicitly or explicitly) for this resource. ",
+  "value" : "is"
+}, {
+  "label" : "",
+  "description" : "The resource type which this resource inherits.",
+  "value" : "type"
+}, {
+  "label" : "",
+  "description" : "The security schemes that apply to all methods declared (implicitly or explicitly) for this resource.",
+  "value" : "securedBy"
+}, {
+  "label" : "",
+  "description" : "Detailed information about any URI parameters of this resourc",
+  "value" : "uriParameters"
+}, {
+  "label" : "/Resource",
+  "description" : "The resources of the API, identified as relative URIs that begin with a slash (/). Every property whose key begins with a slash (/), and is either at the root of the API definition or is the child property of a resource property, is a resource property, e.g.: /users, /{groupId}, etc",
+  "value" : "/<cursor>"
+} ]

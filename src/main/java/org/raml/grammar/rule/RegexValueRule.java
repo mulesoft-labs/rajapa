@@ -23,9 +23,7 @@ import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -58,12 +56,7 @@ public class RegexValueRule extends Rule
         }
     }
 
-    @Nullable
-    @Override
-    public Rule getInnerRule(Node node)
-    {
-        return null;
-    }
+
 
     @Override
     public boolean matches(@Nonnull Node node)

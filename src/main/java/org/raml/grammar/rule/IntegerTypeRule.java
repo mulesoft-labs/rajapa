@@ -45,12 +45,6 @@ public class IntegerTypeRule extends Rule
         return Collections.emptyList();
     }
 
-    @Nullable
-    @Override
-    public Rule getInnerRule(Node node)
-    {
-        return null;
-    }
 
     @Override
     public boolean matches(@Nonnull Node node)
