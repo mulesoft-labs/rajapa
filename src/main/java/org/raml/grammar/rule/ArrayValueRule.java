@@ -21,41 +21,58 @@ import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ArrayValueRule extends Rule {
+public class ArrayValueRule extends Rule
+{
 
     private Rule of;
 
-    public ArrayValueRule(Rule of) {
+    public ArrayValueRule(Rule of)
+    {
         this.of = of;
     }
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node) {
-        return Collections.<Suggestion>singletonList(new DefaultSuggestion("-", "Item list", ""));
+    public List<Suggestion> getSuggestions(Node node)
+    {
+        final List<Suggestion> suggestions = of.getSuggestions(node);
+        final List<Suggestion> result = new ArrayList<>();
+        for (Suggestion suggestion : suggestions)
+        {
+            result.add(suggestion.withValue("- " + suggestion.getValue()));
+        }
+        return result;
     }
 
 
     @Override
-    public boolean matches(@Nonnull Node node) {
+    public boolean matches(@Nonnull Node node)
+    {
         return node instanceof ArrayNode;
     }
 
     @Override
-    public Node transform(@Nonnull Node node) {
+    public Node transform(@Nonnull Node node)
+    {
         Node result = node;
-        if (getFactory() != null) {
+        if (getFactory() != null)
+        {
             result = getFactory().create();
         }
         final List<Node> children = node.getChildren();
-        for (Node child : children) {
-            if (of.matches(child)) {
+        for (Node child : children)
+        {
+            if (of.matches(child))
+            {
                 final Node transform = of.transform(child);
                 child.replaceWith(transform);
-            } else {
+            }
+            else
+            {
                 child.replaceWith(ErrorNodeFactory.createInvalidElement(child));
             }
         }
@@ -63,7 +80,8 @@ public class ArrayValueRule extends Rule {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Array[" + of.getDescription() + "]";
     }
 }

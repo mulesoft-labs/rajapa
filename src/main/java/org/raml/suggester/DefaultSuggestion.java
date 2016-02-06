@@ -48,8 +48,15 @@ public class DefaultSuggestion implements Suggestion
     }
 
     @Override
-    public Suggestion withDescription(String description) {
-        return new DefaultSuggestion(getValue(),description,label);
+    public Suggestion withDescription(String description)
+    {
+        return new DefaultSuggestion(getValue(), description, getLabel());
+    }
+
+    @Override
+    public Suggestion withValue(String value)
+    {
+        return new DefaultSuggestion(value, getDescription(), getLabel());
     }
 
     @Override

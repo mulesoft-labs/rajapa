@@ -23,13 +23,15 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeyValueRule extends Rule {
+public class KeyValueRule extends Rule
+{
 
     private final Rule keyRule;
     private final Rule valueRule;
     private String description;
 
-    public KeyValueRule(Rule keyRule, Rule valueRule) {
+    public KeyValueRule(Rule keyRule, Rule valueRule)
+    {
 
         this.keyRule = keyRule;
         this.valueRule = valueRule;
@@ -37,66 +39,85 @@ public class KeyValueRule extends Rule {
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node) {
+    public List<Suggestion> getSuggestions(Node node)
+    {
         return getValueRule().getSuggestions(node);
     }
 
     @Nonnull
-    public List<Suggestion> getKeySuggestions(Node node) {
+    public List<Suggestion> getKeySuggestions(Node node)
+    {
         final List<Suggestion> suggestions = getKeyRule().getSuggestions(node);
-        if (description != null) {
-            List<Suggestion> result = new ArrayList<>();
-            for (Suggestion suggestion : suggestions) {
-                result.add(suggestion.withDescription(description));
+
+        List<Suggestion> result = new ArrayList<>();
+        for (Suggestion suggestion : suggestions)
+        {
+            Suggestion keySuggest = suggestion;
+            if (description != null)
+            {
+                keySuggest = suggestion.withDescription(description);
             }
-            return result;
-        } else {
-            return suggestions;
+            keySuggest = keySuggest.withValue(suggestion.getValue() + ": ");
+            result.add(keySuggest);
         }
+        return result;
+
     }
 
     @Override
-    public List<Suggestion> getSuggestions(List<Node> pathToRoot) {
-        if (!pathToRoot.isEmpty()) {
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot)
+    {
+        if (!pathToRoot.isEmpty())
+        {
             return valueRule.getSuggestions(pathToRoot.subList(1, pathToRoot.size()));
-        } else {
+        }
+        else
+        {
             return super.getSuggestions(pathToRoot);
         }
     }
 
 
-    public KeyValueRule description(String description) {
+    public KeyValueRule description(String description)
+    {
         this.description = description;
         return this;
     }
 
 
     @Override
-    public boolean matches(@Nonnull Node node) {
+    public boolean matches(@Nonnull Node node)
+    {
         return node instanceof KeyValueNode && getKeyRule().matches(((KeyValueNode) node).getKey());
     }
 
-    public boolean repeated() {
+    public boolean repeated()
+    {
         return !(getKeyRule() instanceof StringValueRule);
     }
 
-    public Rule getKeyRule() {
+    public Rule getKeyRule()
+    {
         return keyRule;
     }
 
-    public Rule getValueRule() {
+    public Rule getValueRule()
+    {
         return valueRule;
     }
 
-    public KeyValueRule then(Class<? extends Node> clazz) {
+    public KeyValueRule then(Class<? extends Node> clazz)
+    {
         super.then(clazz);
         return this;
     }
 
     @Override
-    public Node transform(@Nonnull Node node) {
+    public Node transform(@Nonnull Node node)
+    {
         Node result = node;
-        if (getFactory() != null) {
+        if (getFactory() != null)
+        {
             result = getFactory().create();
         }
         final KeyValueNode keyValueNode = (KeyValueNode) node;
@@ -108,7 +129,8 @@ public class KeyValueRule extends Rule {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return getKeyRule().getDescription() + ": " + getValueRule().getDescription();
     }
 }

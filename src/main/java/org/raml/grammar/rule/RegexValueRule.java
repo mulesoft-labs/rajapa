@@ -57,7 +57,6 @@ public class RegexValueRule extends Rule
     }
 
 
-
     @Override
     public boolean matches(@Nonnull Node node)
     {

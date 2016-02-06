@@ -23,12 +23,14 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Rule {
+public abstract class Rule
+{
 
     @Nullable
     private NodeFactory factory;
 
-    protected Rule() {
+    protected Rule()
+    {
 
     }
 
@@ -42,24 +44,31 @@ public abstract class Rule {
     public abstract String getDescription();
 
     @Nullable
-    public NodeFactory getFactory() {
+    public NodeFactory getFactory()
+    {
         return factory;
     }
 
-    public Rule then(Class<? extends Node> clazz) {
+    public Rule then(Class<? extends Node> clazz)
+    {
         this.factory = new ClassNodeFactory(clazz);
         return this;
     }
 
-    public Rule then(NodeFactory factory) {
+    public Rule then(NodeFactory factory)
+    {
         this.factory = factory;
         return this;
     }
 
-    public List<Suggestion> getSuggestions(List<Node> pathToRoot) {
-        if (!pathToRoot.isEmpty()) {
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot)
+    {
+        if (!pathToRoot.isEmpty())
+        {
             return getSuggestions(pathToRoot.get(0));
-        } else {
+        }
+        else
+        {
             return Collections.emptyList();
         }
     }

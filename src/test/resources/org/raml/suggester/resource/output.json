@@ -1,61 +1,61 @@
 [ {
-  "label" : "",
+  "label" : "DisplayName",
   "description" : "An alternate, human-friendly name for the method (in the resource's context).",
-  "value" : "displayName"
+  "value" : "displayName: "
 }, {
-  "label" : "",
+  "label" : "Description",
   "description" : "A longer, human-friendly description of the API",
-  "value" : "description"
+  "value" : "description: "
 }, {
   "label" : "(Annotation)",
   "description" : "Annotations to be applied to this API. Annotations are any property whose key begins with \"(\" and ends with \")\" and whose name (the part between the beginning and ending parentheses) is a declared annotation name..",
-  "value" : "(<cursor>)"
+  "value" : "(<cursor>): "
 }, {
-  "label" : "",
+  "label" : "Get",
   "description" : null,
-  "value" : "get"
+  "value" : "get: "
 }, {
-  "label" : "",
+  "label" : "Patch",
   "description" : null,
-  "value" : "patch"
+  "value" : "patch: "
 }, {
-  "label" : "",
+  "label" : "Put",
   "description" : null,
-  "value" : "put"
+  "value" : "put: "
 }, {
-  "label" : "",
+  "label" : "Post",
   "description" : null,
-  "value" : "post"
+  "value" : "post: "
 }, {
-  "label" : "",
+  "label" : "Delete",
   "description" : null,
-  "value" : "delete"
+  "value" : "delete: "
 }, {
-  "label" : "",
+  "label" : "Options",
   "description" : null,
-  "value" : "options"
+  "value" : "options: "
 }, {
-  "label" : "",
+  "label" : "Head",
   "description" : null,
-  "value" : "head"
+  "value" : "head: "
 }, {
-  "label" : "",
+  "label" : "Is",
   "description" : "A list of the traits to apply to all methods declared (implicitly or explicitly) for this resource. ",
-  "value" : "is"
+  "value" : "is: "
 }, {
-  "label" : "",
+  "label" : "Type",
   "description" : "The resource type which this resource inherits.",
-  "value" : "type"
+  "value" : "type: "
 }, {
-  "label" : "",
+  "label" : "SecuredBy",
   "description" : "The security schemes that apply to all methods declared (implicitly or explicitly) for this resource.",
-  "value" : "securedBy"
+  "value" : "securedBy: "
 }, {
-  "label" : "",
+  "label" : "UriParameters",
   "description" : "Detailed information about any URI parameters of this resourc",
-  "value" : "uriParameters"
+  "value" : "uriParameters: "
 }, {
   "label" : "/Resource",
   "description" : "The resources of the API, identified as relative URIs that begin with a slash (/). Every property whose key begins with a slash (/), and is either at the root of the API definition or is the child property of a resource property, is a resource property, e.g.: /users, /{groupId}, etc",
-  "value" : "/<cursor>"
+  "value" : "/<cursor>: "
 } ]

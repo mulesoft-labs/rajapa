@@ -1,0 +1,9 @@
+[ {
+  "label" : "Title",
+  "description" : "Title of documentation section.",
+  "value" : "- title: "
+}, {
+  "label" : "Content",
+  "description" : "Content of documentation section.",
+  "value" : "- content: "
+} ]

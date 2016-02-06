@@ -15,6 +15,7 @@
  */
 package org.raml.grammar.rule;
 
+import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
 import org.raml.suggester.DefaultSuggestion;
@@ -40,7 +41,7 @@ public class StringValueRule extends Rule
     @Override
     public List<Suggestion> getSuggestions(Node node)
     {
-        return Collections.<Suggestion>singletonList(new DefaultSuggestion(value, description, ""));
+        return Collections.<Suggestion> singletonList(new DefaultSuggestion(value, description, StringUtils.capitalize(value)));
     }
 
 

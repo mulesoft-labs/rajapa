@@ -1,45 +1,45 @@
 [ {
-  "label" : "",
+  "label" : "Description",
   "description" : "A longer, human-friendly description of the API",
-  "value" : "description"
+  "value" : "description: "
 }, {
-  "label" : "",
+  "label" : "DisplayName",
   "description" : "An alternate, human-friendly name for the method (in the resource's context).",
-  "value" : "displayName"
+  "value" : "displayName: "
 }, {
   "label" : "(Annotation)",
   "description" : "Annotations to be applied to this API. Annotations are any property whose key begins with \"(\" and ends with \")\" and whose name (the part between the beginning and ending parentheses) is a declared annotation name..",
-  "value" : "(<cursor>)"
+  "value" : "(<cursor>): "
 }, {
-  "label" : "",
+  "label" : "QueryParameters",
   "description" : "Detailed information about any query parameters needed by this method. Mutually exclusive with queryString.",
-  "value" : "queryParameters"
+  "value" : "queryParameters: "
 }, {
-  "label" : "",
+  "label" : "Headers",
   "description" : "Detailed information about any request headers needed by this method.",
-  "value" : "headers"
+  "value" : "headers: "
 }, {
-  "label" : "",
+  "label" : "QueryString",
   "description" : "Specifies the query string needed by this method. Mutually exclusive with queryParameters.",
-  "value" : "queryString"
+  "value" : "queryString: "
 }, {
-  "label" : "",
+  "label" : "Responses",
   "description" : "Information about the expected responses to a request",
-  "value" : "responses"
+  "value" : "responses: "
 }, {
-  "label" : "",
+  "label" : "Body",
   "description" : "Some methods admit request bodies, which are described by this property.",
-  "value" : "body"
+  "value" : "body: "
 }, {
-  "label" : "",
+  "label" : "Protocols",
   "description" : "A method can override the protocols specified in the resource or at the API root, by employing this property.",
-  "value" : "protocols"
+  "value" : "protocols: "
 }, {
-  "label" : "",
+  "label" : "Is",
   "description" : "A list of the traits to apply to this method.",
-  "value" : "is"
+  "value" : "is: "
 }, {
-  "label" : "",
+  "label" : "SecuredBy",
   "description" : "The security schemes that apply to this method.",
-  "value" : "securedBy"
+  "value" : "securedBy: "
 } ]

@@ -36,21 +36,24 @@ import java.util.Collection;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class SuggesterTestCase {
+public class SuggesterTestCase
+{
 
     public static final String CURSOR_KEYWORD = "<cursor>";
     private File input;
     private File expected;
 
 
-    public SuggesterTestCase(File input, File output, String name) {
+    public SuggesterTestCase(File input, File output, String name)
+    {
         this.input = input;
         this.expected = output;
     }
 
 
     @Test
-    public void verifySuggestion() throws IOException {
+    public void verifySuggestion() throws IOException
+    {
         final RamlSuggester ramlSuggester = new RamlSuggester();
         final String content = IOUtils.toString(new FileInputStream(input), "UTF-8");
         final int offset = content.indexOf(CURSOR_KEYWORD);
@@ -63,35 +66,43 @@ public class SuggesterTestCase {
         Assert.assertTrue(jsonEquals(dump, expected));
     }
 
-    private boolean jsonEquals(String produced, String expected) {
+    private boolean jsonEquals(String produced, String expected)
+    {
         ObjectMapper mapper = new ObjectMapper();
-        try {
+        try
+        {
             JsonNode beforeNode = mapper.readTree(expected);
             JsonNode afterNode = mapper.readTree(produced);
             JsonNode patch = JsonDiff.asJson(beforeNode, afterNode);
             String diffs = patch.toString();
-            if ("[]".equals(diffs)) {
+            if ("[]".equals(diffs))
+            {
                 return true;
             }
             System.out.println("json diff: " + diffs);
             return false;
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
     }
 
     @Parameterized.Parameters(name = "{2}")
-    public static Collection<Object[]> data() throws URISyntaxException {
+    public static Collection<Object[]> data() throws URISyntaxException
+    {
         final URI baseFolder = SuggesterTestCase.class.getResource("").toURI();
         final File testFolder = new File(baseFolder);
         final File[] scenarios = testFolder.listFiles();
         List<Object[]> result = new ArrayList<>();
-        for (File scenario : scenarios) {
-            if (scenario.isDirectory()) {
-                result.add(new Object[]{
-                        new File(scenario, "input.raml"),
-                        new File(scenario, "output.json"),
-                        scenario.getName()
+        for (File scenario : scenarios)
+        {
+            if (scenario.isDirectory())
+            {
+                result.add(new Object[] {
+                                         new File(scenario, "input.raml"),
+                                         new File(scenario, "output.json"),
+                                         scenario.getName()
                 });
             }
         }

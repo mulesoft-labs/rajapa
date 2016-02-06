@@ -34,9 +34,16 @@ public interface Suggestion
     String getValue();
 
     /**
-     * Creates an new Suggestion based on this suggestion but changing the description to the specified
+     * Creates an new Suggestion based on this suggestion but changing the description with the specified
      * @param description The new description
      * @return A new suggestion with the new description.
      */
     Suggestion withDescription(String description);
+
+    /**
+     * Creates an new Suggestion based on this suggestion but changing the value with the specified
+     * @param value The new value
+     * @return A new suggestion with the new value.
+     */
+    Suggestion withValue(String value);
 }

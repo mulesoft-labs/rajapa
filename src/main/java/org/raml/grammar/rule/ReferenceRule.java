@@ -23,24 +23,31 @@ import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-public class ReferenceRule extends Rule {
+public class ReferenceRule extends Rule
+{
 
 
     private GrammarContext context;
     private final String name;
     private Rule ref;
 
-    public ReferenceRule(GrammarContext context, String name) {
+    public ReferenceRule(GrammarContext context, String name)
+    {
         this.context = context;
         this.name = name;
     }
 
-    public Rule getRef() {
-        if (ref == null) {
+    public Rule getRef()
+    {
+        if (ref == null)
+        {
             final Rule ruleByName = context.getRuleByName(name);
-            if (ruleByName != null) {
+            if (ruleByName != null)
+            {
                 ref = ruleByName;
-            } else {
+            }
+            else
+            {
                 throw new RuntimeException("Invalid grammar rule reference name " + name);
             }
         }
@@ -49,29 +56,34 @@ public class ReferenceRule extends Rule {
 
 
     @Override
-    public List<Suggestion> getSuggestions(List<Node> pathToRoot) {
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot)
+    {
         return getRef().getSuggestions(pathToRoot);
     }
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node) {
+    public List<Suggestion> getSuggestions(Node node)
+    {
         return Collections.emptyList();
     }
 
 
     @Override
-    public boolean matches(@Nonnull Node node) {
+    public boolean matches(@Nonnull Node node)
+    {
         return getRef().matches(node);
     }
 
     @Override
-    public Node transform(@Nonnull Node node) {
+    public Node transform(@Nonnull Node node)
+    {
         return getRef().transform(node);
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return getRef().getDescription();
     }
 }

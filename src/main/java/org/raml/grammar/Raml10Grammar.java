@@ -41,7 +41,7 @@ public class Raml10Grammar extends BaseGrammar
                         .with(annotationTypesField())
                         .with(securitySchemesField())
                         .with(field(usesKey(), library()))
-                        .with(titleField())
+                        .with(titleField().description("Short plain-text label for the API."))
                         .with(field(versionKey(), stringType()))
                         .with(field(baseUriKey(), stringType()))
                         .with(field(baseUriParametersKey(), parameters()))
@@ -70,8 +70,8 @@ public class Raml10Grammar extends BaseGrammar
     private Rule documentation()
     {
         return mapping()
-                        .with(titleField())
-                        .with(field(string("content"), stringType()));
+                        .with(titleField().description("Title of documentation section."))
+                        .with(field(string("content"), stringType()).description("Content of documentation section."));
     }
 
 
@@ -301,25 +301,28 @@ public class Raml10Grammar extends BaseGrammar
                         .with(bodyField())
                         .with(protocolsField().description("A method can override the protocols specified in the resource or at the API root, by employing this property."))
                         .with(isField()
-                                .description("A list of the traits to apply to this method."))
+                                       .description("A list of the traits to apply to this method."))
                         .with(securedByField().description("The security schemes that apply to this method."));
     }
 
-    private StringValueRule responseKey() {
+    private StringValueRule responseKey()
+    {
         return string("responses")
-                .description("Information about the expected responses to a request");
+                                  .description("Information about the expected responses to a request");
     }
 
-    private StringValueRule queryStringKey() {
+    private StringValueRule queryStringKey()
+    {
         return string("queryString")
-                .description("Specifies the query string needed by this method." +
-                " Mutually exclusive with queryParameters.");
+                                    .description("Specifies the query string needed by this method." +
+                                                 " Mutually exclusive with queryParameters.");
     }
 
-    private StringValueRule queryParametersKey() {
+    private StringValueRule queryParametersKey()
+    {
         return string("queryParameters")
-                .description("Detailed information about any query parameters needed by this method. " +
-                "Mutually exclusive with queryString.");
+                                        .description("Detailed information about any query parameters needed by this method. " +
+                                                     "Mutually exclusive with queryString.");
     }
 
 
@@ -452,9 +455,10 @@ public class Raml10Grammar extends BaseGrammar
         return field(bodyKey(), body());
     }
 
-    private StringValueRule bodyKey() {
+    private StringValueRule bodyKey()
+    {
         return string("body")
-                .description("Some methods admit request bodies, which are described by this property.");
+                             .description("Some methods admit request bodies, which are described by this property.");
     }
 
     private KeyValueRule headersField()
@@ -462,9 +466,10 @@ public class Raml10Grammar extends BaseGrammar
         return field(headersKey(), parameters());
     }
 
-    private StringValueRule headersKey() {
+    private StringValueRule headersKey()
+    {
         return string("headers")
-                .description("Detailed information about any request headers needed by this method.");
+                                .description("Detailed information about any request headers needed by this method.");
     }
 
     private KeyValueRule descriptionField()
@@ -509,7 +514,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private StringValueRule titleKey()
     {
-        return string("title").description("Short plain-text label for the API.");
+        return string("title");
     }
 
 
@@ -544,7 +549,7 @@ public class Raml10Grammar extends BaseGrammar
     private StringValueRule typeKey()
     {
         return string("type")
-                .description("The resource type which this resource inherits.");
+                             .description("The resource type which this resource inherits.");
     }
 
     private StringValueRule isKey()
@@ -555,7 +560,7 @@ public class Raml10Grammar extends BaseGrammar
     private StringValueRule displayNameKey()
     {
         return string("displayName")
-                .description("An alternate, human-friendly name for the method (in the resource's context).");
+                                    .description("An alternate, human-friendly name for the method (in the resource's context).");
     }
 
     private RegexValueRule annotationKey()

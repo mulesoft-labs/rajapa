@@ -22,26 +22,31 @@ import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-public class AnyValueRule extends Rule {
+public class AnyValueRule extends Rule
+{
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node) {
+    public List<Suggestion> getSuggestions(Node node)
+    {
         return Collections.emptyList();
     }
 
 
     @Override
-    public boolean matches(@Nonnull Node node) {
+    public boolean matches(@Nonnull Node node)
+    {
         return true;
     }
 
     @Override
-    public Node transform(@Nonnull Node node) {
+    public Node transform(@Nonnull Node node)
+    {
         return node;
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "any";
     }
 }
