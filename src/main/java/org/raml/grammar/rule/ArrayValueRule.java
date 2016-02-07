@@ -49,6 +49,26 @@ public class ArrayValueRule extends Rule
         return result;
     }
 
+    @Override
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot)
+    {
+        if (pathToRoot.isEmpty())
+        {
+            return Collections.emptyList();
+        }
+        else
+        {
+            final Node mappingNode = pathToRoot.get(0);
+            switch (pathToRoot.size())
+            {
+                case 1:
+                    return getSuggestions(mappingNode);
+                default:
+                    return of.getSuggestions(pathToRoot.subList(1, pathToRoot.size()));
+            }
+        }
+    }
+
 
     @Override
     public boolean matches(@Nonnull Node node)

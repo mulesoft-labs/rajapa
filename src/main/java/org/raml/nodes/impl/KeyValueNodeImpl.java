@@ -94,7 +94,7 @@ public class KeyValueNodeImpl extends BaseNode implements KeyValueNode
     @Override
     public String toString()
     {
-        return String.format("{%s: %s}", getKey(), getValue());
+        return String.format("%s: %s", getKey(), getValue());
     }
 
 
