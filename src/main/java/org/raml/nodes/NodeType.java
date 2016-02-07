@@ -15,31 +15,16 @@
  */
 package org.raml.nodes;
 
-import org.raml.nodes.impl.AbstractRamlNode;
-
-public class ErrorNode extends AbstractRamlNode
+public enum NodeType
 {
-    private final String errorMessage;
-
-    public ErrorNode(String msg)
-    {
-        this.errorMessage = msg;
-    }
-
-    public String getErrorMessage()
-    {
-        return errorMessage;
-    }
-
-    @Override
-    public Node copy()
-    {
-        return this;
-    }
-
-    @Override
-    public NodeType getType()
-    {
-        return NodeType.Error;
-    }
+    Object,
+    Array,
+    String,
+    Integer,
+    Float,
+    Boolean,
+    Null,
+    KeyValue,
+    Reference,
+    Error
 }

@@ -17,6 +17,7 @@ package org.raml.nodes.impl;
 
 import org.raml.grammar.Raml10Grammar;
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.raml.utils.NodeSelector;
 
 import javax.annotation.Nullable;
@@ -64,4 +65,6 @@ public class ResourceTypeRefNode extends AbstractReferenceNode
     {
         return new ResourceTypeRefNode(this);
     }
+
+
 }

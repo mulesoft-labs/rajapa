@@ -19,6 +19,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
 import org.raml.suggester.Suggestion;
 
@@ -29,12 +30,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class MappingRule extends Rule
+public class ObjectRule extends Rule
 {
     private List<KeyValueRule> fields;
     private ConditionalRules conditionalRules;
 
-    public MappingRule()
+    public ObjectRule()
     {
         this.fields = new ArrayList<>();
     }
@@ -78,35 +79,61 @@ public class MappingRule extends Rule
     @Override
     public Node transform(@Nonnull Node node)
     {
-        Node result = node;
-        if (getFactory() != null)
+        if (!matches(node))
         {
-            result = getFactory().create();
+            return ErrorNodeFactory.createInvalidType(node, NodeType.Object);
         }
-        final List<Node> children = node.getChildren();
-        for (Node child : children)
+        else
         {
-            final Rule matchingRule = findMatchingRule(getAllFieldRules(node), child);
-            if (matchingRule != null)
+            Node result = node;
+            if (getFactory() != null)
             {
-                final Node newChild = matchingRule.transform(child);
-                child.replaceWith(newChild);
+                result = getFactory().create();
             }
-            else
+            final List<Node> children = node.getChildren();
+            final List<KeyValueRule> allFieldRules = getAllFieldRules(node);
+            final List<KeyValueRule> requiredRules = new ArrayList<>();
+            for (KeyValueRule fieldRule : allFieldRules)
             {
-                final Collection<String> options = Collections2.transform(getAllFieldRules(node), new Function<KeyValueRule, String>()
+                if (fieldRule.isRequired())
                 {
-                    @Override
-                    public String apply(KeyValueRule rule)
-                    {
-                        return rule.getKeyRule().getDescription();
-                    }
-                });
-                child.replaceWith(ErrorNodeFactory.createUnexpectedKey(((KeyValueNode) child).getKey(), options));
+                    requiredRules.add(fieldRule);
+                }
             }
-        }
 
-        return result;
+            for (Node child : children)
+            {
+                final Rule matchingRule = findMatchingRule(allFieldRules, child);
+                if (matchingRule != null)
+                {
+                    requiredRules.remove(matchingRule);
+                    final Node newChild = matchingRule.transform(child);
+                    child.replaceWith(newChild);
+                }
+                else
+                {
+                    final Collection<String> options = Collections2.transform(allFieldRules, new Function<KeyValueRule, String>()
+                    {
+                        @Override
+                        public String apply(KeyValueRule rule)
+                        {
+                            return rule.getKeyRule().getDescription();
+                        }
+                    });
+                    child.replaceWith(ErrorNodeFactory.createUnexpectedKey(((KeyValueNode) child).getKey(), options));
+                }
+            }
+
+            if (!requiredRules.isEmpty())
+            {
+                for (KeyValueRule requiredRule : requiredRules)
+                {
+                    result.addChild(ErrorNodeFactory.createRequiredValueNotFound(node, requiredRule.getKeyRule()));
+                }
+            }
+
+            return result;
+        }
     }
 
     private List<KeyValueRule> getAllFieldRules(Node node)
@@ -138,7 +165,7 @@ public class MappingRule extends Rule
     }
 
 
-    public MappingRule with(KeyValueRule field)
+    public ObjectRule with(KeyValueRule field)
     {
         this.fields.add(field);
         return this;
@@ -172,7 +199,7 @@ public class MappingRule extends Rule
         return "Mapping";
     }
 
-    public MappingRule with(ConditionalRules conditional)
+    public ObjectRule with(ConditionalRules conditional)
     {
         this.conditionalRules = conditional;
         return this;

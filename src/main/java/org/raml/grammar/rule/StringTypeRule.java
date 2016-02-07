@@ -16,6 +16,7 @@
 package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.raml.nodes.StringNode;
 import org.raml.suggester.Suggestion;
 
@@ -23,7 +24,7 @@ import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-public class StringTypeRule extends Rule
+public class StringTypeRule extends AbstractTypeRule
 {
     @Nonnull
     @Override
@@ -38,22 +39,17 @@ public class StringTypeRule extends Rule
         return node instanceof StringNode;
     }
 
-    @Override
-    public Node transform(@Nonnull Node node)
-    {
-        if (getFactory() != null)
-        {
-            return getFactory().create(((StringNode) node).getValue());
-        }
-        else
-        {
-            return node;
-        }
-    }
 
     @Override
     public String getDescription()
     {
         return "String";
+    }
+
+    @Nonnull
+    @Override
+    NodeType getType()
+    {
+        return NodeType.String;
     }
 }

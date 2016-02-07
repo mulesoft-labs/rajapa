@@ -15,10 +15,7 @@
  */
 package org.raml.nodes.impl;
 
-import org.raml.nodes.BaseNode;
-import org.raml.nodes.Position;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
+import org.raml.nodes.*;
 
 import javax.annotation.Nonnull;
 
@@ -100,4 +97,10 @@ public class KeyValueNodeImpl extends BaseNode implements KeyValueNode
         return String.format("{%s: %s}", getKey(), getValue());
     }
 
+
+    @Override
+    public NodeType getType()
+    {
+        return NodeType.KeyValue;
+    }
 }

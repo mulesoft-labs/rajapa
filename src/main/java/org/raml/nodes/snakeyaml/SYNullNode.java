@@ -15,6 +15,7 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import org.raml.nodes.NodeType;
 import org.raml.nodes.NullNode;
 import org.yaml.snakeyaml.nodes.Node;
 
@@ -37,8 +38,20 @@ public class SYNullNode extends SYBaseRamlNode implements NullNode
     }
 
     @Override
+    public String toString()
+    {
+        return "null";
+    }
+
+    @Override
     public org.raml.nodes.Node copy()
     {
         return new SYNullNode(this);
+    }
+
+    @Override
+    public NodeType getType()
+    {
+        return NodeType.Null;
     }
 }

@@ -17,6 +17,7 @@ package org.raml.nodes.snakeyaml;
 
 import org.raml.nodes.FloatingNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
 import java.math.BigDecimal;
@@ -41,8 +42,20 @@ public class SYFloatingNode extends SYBaseRamlNode implements FloatingNode
     }
 
     @Override
+    public String toString()
+    {
+        return String.valueOf(getValue());
+    }
+
+    @Override
     public Node copy()
     {
         return new SYFloatingNode(this);
+    }
+
+    @Override
+    public NodeType getType()
+    {
+        return NodeType.Float;
     }
 }

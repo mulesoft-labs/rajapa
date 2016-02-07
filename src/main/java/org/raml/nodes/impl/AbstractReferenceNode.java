@@ -16,6 +16,7 @@
 package org.raml.nodes.impl;
 
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.raml.nodes.ReferenceNode;
 
 public abstract class AbstractReferenceNode extends AbstractRamlNode implements ReferenceNode
@@ -41,6 +42,12 @@ public abstract class AbstractReferenceNode extends AbstractRamlNode implements 
             return getRootNode();
         }
 
+    }
+
+    @Override
+    public NodeType getType()
+    {
+        return NodeType.Reference;
     }
 
 }

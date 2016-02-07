@@ -52,7 +52,8 @@ public class RamlSuggester
 
         final String realDocument = header + footer;
 
-        final Node root = new RamlBuilder().build(realDocument);
+        // We only run the first phase
+        final Node root = new RamlBuilder(RamlBuilder.FIRST_PHASE).build(realDocument);
         Node node = searchNodeAt(root, location);
         if (node != null)
         {

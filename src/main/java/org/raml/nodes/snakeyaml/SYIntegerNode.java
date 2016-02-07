@@ -17,6 +17,7 @@ package org.raml.nodes.snakeyaml;
 
 import org.raml.nodes.IntegerNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
 import java.math.BigInteger;
@@ -41,8 +42,20 @@ public class SYIntegerNode extends SYBaseRamlNode implements IntegerNode
     }
 
     @Override
+    public String toString()
+    {
+        return String.valueOf(getValue());
+    }
+
+    @Override
     public Node copy()
     {
         return new SYIntegerNode(this);
+    }
+
+    @Override
+    public NodeType getType()
+    {
+        return NodeType.Integer;
     }
 }

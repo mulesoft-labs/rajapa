@@ -49,7 +49,7 @@ public class Raml10Grammar extends BaseGrammar
                         .with(field(mediaTypeKey(), stringType()))
                         .with(securedByField().description("The security schemes that apply to every resource and method in the API."))
                         .with(field(resourceKey(), resourceValue()).then(ResourceNode.class))
-                        .with(field(documentationKey(), documentations()))
+                        .with(nonOptionalField(documentationKey(), documentations()))
                         .then(RamlDocumentNode.class);
     }
 
@@ -71,7 +71,12 @@ public class Raml10Grammar extends BaseGrammar
     {
         return mapping()
                         .with(titleField().description("Title of documentation section."))
-                        .with(field(string("content"), stringType()).description("Content of documentation section."));
+                        .with(contentField().description("Content of documentation section."));
+    }
+
+    private KeyValueRule contentField()
+    {
+        return requiredField(string("content"), stringType());
     }
 
 
@@ -212,7 +217,7 @@ public class Raml10Grammar extends BaseGrammar
         return regex(".+\\[\\]");
     }
 
-    private MappingRule properties()
+    private ObjectRule properties()
     {
         return mapping()
                         .with(field(stringType(), ref("type")));
@@ -509,7 +514,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private KeyValueRule titleField()
     {
-        return field(titleKey(), stringType());
+        return requiredField(titleKey(), stringType());
     }
 
     private StringValueRule titleKey()

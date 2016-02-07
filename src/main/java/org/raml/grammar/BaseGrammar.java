@@ -32,14 +32,14 @@ public class BaseGrammar
         this.context = new GrammarContext();
     }
 
-    public MappingRule mapping()
+    public ObjectRule mapping()
     {
-        return new MappingRule();
+        return new ObjectRule();
     }
 
-    public MappingRule mapping(String name)
+    public ObjectRule mapping(String name)
     {
-        final MappingRule mapping = mapping();
+        final ObjectRule mapping = mapping();
         this.context.registerRule(name, mapping);
         return mapping;
     }
@@ -72,6 +72,16 @@ public class BaseGrammar
     public KeyValueRule field(Rule keyRule, Rule valueRule)
     {
         return new KeyValueRule(keyRule, optional(valueRule));
+    }
+
+    public KeyValueRule nonOptionalField(Rule keyRule, Rule valueRule)
+    {
+        return new KeyValueRule(keyRule, valueRule);
+    }
+
+    public KeyValueRule requiredField(Rule keyRule, Rule valueRule)
+    {
+        return new KeyValueRule(keyRule, valueRule).required();
     }
 
     public StringTypeRule stringType()

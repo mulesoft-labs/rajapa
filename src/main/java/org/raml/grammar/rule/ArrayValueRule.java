@@ -17,6 +17,7 @@ package org.raml.grammar.rule;
 
 import org.raml.nodes.ArrayNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.Suggestion;
 
@@ -58,25 +59,32 @@ public class ArrayValueRule extends Rule
     @Override
     public Node transform(@Nonnull Node node)
     {
-        Node result = node;
-        if (getFactory() != null)
+        if (!matches(node))
         {
-            result = getFactory().create();
+            return ErrorNodeFactory.createInvalidType(node, NodeType.Array);
         }
-        final List<Node> children = node.getChildren();
-        for (Node child : children)
+        else
         {
-            if (of.matches(child))
+            Node result = node;
+            if (getFactory() != null)
             {
-                final Node transform = of.transform(child);
-                child.replaceWith(transform);
+                result = getFactory().create();
             }
-            else
+            final List<Node> children = node.getChildren();
+            for (Node child : children)
             {
-                child.replaceWith(ErrorNodeFactory.createInvalidElement(child));
+                if (of.matches(child))
+                {
+                    final Node transform = of.transform(child);
+                    child.replaceWith(transform);
+                }
+                else
+                {
+                    child.replaceWith(ErrorNodeFactory.createInvalidElement(child));
+                }
             }
+            return result;
         }
-        return result;
     }
 
     @Override

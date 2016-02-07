@@ -18,6 +18,7 @@ package org.raml.grammar.rule;
 import com.google.common.collect.Range;
 import org.raml.nodes.IntegerNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.raml.nodes.StringNode;
 import org.raml.suggester.Suggestion;
 
@@ -27,7 +28,7 @@ import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
 
-public class IntegerTypeRule extends Rule
+public class IntegerTypeRule extends AbstractTypeRule
 {
 
     @Nullable
@@ -67,21 +68,15 @@ public class IntegerTypeRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
-    {
-        if (getFactory() != null)
-        {
-            return getFactory().create(((StringNode) node).getValue());
-        }
-        else
-        {
-            return node;
-        }
-    }
-
-    @Override
     public String getDescription()
     {
         return "Integer";
+    }
+
+    @Nonnull
+    @Override
+    NodeType getType()
+    {
+        return NodeType.Integer;
     }
 }

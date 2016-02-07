@@ -29,12 +29,19 @@ public class KeyValueRule extends Rule
     private final Rule keyRule;
     private final Rule valueRule;
     private String description;
+    private boolean required;
 
     public KeyValueRule(Rule keyRule, Rule valueRule)
     {
 
         this.keyRule = keyRule;
         this.valueRule = valueRule;
+    }
+
+    public KeyValueRule required()
+    {
+        this.required = true;
+        return this;
     }
 
     @Nonnull
@@ -132,5 +139,10 @@ public class KeyValueRule extends Rule
     public String getDescription()
     {
         return getKeyRule().getDescription() + ": " + getValueRule().getDescription();
+    }
+
+    public boolean isRequired()
+    {
+        return required;
     }
 }

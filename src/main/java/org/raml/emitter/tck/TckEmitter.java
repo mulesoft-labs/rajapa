@@ -17,29 +17,22 @@ package org.raml.emitter.tck;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.ObjectNode;
-import org.raml.nodes.ReferenceNode;
-import org.raml.nodes.SimpleTypeNode;
-import org.raml.nodes.StringNode;
+import org.raml.nodes.*;
 import org.raml.nodes.impl.KeyValueNodeImpl;
 import org.raml.nodes.impl.MethodNode;
 import org.raml.nodes.impl.ResourceNode;
 import org.raml.nodes.impl.StringNodeImpl;
 import org.raml.nodes.snakeyaml.SYArrayNode;
-import org.raml.nodes.snakeyaml.SYIntegerNode;
 import org.raml.nodes.snakeyaml.SYNullNode;
 import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.NodeTuple;
 import org.yaml.snakeyaml.nodes.Tag;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TckEmitter
 {
@@ -74,15 +67,15 @@ public class TckEmitter
         }
         else if (node instanceof ReferenceNode)
         {
-            dumpReference((ReferenceNode) node, dump, depth);
-        }
-        else if (node instanceof StringNode || node instanceof SYIntegerNode)
-        {
-            dumpString((SimpleTypeNode) node, dump, depth);
+            dumpReference((ReferenceNode) node, dump);
         }
         else if (node instanceof SYNullNode)
         {
             dumpNullNode(dump);
+        }
+        else if (node instanceof SimpleTypeNode)
+        {
+            dumpString((SimpleTypeNode) node, dump);
         }
         else
         {
@@ -90,7 +83,7 @@ public class TckEmitter
         }
     }
 
-    private void dumpReference(ReferenceNode node, StringBuilder dump, int depth)
+    private void dumpReference(ReferenceNode node, StringBuilder dump)
     {
         dump.append(sanitizeScalarValue(node.getRefName())).append(COMMA_SEP);
     }
@@ -111,7 +104,7 @@ public class TckEmitter
         dump.append(START_MAP).append(END_MAP).append(COMMA_SEP);
     }
 
-    private void dumpString(SimpleTypeNode node, StringBuilder dump, int depth)
+    private void dumpString(SimpleTypeNode node, StringBuilder dump)
     {
         dump.append(sanitizeScalarValue(node.getValue())).append(COMMA_SEP);
     }
@@ -148,14 +141,14 @@ public class TckEmitter
 
 
         removeLastSeparator(dump);
-        dump.append(addNewline(dump) + indent(depth) + END_MAP + COMMA_SEP);
+        dump.append(addNewline(dump)).append(indent(depth)).append(END_MAP).append(COMMA_SEP);
     }
 
     private void dumpCustomArrayIfPresent(StringBuilder dump, int depth, List<KeyValueNode> keyValueNodes, String key, String innerKey)
     {
         if (!keyValueNodes.isEmpty())
         {
-            dump.append(addNewline(dump) + indent(depth)).append(sanitizeScalarValue(key))
+            dump.append(addNewline(dump)).append(indent(depth)).append(sanitizeScalarValue(key))
                 .append(COLON_SEP).append(START_ARRAY).append(NEWLINE).append(indent(depth + 1));
 
             for (KeyValueNode node : keyValueNodes)
@@ -165,23 +158,22 @@ public class TckEmitter
                 {
                     copy = new SYObjectNode(new MappingNode(Tag.MAP, new ArrayList<NodeTuple>(), null));
                 }
-                copy.insertChild(0, new KeyValueNodeImpl(new StringNodeImpl(innerKey), node.getKey()));
+                copy.addChild(0, new KeyValueNodeImpl(new StringNodeImpl(innerKey), node.getKey()));
                 dumpObject((ObjectNode) copy, dump, depth + 1);
             }
             removeLastSeparator(dump);
-            dump.append(addNewline(dump) + indent(depth) + END_ARRAY + COMMA_SEP);
+            dump.append(addNewline(dump)).append(indent(depth)).append(END_ARRAY).append(COMMA_SEP);
         }
     }
 
     private void dumpKeyValueNode(StringBuilder dump, int depth, KeyValueNode node)
     {
         // key
-        KeyValueNode keyValueNode = node;
-        String keyText = sanitizeScalarValue(((StringNode) keyValueNode.getKey()).getValue());
-        dump.append(addNewline(dump) + indent(depth + 1)).append(keyText).append(COLON_SEP);
+        String keyText = sanitizeScalarValue(((StringNode) node.getKey()).getValue());
+        dump.append(addNewline(dump)).append(indent(depth + 1)).append(keyText).append(COLON_SEP);
 
         // value
-        dumpNode(keyValueNode.getValue(), dump, depth + 1);
+        dumpNode(node.getValue(), dump, depth + 1);
     }
 
     private Node copy(Node node)

@@ -15,7 +15,9 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
 import org.yaml.snakeyaml.nodes.MappingNode;
 
@@ -38,8 +40,20 @@ public class SYObjectNode extends SYBaseRamlNode implements ObjectNode
     }
 
     @Override
+    public String toString()
+    {
+        return "{\n" + StringUtils.join(getChildren(), ",\n") + "\n}";
+    }
+
+    @Override
     public Node copy()
     {
         return new SYObjectNode(this);
+    }
+
+    @Override
+    public NodeType getType()
+    {
+        return NodeType.Object;
     }
 }

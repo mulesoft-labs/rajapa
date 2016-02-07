@@ -17,6 +17,7 @@ package org.raml.nodes.snakeyaml;
 
 import org.raml.nodes.BooleanNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
 public class SYBooleanNode extends SYBaseRamlNode implements BooleanNode
@@ -39,8 +40,20 @@ public class SYBooleanNode extends SYBaseRamlNode implements BooleanNode
     }
 
     @Override
+    public String toString()
+    {
+        return String.valueOf(getValue());
+    }
+
+    @Override
     public Node copy()
     {
         return new SYBooleanNode(this);
+    }
+
+    @Override
+    public NodeType getType()
+    {
+        return NodeType.Boolean;
     }
 }

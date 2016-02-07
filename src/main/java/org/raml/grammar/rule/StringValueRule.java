@@ -71,6 +71,12 @@ public class StringValueRule extends Rule
     }
 
     @Override
+    public String toString()
+    {
+        return value;
+    }
+
+    @Override
     public String getDescription()
     {
         return "\"" + value + "\"";

@@ -16,6 +16,7 @@
 package org.raml.nodes.impl;
 
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
 
 public class RamlDocumentNode extends AbstractRamlNode implements ObjectNode
@@ -34,5 +35,11 @@ public class RamlDocumentNode extends AbstractRamlNode implements ObjectNode
     public Node copy()
     {
         return new RamlDocumentNode(this);
+    }
+
+    @Override
+    public NodeType getType()
+    {
+        return NodeType.Object;
     }
 }

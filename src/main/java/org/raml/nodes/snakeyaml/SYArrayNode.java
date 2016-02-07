@@ -15,9 +15,13 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.ArrayNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.yaml.snakeyaml.nodes.SequenceNode;
+
+import java.util.List;
 
 public class SYArrayNode extends SYBaseRamlNode implements ArrayNode
 {
@@ -33,8 +37,25 @@ public class SYArrayNode extends SYBaseRamlNode implements ArrayNode
     }
 
     @Override
+    public String toString()
+    {
+
+        final List<Node> children = getChildren();
+        final String join = StringUtils.join(children, ",");
+        return "Array[" + join + "]";
+    }
+
+    @Override
     public Node copy()
     {
         return new SYArrayNode(this);
     }
+
+    @Override
+    public NodeType getType()
+    {
+        return NodeType.Array;
+    }
+
+
 }

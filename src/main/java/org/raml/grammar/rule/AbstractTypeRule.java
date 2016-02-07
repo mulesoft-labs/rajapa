@@ -13,46 +13,37 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.snakeyaml;
+package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.StringNode;
-import org.yaml.snakeyaml.nodes.ScalarNode;
 
-public class SYStringNode extends SYBaseRamlNode implements StringNode
+import javax.annotation.Nonnull;
+
+public abstract class AbstractTypeRule extends Rule
 {
 
-    public SYStringNode(SYStringNode node)
-    {
-        super(node);
-    }
-
-    public SYStringNode(ScalarNode scalarNode)
-    {
-        super(scalarNode);
-    }
-
-    public String getValue()
-    {
-        return ((ScalarNode) getYamlNode()).getValue();
-    }
-
     @Override
-    public Node copy()
+    public Node transform(@Nonnull Node node)
     {
-        return new SYStringNode(this);
+        if (matches(node))
+        {
+            if (getFactory() != null)
+            {
+                return getFactory().create(((StringNode) node).getValue());
+            }
+            else
+            {
+                return node;
+            }
+        }
+        else
+        {
+            return ErrorNodeFactory.createInvalidType(node, getType());
+        }
     }
 
-    @Override
-    public String toString()
-    {
-        return getValue();
-    }
-
-    @Override
-    public NodeType getType()
-    {
-        return NodeType.String;
-    }
+    @Nonnull
+    abstract NodeType getType();
 }

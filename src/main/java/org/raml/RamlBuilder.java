@@ -20,19 +20,35 @@ import org.raml.grammar.Raml10Grammar;
 import org.raml.loader.*;
 import org.raml.nodes.Node;
 import org.raml.nodes.snakeyaml.RamlNodeParser;
+import org.raml.phase.Phase;
 import org.raml.transformer.ResourceTypesTraitsTransformer;
 import org.raml.transformer.StringTemplateExpressionTransformer;
 import org.raml.transformer.TransformationPhase;
 import org.raml.transformer.IncludeResolver;
-import org.raml.utils.StreamUtils;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 
+/**
+ * RamlBuilder create a Node representation of your raml.
+ * @see Node
+ */
 public class RamlBuilder
 {
 
+    public static int FIRST_PHASE = 1;
+
+    private int maxPhaseNumber;
+
     public RamlBuilder()
     {
+        maxPhaseNumber = Integer.MAX_VALUE;
+    }
+
+    public RamlBuilder(int maxPhaseNumber)
+    {
+        this.maxPhaseNumber = maxPhaseNumber;
     }
 
     public Node build(File ramlFile) throws FileNotFoundException
@@ -57,25 +73,37 @@ public class RamlBuilder
     public Node build(Reader content, ResourceLoader resourceLoader, String resourceLocation)
     {
         Node rootNode = RamlNodeParser.parse(content);
+        final List<Phase> phases = createPhases(resourceLoader, resourceLocation);
+        for (int i = 0; i < phases.size(); i++)
+        {
+            if (i < maxPhaseNumber)
+            {
+                Phase phase = phases.get(i);
+                rootNode = phase.apply(rootNode);
+            }
+        }
+        return rootNode;
+    }
+
+
+    private List<Phase> createPhases(ResourceLoader resourceLoader, String resourceLocation)
+    {
         // The first phase expands the includes.
-        final TransformationPhase firstPhase = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation), new StringTemplateExpressionTransformer());
-        rootNode = firstPhase.apply(rootNode);
+        final TransformationPhase first = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation), new StringTemplateExpressionTransformer());
         // Overlays and extensions.
 
         // Runs Schema. Applies the Raml rules and changes each node for a more specific. Annotations Library TypeSystem
-        final GrammarPhase secondPhase = new GrammarPhase(new Raml10Grammar().raml());
-        rootNode = secondPhase.apply(rootNode);
+        final GrammarPhase second = new GrammarPhase(new Raml10Grammar().raml());
         // Detect invalid references. Library resourceTypes and Traits. This point the nodes are good enough for Editors.
 
         // Normalize resources and detects duplicated ones and more than one use of url parameters. ???
 
         // Applies resourceTypes and Traits Library
-        TransformationPhase thirdPhase = new TransformationPhase(new ResourceTypesTraitsTransformer());
-        rootNode = thirdPhase.apply(rootNode);
+        final TransformationPhase third = new TransformationPhase(new ResourceTypesTraitsTransformer());
 
         // Schema Types example validation
+        return Arrays.asList(first, second, third);
 
-        return rootNode;
     }
 
 
