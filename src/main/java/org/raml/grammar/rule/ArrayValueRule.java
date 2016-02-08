@@ -61,10 +61,10 @@ public class ArrayValueRule extends Rule
             final Node mappingNode = pathToRoot.get(0);
             switch (pathToRoot.size())
             {
-                case 1:
-                    return getSuggestions(mappingNode);
-                default:
-                    return of.getSuggestions(pathToRoot.subList(1, pathToRoot.size()));
+            case 1:
+                return getSuggestions(mappingNode);
+            default:
+                return of.getSuggestions(pathToRoot.subList(1, pathToRoot.size()));
             }
         }
     }
