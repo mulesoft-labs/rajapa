@@ -20,11 +20,16 @@ import org.raml.grammar.rule.Rule;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
+import org.raml.suggester.DefaultSuggestion;
+import org.raml.suggester.RamlContext;
+import org.raml.suggester.RamlContextType;
 import org.raml.suggester.Suggestion;
-import org.raml.utils.YamlUtils;
+import org.raml.utils.Inflector;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,38 +40,80 @@ public class RamlSuggester
 
     public List<Suggestion> suggestions(String document, int offset)
     {
-
-
-        int location = offset;
-        char character = document.charAt(location);
-        while (location > 0 && !YamlUtils.isYamlSignificantChar(character))
+        final List<Suggestion> result = new ArrayList<>();
+        final RamlContext ramlContext = getContext(document, offset);
+        final int location = ramlContext.getLocation();
+        final String content = ramlContext.getContent();
+        final List<Suggestion> suggestions = getSuggestions(document, offset, ramlContext, location);
+        if (content.isEmpty())
         {
-            location--;
-            character = document.charAt(location);
+            result.addAll(suggestions);
         }
-        // I don't care column number unless is an empty new line
-        int columnNumber = -1;
-        if (character == '\n')
+        else
         {
-            columnNumber = getColumnNumber(document, offset);
+            for (Suggestion suggestion : suggestions)
+            {
+                if (suggestion.getValue().startsWith(content))
+                {
+                    result.add(suggestion);
+                }
+            }
         }
+        return result;
 
+    }
+
+    private List<Suggestion> getSuggestions(String document, int offset, RamlContext ramlContext, int location)
+    {
+        switch (ramlContext.getTokenType())
+        {
+        case FUNCTION_CALL:
+            return getFunctionCallSuggestions();
+        case STRING_TEMPLATE:
+            return defaultParameters();
+        case LIBRARY_CALL:
+        case LIST_ITEM:
+        case VALUE:
+            return getSuggestionsAt(document, offset, location);
+        default:
+            return getSuggestionByColumn(document, offset, location);
+
+        }
+    }
+
+    @Nonnull
+    private List<Suggestion> defaultParameters()
+    {
+        List<Suggestion> suggestions = new ArrayList<>();
+        suggestions.add(new DefaultSuggestion("resourcePath", "", ""));
+        return suggestions;
+    }
+
+    @Nonnull
+    private List<Suggestion> getFunctionCallSuggestions()
+    {
+        List<Suggestion> suggestions = new ArrayList<>();
+        final Method[] declaredMethods = Inflector.class.getDeclaredMethods();
+        for (Method declaredMethod : declaredMethods)
+        {
+            if (Modifier.isStatic(declaredMethod.getModifiers()) && Modifier.isPublic(declaredMethod.getModifiers()))
+            {
+                suggestions.add(new DefaultSuggestion("!" + declaredMethod.getName(), "", declaredMethod.getName()));
+            }
+        }
+        return suggestions;
+    }
+
+    private List<Suggestion> getSuggestionsAt(String document, int offset, int location)
+    {
         final String header = document.substring(0, location + 1);
-
         final String footer = getFooter(document, offset);
-
-
         final String realDocument = header + footer;
-
         // We only run the first phase
         final Node root = new RamlBuilder(RamlBuilder.FIRST_PHASE).build(realDocument);
         Node node = searchNodeAt(root, location);
         if (node != null)
         {
-            if (columnNumber != -1)
-            {
-                node = getValueNodeAtColumn(columnNumber, node);
-            }
             // Recreate path with the node at the correct indentation
             final List<Node> pathToRoot = createPathToRoot(node);
             final Raml10Grammar raml10Grammar = new Raml10Grammar();
@@ -74,8 +121,106 @@ public class RamlSuggester
             final Rule rootRule = raml10Grammar.raml();
             return rootRule.getSuggestions(pathToRoot);
         }
-        return Collections.emptyList();
+        else
+        {
+            return Collections.emptyList();
+        }
+    }
 
+    private List<Suggestion> getSuggestionByColumn(String document, int offset, int location)
+    {
+        // // I don't care column number unless is an empty new line
+        int columnNumber = getColumnNumber(document, offset);
+        final String header = document.substring(0, location + 1);
+        final String footer = getFooter(document, offset);
+        final String realDocument = header + footer;
+
+        // We only run the first phase
+        final Node root = new RamlBuilder(RamlBuilder.FIRST_PHASE).build(realDocument);
+        Node node = searchNodeAt(root, location);
+        if (node != null)
+        {
+            node = getValueNodeAtColumn(columnNumber, node);
+            // Recreate path with the node at the correct indentation
+            final List<Node> pathToRoot = createPathToRoot(node);
+            final Raml10Grammar raml10Grammar = new Raml10Grammar();
+            // Follow the path from the root to the node and apply the rules for auto-completion.
+            final Rule rootRule = raml10Grammar.raml();
+            return rootRule.getSuggestions(pathToRoot);
+        }
+        else
+        {
+            return Collections.emptyList();
+        }
+    }
+
+    @Nonnull
+    private RamlContext getContext(String document, int offset)
+    {
+        RamlContext context = null;
+        int location = offset;
+        final StringBuilder content = new StringBuilder();
+        while (location >= 0 && context == null)
+        {
+            char character = document.charAt(location);
+            switch (character)
+            {
+            case ':':
+                context = new RamlContext(RamlContextType.VALUE, revertAndTrim(content), location + 1);
+                break;
+            case '-':
+                context = new RamlContext(RamlContextType.LIST_ITEM, revertAndTrim(content), location);
+                break;
+            case '<':
+                if (location > 0)
+                {
+                    if (document.charAt(location - 1) == '<')
+                    {
+                        location--;
+                        final String contextContent = revertAndTrim(content);
+                        final String[] split = contextContent.split("\\|");
+                        if (split.length > 1)
+                        {
+                            context = new RamlContext(RamlContextType.FUNCTION_CALL, split[split.length - 1].trim(), location);
+                        }
+                        else if (contextContent.endsWith("|"))
+                        {
+                            context = new RamlContext(RamlContextType.FUNCTION_CALL, "", location);
+                        }
+                        else
+                        {
+                            context = new RamlContext(RamlContextType.STRING_TEMPLATE, contextContent, location);
+                        }
+                        break;
+                    }
+                }
+                content.append(character);
+                break;
+            case '.':
+                context = new RamlContext(RamlContextType.LIBRARY_CALL, revertAndTrim(content), location);
+                break;
+            case ',':
+            case '\n':
+                context = new RamlContext(RamlContextType.ANY, revertAndTrim(content), location);
+                break;
+            default:
+                content.append(character);
+            }
+            location--;
+        }
+
+        if (context == null)
+        {
+            context = new RamlContext(RamlContextType.ANY, revertAndTrim(content), location);
+        }
+
+        return context;
+    }
+
+    @Nonnull
+    private String revertAndTrim(StringBuilder content)
+    {
+        return content.reverse().toString().trim();
     }
 
     private Node getValueNodeAtColumn(int columnNumber, Node node)
