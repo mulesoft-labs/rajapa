@@ -23,17 +23,21 @@ import static org.raml.transformer.ResourceTypesTraitsMerger.merge;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.raml.grammar.GrammarPhase;
 import org.raml.grammar.Raml10Grammar;
+import org.raml.nodes.ExecutionContext;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.ParameterizedReferenceNode;
 import org.raml.nodes.ReferenceNode;
 import org.raml.nodes.impl.MethodNode;
 import org.raml.nodes.impl.ResourceNode;
 import org.raml.nodes.impl.ResourceTypeNode;
 import org.raml.nodes.impl.ResourceTypeRefNode;
+import org.raml.nodes.impl.StringTemplateNode;
 import org.raml.nodes.impl.TraitNode;
 import org.raml.nodes.impl.TraitRefNode;
 import org.raml.nodes.snakeyaml.SYBaseRamlNode;
@@ -103,8 +107,11 @@ public class ResourceTypesTraitsTransformer implements Transformer
         ResourceTypeNode templateNode = (ResourceTypeNode) refNode.copy();
         templateNode.setParent(refNode.getParent());
 
-        // TODO
         // resolve parameters
+        if (resourceTypeReference instanceof ParameterizedReferenceNode)
+        {
+            resolveParameters(templateNode, ((ParameterizedReferenceNode) resourceTypeReference).getParameters());
+        }
 
         // apply grammar phase to generate method nodes
         GrammarPhase parseMethodsPhase = new GrammarPhase(new Raml10Grammar().resourceType());
@@ -131,11 +138,27 @@ public class ResourceTypesTraitsTransformer implements Transformer
             throw new RuntimeException("validated before?");
         }
 
-        // TODO resolve parameters
         TraitNode copy = (TraitNode) refNode.copy();
+
+        // resolve parameters
+        if (traitReference instanceof ParameterizedReferenceNode)
+        {
+            resolveParameters(copy, ((ParameterizedReferenceNode) traitReference).getParameters());
+        }
 
         replaceNullValueWithObject(methodNode);
         merge(methodNode.getValue(), copy.getValue());
+    }
+
+    private void resolveParameters(Node parameterizedNode, Map<String, String> parameters)
+    {
+        ExecutionContext context = new ExecutionContext(parameters);
+        List<StringTemplateNode> templateNodes = parameterizedNode.findDescendantsWith(StringTemplateNode.class);
+        for (StringTemplateNode templateNode : templateNodes)
+        {
+            Node resolvedNode = templateNode.execute(context);
+            templateNode.replaceWith(resolvedNode);
+        }
     }
 
     private void replaceNullValueWithObject(KeyValueNode keyValueNode)

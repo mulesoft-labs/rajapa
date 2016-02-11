@@ -15,47 +15,34 @@
  */
 package org.raml.nodes.impl;
 
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.raml.nodes.StringNode;
+import java.util.Map;
 
-public class StringNodeImpl extends AbstractRamlNode implements StringNode
+import org.raml.nodes.Node;
+import org.raml.nodes.ParameterizedReferenceNode;
+
+public class ParameterizedResourceTypeRefNode extends ResourceTypeRefNode implements ParameterizedReferenceNode
 {
 
-    private String value;
-
-    public StringNodeImpl(String value)
-    {
-        this.value = value;
-    }
-
-    public StringNodeImpl(StringNodeImpl node)
+    public ParameterizedResourceTypeRefNode(ParameterizedResourceTypeRefNode node)
     {
         super(node);
-        this.value = node.value;
     }
 
-    @Override
-    public String getValue()
+    public ParameterizedResourceTypeRefNode(String name)
     {
-        return value;
+        super(name);
     }
 
     @Override
     public Node copy()
     {
-        return new StringNodeImpl(this);
+        return new ParameterizedResourceTypeRefNode(this);
     }
 
     @Override
-    public NodeType getType()
+    public Map<String, String> getParameters()
     {
-        return NodeType.String;
+        return getParameters(this);
     }
 
-    @Override
-    public String toString()
-    {
-        return value;
-    }
 }

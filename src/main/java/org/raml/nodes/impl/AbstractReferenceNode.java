@@ -15,8 +15,13 @@
  */
 package org.raml.nodes.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
+import org.raml.nodes.ParameterizedReferenceNode;
 import org.raml.nodes.ReferenceNode;
 
 public abstract class AbstractReferenceNode extends AbstractRamlNode implements ReferenceNode
@@ -48,6 +53,18 @@ public abstract class AbstractReferenceNode extends AbstractRamlNode implements 
     public NodeType getType()
     {
         return NodeType.Reference;
+    }
+
+    public static Map<String, String> getParameters(ParameterizedReferenceNode refNode)
+    {
+        Map<String, String> params = new HashMap<>();
+
+        for (Node node : ((KeyValueNode) refNode.getChildren().get(0)).getValue().getChildren())
+        {
+            KeyValueNode keyValueNode = (KeyValueNode) node;
+            params.put(keyValueNode.getKey().toString(), keyValueNode.getValue().toString());
+        }
+        return params;
     }
 
 }

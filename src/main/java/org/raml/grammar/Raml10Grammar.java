@@ -499,12 +499,21 @@ public class Raml10Grammar extends BaseGrammar
 
     private KeyValueRule isField()
     {
-        return field(isKey(), array(stringType().then(new NodeReferenceFactory(TraitRefNode.class))));
+        return field(isKey(), array(anyTypeReference(TraitRefNode.class, ParameterizedTraitRefNode.class)));
     }
 
     private KeyValueRule resourceTypeReferenceField()
     {
-        return field(typeKey(), stringType().then(new NodeReferenceFactory(ResourceTypeRefNode.class)));
+        return field(typeKey(), anyTypeReference(ResourceTypeRefNode.class, ParameterizedResourceTypeRefNode.class));
+    }
+
+    private Rule anyTypeReference(Class simpleClass, Class parameterizedClass)
+    {
+        KeyValueRule paramsRule = field(stringType(), stringType());
+        KeyValueRule typeWithParams = field(stringType(), mapping().with(paramsRule));
+        NodeFactory factory = new NodeReferenceFactory(simpleClass);
+        NodeFactory parameterizedFactory = new NodeReferenceFactory(parameterizedClass);
+        return anyOf(stringType().then(factory), new ReferenceObjectRule().with(typeWithParams).then(parameterizedFactory));
     }
 
     private KeyValueRule typesField()

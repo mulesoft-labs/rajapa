@@ -48,7 +48,7 @@ public class ErrorNodeFactory
 
     public static ErrorNode createInvalidTemplateParameterExpression(Node node, String token)
     {
-        return new ErrorNode("Can not resolver parameter " + token);
+        return new ErrorNode("Cannot resolve parameter " + token);
     }
 
     public static Node createRequiredValueNotFound(Node node, Rule keyRule)

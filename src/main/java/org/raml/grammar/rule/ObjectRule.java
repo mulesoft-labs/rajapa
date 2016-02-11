@@ -85,11 +85,7 @@ public class ObjectRule extends Rule
         }
         else
         {
-            Node result = node;
-            if (getFactory() != null)
-            {
-                result = getFactory().create();
-            }
+            Node result = getResult(node);
             final List<Node> children = node.getChildren();
             final List<KeyValueRule> allFieldRules = getAllFieldRules(node);
             final List<KeyValueRule> requiredRules = new ArrayList<>();
@@ -134,6 +130,16 @@ public class ObjectRule extends Rule
 
             return result;
         }
+    }
+
+    protected Node getResult(Node node)
+    {
+        Node result = node;
+        if (getFactory() != null)
+        {
+            result = getFactory().create();
+        }
+        return result;
     }
 
     private List<KeyValueRule> getAllFieldRules(Node node)

@@ -1,0 +1,35 @@
+{
+    "title": "Example API",
+    "version": "v1",
+    "traits": {
+        "secured": {
+            "headers": {
+                "<<header>>": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "resources": [
+        {
+            "relativeUri": "/users",
+            "methods": [
+                {
+                    "method": "get",
+                    "is": [
+                        {
+                            "secured": {
+                                "header": "head"
+                            }
+                        }
+                    ],
+                    "headers": {
+                        "head": {
+                            "type": "string"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
