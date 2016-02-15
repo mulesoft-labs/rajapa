@@ -17,9 +17,7 @@ package org.raml;
 
 import org.raml.grammar.Raml10Grammar;
 import org.raml.grammar.rule.Rule;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.ObjectNode;
+import org.raml.nodes.*;
 import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.RamlContext;
 import org.raml.suggester.RamlContextType;
@@ -70,7 +68,7 @@ public class RamlSuggester
         case FUNCTION_CALL:
             return getFunctionCallSuggestions();
         case STRING_TEMPLATE:
-            return defaultParameters();
+            return getTemplateParameterSuggestions(document, offset, location);
         case LIBRARY_CALL:
         case LIST_ITEM:
         case VALUE:
@@ -82,10 +80,46 @@ public class RamlSuggester
     }
 
     @Nonnull
-    private List<Suggestion> defaultParameters()
+    private List<Suggestion> getTemplateParameterSuggestions(String document, int offset, int location)
     {
-        List<Suggestion> suggestions = new ArrayList<>();
-        suggestions.add(new DefaultSuggestion("resourcePath", "", ""));
+        final Node rootNode = getRootNode(document, offset, location);
+        Node node = searchNodeAt(rootNode, location);
+        boolean inTrait = false;
+        while (node != null)
+        {
+
+            if (node instanceof KeyValueNode)
+            {
+                if (((KeyValueNode) node).getKey() instanceof StringNode)
+                {
+                    final String value = ((StringNode) ((KeyValueNode) node).getKey()).getValue();
+                    if (value.equals("traits") || value.equals("resourceTypes"))
+                    {
+                        inTrait = value.equals("traits");
+                        break;
+                    }
+                }
+            }
+            node = node.getParent();
+        }
+        return inTrait ? defaultTraitParameters() : defaultResourceTypeParameters();
+    }
+
+    @Nonnull
+    private List<Suggestion> defaultTraitParameters()
+    {
+        final List<Suggestion> suggestions = defaultResourceTypeParameters();
+        suggestions.add(new DefaultSuggestion("methodName", "The name of the method", ""));
+        return suggestions;
+    }
+
+    @Nonnull
+    private List<Suggestion> defaultResourceTypeParameters()
+    {
+        final List<Suggestion> suggestions = new ArrayList<>();
+        suggestions.add(new DefaultSuggestion("resourcePath", "The resource's full URI relative to the baseUri (if any)", ""));
+        suggestions.add(new DefaultSuggestion("resourcePathName", "The rightmost path fragment of the resource's relative URI, " +
+                                                                  "omitting any parametrizing brackets (\"{\" and \"}\")", ""));
         return suggestions;
     }
 
@@ -106,11 +140,7 @@ public class RamlSuggester
 
     private List<Suggestion> getSuggestionsAt(String document, int offset, int location)
     {
-        final String header = document.substring(0, location + 1);
-        final String footer = getFooter(document, offset);
-        final String realDocument = header + footer;
-        // We only run the first phase
-        final Node root = new RamlBuilder(RamlBuilder.FIRST_PHASE).build(realDocument);
+        final Node root = getRootNode(document, offset, location);
         Node node = searchNodeAt(root, location);
         if (node != null)
         {
@@ -127,16 +157,20 @@ public class RamlSuggester
         }
     }
 
+    private Node getRootNode(String document, int offset, int location)
+    {
+        final String header = document.substring(0, location + 1);
+        final String footer = getFooter(document, offset);
+        final String realDocument = header + footer;
+        // We only run the first phase
+        return new RamlBuilder(RamlBuilder.FIRST_PHASE).build(realDocument);
+    }
+
     private List<Suggestion> getSuggestionByColumn(String document, int offset, int location)
     {
         // // I don't care column number unless is an empty new line
         int columnNumber = getColumnNumber(document, offset);
-        final String header = document.substring(0, location + 1);
-        final String footer = getFooter(document, offset);
-        final String realDocument = header + footer;
-
-        // We only run the first phase
-        final Node root = new RamlBuilder(RamlBuilder.FIRST_PHASE).build(realDocument);
+        final Node root = getRootNode(document, offset, location);
         Node node = searchNodeAt(root, location);
         if (node != null)
         {

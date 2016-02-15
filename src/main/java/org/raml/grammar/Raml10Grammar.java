@@ -17,6 +17,7 @@ package org.raml.grammar;
 
 import com.google.common.collect.Range;
 import org.raml.grammar.rule.*;
+import org.raml.nodes.Node;
 import org.raml.nodes.impl.*;
 
 import java.math.BigInteger;
@@ -507,13 +508,13 @@ public class Raml10Grammar extends BaseGrammar
         return field(typeKey(), anyTypeReference(ResourceTypeRefNode.class, ParameterizedResourceTypeRefNode.class));
     }
 
-    private Rule anyTypeReference(Class simpleClass, Class parameterizedClass)
+    private Rule anyTypeReference(Class<? extends Node> simpleClass, Class<? extends Node> parametrisedClass)
     {
-        KeyValueRule paramsRule = field(stringType(), stringType());
-        KeyValueRule typeWithParams = field(stringType(), mapping().with(paramsRule));
-        NodeFactory factory = new NodeReferenceFactory(simpleClass);
-        NodeFactory parameterizedFactory = new NodeReferenceFactory(parameterizedClass);
-        return anyOf(stringType().then(factory), new ReferenceObjectRule().with(typeWithParams).then(parameterizedFactory));
+        final KeyValueRule paramsRule = field(stringType(), stringType());
+        final KeyValueRule typeWithParams = field(stringType(), mapping().with(paramsRule));
+        final NodeFactory factory = new NodeReferenceFactory(simpleClass);
+        final NodeFactory parametrisedFactory = new NodeReferenceFactory(parametrisedClass);
+        return anyOf(stringType().then(factory), new ReferenceObjectRule().with(typeWithParams).then(parametrisedFactory));
     }
 
     private KeyValueRule typesField()

@@ -1,0 +1,9 @@
+[ {
+  "label" : "",
+  "description" : "The resource's full URI relative to the baseUri (if any)",
+  "value" : "resourcePath"
+}, {
+  "label" : "",
+  "description" : "The rightmost path fragment of the resource's relative URI, omitting any parametrizing brackets (\"{\" and \"}\")",
+  "value" : "resourcePathName"
+}]
