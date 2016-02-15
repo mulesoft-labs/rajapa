@@ -15,7 +15,7 @@
  */
 package org.raml.suggester;
 
-public interface Suggestion
+public interface Suggestion extends Comparable<Suggestion>
 {
 
     /**

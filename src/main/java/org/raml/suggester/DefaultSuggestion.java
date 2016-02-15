@@ -15,7 +15,7 @@
  */
 package org.raml.suggester;
 
-public class DefaultSuggestion implements Suggestion
+public class DefaultSuggestion implements Suggestion, Comparable<Suggestion>
 {
 
     private String label;
@@ -67,5 +67,11 @@ public class DefaultSuggestion implements Suggestion
                ", description='" + description + '\'' +
                ", value='" + value + '\'' +
                '}';
+    }
+
+    @Override
+    public int compareTo(Suggestion other)
+    {
+        return this.getLabel().compareTo(other.getLabel());
     }
 }

@@ -133,6 +133,7 @@ public class RamlSuggester
             if (Modifier.isStatic(declaredMethod.getModifiers()) && Modifier.isPublic(declaredMethod.getModifiers()))
             {
                 suggestions.add(new DefaultSuggestion("!" + declaredMethod.getName(), "", declaredMethod.getName()));
+                Collections.sort(suggestions);
             }
         }
         return suggestions;
