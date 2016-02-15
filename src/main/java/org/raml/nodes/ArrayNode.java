@@ -13,8 +13,14 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+
 package org.raml.nodes;
 
 public interface ArrayNode extends Node
 {
+    /**
+     * Return true if the array was persisted with the json style [ "item"]
+     * @return True if it was written like <code>["item"]</code> and false if it was written like: <code>- item</code>
+     */
+    boolean isJsonStyle();
 }

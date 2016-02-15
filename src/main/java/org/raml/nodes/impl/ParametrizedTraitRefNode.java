@@ -13,12 +13,36 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes;
+package org.raml.nodes.impl;
 
 import java.util.Map;
 
-public interface ParameterizedReferenceNode extends ReferenceNode, ObjectNode
+import org.raml.nodes.Node;
+import org.raml.nodes.ParametrizedReferenceNode;
+
+public class ParametrizedTraitRefNode extends TraitRefNode implements ParametrizedReferenceNode
 {
 
-    Map<String, String> getParameters();
+    public ParametrizedTraitRefNode(TraitRefNode node)
+    {
+        super(node);
+    }
+
+    // Used by reflection
+    public ParametrizedTraitRefNode(String name)
+    {
+        super(name);
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new ParametrizedTraitRefNode(this);
+    }
+
+    @Override
+    public Map<String, String> getParameters()
+    {
+        return getParameters(this);
+    }
 }

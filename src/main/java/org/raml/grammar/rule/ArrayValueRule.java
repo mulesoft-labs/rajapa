@@ -18,7 +18,6 @@ package org.raml.grammar.rule;
 import org.raml.nodes.ArrayNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
-import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
@@ -44,7 +43,14 @@ public class ArrayValueRule extends Rule
         final List<Suggestion> result = new ArrayList<>();
         for (Suggestion suggestion : suggestions)
         {
-            result.add(suggestion.withValue("- " + suggestion.getValue()));
+            if (node instanceof ArrayNode && !((ArrayNode) node).isJsonStyle())
+            {
+                result.add(suggestion);
+            }
+            else
+            {
+                result.add(suggestion.withValue("- " + suggestion.getValue()));
+            }
         }
         return result;
     }

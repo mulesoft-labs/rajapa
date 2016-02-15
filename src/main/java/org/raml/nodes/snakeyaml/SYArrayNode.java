@@ -58,4 +58,9 @@ public class SYArrayNode extends SYBaseRamlNode implements ArrayNode
     }
 
 
+    @Override
+    public boolean isJsonStyle()
+    {
+        return !((SequenceNode) getYamlNode()).getFlowStyle();
+    }
 }

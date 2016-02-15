@@ -31,7 +31,7 @@ import org.raml.grammar.Raml10Grammar;
 import org.raml.nodes.ExecutionContext;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
-import org.raml.nodes.ParameterizedReferenceNode;
+import org.raml.nodes.ParametrizedReferenceNode;
 import org.raml.nodes.ReferenceNode;
 import org.raml.nodes.impl.MethodNode;
 import org.raml.nodes.impl.ResourceNode;
@@ -108,9 +108,9 @@ public class ResourceTypesTraitsTransformer implements Transformer
         templateNode.setParent(refNode.getParent());
 
         // resolve parameters
-        if (resourceTypeReference instanceof ParameterizedReferenceNode)
+        if (resourceTypeReference instanceof ParametrizedReferenceNode)
         {
-            resolveParameters(templateNode, ((ParameterizedReferenceNode) resourceTypeReference).getParameters());
+            resolveParameters(templateNode, ((ParametrizedReferenceNode) resourceTypeReference).getParameters());
         }
 
         // apply grammar phase to generate method nodes
@@ -141,9 +141,9 @@ public class ResourceTypesTraitsTransformer implements Transformer
         TraitNode copy = (TraitNode) refNode.copy();
 
         // resolve parameters
-        if (traitReference instanceof ParameterizedReferenceNode)
+        if (traitReference instanceof ParametrizedReferenceNode)
         {
-            resolveParameters(copy, ((ParameterizedReferenceNode) traitReference).getParameters());
+            resolveParameters(copy, ((ParametrizedReferenceNode) traitReference).getParameters());
         }
 
         replaceNullValueWithObject(methodNode);

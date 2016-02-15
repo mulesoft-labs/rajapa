@@ -70,7 +70,7 @@ public class RamlSuggester
         case STRING_TEMPLATE:
             return getTemplateParameterSuggestions(document, offset, location);
         case LIBRARY_CALL:
-        case LIST_ITEM:
+        case ITEM:
         case VALUE:
             return getSuggestionsAt(document, offset, location);
         default:
@@ -145,6 +145,11 @@ public class RamlSuggester
         Node node = searchNodeAt(root, location);
         if (node != null)
         {
+            // If is the key of a key value pair
+            if (node.getParent() instanceof KeyValueNode && node.getParent().getChildren().indexOf(node) == 0)
+            {
+                node = node.getParent().getParent();
+            }
             // Recreate path with the node at the correct indentation
             final List<Node> pathToRoot = createPathToRoot(node);
             final Raml10Grammar raml10Grammar = new Raml10Grammar();
@@ -160,11 +165,21 @@ public class RamlSuggester
 
     private Node getRootNode(String document, int offset, int location)
     {
-        final String header = document.substring(0, location + 1);
-        final String footer = getFooter(document, offset);
-        final String realDocument = header + footer;
         // We only run the first phase
-        return new RamlBuilder(RamlBuilder.FIRST_PHASE).build(realDocument);
+        final RamlBuilder ramlBuilder = new RamlBuilder(RamlBuilder.FIRST_PHASE);
+        try
+        {
+            // We try the with the original document
+            return ramlBuilder.build(document);
+        }
+        catch (Exception e)
+        {
+            // We remove some current keywords to see if it parses
+            final String header = document.substring(0, location + 1);
+            final String footer = getFooter(document, offset);
+            final String realDocument = header + footer;
+            return ramlBuilder.build(realDocument);
+        }
     }
 
     private List<Suggestion> getSuggestionByColumn(String document, int offset, int location)
@@ -203,8 +218,11 @@ public class RamlSuggester
             case ':':
                 context = new RamlContext(RamlContextType.VALUE, revertAndTrim(content), location + 1);
                 break;
+            case ',':
+            case '[':
+            case '{':
             case '-':
-                context = new RamlContext(RamlContextType.LIST_ITEM, revertAndTrim(content), location);
+                context = new RamlContext(RamlContextType.ITEM, revertAndTrim(content), location);
                 break;
             case '<':
                 if (location > 0)
@@ -234,7 +252,6 @@ public class RamlSuggester
             case '.':
                 context = new RamlContext(RamlContextType.LIBRARY_CALL, revertAndTrim(content), location);
                 break;
-            case ',':
             case '\n':
                 context = new RamlContext(RamlContextType.ANY, revertAndTrim(content), location);
                 break;
@@ -310,7 +327,7 @@ public class RamlSuggester
     {
         int loc = offset;
         char current = document.charAt(loc);
-        while (loc < document.length() - 1 && current != '\n')
+        while (loc < document.length() - 1 && current != '\n' && current != '}' && current != ']' && current != ',')
         {
             loc++;
             current = document.charAt(loc);
@@ -351,7 +368,7 @@ public class RamlSuggester
             character = document.charAt(location);
 
         }
-        return contextLine;
+        return contextLine.reverse();
     }
 
     @Nullable

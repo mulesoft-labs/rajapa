@@ -17,5 +17,5 @@ package org.raml.suggester;
 
 public enum RamlContextType
 {
-    FUNCTION_CALL, LIBRARY_CALL, VALUE, LIST_ITEM, STRING_TEMPLATE, ANY
+    FUNCTION_CALL, LIBRARY_CALL, VALUE, ITEM, STRING_TEMPLATE, ANY
 }

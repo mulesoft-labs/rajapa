@@ -13,36 +13,28 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.impl;
-
-import java.util.Map;
+package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
-import org.raml.nodes.ParameterizedReferenceNode;
+import org.raml.suggester.Suggestion;
 
-public class ParameterizedResourceTypeRefNode extends ResourceTypeRefNode implements ParameterizedReferenceNode
+import javax.annotation.Nonnull;
+import java.util.List;
+
+public class NodeReferenceRule extends StringTypeRule
 {
 
-    public ParameterizedResourceTypeRefNode(ParameterizedResourceTypeRefNode node)
+    private ReferenceSuggester suggester;
+
+    public NodeReferenceRule(String referenceKey)
     {
-        super(node);
+        this.suggester = new ReferenceSuggester(referenceKey);
     }
 
-    public ParameterizedResourceTypeRefNode(String name)
-    {
-        super(name);
-    }
-
+    @Nonnull
     @Override
-    public Node copy()
+    public List<Suggestion> getSuggestions(Node node)
     {
-        return new ParameterizedResourceTypeRefNode(this);
+        return suggester.getSuggestions(node);
     }
-
-    @Override
-    public Map<String, String> getParameters()
-    {
-        return getParameters(this);
-    }
-
 }

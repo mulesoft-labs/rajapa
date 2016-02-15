@@ -500,21 +500,21 @@ public class Raml10Grammar extends BaseGrammar
 
     private KeyValueRule isField()
     {
-        return field(isKey(), array(anyTypeReference(TraitRefNode.class, ParameterizedTraitRefNode.class)));
+        return field(isKey(), array(anyTypeReference(TRAITS_KEY_NAME, TraitRefNode.class, ParametrizedTraitRefNode.class)));
     }
 
     private KeyValueRule resourceTypeReferenceField()
     {
-        return field(typeKey(), anyTypeReference(ResourceTypeRefNode.class, ParameterizedResourceTypeRefNode.class));
+        return field(typeKey(), anyTypeReference(RESOURCE_TYPES_KEY_NAME, ResourceTypeRefNode.class, ParametrizedResourceTypeRefNode.class));
     }
 
-    private Rule anyTypeReference(Class<? extends Node> simpleClass, Class<? extends Node> parametrisedClass)
+    private Rule anyTypeReference(String referenceKey, Class<? extends Node> simpleClass, Class<? extends Node> parametrisedClass)
     {
         final KeyValueRule paramsRule = field(stringType(), stringType());
         final KeyValueRule typeWithParams = field(stringType(), mapping().with(paramsRule));
         final NodeFactory factory = new NodeReferenceFactory(simpleClass);
         final NodeFactory parametrisedFactory = new NodeReferenceFactory(parametrisedClass);
-        return anyOf(stringType().then(factory), new ReferenceObjectRule().with(typeWithParams).then(parametrisedFactory));
+        return anyOf(new NodeReferenceRule(referenceKey).then(factory), new ParametrizedNodeReferenceRule(referenceKey).with(typeWithParams).then(parametrisedFactory));
     }
 
     private KeyValueRule typesField()
@@ -524,7 +524,8 @@ public class Raml10Grammar extends BaseGrammar
 
     private StringValueRule typesKey()
     {
-        return string("types").description("Declarations of (data) types for use within this API.");
+        return string("types")
+                              .description("Declarations of (data) types for use within this API.");
     }
 
     private KeyValueRule titleField()
@@ -558,7 +559,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private StringValueRule uriParametersKey()
     {
-        return string("uriParameters").description("Detailed information about any URI parameters of this resourc");
+        return string("uriParameters").description("Detailed information about any URI parameters of this resource");
     }
 
     private StringValueRule securedByKey()

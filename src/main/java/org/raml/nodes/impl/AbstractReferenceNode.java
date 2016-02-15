@@ -21,7 +21,7 @@ import java.util.Map;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
-import org.raml.nodes.ParameterizedReferenceNode;
+import org.raml.nodes.ParametrizedReferenceNode;
 import org.raml.nodes.ReferenceNode;
 
 public abstract class AbstractReferenceNode extends AbstractRamlNode implements ReferenceNode
@@ -55,7 +55,7 @@ public abstract class AbstractReferenceNode extends AbstractRamlNode implements 
         return NodeType.Reference;
     }
 
-    public static Map<String, String> getParameters(ParameterizedReferenceNode refNode)
+    public static Map<String, String> getParameters(ParametrizedReferenceNode refNode)
     {
         Map<String, String> params = new HashMap<>();
 

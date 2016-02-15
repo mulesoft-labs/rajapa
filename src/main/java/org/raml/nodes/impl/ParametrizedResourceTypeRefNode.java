@@ -18,17 +18,18 @@ package org.raml.nodes.impl;
 import java.util.Map;
 
 import org.raml.nodes.Node;
-import org.raml.nodes.ParameterizedReferenceNode;
+import org.raml.nodes.ParametrizedReferenceNode;
 
-public class ParameterizedTraitRefNode extends TraitRefNode implements ParameterizedReferenceNode
+public class ParametrizedResourceTypeRefNode extends ResourceTypeRefNode implements ParametrizedReferenceNode
 {
 
-    public ParameterizedTraitRefNode(TraitRefNode node)
+    public ParametrizedResourceTypeRefNode(ParametrizedResourceTypeRefNode node)
     {
         super(node);
     }
 
-    public ParameterizedTraitRefNode(String name)
+    // Used by reflection
+    public ParametrizedResourceTypeRefNode(String name)
     {
         super(name);
     }
@@ -36,7 +37,7 @@ public class ParameterizedTraitRefNode extends TraitRefNode implements Parameter
     @Override
     public Node copy()
     {
-        return new ParameterizedTraitRefNode(this);
+        return new ParametrizedResourceTypeRefNode(this);
     }
 
     @Override
@@ -44,4 +45,5 @@ public class ParameterizedTraitRefNode extends TraitRefNode implements Parameter
     {
         return getParameters(this);
     }
+
 }

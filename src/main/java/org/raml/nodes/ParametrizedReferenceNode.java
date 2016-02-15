@@ -13,17 +13,12 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.grammar.rule;
+package org.raml.nodes;
 
-import org.raml.nodes.Node;
+import java.util.Map;
 
-public class ReferenceObjectRule extends ObjectRule
+public interface ParametrizedReferenceNode extends ReferenceNode, ObjectNode
 {
 
-    @Override
-    protected Node getResult(Node node)
-    {
-        String arg = node.getChildren().get(0).getChildren().get(0).toString();
-        return getFactory().create(arg);
-    }
+    Map<String, String> getParameters();
 }

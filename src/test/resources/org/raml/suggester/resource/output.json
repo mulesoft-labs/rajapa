@@ -52,7 +52,7 @@
   "value" : "securedBy: "
 }, {
   "label" : "UriParameters",
-  "description" : "Detailed information about any URI parameters of this resourc",
+  "description" : "Detailed information about any URI parameters of this resource",
   "value" : "uriParameters: "
 }, {
   "label" : "/Resource",

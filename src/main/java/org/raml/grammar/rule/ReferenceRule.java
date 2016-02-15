@@ -26,7 +26,6 @@ import java.util.List;
 public class ReferenceRule extends Rule
 {
 
-
     private GrammarContext context;
     private final String name;
     private Rule ref;
