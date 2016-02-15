@@ -169,7 +169,7 @@ public class TckEmitter
     private void dumpKeyValueNode(StringBuilder dump, int depth, KeyValueNode node)
     {
         // key
-        String keyText = sanitizeScalarValue(((StringNode) node.getKey()).getValue());
+        String keyText = sanitizeScalarValue(node.getKey());
         dump.append(addNewline(dump)).append(indent(depth + 1)).append(keyText).append(COLON_SEP);
 
         // value
