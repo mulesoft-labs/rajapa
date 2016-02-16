@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.raml.RamlSuggester;
+import org.raml.dataprovider.TestDataProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,20 +37,17 @@ import java.util.Collection;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class SuggesterTestCase
+public class SuggesterTestCase extends TestDataProvider
 {
 
     public static final String CURSOR_KEYWORD = "<cursor>";
-    private File input;
-    private File expected;
+    public static final String INPUT_FILE_NAME = "input.raml";
+    public static final String OUTPUT_FILE_NAME = "output.json";
 
-
-    public SuggesterTestCase(File input, File output, String name)
+    public SuggesterTestCase(File input, File expecteOutput, String name)
     {
-        this.input = input;
-        this.expected = output;
+        super(input, expecteOutput, name);
     }
-
 
     @Test
     public void verifySuggestion() throws IOException
@@ -61,7 +59,7 @@ public class SuggesterTestCase
         final List<Suggestion> suggestions = ramlSuggester.suggestions(document, offset - 1);
         final ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         final String dump = ow.writeValueAsString(suggestions);
-        final String expected = IOUtils.toString(new FileInputStream(this.expected));
+        final String expected = IOUtils.toString(new FileInputStream(this.expectedOutput));
         System.out.println("dump = \n" + dump);
         Assert.assertTrue(jsonEquals(dump, expected));
     }
@@ -89,23 +87,8 @@ public class SuggesterTestCase
     }
 
     @Parameterized.Parameters(name = "{2}")
-    public static Collection<Object[]> data() throws URISyntaxException
+    public static Collection<Object[]> getData() throws URISyntaxException
     {
-        final URI baseFolder = SuggesterTestCase.class.getResource("").toURI();
-        final File testFolder = new File(baseFolder);
-        final File[] scenarios = testFolder.listFiles();
-        List<Object[]> result = new ArrayList<>();
-        for (File scenario : scenarios)
-        {
-            if (scenario.isDirectory())
-            {
-                result.add(new Object[] {
-                                         new File(scenario, "input.raml"),
-                                         new File(scenario, "output.json"),
-                                         scenario.getName()
-                });
-            }
-        }
-        return result;
+        return getData(SuggesterTestCase.class.getResource("").toURI(), INPUT_FILE_NAME, OUTPUT_FILE_NAME);
     }
 }

@@ -24,11 +24,8 @@ import static org.junit.Assert.assertThat;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.text.IsEqualIgnoringWhiteSpace;
@@ -37,22 +34,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.raml.RamlBuilder;
+import org.raml.dataprovider.TestDataProvider;
 import org.raml.nodes.Node;
 import org.raml.utils.TreeDumper;
 
 @RunWith(Parameterized.class)
-public class RamlBuilderTestCase
+public class RamlBuilderTestCase extends TestDataProvider
 {
 
-    private File input;
-    private File expected;
-    private String name;
-
-    public RamlBuilderTestCase(File input, File expected, String name)
+    public RamlBuilderTestCase(File input, File expectedOutput, String name)
     {
-        this.input = input;
-        this.expected = expected;
-        this.name = name;
+        super(input, expectedOutput, name);
     }
 
     @Test
@@ -62,34 +54,15 @@ public class RamlBuilderTestCase
         final Node raml = builder.build(input);
         assertThat(raml, notNullValue());
         String dump = new TreeDumper().dump(raml);
-        String expected = IOUtils.toString(new FileInputStream(this.expected));
+        String expectedOutput = IOUtils.toString(new FileInputStream(this.expectedOutput));
         System.out.println("dump = \n" + dump);
-        Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(expected));
-
+        Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(expectedOutput));
     }
-
 
     @Parameterized.Parameters(name = "{2}")
-    public static Collection<Object[]> data() throws URISyntaxException
+    public static Collection<Object[]> getData() throws URISyntaxException
     {
-        final URI baseFolder = RamlBuilderTestCase.class.getResource("").toURI();
-        final File testFolder = new File(baseFolder);
-        final File[] scenarios = testFolder.listFiles();
-        List<Object[]> result = new ArrayList<>();
-        for (File scenario : scenarios)
-        {
-            if (scenario.isDirectory())
-            {
-                File input = new File(scenario, "input.raml");
-                File output = new File(scenario, "output.txt");
-                if (input.isFile() && output.isFile())
-                {
-                    result.add(new Object[] {input, output, scenario.getName()});
-                }
-            }
-        }
-        return result;
+        return getData(RamlBuilderTestCase.class.getResource("").toURI(), "input.raml", "output.txt");
     }
-
 
 }
