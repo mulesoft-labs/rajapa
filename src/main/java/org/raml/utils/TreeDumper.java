@@ -19,6 +19,7 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.ErrorNode;
+import org.raml.nodes.IntegerNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.ReferenceNode;
 import org.raml.nodes.StringNode;
@@ -79,6 +80,10 @@ public class TreeDumper
         if (node instanceof StringNode)
         {
             dump.append(": \"").append(((StringNode) node).getValue()).append("\"");
+        }
+        if (node instanceof IntegerNode)
+        {
+            dump.append(": ").append(((IntegerNode) node).getValue());
         }
         else if (node instanceof ErrorNode)
         {

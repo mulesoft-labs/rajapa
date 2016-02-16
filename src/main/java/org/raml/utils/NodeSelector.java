@@ -15,11 +15,13 @@
  */
 package org.raml.utils;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.ArrayNode;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
@@ -48,6 +50,26 @@ public class NodeSelector
     {
         final String[] tokens = path.split("/");
         return selectFrom(Arrays.asList(tokens), from);
+    }
+
+    public static int selectIntValue(String path, Node from)
+    {
+        return selectType(path, from, BigInteger.ZERO).intValue();
+    }
+
+    public static String selectStringValue(String path, Node from)
+    {
+        return selectType(path, from, StringUtils.EMPTY);
+    }
+
+    private static <T> T selectType(String path, Node from, T defaultValue)
+    {
+        SimpleTypeNode<T> selectedNode = (SimpleTypeNode<T>)selectFrom(path, from);
+        if(selectedNode != null)
+        {
+            return selectedNode.getValue();
+        }
+        return defaultValue;
     }
 
     @Nullable

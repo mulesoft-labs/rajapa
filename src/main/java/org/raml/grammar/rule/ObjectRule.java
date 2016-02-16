@@ -137,7 +137,7 @@ public class ObjectRule extends Rule
         Node result = node;
         if (getFactory() != null)
         {
-            result = getFactory().create();
+            result = getFactory().create(node);
         }
         return result;
     }

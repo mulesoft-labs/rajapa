@@ -19,6 +19,7 @@ import com.google.common.collect.Range;
 import org.raml.grammar.rule.*;
 import org.raml.nodes.Node;
 import org.raml.nodes.impl.*;
+import org.raml.types.factories.TypeNodeFactory;
 
 import java.math.BigInteger;
 
@@ -32,7 +33,7 @@ public class Raml10Grammar extends BaseGrammar
 
     public Rule raml()
     {
-        return mapping()
+        return objectType()
                         .with(descriptionField())
                         .with(annotationField())
                         .with(schemasField())
@@ -56,7 +57,7 @@ public class Raml10Grammar extends BaseGrammar
 
     public Rule resourceType()
     {
-        return mapping()
+        return objectType()
                         .with(field(anyResourceTypeMethod(), methodValue()).then(MethodNode.class))
                         .with(resourceTypeReferenceField())
                         .with(isField())
@@ -71,7 +72,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule documentation()
     {
-        return mapping()
+        return objectType()
                         .with(titleField().description("Title of documentation section."))
                         .with(contentField().description("Content of documentation section."));
     }
@@ -86,7 +87,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule securitySchemes()
     {
-        return mapping()
+        return objectType()
                         .with(
                                 field(stringType(), securityScheme())
                                                                      .then(SecuritySchemeNode.class)
@@ -95,7 +96,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule securityScheme()
     {
-        return mapping()
+        return objectType()
                         .with(descriptionField())
                         .with(field(
                                 typeKey(),
@@ -106,7 +107,7 @@ public class Raml10Grammar extends BaseGrammar
                                                 "The API's authentication uses BasicSecurityScheme Access Authentication as described in RFC2617 [RFC2617]"),
                                         string("DigestSecurityScheme Authentication").description(
                                                 "The API's authentication uses DigestSecurityScheme Access Authentication as described in RFC2617 [RFC2617]"),
-                                        string("Pass Through").description("Headers or Query Parameters are passed through to the API based on a defined mapping."),
+                                        string("Pass Through").description("Headers or Query Parameters are passed through to the API based on a defined object."),
                                         regex("x-.+").description("The API's authentication uses an authentication method not listed above.")
                                 )))
                         .with(field(string("describedBy"), securitySchemePart()))
@@ -115,7 +116,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule securitySchemePart()
     {
-        return mapping()
+        return objectType()
                         .with(displayNameField())
                         .with(descriptionField())
                         .with(annotationField())
@@ -126,7 +127,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule securitySchemeSettings()
     {
-        return mapping()
+        return objectType()
                         .with(field(string("requestTokenUri"), stringType()))
                         .with(field(string("authorizationUri"), stringType()))
                         .with(field(string("tokenCredentialsUri"), stringType()))
@@ -139,14 +140,14 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule types()
     {
-        return mapping()
+        return objectType()
                         .with(field(stringType(), type()));
     }
 
     private Rule type()
     {
         // TODO schema example examples missing
-        return mapping("type")
+        return objectType("type")
                               .with(field(typeKey(), typeReference()))
                               .with(displayNameField())
                               .with(descriptionField())
@@ -186,7 +187,7 @@ public class Raml10Grammar extends BaseGrammar
 
 
                                       )
-                              )
+                              ).then(new TypeNodeFactory())
 
         ;
     }
@@ -236,7 +237,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private ObjectRule properties()
     {
-        return mapping()
+        return objectType()
                         .with(field(stringType(), ref("type")));
     }
 
@@ -254,7 +255,7 @@ public class Raml10Grammar extends BaseGrammar
     private Rule trait()
     {
         // TODO resourceRule().with(parameterKey(), any())
-        return mapping("trait")
+        return objectType("trait")
                                .with(field(stringType(), any())
                                                                .then(TraitNode.class));
     }
@@ -263,16 +264,16 @@ public class Raml10Grammar extends BaseGrammar
     private Rule resourceTypes()
     {
         // TODO resourceRule().with(parameterKey(), any())
-        return mapping().with(field(stringType(), any()).then(ResourceTypeNode.class));
+        return objectType().with(field(stringType(), any()).then(ResourceTypeNode.class));
     }
 
     // Library
     private Rule library()
     {
-        return mapping("library")
+        return objectType("library")
                                  .with(field(
                                          stringType(),
-                                         mapping()
+                                         objectType()
                                                   .with(typesField())
                                                   .with(schemasField())
                                                   .with(resourceTypesField())
@@ -289,7 +290,7 @@ public class Raml10Grammar extends BaseGrammar
     // Resources
     private Rule resourceValue()
     {
-        return mapping("resourceValue")
+        return objectType("resourceValue")
                                        .with(displayNameField())
                                        .with(descriptionField())
                                        .with(annotationField())
@@ -304,7 +305,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule schemas()
     {
-        return mapping()
+        return objectType()
                         .with(field(stringType(), stringType()));
     }
 
@@ -312,7 +313,7 @@ public class Raml10Grammar extends BaseGrammar
     private Rule methodValue()
     {
         // TODO query string
-        return mapping()
+        return objectType()
                         .with(descriptionField())
                         .with(displayNameField())
                         .with(annotationField())
@@ -350,13 +351,13 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule responses()
     {
-        return mapping()
+        return objectType()
                         .with(field(responseCodes(), response()));
     }
 
     private Rule response()
     {
-        return mapping()
+        return objectType()
                         .with(displayNameField())
                         .with(descriptionField())
                         .with(annotationField())
@@ -366,19 +367,19 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule body()
     {
-        return mapping().with(field(regex("[A-z-_]+\\/[A-z-_]+"), mimeType()));
+        return objectType().with(field(regex("[A-z-_]+\\/[A-z-_]+"), mimeType()));
     }
 
     private Rule mimeType()
     {
-        return mapping()
+        return objectType()
                         .with(field(string("schema"), stringType()))
                         .with(field(string("example"), stringType()));
     }
 
     private Rule parameters()
     {
-        return mapping().with(field(stringType(), parameter()));
+        return objectType().with(field(stringType(), parameter()));
     }
 
     private Rule parameter()
@@ -386,7 +387,7 @@ public class Raml10Grammar extends BaseGrammar
         // TODO review type in raml 1.0 with the type system???
         // TODO review defaultValue
         // TODO review example
-        return mapping()
+        return objectType()
                         .with(displayNameField())
                         .with(descriptionField())
                         .with(field(typeKey(), stringType()))
@@ -424,7 +425,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private Rule annotationTypes()
     {
-        return mapping().with(field(stringType(), type()));
+        return objectType().with(field(stringType(), type()));
     }
 
 
@@ -522,7 +523,7 @@ public class Raml10Grammar extends BaseGrammar
     private Rule anyTypeReference(String referenceKey, Class<? extends Node> simpleClass, Class<? extends Node> parametrisedClass)
     {
         final KeyValueRule paramsRule = field(stringType(), stringType());
-        final KeyValueRule typeWithParams = field(stringType(), mapping().with(paramsRule));
+        final KeyValueRule typeWithParams = field(stringType(), objectType().with(paramsRule));
         final NodeFactory factory = new NodeReferenceFactory(simpleClass);
         final NodeFactory parametrisedFactory = new NodeReferenceFactory(parametrisedClass);
         return anyOf(new NodeReferenceRule(referenceKey).then(factory), new ParametrizedNodeReferenceRule(referenceKey).with(typeWithParams).then(parametrisedFactory));
