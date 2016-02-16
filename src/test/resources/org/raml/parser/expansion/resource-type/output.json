@@ -9,7 +9,7 @@
                 "headers": {
                     "lat": {
                         "type": "integer",
-                        "example": "575"
+                        "example": 575
                     }
                 }
             },
@@ -46,7 +46,7 @@
                     "headers": {
                         "lat": {
                             "type": "integer",
-                            "example": "575"
+                            "example": 575
                         }
                     }
                 }

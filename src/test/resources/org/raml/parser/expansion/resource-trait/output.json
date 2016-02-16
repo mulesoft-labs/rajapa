@@ -9,7 +9,7 @@
                 "access_token": {
                     "description": "Access Token",
                     "example": "5757gh76",
-                    "required": "true"
+                    "required": true
                 }
             }
         }
@@ -26,7 +26,7 @@
                         "access_token": {
                             "description": "Access Token",
                             "example": "5757gh76",
-                            "required": "true"
+                            "required": true
                         }
                     }
                 }

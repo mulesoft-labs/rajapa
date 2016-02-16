@@ -75,7 +75,7 @@ public class TckTestCase
 
         String expected = IOUtils.toString(new FileInputStream(this.expected));
         System.out.println("dump = \n" + dump);
-
+        System.out.println("expected = \n" + expected);
         Assert.assertTrue(jsonEquals(dump, expected));
 
     }
