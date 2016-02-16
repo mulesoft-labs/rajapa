@@ -15,10 +15,16 @@
  */
 package org.raml.suggester;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.flipkart.zjsonpatch.JsonDiff;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,15 +32,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.raml.RamlSuggester;
 import org.raml.dataprovider.TestDataProvider;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @RunWith(Parameterized.class)
 public class SuggesterTestCase extends TestDataProvider
@@ -62,28 +59,6 @@ public class SuggesterTestCase extends TestDataProvider
         final String expected = IOUtils.toString(new FileInputStream(this.expectedOutput));
         System.out.println("dump = \n" + dump);
         Assert.assertTrue(jsonEquals(dump, expected));
-    }
-
-    private boolean jsonEquals(String produced, String expected)
-    {
-        ObjectMapper mapper = new ObjectMapper();
-        try
-        {
-            JsonNode beforeNode = mapper.readTree(expected);
-            JsonNode afterNode = mapper.readTree(produced);
-            JsonNode patch = JsonDiff.asJson(beforeNode, afterNode);
-            String diffs = patch.toString();
-            if ("[]".equals(diffs))
-            {
-                return true;
-            }
-            System.out.println("json diff: " + diffs);
-            return false;
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 
     @Parameterized.Parameters(name = "{2}")

@@ -15,7 +15,12 @@
  */
 package org.raml.dataprovider;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flipkart.zjsonpatch.JsonDiff;
+
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -67,4 +72,28 @@ public abstract class TestDataProvider
         }
         return result;
     }
+
+
+    protected boolean jsonEquals(String produced, String expected)
+    {
+        ObjectMapper mapper = new ObjectMapper();
+        try
+        {
+            JsonNode beforeNode = mapper.readTree(expected);
+            JsonNode afterNode = mapper.readTree(produced);
+            JsonNode patch = JsonDiff.asJson(beforeNode, afterNode);
+            String diffs = patch.toString();
+            if ("[]".equals(diffs))
+            {
+                return true;
+            }
+            System.out.println("json diff: " + diffs);
+            return false;
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

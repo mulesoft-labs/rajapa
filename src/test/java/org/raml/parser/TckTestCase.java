@@ -20,19 +20,11 @@ package org.raml.parser;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flipkart.zjsonpatch.JsonDiff;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -76,29 +68,6 @@ public class TckTestCase extends TestDataProvider
         Assert.assertTrue(jsonEquals(dump, expected));
 
     }
-
-    private boolean jsonEquals(String produced, String expected)
-    {
-        ObjectMapper mapper = new ObjectMapper();
-        try
-        {
-            JsonNode beforeNode = mapper.readTree(expected);
-            JsonNode afterNode = mapper.readTree(produced);
-            JsonNode patch = JsonDiff.asJson(beforeNode, afterNode);
-            String diffs = patch.toString();
-            if ("[]".equals(diffs))
-            {
-                return true;
-            }
-            System.out.println("json diff: " + diffs);
-            return false;
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
 
     @Parameterized.Parameters(name = "{2}")
     public static Collection<Object[]> data() throws URISyntaxException
