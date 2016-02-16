@@ -197,8 +197,8 @@ public class Raml10Grammar extends BaseGrammar
                 arrayTypeLiteral(),
                 stringTypeLiteral(),
                 numberTypeLiteral(),
-                string("boolean"),
-                string("date"),
+                booleanTypeLiteral(),
+                dateTypeLiteral(),
                 fileTypeLiteral(),
                 regex("[A-z]+|[A-z]+"),
                 stringType());
@@ -214,9 +214,19 @@ public class Raml10Grammar extends BaseGrammar
         return anyOf(string("number"), string("integer"));
     }
 
+    private Rule booleanTypeLiteral()
+    {
+        return string("boolean");
+    }
+
     private StringValueRule stringTypeLiteral()
     {
         return string("string");
+    }
+
+    private StringValueRule dateTypeLiteral()
+    {
+        return string("date");
     }
 
     private RegexValueRule arrayTypeLiteral()
