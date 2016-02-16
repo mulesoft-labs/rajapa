@@ -56,6 +56,7 @@ public class RamlBuilderTestCase extends TestDataProvider
         String dump = new TreeDumper().dump(raml);
         String expectedOutput = IOUtils.toString(new FileInputStream(this.expectedOutput));
         System.out.println("dump = \n" + dump);
+        System.out.println("expected = \n" + expectedOutput);
         Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(expectedOutput));
     }
 

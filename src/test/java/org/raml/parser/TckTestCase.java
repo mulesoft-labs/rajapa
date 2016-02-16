@@ -40,29 +40,26 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.raml.RamlBuilder;
+import org.raml.dataprovider.TestDataProvider;
 import org.raml.emitter.tck.TckEmitter;
 import org.raml.nodes.Node;
 
 @RunWith(Parameterized.class)
-public class TckTestCase
+public class TckTestCase extends TestDataProvider
 {
 
-
-    private File input;
-    private File expected;
-    private String name;
+    private static final String INPUT_FILE_NAME = "input.raml";
+    private static final String OUTPUT_FILE_NAME = "output.json";
 
     public TckTestCase(File input, File expected, String name)
     {
-        this.input = input;
-        this.expected = expected;
-        this.name = name;
+        super(input, expected, name);
     }
 
     @Test
     public void runTest() throws IOException
     {
-        if (!expected.exists())
+        if (!expectedOutput.exists())
         {
             return;
         }
@@ -73,7 +70,7 @@ public class TckTestCase
         String dump = new TckEmitter().dump(raml);
 
 
-        String expected = IOUtils.toString(new FileInputStream(this.expected));
+        String expected = IOUtils.toString(new FileInputStream(this.expectedOutput));
         System.out.println("dump = \n" + dump);
         System.out.println("expected = \n" + expected);
         Assert.assertTrue(jsonEquals(dump, expected));
@@ -106,40 +103,7 @@ public class TckTestCase
     @Parameterized.Parameters(name = "{2}")
     public static Collection<Object[]> data() throws URISyntaxException
     {
-        final URI baseFolder = TckTestCase.class.getResource("").toURI();
-        final File testFolder = new File(baseFolder);
-        List<Object[]> result = new ArrayList<>();
-        addScenarios(testFolder.listFiles(), result, "output.json", "");
-        return result;
-    }
-
-    private static void addScenarios(File[] scenarios, List<Object[]> result, String outputFileName, String parentScenario)
-    {
-        for (File scenario : scenarios)
-        {
-            if (scenario.isDirectory())
-            {
-                String scenarioName = parentScenario + scenario.getName();
-                File input = new File(scenario, "input.raml");
-                File output = new File(scenario, outputFileName);
-                if (input.isFile() && output.isFile())
-                {
-                    result.add(new Object[] {input, output, scenarioName});
-                }
-                File[] subdirs = scenario.listFiles(new FilenameFilter()
-                {
-                    @Override
-                    public boolean accept(File dir, String name)
-                    {
-                        return new File(dir, name).isDirectory();
-                    }
-                });
-                if (subdirs != null && subdirs.length > 0)
-                {
-                    addScenarios(subdirs, result, outputFileName, scenarioName + "/");
-                }
-            }
-        }
+        return getData(TckTestCase.class.getResource("").toURI(), INPUT_FILE_NAME, OUTPUT_FILE_NAME);
     }
 
 }
