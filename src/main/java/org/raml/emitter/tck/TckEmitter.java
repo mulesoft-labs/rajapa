@@ -221,16 +221,15 @@ public class TckEmitter
 
     private String sanitizeScalarValue(Object value)
     {
-        String result = handleCustomScalar(value);
-        if (result != null)
+        if (value instanceof BigDecimal)
         {
-            return jsonEscape(result);
+            return jsonEscape(((BigDecimal) value).stripTrailingZeros().toString());
         }
-        else
+        else if (value instanceof Number || value instanceof Boolean)
         {
-            result = jsonEscape(String.valueOf(value));
+            return value.toString();
         }
-        return result;
+        return jsonEscape(String.valueOf(value));
     }
 
     private String jsonEscape(String text)
@@ -244,15 +243,6 @@ public class TckEmitter
         {
             throw new RuntimeException(e);
         }
-    }
-
-    private String handleCustomScalar(Object value)
-    {
-        if (value instanceof BigDecimal)
-        {
-            return ((BigDecimal) value).stripTrailingZeros().toString();
-        }
-        return null;
     }
 
 }

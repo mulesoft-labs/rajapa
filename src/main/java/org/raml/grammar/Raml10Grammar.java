@@ -171,6 +171,7 @@ public class Raml10Grammar extends BaseGrammar
                                                                      .add(field(string("pattern"), stringType()))
                                                                      .add(field(string("minLength"), integerType()))
                                                                      .add(field(string("maxLength"), integerType()))
+                                                                     .add(field(string("required"), booleanType()))
                                                                      .add(field(string("enum"), array(stringType()))),
                                               is(numberTypeLiteral())
                                                                      .add(field(string("minimum"), integerType()))

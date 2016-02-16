@@ -15,16 +15,16 @@
  */
 package org.raml.grammar.rule;
 
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.raml.nodes.BooleanNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
-import org.raml.nodes.StringNode;
 import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.Suggestion;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
 
 public class BooleanTypeRule extends AbstractTypeRule
 {
