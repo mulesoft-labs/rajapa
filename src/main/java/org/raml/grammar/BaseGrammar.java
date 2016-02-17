@@ -32,14 +32,14 @@ public class BaseGrammar
         this.context = new GrammarContext();
     }
 
-    public ObjectRule mapping()
+    public ObjectRule objectType()
     {
         return new ObjectRule();
     }
 
-    public ObjectRule mapping(String name)
+    public ObjectRule objectType(String name)
     {
-        final ObjectRule mapping = mapping();
+        final ObjectRule mapping = objectType();
         this.context.registerRule(name, mapping);
         return mapping;
     }

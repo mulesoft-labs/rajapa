@@ -25,6 +25,7 @@ import org.raml.transformer.ResourceTypesTraitsTransformer;
 import org.raml.transformer.StringTemplateExpressionTransformer;
 import org.raml.transformer.TransformationPhase;
 import org.raml.transformer.IncludeResolver;
+import org.raml.transformer.TypesTransformer;
 
 import java.io.*;
 import java.util.Arrays;
@@ -89,7 +90,8 @@ public class RamlBuilder
     private List<Phase> createPhases(ResourceLoader resourceLoader, String resourceLocation)
     {
         // The first phase expands the includes.
-        final TransformationPhase first = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation), new StringTemplateExpressionTransformer());
+        final TransformationPhase first = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation), new StringTemplateExpressionTransformer(),
+                new TypesTransformer());
         // Overlays and extensions.
 
         // Runs Schema. Applies the Raml rules and changes each node for a more specific. Annotations Library TypeSystem
