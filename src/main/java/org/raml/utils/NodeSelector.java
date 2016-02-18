@@ -15,7 +15,10 @@
  */
 package org.raml.utils;
 
+import com.google.common.collect.Lists;
+
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,6 +30,7 @@ import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
 import org.raml.nodes.SimpleTypeNode;
+import org.raml.nodes.snakeyaml.SYArrayNode;
 
 public class NodeSelector
 {
@@ -71,6 +75,36 @@ public class NodeSelector
         }
         return defaultValue;
     }
+
+    public static List<String> selectStringCollection(String path, Node from)
+    {
+        return selectCollection(path, from);
+    }
+
+    private static <T> List<T> selectCollection(String path, Node from)
+    {
+        ArrayList<T> selectedValues = Lists.newArrayList();
+        Node selectedNode = NodeSelector.selectFrom(path, from);
+        if (selectedNode != null)
+        {
+            if (selectedNode instanceof SimpleTypeNode)
+            {
+                selectedValues.add(((SimpleTypeNode<T>) selectedNode).getValue());
+            }
+            else if (selectedNode instanceof SYArrayNode)
+            {
+                for (Node node : selectedNode.getChildren())
+                {
+                    if (node instanceof SimpleTypeNode)
+                    {
+                        selectedValues.add(((SimpleTypeNode<T>) node).getValue());
+                    }
+                }
+            }
+        }
+        return selectedValues;
+    }
+
 
     @Nullable
     private static Node selectFrom(List<String> pathTokens, Node from)

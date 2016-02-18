@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.raml.utils.NodeSelector;
+
 public abstract class BaseNode implements Node
 {
 
@@ -131,4 +133,9 @@ public abstract class BaseNode implements Node
         return source;
     }
 
+    @Override
+    public Node get(String selector)
+    {
+        return NodeSelector.selectFrom(selector, this);
+    }
 }

@@ -109,6 +109,16 @@ public class BaseGrammar
         return new AnyOfRule(Arrays.asList(rules));
     }
 
+    public NegativeRule not(Rule rule)
+    {
+        return new NegativeRule(rule);
+    }
+
+    public AllOfRule allOf(Rule... rules)
+    {
+        return new AllOfRule(Arrays.asList(rules));
+    }
+
     public ReferenceRule ref(String name)
     {
         return new ReferenceRule(context, name);
