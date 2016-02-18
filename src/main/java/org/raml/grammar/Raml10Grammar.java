@@ -162,7 +162,6 @@ public class Raml10Grammar extends BaseGrammar
                                                                         .add(field(string("patternProperties"), properties()))
                                                                         .add(field(string("discriminator"), anyOf(stringType(), booleanType())))
                                                                         .add(field(string("discriminatorValue"), stringType())),
-
                                                  is(arrayTypeLiteral())
                                                                        .add(field(string("uniqueItems"), booleanType()))
                                                                        .add(field(string("items"), any())) // todo review this don't get what it is
@@ -174,12 +173,12 @@ public class Raml10Grammar extends BaseGrammar
                                                                         .add(field(string("maxLength"), integerType()))
                                                                         .add(field(string("required"), booleanType()))
                                                                         .add(field(string("enum"), array(stringType()))),
-                                                 is(numberTypeLiteral())
-                                                                        .add(field(string("minimum"), integerType()))
-                                                                        .add(field(string("maximum"), integerType()))
-                                                                        .add(field(string("format"), stringType()))
-                                                                        .add(field(string("multipleOf"), integerType()))
-                                                                        .add(field(string("enum"), array(integerType()))),
+                                                 is(numericTypeLiteral())
+                                                                         .add(field(string("minimum"), integerType()))
+                                                                         .add(field(string("maximum"), integerType()))
+                                                                         .add(field(string("format"), stringType()))
+                                                                         .add(field(string("multipleOf"), integerType()))
+                                                                         .add(field(string("enum"), array(integerType()))),
                                                  is(fileTypeLiteral())
                                                                       .add(field(string("fileTypes"), any())) // todo finish
                                                                       .add(field(string("minLength"), integerType()))
@@ -197,7 +196,7 @@ public class Raml10Grammar extends BaseGrammar
         return anyOf(objectTypeLiteral(),
                 arrayTypeLiteral(),
                 stringTypeLiteral(),
-                numberTypeLiteral(),
+                numericTypeLiteral(),
                 booleanTypeLiteral(),
                 dateTypeLiteral(),
                 fileTypeLiteral(),
@@ -210,9 +209,19 @@ public class Raml10Grammar extends BaseGrammar
         return string("file");
     }
 
+    private Rule numericTypeLiteral()
+    {
+        return anyOf(numberTypeLiteral(), integerTypeLiteral());
+    }
+
     private Rule numberTypeLiteral()
     {
-        return anyOf(string("number"), string("integer"));
+        return string("number");
+    }
+
+    private Rule integerTypeLiteral()
+    {
+        return string("integer");
     }
 
     private Rule booleanTypeLiteral()
@@ -241,9 +250,9 @@ public class Raml10Grammar extends BaseGrammar
                            .with(field(stringType(), ref("type")));
     }
 
-    private StringValueRule objectTypeLiteral()
+    private Rule objectTypeLiteral()
     {
-        return string("object");
+        return allOf(anyOf(string("object"), regex("^(?:[^|]+(?:\\|[^|]+)*)?$")), not(anyBuiltinType()));
     }
 
     // Traits
@@ -659,6 +668,11 @@ public class Raml10Grammar extends BaseGrammar
     private AnyOfRule anyOptionalMethod()
     {
         return anyOf(string("get?"), string("patch?"), string("put?"), string("post?"), string("delete?"), string("options?"), string("head?"));
+    }
+
+    private AnyOfRule anyBuiltinType()
+    {
+        return anyOf(string("string"), string("number"), string("integer"), string("boolean"), string("date"), string("file"));
     }
 
     private AnyOfRule anyResourceTypeMethod()

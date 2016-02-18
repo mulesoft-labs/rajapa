@@ -18,6 +18,7 @@ package org.raml.types.factories;
 import org.raml.grammar.rule.NodeFactory;
 import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
+import org.raml.nodes.snakeyaml.SYArrayNode;
 import org.raml.types.builtin.BooleanTypeNode;
 import org.raml.types.builtin.FileTypeNode;
 import org.raml.types.builtin.NumericTypeNode;
@@ -31,12 +32,16 @@ public class TypeNodeFactory implements NodeFactory
     @Override
     public Node create(Object... args)
     {
-        StringNode type = (StringNode) NodeSelector.selectFrom("type", (Node) args[0]);
+
+        Node typeNode = NodeSelector.selectFrom("type", (Node) args[0]);
+        if (typeNode instanceof SYArrayNode)
+        {
+            return new ObjectTypeNode();
+        }
+        StringNode type = (StringNode) typeNode;
         String value = type.getValue();
         switch (value)
         {
-        case "object":
-            return new ObjectTypeNode();
         case "string":
             return new StringTypeNode();
         case "number":
@@ -46,8 +51,9 @@ public class TypeNodeFactory implements NodeFactory
             return new BooleanTypeNode();
         case "file":
             return new FileTypeNode();
+        case "object":
         default:
-            return new StringTypeNode();
+            return new ObjectTypeNode();
         }
     }
 }

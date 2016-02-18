@@ -92,6 +92,12 @@ public interface Node
     Node getSource();
 
     /**
+     * Returns the children that matches the desired selector
+     */
+    @Nullable
+    Node get(String selector);
+
+    /**
      * Replace this node in the tree with a new specialized node. The new node will have as a source this node.
      * @param newNode The new node
      */
