@@ -1,0 +1,15 @@
+RamlDocumentNode (Start: 11 , End: 58, Source: SYObjectNode)
+    KeyValueNodeImpl (Start: 11 , End: 22)
+        SYStringNode: "title" (Start: 11 , End: 16)
+        SYStringNode: "hola" (Start: 18 , End: 22)
+    ResourceNode (Start: 23 , End: 54, Source: KeyValueNodeImpl)
+        SYStringNode: "/top" (Start: 23 , End: 27)
+        ErrorNode: "while scanning a simple key
+ in 'reader', line 3, column 1:
+    invalidyaml
+    ^
+could not find expected ':'
+ in 'reader', line 4, column 1:
+    /{id}:
+    ^
+" (Start: 53 , End: 54, Source: SYIncludeNode)
