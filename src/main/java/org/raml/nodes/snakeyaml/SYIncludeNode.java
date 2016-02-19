@@ -38,10 +38,10 @@ public class SYIncludeNode extends SYStringNode
 
     public String getIncludePath()
     {
-        Node parent = getParent();
-        while (parent != null)
+        Node current = this;
+        while (current != null)
         {
-            Node possibleSource = parent.getSource();
+            Node possibleSource = current.getSource();
             if (possibleSource instanceof SYIncludeNode)
             {
                 String basePath = ((SYIncludeNode) possibleSource).getIncludePath();
@@ -49,7 +49,7 @@ public class SYIncludeNode extends SYStringNode
                 segments.remove(segments.size() - 1);
                 return StringUtils.join(segments, "/") + "/" + getValue();
             }
-            parent = parent.getParent();
+            current = current.getParent();
         }
 
         return getValue();
