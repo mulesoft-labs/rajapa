@@ -42,4 +42,10 @@ public class ErrorNode extends AbstractRamlNode
     {
         return NodeType.Error;
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format("%s [%s]", getClass().getSimpleName(), getErrorMessage());
+    }
 }

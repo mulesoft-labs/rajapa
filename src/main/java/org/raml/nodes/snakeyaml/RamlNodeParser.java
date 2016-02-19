@@ -15,8 +15,12 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import org.raml.nodes.DefaultPosition;
+import org.raml.nodes.ErrorNode;
 import org.raml.nodes.Node;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.Mark;
+import org.yaml.snakeyaml.scanner.ScannerException;
 
 import javax.annotation.Nullable;
 import java.io.*;
@@ -41,15 +45,26 @@ public class RamlNodeParser
     @Nullable
     public static Node parse(Reader reader)
     {
-        Yaml yamlParser = new Yaml();
-        org.yaml.snakeyaml.nodes.Node composedNode = yamlParser.compose(reader);
-        if (composedNode == null)
+        try
         {
-            return null;
+            Yaml yamlParser = new Yaml();
+            org.yaml.snakeyaml.nodes.Node composedNode = yamlParser.compose(reader);
+            if (composedNode == null)
+            {
+                return null;
+            }
+            else
+            {
+                return new SYModelWrapper().wrap(composedNode);
+            }
         }
-        else
+        catch (final ScannerException e)
         {
-            return new SYModelWrapper().wrap(composedNode);
+            ErrorNode errorNode = new ErrorNode(e.getMessage());
+            Mark problemMark = e.getProblemMark();
+            errorNode.setStartPosition(new DefaultPosition(problemMark.getIndex(), problemMark.getLine(), problemMark.getColumn(), ""));
+            errorNode.setEndPosition(new DefaultPosition(problemMark.getIndex() + 1, problemMark.getLine(), problemMark.getColumn() + 1, ""));
+            return errorNode;
         }
     }
 
