@@ -51,7 +51,7 @@ public class TemplateExpressionNode extends StringNodeImpl implements Executable
         String result = null;
         if (expressionTokens.hasMoreTokens())
         {
-            final String token = expressionTokens.nextToken();
+            final String token = expressionTokens.nextToken().trim();
             if (context.containsVariable(token))
             {
                 result = context.getVariable(token);
@@ -63,7 +63,7 @@ public class TemplateExpressionNode extends StringNodeImpl implements Executable
         }
         while (expressionTokens.hasMoreTokens())
         {
-            final String token = expressionTokens.nextToken();
+            final String token = expressionTokens.nextToken().trim();
             if (token.startsWith("!"))
             {
                 try

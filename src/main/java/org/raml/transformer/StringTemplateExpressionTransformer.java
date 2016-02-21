@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 
 public class StringTemplateExpressionTransformer implements Transformer
 {
-    static Pattern templatePattern = Pattern.compile("<<(.+)>>");
+    static Pattern templatePattern = Pattern.compile("<<(.+?)>>");
 
     @Override
     public boolean matches(Node node)
