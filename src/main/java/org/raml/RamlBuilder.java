@@ -86,12 +86,10 @@ public class RamlBuilder
         return rootNode;
     }
 
-
     private List<Phase> createPhases(ResourceLoader resourceLoader, String resourceLocation)
     {
         // The first phase expands the includes.
-        final TransformationPhase first = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation), new StringTemplateExpressionTransformer(),
-                new TypesTransformer());
+        final TransformationPhase first = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation), new StringTemplateExpressionTransformer());
         // Overlays and extensions.
 
         // Runs Schema. Applies the Raml rules and changes each node for a more specific. Annotations Library TypeSystem
@@ -101,7 +99,7 @@ public class RamlBuilder
         // Normalize resources and detects duplicated ones and more than one use of url parameters. ???
 
         // Applies resourceTypes and Traits Library
-        final TransformationPhase third = new TransformationPhase(new ResourceTypesTraitsTransformer());
+        final TransformationPhase third = new TransformationPhase(new ResourceTypesTraitsTransformer(), new TypesTransformer());
 
         // Schema Types example validation
         return Arrays.asList(first, second, third);

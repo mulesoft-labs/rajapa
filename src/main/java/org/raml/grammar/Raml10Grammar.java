@@ -526,7 +526,7 @@ public class Raml10Grammar extends BaseGrammar
 
     private KeyValueRule resourceTypeReferenceField()
     {
-        return field(typeKey(), anyTypeReference(RESOURCE_TYPES_KEY_NAME, ResourceTypeRefNode.class, ParametrizedResourceTypeRefNode.class));
+        return field(typeKey(), anyOf(anyTypeReference(RESOURCE_TYPES_KEY_NAME, ResourceTypeRefNode.class, ParametrizedResourceTypeRefNode.class)));
     }
 
     private Rule anyTypeReference(String referenceKey, Class<? extends Node> simpleClass, Class<? extends Node> parametrisedClass)

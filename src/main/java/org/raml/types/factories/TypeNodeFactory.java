@@ -24,6 +24,7 @@ import org.raml.types.builtin.FileTypeNode;
 import org.raml.types.builtin.NumericTypeNode;
 import org.raml.types.builtin.ObjectTypeNode;
 import org.raml.types.builtin.StringTypeNode;
+import org.raml.types.builtin.UnionTypeNode;
 import org.raml.utils.NodeSelector;
 
 public class TypeNodeFactory implements NodeFactory
@@ -52,8 +53,9 @@ public class TypeNodeFactory implements NodeFactory
         case "file":
             return new FileTypeNode();
         case "object":
-        default:
             return new ObjectTypeNode();
+        default:
+            return new UnionTypeNode();
         }
     }
 }
