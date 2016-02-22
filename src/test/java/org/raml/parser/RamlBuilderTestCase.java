@@ -38,6 +38,7 @@ import org.raml.RamlBuilder;
 import org.raml.dataprovider.TestDataProvider;
 import org.raml.nodes.Node;
 import org.raml.types.builtin.FileTypeNode;
+import org.raml.types.builtin.UnionTypeNode;
 import org.raml.utils.TreeDumper;
 
 @RunWith(Parameterized.class)

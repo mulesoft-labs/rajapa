@@ -15,10 +15,13 @@
  */
 package org.raml.types.builtin;
 
+import java.util.List;
+
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
 import org.raml.nodes.impl.AbstractRamlNode;
+import org.raml.utils.NodeSelector;
 
 public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode
 {
@@ -30,6 +33,11 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode
     protected ObjectTypeNode(ObjectTypeNode node)
     {
         super(node);
+    }
+
+    public List<Node> getProperties()
+    {
+        return getSource().get("properties").getChildren();
     }
 
     @Override

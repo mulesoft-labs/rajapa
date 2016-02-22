@@ -43,19 +43,19 @@ public class TypeNodeFactory implements NodeFactory
         String value = type.getValue();
         switch (value)
         {
-        case "string":
-            return new StringTypeNode();
-        case "number":
-        case "integer":
-            return new NumericTypeNode();
-        case "boolean":
-            return new BooleanTypeNode();
-        case "file":
-            return new FileTypeNode();
-        case "object":
-            return new ObjectTypeNode();
-        default:
-            return new UnionTypeNode();
+            case "string":
+                return new StringTypeNode();
+            case "number":
+            case "integer":
+                return new NumericTypeNode();
+            case "boolean":
+                return new BooleanTypeNode();
+            case "file":
+                return new FileTypeNode();
+            case "object":
+                return new ObjectTypeNode();
+            default:
+                return new UnionTypeNode();
         }
     }
 }

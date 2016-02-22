@@ -72,7 +72,7 @@ public class TypesTransformer implements Transformer
 
     private List<Node> getTypeProperties(ObjectTypeNode node)
     {
-        return node.get("properties").getChildren();
+        return node.getProperties();
     }
 
     private ObjectTypeNode getType(SYObjectNode node, String typeName)
