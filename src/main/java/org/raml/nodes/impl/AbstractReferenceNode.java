@@ -16,6 +16,7 @@
 package org.raml.nodes.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.raml.nodes.KeyValueNode;
@@ -59,7 +60,7 @@ public abstract class AbstractReferenceNode extends AbstractRamlNode implements 
     {
         Map<String, String> params = new HashMap<>();
 
-        for (Node node : ((KeyValueNode) refNode.getChildren().get(0)).getValue().getChildren())
+        for (Node node : getParamNodes(refNode))
         {
             KeyValueNode keyValueNode = (KeyValueNode) node;
             params.put(keyValueNode.getKey().toString(), keyValueNode.getValue().toString());
@@ -67,4 +68,21 @@ public abstract class AbstractReferenceNode extends AbstractRamlNode implements 
         return params;
     }
 
+    private static List<Node> getParamNodes(Node refNode)
+    {
+        List<Node> children = refNode.getChildren();
+        if (children.size() == 1)
+        {
+            return ((KeyValueNode) children.get(0)).getValue().getChildren();
+        }
+        if (children.size() == 2 && children.get(0) instanceof LibraryRefNode)
+        {
+            return ((KeyValueNode) children.get(1)).getValue().getChildren();
+        }
+        if (children.size() == 0)
+        {
+            throw new IllegalStateException("Parameterized reference node has no children");
+        }
+        throw new IllegalStateException("Parameterized reference node has invalid children types");
+    }
 }

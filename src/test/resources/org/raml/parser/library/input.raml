@@ -6,6 +6,8 @@ uses:
        foo:
         <<foo>>: This is a collection <<foo | !singularize>> hgfjhgf
 /top:
-    type: library1.foo
+    type:
+        library1.foo:
+            foo: description
     get:
         description: "get something"
