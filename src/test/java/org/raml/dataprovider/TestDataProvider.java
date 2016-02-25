@@ -17,6 +17,7 @@ package org.raml.dataprovider;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.flipkart.zjsonpatch.JsonDiff;
 
 import java.io.File;
@@ -28,7 +29,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.junit.runners.Parameterized;
 
 public abstract class TestDataProvider
 {
@@ -73,14 +73,13 @@ public abstract class TestDataProvider
         return result;
     }
 
-
     protected boolean jsonEquals(String produced, String expected)
     {
         ObjectMapper mapper = new ObjectMapper();
         try
         {
-            JsonNode beforeNode = mapper.readTree(expected);
-            JsonNode afterNode = mapper.readTree(produced);
+            JsonNode beforeNode = filterNodes(mapper.readTree(expected));
+            JsonNode afterNode = filterNodes(mapper.readTree(produced));
             JsonNode patch = JsonDiff.asJson(beforeNode, afterNode);
             String diffs = patch.toString();
             if ("[]".equals(diffs))
@@ -94,6 +93,30 @@ public abstract class TestDataProvider
         {
             throw new RuntimeException(e);
         }
+    }
+
+    private JsonNode filterNodes(JsonNode jsonNode)
+    {
+        for (String filterNode : getKeysToFilter())
+        {
+            JsonNode parent;
+            while ((parent = jsonNode.findParent(filterNode)) != null)
+            {
+                if (parent instanceof ObjectNode)
+                {
+                    JsonNode remove = ((ObjectNode) parent).remove(filterNode);
+                    System.out.println("removed node \"" + filterNode + "\": " + remove);
+                }
+            }
+
+        }
+
+        return jsonNode;
+    }
+
+    protected String[] getKeysToFilter()
+    {
+        return new String[] {};
     }
 
 }

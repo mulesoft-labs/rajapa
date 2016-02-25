@@ -37,13 +37,13 @@ import org.raml.emitter.tck.TckEmitter;
 import org.raml.nodes.Node;
 
 @RunWith(Parameterized.class)
-public class TckTestCase extends TestDataProvider
+public class InternalTckTestCase extends TestDataProvider
 {
 
     private static final String INPUT_FILE_NAME = "input.raml";
     private static final String OUTPUT_FILE_NAME = "output.json";
 
-    public TckTestCase(File input, File expected, String name)
+    public InternalTckTestCase(File input, File expected, String name)
     {
         super(input, expected, name);
     }
@@ -72,7 +72,7 @@ public class TckTestCase extends TestDataProvider
     @Parameterized.Parameters(name = "{2}")
     public static Collection<Object[]> data() throws URISyntaxException
     {
-        return getData(TckTestCase.class.getResource("").toURI(), INPUT_FILE_NAME, OUTPUT_FILE_NAME);
+        return getData(InternalTckTestCase.class.getResource("").toURI(), INPUT_FILE_NAME, OUTPUT_FILE_NAME);
     }
 
 }
