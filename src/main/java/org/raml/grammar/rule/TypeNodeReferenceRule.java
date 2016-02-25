@@ -13,42 +13,29 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.types.builtin;
+package org.raml.grammar.rule;
 
 import java.util.List;
 
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.raml.nodes.ObjectNode;
-import org.raml.nodes.impl.AbstractRamlNode;
-import org.raml.utils.NodeSelector;
+import javax.annotation.Nonnull;
 
-public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode
+import org.raml.nodes.Node;
+import org.raml.suggester.Suggestion;
+
+public class TypeNodeReferenceRule extends StringTypeRule
 {
 
-    public ObjectTypeNode()
+    private ReferenceSuggester suggester;
+
+    public TypeNodeReferenceRule(String referenceKey)
     {
+        this.suggester = new ReferenceTypeSuggester(referenceKey);
     }
 
-    protected ObjectTypeNode(ObjectTypeNode node)
-    {
-        super(node);
-    }
-
-    public List<Node> getProperties()
-    {
-        return getSource().get("properties").getChildren();
-    }
-
+    @Nonnull
     @Override
-    public Node copy()
+    public List<Suggestion> getSuggestions(Node node)
     {
-        return new ObjectTypeNode(this);
-    }
-
-    @Override
-    public NodeType getType()
-    {
-        return NodeType.Object;
+        return suggester.getSuggestions(node);
     }
 }

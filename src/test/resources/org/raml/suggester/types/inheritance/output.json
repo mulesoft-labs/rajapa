@@ -1,0 +1,33 @@
+[ {
+    "label" : "Object",
+    "description" : null,
+    "value" : "object"
+}, {
+    "label" : "String",
+    "description" : null,
+    "value" : "string"
+}, {
+    "label" : "Number",
+    "description" : null,
+    "value" : "number"
+}, {
+    "label" : "Integer",
+    "description" : null,
+    "value" : "integer"
+}, {
+    "label" : "Boolean",
+    "description" : null,
+    "value" : "boolean"
+}, {
+    "label" : "Date",
+    "description" : null,
+    "value" : "date"
+}, {
+    "label" : "File",
+    "description" : null,
+    "value" : "file"
+}, {
+    "label" : "",
+    "description" : "",
+    "value" : "Person"
+} ]

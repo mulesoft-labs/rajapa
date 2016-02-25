@@ -36,6 +36,8 @@ public class RamlSuggester
 {
 
 
+    private static Raml10Grammar raml10Grammar = new Raml10Grammar();
+
     public List<Suggestion> suggestions(String document, int offset)
     {
         final List<Suggestion> result = new ArrayList<>();
@@ -152,7 +154,6 @@ public class RamlSuggester
             }
             // Recreate path with the node at the correct indentation
             final List<Node> pathToRoot = createPathToRoot(node);
-            final Raml10Grammar raml10Grammar = new Raml10Grammar();
             // Follow the path from the root to the node and apply the rules for auto-completion.
             final Rule rootRule = raml10Grammar.raml();
             return rootRule.getSuggestions(pathToRoot);
