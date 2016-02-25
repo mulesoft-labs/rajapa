@@ -13,17 +13,17 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.grammar;
+package org.raml.impl;
 
 import com.google.common.collect.Range;
+import org.raml.grammar.BaseGrammar;
 import org.raml.grammar.rule.*;
 import org.raml.nodes.Node;
 import org.raml.nodes.impl.*;
-import org.raml.types.factories.TypeNodeFactory;
 
 import java.math.BigInteger;
 
-public class Raml10Grammar extends BaseGrammar
+public class BaseRamlGrammar extends BaseGrammar
 {
 
     public static final String USES_KEY_NAME = "uses";
@@ -31,28 +31,57 @@ public class Raml10Grammar extends BaseGrammar
     public static final String TRAITS_KEY_NAME = "traits";
     public static final String SECURITY_SCHEMES_KEY_NAME = "securitySchemes";
 
-    public Rule raml()
+    public ObjectRule raml()
     {
         return objectType()
                            .with(descriptionField())
-                           .with(annotationField())
                            .with(schemasField())
-                           .with(typesField())
                            .with(traitsField())
                            .with(resourceTypesField())
-                           .with(annotationTypesField())
                            .with(securitySchemesField())
-                           .with(field(usesKey(), library()))
                            .with(titleField().description("Short plain-text label for the API."))
-                           .with(field(versionKey(), stringType()))
-                           .with(field(baseUriKey(), stringType()))
-                           .with(field(baseUriParametersKey(), parameters()))
+                           .with(versionField())
+                           .with(baseUriField())
+                           .with(baseUriParametersField())
                            .with(protocolsField())
-                           .with(field(mediaTypeKey(), stringType()))
+                           .with(mediaTypeField())
                            .with(securedByField().description("The security schemes that apply to every resource and method in the API."))
-                           .with(field(resourceKey(), resourceValue()).then(ResourceNode.class))
+                           .with(resourceField().then(ResourceNode.class))
                            .with(nonOptionalField(documentationKey(), documentations()))
                            .then(RamlDocumentNode.class);
+    }
+
+    protected KeyValueRule baseUriParametersField()
+    {
+        return field(baseUriParametersKey(), parameters());
+    }
+
+    protected KeyValueRule baseUriField()
+    {
+        return field(baseUriKey(), stringType());
+    }
+
+
+    protected KeyValueRule titleField()
+    {
+        return requiredField(titleKey(), stringType());
+    }
+
+
+    protected KeyValueRule resourceField()
+    {
+        return field(resourceKey(), resourceValue());
+    }
+
+
+    protected KeyValueRule versionField()
+    {
+        return field(versionKey(), stringType());
+    }
+
+    protected KeyValueRule mediaTypeField()
+    {
+        return field(mediaTypeKey(), stringType());
     }
 
     public Rule resourceType()
@@ -65,19 +94,19 @@ public class Raml10Grammar extends BaseGrammar
     }
 
     // Documentation
-    private Rule documentations()
+    protected Rule documentations()
     {
         return array(documentation());
     }
 
-    private Rule documentation()
+    public Rule documentation()
     {
         return objectType()
                            .with(titleField().description("Title of documentation section."))
                            .with(contentField().description("Content of documentation section."));
     }
 
-    private KeyValueRule contentField()
+    protected KeyValueRule contentField()
     {
         return requiredField(string("content"), stringType());
     }
@@ -85,7 +114,7 @@ public class Raml10Grammar extends BaseGrammar
 
     // Security scheme
 
-    private Rule securitySchemes()
+    protected Rule securitySchemes()
     {
         return objectType()
                            .with(
@@ -94,7 +123,7 @@ public class Raml10Grammar extends BaseGrammar
                            );
     }
 
-    private Rule securityScheme()
+    protected Rule securityScheme()
     {
         return objectType()
                            .with(descriptionField())
@@ -114,18 +143,17 @@ public class Raml10Grammar extends BaseGrammar
                            .with(field(string("settings"), securitySchemeSettings()));
     }
 
-    private Rule securitySchemePart()
+    protected ObjectRule securitySchemePart()
     {
         return objectType()
                            .with(displayNameField())
                            .with(descriptionField())
-                           .with(annotationField())
                            .with(field(headersKey(), parameters()))
                            .with(field(queryParametersKey(), parameters()))
                            .with(field(responseKey(), responses()));
     }
 
-    private Rule securitySchemeSettings()
+    protected Rule securitySchemeSettings()
     {
         return objectType()
                            .with(field(string("requestTokenUri"), stringType()))
@@ -136,131 +164,13 @@ public class Raml10Grammar extends BaseGrammar
                            .with(field(string("scopes"), array(stringType())));
     }
 
-    // Types
-
-    private Rule types()
-    {
-        return objectType()
-                           .with(field(stringType(), type()));
-    }
-
-    private Rule type()
-    {
-        // TODO schema example examples missing
-        return objectType("type")
-                                 .with(field(typeKey(), typeReference()))
-                                 .with(displayNameField())
-                                 .with(descriptionField())
-                                 .with(annotationField())
-                                 .with(
-                                         when("type", // todo what to do with inherited does not match object
-                                                 is(objectTypeLiteral())
-                                                                        .add(field(string("properties"), properties()))
-                                                                        .add(field(string("minProperties"), integerType()))
-                                                                        .add(field(string("maxProperties"), integerType()))
-                                                                        .add(field(string("additionalProperties"), anyOf(stringType(), ref("type"))))
-                                                                        .add(field(string("patternProperties"), properties()))
-                                                                        .add(field(string("discriminator"), anyOf(stringType(), booleanType())))
-                                                                        .add(field(string("discriminatorValue"), stringType())),
-                                                 is(arrayTypeLiteral())
-                                                                       .add(field(string("uniqueItems"), booleanType()))
-                                                                       .add(field(string("items"), any())) // todo review this don't get what it is
-                                                                       .add(field(string("minItems"), integerType()))
-                                                                       .add(field(string("maxItems"), integerType())),
-                                                 is(stringTypeLiteral())
-                                                                        .add(field(string("pattern"), stringType()))
-                                                                        .add(field(string("minLength"), integerType()))
-                                                                        .add(field(string("maxLength"), integerType()))
-                                                                        .add(field(string("required"), booleanType()))
-                                                                        .add(field(string("enum"), array(stringType()))),
-                                                 is(numericTypeLiteral())
-                                                                         .add(field(string("minimum"), integerType()))
-                                                                         .add(field(string("maximum"), integerType()))
-                                                                         .add(field(string("format"), stringType()))
-                                                                         .add(field(string("multipleOf"), integerType()))
-                                                                         .add(field(string("enum"), array(integerType()))),
-                                                 is(fileTypeLiteral())
-                                                                      .add(field(string("fileTypes"), any())) // todo finish
-                                                                      .add(field(string("minLength"), integerType()))
-                                                                      .add(field(string("maxLength"), integerType()))
-
-
-                                         )
-                                 ).then(new TypeNodeFactory())
-
-        ;
-    }
-
-    private AnyOfRule typeReference()
-    {
-        return anyOf(objectTypeLiteral(),
-                arrayTypeLiteral(),
-                stringTypeLiteral(),
-                numericTypeLiteral(),
-                booleanTypeLiteral(),
-                dateTypeLiteral(),
-                fileTypeLiteral(),
-                new TypeNodeReferenceRule("types"));
-    }
-
-    private StringValueRule fileTypeLiteral()
-    {
-        return string("file");
-    }
-
-    private Rule numericTypeLiteral()
-    {
-        return anyOf(numberTypeLiteral(), integerTypeLiteral());
-    }
-
-    private Rule numberTypeLiteral()
-    {
-        return string("number");
-    }
-
-    private Rule integerTypeLiteral()
-    {
-        return string("integer");
-    }
-
-    private Rule booleanTypeLiteral()
-    {
-        return string("boolean");
-    }
-
-    private StringValueRule stringTypeLiteral()
-    {
-        return string("string");
-    }
-
-    private StringValueRule dateTypeLiteral()
-    {
-        return string("date");
-    }
-
-    private RegexValueRule arrayTypeLiteral()
-    {
-        return regex(".+\\[\\]");
-    }
-
-    private ObjectRule properties()
-    {
-        return objectType()
-                           .with(field(stringType(), ref("type")));
-    }
-
-    private Rule objectTypeLiteral()
-    {
-        return allOf(anyOf(string("object"), regex("^(?:[^|]+(?:\\|[^|]+)*)?$")), not(anyBuiltinType()));
-    }
-
     // Traits
-    private Rule traits()
+    protected Rule traits()
     {
         return anyOf(array(trait()), trait());
     }
 
-    private Rule trait()
+    public Rule trait()
     {
         // TODO resourceRule().with(parameterKey(), any())
         return objectType("trait")
@@ -269,39 +179,19 @@ public class Raml10Grammar extends BaseGrammar
     }
 
     // Resource Types
-    private Rule resourceTypes()
+    protected Rule resourceTypes()
     {
         // TODO resourceRule().with(parameterKey(), any())
         return objectType().with(field(stringType(), any()).then(ResourceTypeNode.class));
     }
 
-    // Library
-    private Rule library()
-    {
-        return objectType("library")
-                                    .with(field(
-                                            stringType(),
-                                            objectType()
-                                                        .with(typesField())
-                                                        .with(schemasField())
-                                                        .with(resourceTypesField())
-                                                        .with(traitsField())
-                                                        .with(securitySchemesField())
-                                                        .with(annotationTypesField())
-                                                        .with(annotationField())
-                                                        .with(field(usesKey(), ref("library")))
-                                            )
-                                    );
-    }
-
 
     // Resources
-    private Rule resourceValue()
+    protected ObjectRule resourceValue()
     {
         return objectType("resourceValue")
                                           .with(displayNameField())
                                           .with(descriptionField())
-                                          .with(annotationField())
                                           .with(field(anyMethod(), methodValue()).then(MethodNode.class))
                                           .with(isField().description("A list of the traits to apply to all methods declared (implicitly or explicitly) for this resource. "))
                                           .with(resourceTypeReferenceField())
@@ -311,23 +201,21 @@ public class Raml10Grammar extends BaseGrammar
     }
 
 
-    private Rule schemas()
+    protected Rule schemas()
     {
         return objectType()
                            .with(field(stringType(), stringType()));
     }
 
     // Method
-    private Rule methodValue()
+    protected ObjectRule methodValue()
     {
         // TODO query string
         return objectType()
                            .with(descriptionField())
                            .with(displayNameField())
-                           .with(annotationField())
                            .with(field(queryParametersKey(), parameters()))
                            .with(headersField())
-                           .with(field(queryStringKey(), anyOf(stringType(), type())))
                            .with(field(responseKey(), responses()))
                            .with(bodyField())
                            .with(protocolsField().description("A method can override the protocols specified in the resource or at the API root, by employing this property."))
@@ -336,20 +224,20 @@ public class Raml10Grammar extends BaseGrammar
                            .with(securedByField().description("The security schemes that apply to this method."));
     }
 
-    private StringValueRule responseKey()
+    protected StringValueRule responseKey()
     {
         return string("responses")
                                   .description("Information about the expected responses to a request");
     }
 
-    private StringValueRule queryStringKey()
+    protected StringValueRule queryStringKey()
     {
         return string("queryString")
                                     .description("Specifies the query string needed by this method." +
                                                  " Mutually exclusive with queryParameters.");
     }
 
-    private StringValueRule queryParametersKey()
+    protected StringValueRule queryParametersKey()
     {
         return string("queryParameters")
                                         .description("Detailed information about any query parameters needed by this method. " +
@@ -357,40 +245,39 @@ public class Raml10Grammar extends BaseGrammar
     }
 
 
-    private Rule responses()
+    protected Rule responses()
     {
         return objectType()
                            .with(field(responseCodes(), response()));
     }
 
-    private Rule response()
+    protected ObjectRule response()
     {
         return objectType()
                            .with(displayNameField())
                            .with(descriptionField())
-                           .with(annotationField())
                            .with(headersField())
                            .with(bodyField());
     }
 
-    private Rule body()
+    protected Rule body()
     {
         return objectType().with(field(regex("[A-z-_]+\\/[A-z-_]+"), mimeType()));
     }
 
-    private Rule mimeType()
+    protected Rule mimeType()
     {
         return objectType()
                            .with(field(string("schema"), stringType()))
                            .with(field(string("example"), stringType()));
     }
 
-    private Rule parameters()
+    protected Rule parameters()
     {
         return objectType().with(field(stringType(), parameter()));
     }
 
-    private Rule parameter()
+    protected Rule parameter()
     {
         // TODO review type in raml 1.0 with the type system???
         // TODO review defaultValue
@@ -405,44 +292,23 @@ public class Raml10Grammar extends BaseGrammar
     }
 
 
-    // Common fields between rules
-    private KeyValueRule annotationField()
-    {
-        return field(annotationKey(), any());
-    }
-
-    private KeyValueRule securitySchemesField()
+    protected KeyValueRule securitySchemesField()
     {
         return field(securitySchemesKey(), anyOf(array(securitySchemes()), securitySchemes()));
     }
 
-    private StringValueRule securitySchemesKey()
+    protected StringValueRule securitySchemesKey()
     {
         return string(SECURITY_SCHEMES_KEY_NAME).description("Declarations of security schemes for use within this API.");
     }
 
-    private KeyValueRule annotationTypesField()
-    {
-        return field(annotationTypesKey(), annotationTypes());
-    }
 
-    private StringValueRule annotationTypesKey()
-    {
-        return string("annotationTypes").description("Declarations of annotation types for use by annotations.");
-    }
-
-    private Rule annotationTypes()
-    {
-        return objectType().with(field(stringType(), type()));
-    }
-
-
-    private KeyValueRule schemasField()
+    protected KeyValueRule schemasField()
     {
         return field(schemasKey(), anyOf(array(schemas()), schemas()));
     }
 
-    private StringValueRule schemasKey()
+    protected StringValueRule schemasKey()
     {
         return string("schemas")
                                 .description("Alias for the equivalent \"types\" property, for compatibility " +
@@ -451,84 +317,84 @@ public class Raml10Grammar extends BaseGrammar
                                              "The \"types\" property allows for XML and JSON schemas.");
     }
 
-    private KeyValueRule resourceTypesField()
+    protected KeyValueRule resourceTypesField()
     {
         return field(resourceTypesKey(), anyOf(array(resourceTypes()), resourceTypes()));
     }
 
-    private StringValueRule resourceTypesKey()
+    protected StringValueRule resourceTypesKey()
     {
         return string(RESOURCE_TYPES_KEY_NAME).description("Declarations of resource types for use within this API.");
     }
 
-    private KeyValueRule traitsField()
+    protected KeyValueRule traitsField()
     {
         return field(traitsKey(), traits());
     }
 
-    private StringValueRule traitsKey()
+    protected StringValueRule traitsKey()
     {
         return string(TRAITS_KEY_NAME).description("Declarations of traits for use within this API.");
     }
 
-    private KeyValueRule protocolsField()
+    protected KeyValueRule protocolsField()
     {
         return field(protocolsKey(), protocols());
     }
 
-    private StringValueRule protocolsKey()
+    protected StringValueRule protocolsKey()
     {
         return string("protocols").description("The protocols supported by the API.");
     }
 
-    private KeyValueRule bodyField()
+    protected KeyValueRule bodyField()
     {
         return field(bodyKey(), body());
     }
 
-    private StringValueRule bodyKey()
+    protected StringValueRule bodyKey()
     {
         return string("body")
                              .description("Some methods admit request bodies, which are described by this property.");
     }
 
-    private KeyValueRule headersField()
+    protected KeyValueRule headersField()
     {
         return field(headersKey(), parameters());
     }
 
-    private StringValueRule headersKey()
+    protected StringValueRule headersKey()
     {
         return string("headers")
                                 .description("Detailed information about any request headers needed by this method.");
     }
 
-    private KeyValueRule descriptionField()
+    protected KeyValueRule descriptionField()
     {
         return field(descriptionKey(), stringType());
     }
 
-    private KeyValueRule displayNameField()
+    protected KeyValueRule displayNameField()
     {
         return field(displayNameKey(), stringType());
     }
 
-    private KeyValueRule securedByField()
+    protected KeyValueRule securedByField()
     {
         return field(securedByKey(), array(stringType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class))));
     }
 
-    private KeyValueRule isField()
+    protected KeyValueRule isField()
     {
         return field(isKey(), array(anyTypeReference(TRAITS_KEY_NAME, TraitRefNode.class, ParametrizedTraitRefNode.class)));
     }
 
-    private KeyValueRule resourceTypeReferenceField()
+    protected KeyValueRule resourceTypeReferenceField()
     {
-        return field(typeKey(), anyOf(anyTypeReference(RESOURCE_TYPES_KEY_NAME, ResourceTypeRefNode.class, ParametrizedResourceTypeRefNode.class)));
+        return field(typeKey(), anyTypeReference(RESOURCE_TYPES_KEY_NAME, ResourceTypeRefNode.class, ParametrizedResourceTypeRefNode.class));
     }
 
-    private Rule anyTypeReference(String referenceKey, Class<? extends Node> simpleClass, Class<? extends Node> parametrisedClass)
+    protected Rule anyTypeReference(String referenceKey, Class<? extends Node> simpleClass, Class<? extends Node> parametrisedClass)
     {
         final KeyValueRule paramsRule = field(stringType(), stringType());
         final KeyValueRule typeWithParams = field(stringType(), objectType().with(paramsRule));
@@ -537,23 +403,8 @@ public class Raml10Grammar extends BaseGrammar
         return anyOf(new NodeReferenceRule(referenceKey).then(factory), new ParametrizedNodeReferenceRule(referenceKey).with(typeWithParams).then(parametrisedFactory));
     }
 
-    private KeyValueRule typesField()
-    {
-        return field(typesKey(), types());
-    }
 
-    private StringValueRule typesKey()
-    {
-        return string("types")
-                              .description("Declarations of (data) types for use within this API.");
-    }
-
-    private KeyValueRule titleField()
-    {
-        return requiredField(titleKey(), stringType());
-    }
-
-    private StringValueRule titleKey()
+    protected StringValueRule titleKey()
     {
         return string("title");
     }
@@ -561,7 +412,7 @@ public class Raml10Grammar extends BaseGrammar
 
     // Repeated keys
 
-    private RegexValueRule resourceKey()
+    protected RegexValueRule resourceKey()
     {
         return regex("/.+")
                            .label("/Resource")
@@ -571,80 +422,70 @@ public class Raml10Grammar extends BaseGrammar
                                         "or is the child property of a resource property, is a resource property, e.g.: /users, /{groupId}, etc");
     }
 
-    private StringValueRule usesKey()
+    protected StringValueRule usesKey()
     {
         return string(USES_KEY_NAME).description("Importing libraries.");
     }
 
 
-    private StringValueRule uriParametersKey()
+    protected StringValueRule uriParametersKey()
     {
         return string("uriParameters").description("Detailed information about any URI parameters of this resource");
     }
 
-    private StringValueRule securedByKey()
+    protected StringValueRule securedByKey()
     {
         return string("securedBy");
     }
 
-    private StringValueRule typeKey()
+    protected StringValueRule typeKey()
     {
         return string("type")
                              .description("The resource type which this resource inherits.");
     }
 
-    private StringValueRule isKey()
+    protected StringValueRule isKey()
     {
         return string("is");
     }
 
-    private StringValueRule displayNameKey()
+    protected StringValueRule displayNameKey()
     {
         return string("displayName")
                                     .description("An alternate, human-friendly name for the method (in the resource's context).");
     }
 
-    private RegexValueRule annotationKey()
-    {
-        return regex("\\(.+\\)")
-                                .label("(Annotation)")
-                                .suggest("(<cursor>)")
-                                .description("Annotations to be applied to this API. " +
-                                             "Annotations are any property whose key begins with \"(\" and ends with \")\" " +
-                                             "and whose name (the part between the beginning and ending parentheses) " +
-                                             "is a declared annotation name..");
-    }
 
-    private StringValueRule descriptionKey()
+    protected StringValueRule descriptionKey()
     {
         return string("description").description("A longer, human-friendly description of the API");
     }
 
-    private StringValueRule documentationKey()
+    protected StringValueRule documentationKey()
     {
         return string("documentation")
                                       .description("Additional overall documentation for the API.");
     }
 
-    private StringValueRule mediaTypeKey()
+    protected StringValueRule mediaTypeKey()
     {
         return string("mediaType")
                                   .description("The default media type to use for request and response bodies (payloads), e.g. \"application/json\".");
     }
 
-    private StringValueRule baseUriParametersKey()
+    protected StringValueRule baseUriParametersKey()
     {
         return string("baseUriParameters").description("Named parameters used in the baseUri (template).");
     }
 
-    private StringValueRule baseUriKey()
+    protected StringValueRule baseUriKey()
     {
         return string("baseUri").description("A URI that's to be used as the base of all the resources' URIs." +
                                              " Often used as the base of the URL of each resource, containing the location of the API. " +
                                              "Can be a template URI.");
     }
 
-    private StringValueRule versionKey()
+    protected StringValueRule versionKey()
     {
         return string("version").description("The version of the API, e.g. \"v1\".");
     }
@@ -652,7 +493,7 @@ public class Raml10Grammar extends BaseGrammar
 
     // Enum of values
 
-    private AnyOfRule anyMethod()
+    protected AnyOfRule anyMethod()
     {
         return anyOf(
                 string("get"),
@@ -664,27 +505,27 @@ public class Raml10Grammar extends BaseGrammar
                 string("head"));
     }
 
-    private AnyOfRule anyOptionalMethod()
+    protected AnyOfRule anyOptionalMethod()
     {
         return anyOf(string("get?"), string("patch?"), string("put?"), string("post?"), string("delete?"), string("options?"), string("head?"));
     }
 
-    private AnyOfRule anyBuiltinType()
+    protected AnyOfRule anyBuiltinType()
     {
         return anyOf(string("string"), string("number"), string("integer"), string("boolean"), string("date"), string("file"));
     }
 
-    private AnyOfRule anyResourceTypeMethod()
+    protected AnyOfRule anyResourceTypeMethod()
     {
         return anyOf(anyMethod(), anyOptionalMethod());
     }
 
-    private Rule protocols()
+    protected Rule protocols()
     {
         return array(anyOf(string("HTTP"), string("HTTPS")));
     }
 
-    private Rule responseCodes()
+    protected Rule responseCodes()
     {
         return range(Range.closed(new BigInteger("100"), new BigInteger("599")));
     }

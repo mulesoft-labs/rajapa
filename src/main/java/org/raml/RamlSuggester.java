@@ -15,7 +15,7 @@
  */
 package org.raml;
 
-import org.raml.grammar.Raml10Grammar;
+import org.raml.impl.v10.Raml10Grammar;
 import org.raml.grammar.rule.Rule;
 import org.raml.nodes.*;
 import org.raml.suggester.DefaultSuggestion;
@@ -59,6 +59,8 @@ public class RamlSuggester
                 }
             }
         }
+
+        Collections.sort(result);
         return result;
 
     }
@@ -135,7 +137,6 @@ public class RamlSuggester
             if (Modifier.isStatic(declaredMethod.getModifiers()) && Modifier.isPublic(declaredMethod.getModifiers()))
             {
                 suggestions.add(new DefaultSuggestion("!" + declaredMethod.getName(), "", declaredMethod.getName()));
-                Collections.sort(suggestions);
             }
         }
         return suggestions;

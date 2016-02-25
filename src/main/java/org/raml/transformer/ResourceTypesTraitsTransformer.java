@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.raml.grammar.GrammarPhase;
-import org.raml.grammar.Raml10Grammar;
+import org.raml.impl.v10.Raml10Grammar;
 import org.raml.nodes.ExecutionContext;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;

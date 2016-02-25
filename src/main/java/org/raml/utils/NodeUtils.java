@@ -13,46 +13,31 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.impl;
+package org.raml.utils;
 
-import org.raml.impl.v10.Raml10Grammar;
 import org.raml.nodes.Node;
-import org.raml.utils.NodeSelector;
 
 import javax.annotation.Nullable;
 
-public class LibraryRefNode extends AbstractReferenceNode
+public class NodeUtils
 {
 
-    private String name;
-
-    public LibraryRefNode(String name)
+    @Nullable
+    public static Node getGranParent(Node node)
     {
-        this.name = name;
-    }
-
-    public LibraryRefNode(LibraryRefNode node)
-    {
-        super(node);
-        this.name = node.name;
-    }
-
-    @Override
-    public String getRefName()
-    {
-        return name;
+        return getAncestor(node, 2);
     }
 
     @Nullable
-    @Override
-    public Node getRefNode()
+    public static Node getAncestor(Node node, int level)
     {
-        return NodeSelector.selectFrom(Raml10Grammar.USES_KEY_NAME + "/" + name, getRelativeNode());
-    }
-
-    @Override
-    public Node copy()
-    {
-        return new LibraryRefNode(this);
+        int i = 1;
+        Node parent = node.getParent();
+        while (i < level && parent != null)
+        {
+            parent = parent.getParent();
+            i++;
+        }
+        return parent;
     }
 }

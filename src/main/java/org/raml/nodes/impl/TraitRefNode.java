@@ -15,7 +15,7 @@
  */
 package org.raml.nodes.impl;
 
-import org.raml.grammar.Raml10Grammar;
+import org.raml.impl.v10.Raml10Grammar;
 import org.raml.nodes.Node;
 import org.raml.utils.NodeSelector;
 

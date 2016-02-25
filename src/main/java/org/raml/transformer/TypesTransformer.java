@@ -25,6 +25,7 @@ import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.raml.nodes.snakeyaml.SYStringNode;
 import org.raml.types.builtin.ObjectTypeNode;
 import org.raml.types.builtin.UnionTypeNode;
+import org.raml.utils.NodeUtils;
 
 public class TypesTransformer implements Transformer
 {
@@ -42,22 +43,28 @@ public class TypesTransformer implements Transformer
         if (node instanceof UnionTypeNode)
         {
             Node properties = node.get("properties");
-            for (String type : ((SYStringNode) node.get("type")).getValue().split("\\|"))
+            if (properties != null)
             {
-                List<Node> unionProperties = getTypeProperties(getType(typesRoot, StringUtils.trim(type)));
-
-                for (Node property : unionProperties)
+                final SYStringNode typeNode = (SYStringNode) node.get("type");
+                if (typeNode != null)
                 {
-                    Node existingProperty = properties.get(((KeyValueNode) property).getKey().toString());
-                    if (existingProperty != null)
+                    for (String type : typeNode.getValue().split("\\|"))
                     {
-                        Node errorNode = new ErrorNode("property definition {" + property + "} overrides existing property: {" + existingProperty.getParent() + "}");
-                        errorNode.setSource(property);
-                        properties.addChild(errorNode);
-                    }
-                    else
-                    {
-                        properties.addChild(property);
+                        List<Node> unionProperties = getTypeProperties(getType(typesRoot, StringUtils.trim(type)));
+                        for (Node property : unionProperties)
+                        {
+                            Node existingProperty = properties.get(((KeyValueNode) property).getKey().toString());
+                            if (existingProperty != null)
+                            {
+                                Node errorNode = new ErrorNode("property definition {" + property + "} overrides existing property: {" + existingProperty.getParent() + "}");
+                                errorNode.setSource(property);
+                                properties.addChild(errorNode);
+                            }
+                            else
+                            {
+                                properties.addChild(property);
+                            }
+                        }
                     }
                 }
             }
@@ -67,7 +74,8 @@ public class TypesTransformer implements Transformer
 
     private SYObjectNode getTypesRoot(Node node)
     {
-        return (SYObjectNode) ((KeyValueNode) node.getParent().getParent().getParent()).getValue();
+        final KeyValueNode keyValueNode = (KeyValueNode) NodeUtils.getAncestor(node, 3);
+        return keyValueNode != null ? (SYObjectNode) keyValueNode.getValue() : null;
     }
 
     private List<Node> getTypeProperties(ObjectTypeNode node)
