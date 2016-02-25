@@ -40,6 +40,11 @@ public class GrammarPhase implements Phase
             node.replaceWith(result);
             return result;
         }
+        else if (node instanceof ErrorNode)
+        {
+            // trying not to wrap an existing error so that clients won't have to know whether to strip or not to strip
+            return node;
+        }
         else
         {
             final ErrorNode errorNode = ErrorNodeFactory.createInvalidRootElement(node, rootRule.getDescription());

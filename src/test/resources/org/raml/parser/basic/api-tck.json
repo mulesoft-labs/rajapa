@@ -1,0 +1,26 @@
+{
+    "document": {
+        "title": "hola",
+        "resources": [
+            {
+                "displayName": "/top",
+                "methods": [
+                    {
+                        "description": "get something",
+                        "method": "get"
+                    }
+                ],
+                "relativeUri": "/top",
+                "__METADATA__": {
+                    "primitiveValuesMeta": {
+                        "displayName": {
+                            "calculated": true
+                        }
+                    }
+                }
+            }
+        ],
+        "RAMLVersion": "RAML10"
+    },
+    "errors": []
+}

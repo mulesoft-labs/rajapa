@@ -21,7 +21,7 @@ package org.raml.transformer;
 import static org.raml.transformer.ResourceTypesTraitsMerger.merge;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -71,20 +71,20 @@ public class ResourceTypesTraitsTransformer implements Transformer
         }
 
         // apply method and resource traits if defined
-        checkTraits(resourceNode);
+        checkTraits(resourceNode, resourceNode);
 
         // apply resource type if defined
         ResourceTypeRefNode resourceTypeReference = findResourceTypeReference(resourceNode);
         if (resourceTypeReference != null)
         {
-            applyResourceType(resourceNode, resourceTypeReference);
+            applyResourceType(resourceNode, resourceTypeReference, resourceNode);
         }
 
         mergedResources.add(resourceNode);
         return node;
     }
 
-    private void checkTraits(KeyValueNode resourceNode)
+    private void checkTraits(KeyValueNode resourceNode, ResourceNode baseResourceNode)
     {
         List<MethodNode> methodNodes = findMethodNodes(resourceNode);
         List<TraitRefNode> resourceTraitRefs = findTraitReferences(resourceNode);
@@ -97,41 +97,58 @@ public class ResourceTypesTraitsTransformer implements Transformer
             {
                 String traitLevel = resourceTraitRefs.contains(traitRef) ? "resource" : "method";
                 logger.info("applying {} level trait '{}' to '{}.{}'", traitLevel, traitRef.getRefName(), resourceNode.getKey(), methodNode.getName());
-                applyTrait(methodNode, traitRef);
+                applyTrait(methodNode, traitRef, baseResourceNode);
             }
         }
     }
 
-    private void applyResourceType(KeyValueNode resourceNode, ResourceTypeRefNode resourceTypeReference)
+    private void applyResourceType(KeyValueNode targetNode, ResourceTypeRefNode resourceTypeReference, ResourceNode baseResourceNode)
     {
         ResourceTypeNode refNode = resourceTypeReference.getRefNode();
         ResourceTypeNode templateNode = (ResourceTypeNode) refNode.copy();
         templateNode.setParent(refNode.getParent());
 
         // resolve parameters
+        Map<String, String> parameters = getBuiltinResourceTypeParameters(baseResourceNode);
         if (resourceTypeReference instanceof ParametrizedReferenceNode)
         {
-            resolveParameters(templateNode, ((ParametrizedReferenceNode) resourceTypeReference).getParameters());
+            parameters.putAll(((ParametrizedReferenceNode) resourceTypeReference).getParameters());
         }
+        resolveParameters(templateNode, parameters);
 
         // apply grammar phase to generate method nodes
         GrammarPhase parseMethodsPhase = new GrammarPhase(new Raml10Grammar().resourceType());
         parseMethodsPhase.apply(templateNode.getValue());
 
         // apply traits
-        checkTraits(templateNode);
+        checkTraits(templateNode, baseResourceNode);
 
         // resolve inheritance
         ResourceTypeRefNode parentTypeReference = findResourceTypeReference(templateNode);
         if (parentTypeReference != null)
         {
-            applyResourceType(templateNode, parentTypeReference);
+            applyResourceType(templateNode, parentTypeReference, baseResourceNode);
         }
 
-        merge(resourceNode.getValue(), templateNode.getValue());
+        merge(targetNode.getValue(), templateNode.getValue());
     }
 
-    private void applyTrait(MethodNode methodNode, TraitRefNode traitReference)
+    private Map<String, String> getBuiltinResourceTypeParameters(ResourceNode resourceNode)
+    {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("resourcePathName", resourceNode.getResourcePathName());
+        parameters.put("resourcePath", resourceNode.getResourcePath());
+        return parameters;
+    }
+
+    private Map<String, String> getBuiltinTraitParameters(MethodNode methodNode, ResourceNode resourceNode)
+    {
+        Map<String, String> parameters = getBuiltinResourceTypeParameters(resourceNode);
+        parameters.put("methodName", methodNode.getName());
+        return parameters;
+    }
+
+    private void applyTrait(MethodNode methodNode, TraitRefNode traitReference, ResourceNode baseResourceNode)
     {
         TraitNode refNode = traitReference.getRefNode();
         if (refNode == null)
@@ -142,10 +159,12 @@ public class ResourceTypesTraitsTransformer implements Transformer
         TraitNode copy = (TraitNode) refNode.copy();
 
         // resolve parameters
+        Map<String, String> parameters = getBuiltinTraitParameters(methodNode, baseResourceNode);
         if (traitReference instanceof ParametrizedReferenceNode)
         {
-            resolveParameters(copy, ((ParametrizedReferenceNode) traitReference).getParameters());
+            parameters.putAll(((ParametrizedReferenceNode) traitReference).getParameters());
         }
+        resolveParameters(copy, parameters);
 
         replaceNullValueWithObject(methodNode);
         merge(methodNode.getValue(), copy.getValue());

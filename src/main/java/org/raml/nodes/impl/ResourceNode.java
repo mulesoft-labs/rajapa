@@ -43,6 +43,34 @@ public class ResourceNode extends KeyValueNodeImpl
         }
     }
 
+    public String getResourcePath()
+    {
+        String path = getRelativeUri();
+        ResourceNode parent = getParentResourceNode();
+        if (parent != null)
+        {
+            path = parent.getResourcePath() + path;
+        }
+        return path;
+    }
+
+    private ResourceNode getParentResourceNode()
+    {
+        Node parent = getParent();
+        if (parent != null && parent.getParent() instanceof ResourceNode)
+        {
+            return (ResourceNode) parent.getParent();
+        }
+        return null;
+    }
+
+    public String getResourcePathName()
+    {
+        String path = getRelativeUri().substring(1); // remove leading slash
+        path = path.replace("{", "");
+        return path.replace("}", "");
+    }
+
     @Override
     public Node copy()
     {
