@@ -200,8 +200,7 @@ public class Raml10Grammar extends BaseGrammar
                 booleanTypeLiteral(),
                 dateTypeLiteral(),
                 fileTypeLiteral(),
-                regex("[A-z]+|[A-z]+"),
-                stringType());
+                new TypeNodeReferenceRule("types"));
     }
 
     private StringValueRule fileTypeLiteral()
