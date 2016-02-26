@@ -23,7 +23,7 @@ import org.raml.nodes.impl.*;
 
 import java.math.BigInteger;
 
-public class BaseRamlGrammar extends BaseGrammar
+public abstract class BaseRamlGrammar extends BaseGrammar
 {
 
     public static final String USES_KEY_NAME = "uses";
@@ -277,19 +277,10 @@ public class BaseRamlGrammar extends BaseGrammar
         return objectType().with(field(stringType(), parameter()));
     }
 
-    protected Rule parameter()
-    {
-        // TODO review type in raml 1.0 with the type system???
-        // TODO review defaultValue
-        // TODO review example
-        return objectType()
-                           .with(displayNameField())
-                           .with(descriptionField())
-                           .with(field(typeKey(), stringType()))
-                           .with(field(string("required"), booleanType()))
-                           .with(field(string("default"), any()))
-                           .with(field(string("example"), stringType()));
-    }
+    /**
+     * Describes the rule for a parameter.
+     */
+    protected abstract Rule parameter();
 
 
     protected KeyValueRule securitySchemesField()

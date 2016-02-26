@@ -134,14 +134,23 @@ public class Raml10Grammar extends BaseRamlGrammar
                            .with(field(stringType(), type()));
     }
 
+
+    protected Rule parameter()
+    {
+        return type();
+    }
+
+
     public Rule type()
     {
         // TODO schema example examples missing
+        // TODO missing descriptions
         return objectType("type")
                                  .with(field(typeKey(), typeReference()))
                                  .with(displayNameField())
                                  .with(descriptionField())
                                  .with(annotationField())
+                                 .with(exampleField())
                                  .with(
                                          when("type", // todo what to do with inherited does not match object
                                                  is(objectTypeLiteral())
@@ -179,6 +188,11 @@ public class Raml10Grammar extends BaseRamlGrammar
                                  ).then(new TypeNodeFactory())
 
         ;
+    }
+
+    protected KeyValueRule exampleField()
+    {
+        return field(string("example"), any());
     }
 
     private AnyOfRule typeReference()

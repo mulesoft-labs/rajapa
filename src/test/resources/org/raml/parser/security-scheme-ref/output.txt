@@ -30,7 +30,7 @@ RamlDocumentNode (Start: 11 , End: 2006, Source: SYObjectNode)
                                     SYObjectNode (Start: 299 , End: 542)
                                         KeyValueNodeImpl (Start: 299 , End: 542)
                                             SYStringNode: "Authorization" (Start: 299 , End: 312)
-                                            SYObjectNode (Start: 334 , End: 542)
+                                            StringTypeNode (Start: 334 , End: 542, Source: SYObjectNode)
                                                 KeyValueNodeImpl (Start: 334 , End: 497)
                                                     SYStringNode: "description" (Start: 334 , End: 345)
                                                     SYStringNode: "Used to send a valid OAuth 2 access token. Do not use
@@ -44,7 +44,7 @@ with the "access_token" query string parameter.
                                     SYObjectNode (Start: 575 , End: 810)
                                         KeyValueNodeImpl (Start: 575 , End: 810)
                                             SYStringNode: "access_token" (Start: 575 , End: 587)
-                                            SYObjectNode (Start: 609 , End: 810)
+                                            StringTypeNode (Start: 609 , End: 810, Source: SYObjectNode)
                                                 KeyValueNodeImpl (Start: 609 , End: 765)
                                                     SYStringNode: "description" (Start: 609 , End: 620)
                                                     SYStringNode: "Used to send a valid OAuth 2 access token. Do not use together with

@@ -19,17 +19,12 @@
 package org.raml.transformer;
 
 import com.google.common.collect.ImmutableSet;
-
-import java.util.Set;
-
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.SimpleTypeNode;
-import org.raml.nodes.snakeyaml.SYArrayNode;
-import org.raml.nodes.snakeyaml.SYObjectNode;
+import org.raml.nodes.*;
 import org.raml.utils.NodeSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Set;
 
 public class ResourceTypesTraitsMerger
 {
@@ -38,13 +33,13 @@ public class ResourceTypesTraitsMerger
 
     static void merge(Node baseNode, Node copyNode)
     {
-        if (baseNode instanceof SYObjectNode && copyNode instanceof SYObjectNode)
+        if (baseNode instanceof ObjectNode && copyNode instanceof ObjectNode)
         {
-            merge((SYObjectNode) baseNode, (SYObjectNode) copyNode);
+            merge((ObjectNode) baseNode, (ObjectNode) copyNode);
         }
-        else if (baseNode instanceof SYArrayNode && copyNode instanceof SYArrayNode)
+        else if (baseNode instanceof ArrayNode && copyNode instanceof ArrayNode)
         {
-            merge((SYArrayNode) baseNode, (SYArrayNode) copyNode);
+            merge((ArrayNode) baseNode, (ArrayNode) copyNode);
         }
         else
         {
@@ -53,7 +48,7 @@ public class ResourceTypesTraitsMerger
         }
     }
 
-    static void merge(SYArrayNode baseNode, SYArrayNode copyNode)
+    static void merge(ArrayNode baseNode, ArrayNode copyNode)
     {
         for (Node child : copyNode.getChildren())
         {
@@ -61,7 +56,7 @@ public class ResourceTypesTraitsMerger
         }
     }
 
-    static void merge(SYObjectNode baseNode, SYObjectNode copyNode)
+    static void merge(ObjectNode baseNode, ObjectNode copyNode)
     {
         for (Node child : copyNode.getChildren())
         {
@@ -106,10 +101,7 @@ public class ResourceTypesTraitsMerger
 
     private static boolean shouldIgnoreKey(KeyValueNode child)
     {
-        Set<String> ignoreSet = ImmutableSet.<String> builder()
-                                            .add("usage")
-                                            .add("type")
-                                            .build();
+        Set<String> ignoreSet = ImmutableSet.<String> builder().add("usage").add("type").build();
         String key = child.getKey().toString();
         return ignoreSet.contains(key);
     }

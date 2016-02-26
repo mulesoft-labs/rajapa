@@ -23,8 +23,6 @@ import org.raml.nodes.impl.KeyValueNodeImpl;
 import org.raml.nodes.impl.MethodNode;
 import org.raml.nodes.impl.ResourceNode;
 import org.raml.nodes.impl.StringNodeImpl;
-import org.raml.nodes.snakeyaml.SYArrayNode;
-import org.raml.nodes.snakeyaml.SYNullNode;
 import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.NodeTuple;
@@ -61,15 +59,15 @@ public class TckEmitter
         {
             dumpObject((ObjectNode) node, dump, depth);
         }
-        else if (node instanceof SYArrayNode)
+        else if (node instanceof ArrayNode)
         {
-            dumpArray((SYArrayNode) node, dump, depth);
+            dumpArray((ArrayNode) node, dump, depth);
         }
         else if (node instanceof ReferenceNode)
         {
             dumpReference((ReferenceNode) node, dump);
         }
-        else if (node instanceof SYNullNode)
+        else if (node instanceof NullNode)
         {
             dumpNullNode(dump);
         }
@@ -88,7 +86,7 @@ public class TckEmitter
         dump.append(sanitizeScalarValue(node.getRefName())).append(COMMA_SEP);
     }
 
-    private void dumpArray(SYArrayNode arrayNode, StringBuilder dump, int depth)
+    private void dumpArray(ArrayNode arrayNode, StringBuilder dump, int depth)
     {
         dump.append(START_ARRAY);
         for (Node node : arrayNode.getChildren())
@@ -120,7 +118,7 @@ public class TckEmitter
         {
             if (!(node instanceof KeyValueNode))
             {
-                throw new RuntimeException();
+                throw new RuntimeException("Expecting KeyValueNode got " + node + " on " + objectNode);
             }
             if (node instanceof ResourceNode)
             {
@@ -154,7 +152,7 @@ public class TckEmitter
             for (KeyValueNode node : keyValueNodes)
             {
                 Node copy = copy(node.getValue());
-                if (copy instanceof SYNullNode)
+                if (copy instanceof NullNode)
                 {
                     copy = new SYObjectNode(new MappingNode(Tag.MAP, new ArrayList<NodeTuple>(), null));
                 }
@@ -179,7 +177,7 @@ public class TckEmitter
     private Node copy(Node node)
     {
         // TODO implement actual cloning and remove SY dependency
-        if (node instanceof SYNullNode)
+        if (node instanceof NullNode)
         {
             node = new SYObjectNode(new MappingNode(Tag.MAP, new ArrayList<NodeTuple>(), null));
         }
