@@ -26,7 +26,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.text.IsEqualIgnoringWhiteSpace;
@@ -37,8 +36,6 @@ import org.junit.runners.Parameterized;
 import org.raml.RamlBuilder;
 import org.raml.dataprovider.TestDataProvider;
 import org.raml.nodes.Node;
-import org.raml.types.builtin.FileTypeNode;
-import org.raml.types.builtin.UnionTypeNode;
 import org.raml.utils.TreeDumper;
 
 @RunWith(Parameterized.class)

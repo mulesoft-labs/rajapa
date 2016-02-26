@@ -170,6 +170,12 @@ public class ObjectRule extends Rule
         return null;
     }
 
+    @Override
+    public ObjectRule then(Class<? extends Node> clazz)
+    {
+        super.then(clazz);
+        return this;
+    }
 
     public ObjectRule with(KeyValueRule field)
     {

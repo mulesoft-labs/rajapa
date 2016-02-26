@@ -71,15 +71,6 @@ public class RamlNodeParser
     @Nullable
     public static Node parse(String content)
     {
-        Yaml yamlParser = new Yaml();
-        org.yaml.snakeyaml.nodes.Node composedNode = yamlParser.compose(new StringReader(content));
-        if (composedNode == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new SYModelWrapper().wrap(composedNode);
-        }
+        return parse(new StringReader(content));
     }
 }

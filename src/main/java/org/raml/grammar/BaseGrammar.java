@@ -18,6 +18,7 @@ package org.raml.grammar;
 import com.google.common.collect.Range;
 import org.raml.grammar.rule.*;
 
+import javax.annotation.Nonnull;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -126,7 +127,13 @@ public class BaseGrammar
 
     public AnyOfRule optional(Rule rule)
     {
-        return anyOf(rule, new NullValueRule());
+        return anyOf(rule, nullValue());
+    }
+
+    @Nonnull
+    protected NullValueRule nullValue()
+    {
+        return new NullValueRule();
     }
 
     public ConditionalRules when(String expr, ConditionalRule... cases)

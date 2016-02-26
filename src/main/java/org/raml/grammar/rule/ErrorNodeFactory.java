@@ -21,6 +21,7 @@ import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.StringNode;
 
+import java.io.IOException;
 import java.util.Collection;
 
 public class ErrorNodeFactory
@@ -61,5 +62,30 @@ public class ErrorNodeFactory
     public static Node createInvalidType(Node node, NodeType type)
     {
         return new ErrorNode("Invalid type " + node.getType() + ", expected " + type);
+    }
+
+    public static Node createInvalidFragmentName(String fragmentText)
+    {
+        return new ErrorNode("Invalid fragment name '" + fragmentText + "'");
+    }
+
+    public static Node createEmptyDocument()
+    {
+        return new ErrorNode("Empty document.");
+    }
+
+    public static Node createUnsupportedVersion(String version)
+    {
+        return new ErrorNode("Unsupported version " + version + "");
+    }
+
+    public static Node createInvalidHeader(String header)
+    {
+        return new ErrorNode("Invalid header declaration " + header);
+    }
+
+    public static Node createInvalidInput(IOException ioe)
+    {
+        return new ErrorNode("Error while reading the input. Reason " + ioe.getMessage());
     }
 }
