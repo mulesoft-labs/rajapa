@@ -28,6 +28,8 @@ public class ConditionalRules
 
     private String selectorExpression;
     private List<ConditionalRule> options;
+    private Node defaultValue;
+
 
     public ConditionalRules(String selectorExpression, ConditionalRule... cases)
     {
@@ -38,7 +40,12 @@ public class ConditionalRules
     @Nonnull
     public List<KeyValueRule> getRulesNode(Node node)
     {
-        final Node from = NodeSelector.selectFrom(selectorExpression, node);
+        Node from = NodeSelector.selectFrom(selectorExpression, node);
+        if (from == null)
+        {
+            from = defaultValue;
+        }
+
         if (from != null)
         {
             for (ConditionalRule option : options)
@@ -53,12 +60,10 @@ public class ConditionalRules
         return Collections.emptyList();
     }
 
-
-    public ConditionalRule is(Rule condition)
+    public ConditionalRules defaultValue(Node node)
     {
-        final ConditionalRule conditionalRule = new ConditionalRule(condition);
-        this.options.add(conditionalRule);
-        return conditionalRule;
+        defaultValue = node;
+        return this;
     }
 
 }

@@ -18,6 +18,7 @@ package org.raml.impl.v10.grammar;
 import org.raml.grammar.rule.*;
 import org.raml.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.impl.v10.nodes.types.factories.TypeNodeFactory;
+import org.raml.nodes.StringNodeImpl;
 
 public class Raml10Grammar extends BaseRamlGrammar
 {
@@ -150,6 +151,7 @@ public class Raml10Grammar extends BaseRamlGrammar
                                  .with(displayNameField())
                                  .with(descriptionField())
                                  .with(annotationField())
+                                 .with(defaultField())
                                  .with(exampleField())
                                  .with(
                                          when("type", // todo what to do with inherited does not match object
@@ -184,7 +186,7 @@ public class Raml10Grammar extends BaseRamlGrammar
                                                                       .add(field(string("maxLength"), integerType()))
 
 
-                                         )
+                                         ).defaultValue(new StringNodeImpl("string"))
                                  ).then(new TypeNodeFactory())
 
         ;
@@ -194,6 +196,12 @@ public class Raml10Grammar extends BaseRamlGrammar
     {
         return field(string("example"), any());
     }
+
+    private KeyValueRule defaultField()
+    {
+        return field(string("default"), any());
+    }
+
 
     private AnyOfRule typeReference()
     {

@@ -21,6 +21,7 @@ import static org.yaml.snakeyaml.nodes.NodeId.sequence;
 
 import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.NodeTuple;
 import org.yaml.snakeyaml.nodes.ScalarNode;
@@ -29,6 +30,14 @@ import org.yaml.snakeyaml.nodes.Tag;
 
 public class SYModelWrapper
 {
+
+    private static class MappingNodeMerger extends SafeConstructor
+    {
+        void merge(MappingNode mappingNode)
+        {
+            flattenMapping(mappingNode);
+        }
+    }
 
     public static final Tag INCLUDE_TAG = new Tag("!include");
 
@@ -52,8 +61,13 @@ public class SYModelWrapper
         }
     }
 
+
     private SYObjectNode wrap(MappingNode mappingNode)
     {
+        if (mappingNode.isMerged())
+        {
+            new MappingNodeMerger().merge(mappingNode);
+        }
         SYObjectNode mapping = new SYObjectNode(mappingNode);
         for (NodeTuple nodeTuple : mappingNode.getValue())
         {

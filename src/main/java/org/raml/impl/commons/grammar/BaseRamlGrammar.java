@@ -265,7 +265,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
         return objectType().with(field(regex("[A-z-_]+\\/[A-z-_]+"), mimeType()));
     }
 
-    protected Rule mimeType()
+    protected ObjectRule mimeType()
     {
         return objectType()
                            .with(field(string("schema"), stringType()))
@@ -372,7 +372,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule securedByField()
     {
-        return field(securedByKey(), array(stringType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class))));
+        return field(securedByKey(), array(anyOf(stringType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class)), any(), nullValue())));
     }
 
     protected KeyValueRule isField()
@@ -405,7 +405,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected RegexValueRule resourceKey()
     {
-        return regex("/.+")
+        return regex("/.*")
                            .label("/Resource")
                            .suggest("/<cursor>")
                            .description("The resources of the API, identified as relative URIs that begin with a slash (/). " +

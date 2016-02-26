@@ -15,14 +15,47 @@
  */
 package org.raml.impl.v08.grammar;
 
-import org.raml.grammar.rule.KeyValueRule;
-import org.raml.grammar.rule.Rule;
-import org.raml.grammar.rule.StringValueRule;
+import org.raml.grammar.rule.*;
 import org.raml.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.impl.v10.nodes.types.factories.TypeNodeFactory;
+import org.raml.nodes.StringNodeImpl;
 
 public class Raml08Grammar extends BaseRamlGrammar
 {
+
+    @Override
+    protected ObjectRule mimeType()
+    {
+        return super.mimeType()
+                    .with(field(string("formParameters"), array(parameter())));
+    }
+
+    @Override
+    protected ObjectRule resourceValue()
+    {
+        return super.resourceValue()
+                    .with(field(string("baseUriParameters"), parameters()));
+
+    }
+
+    @Override
+    protected ObjectRule methodValue()
+    {
+        return super.methodValue()
+                    .with(field(string("baseUriParameters"), parameters()));
+    }
+
+    protected AnyOfRule anyMethod()
+    {
+        return anyOf(super.anyMethod(), string("connect"));
+    }
+
+    protected AnyOfRule anyOptionalMethod()
+    {
+        return anyOf(super.anyOptionalMethod(), string("connect?"));
+    }
+
+
     @Override
     protected Rule parameter()
     {
@@ -31,6 +64,7 @@ public class Raml08Grammar extends BaseRamlGrammar
                            .with(displayNameField())
                            .with(descriptionField())
                            .with(exampleField())
+                           .with(defaultField())
                            .with(repeatField())
                            .with(requiredField())
                            .with(
@@ -47,10 +81,16 @@ public class Raml08Grammar extends BaseRamlGrammar
                                            is(fileTypeLiteral())
                                                                 .add(minLengthField())
                                                                 .add(maxLengthField())
-
-
-                                   )
+                                   ).defaultValue(new StringNodeImpl("string"))
                            ).then(new TypeNodeFactory());
+    }
+
+    private KeyValueRule defaultField()
+    {
+        return field(string("default"), any())
+                                              .description("The default attribute specifies the default value to use for the property if the property is omitted or its value is not specified. " +
+                                                           "This SHOULD NOT be interpreted as a requirement for the client to send the default attribute's value if there is no other value to send. " +
+                                                           "Instead, the default attribute's value is the value the server uses if the client does not send a value.");
     }
 
     private KeyValueRule maximumField()
