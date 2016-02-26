@@ -66,7 +66,7 @@ public class NodeSelector
         return selectType(path, from, StringUtils.EMPTY);
     }
 
-    private static <T> T selectType(String path, Node from, T defaultValue)
+    public static <T> T selectType(String path, Node from, T defaultValue)
     {
         SimpleTypeNode<T> selectedNode = (SimpleTypeNode<T>) selectFrom(path, from);
         if (selectedNode != null)

@@ -15,10 +15,10 @@
  */
 package org.raml.impl.commons.nodes;
 
+import org.raml.nodes.AbstractRamlNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
-import org.raml.nodes.AbstractRamlNode;
 
 public class RamlDocumentNode extends AbstractRamlNode implements ObjectNode
 {
