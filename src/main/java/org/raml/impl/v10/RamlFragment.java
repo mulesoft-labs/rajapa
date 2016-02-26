@@ -17,6 +17,7 @@ package org.raml.impl.v10;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.grammar.rule.Rule;
+import org.raml.impl.v10.grammar.Raml10Grammar;
 
 import javax.annotation.Nullable;
 

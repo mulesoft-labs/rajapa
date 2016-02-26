@@ -13,37 +13,33 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes;
+package org.raml.impl.commons.nodes;
 
-public class ErrorNode extends AbstractRamlNode
+import org.raml.nodes.Node;
+import org.raml.nodes.StringNode;
+import org.raml.nodes.KeyValueNodeImpl;
+
+public class ResourceTypeNode extends KeyValueNodeImpl
 {
-    private final String errorMessage;
 
-    public ErrorNode(String msg)
+    public ResourceTypeNode()
     {
-        this.errorMessage = msg;
     }
 
-    public String getErrorMessage()
+    public ResourceTypeNode(ResourceTypeNode node)
     {
-        return errorMessage;
+        super(node);
+    }
+
+    public String getName()
+    {
+        final StringNode key = (StringNode) getKey();
+        return key.getValue();
     }
 
     @Override
     public Node copy()
     {
-        return this;
-    }
-
-    @Override
-    public NodeType getType()
-    {
-        return NodeType.Error;
-    }
-
-    @Override
-    public String toString()
-    {
-        return String.format("%s [%s]", getClass().getSimpleName(), getErrorMessage());
+        return new ResourceTypeNode(this);
     }
 }

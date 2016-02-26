@@ -13,37 +13,34 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes;
+package org.raml.impl.commons.nodes;
 
-public class ErrorNode extends AbstractRamlNode
+import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
+import org.raml.nodes.ObjectNode;
+import org.raml.nodes.AbstractRamlNode;
+
+public class RamlDocumentNode extends AbstractRamlNode implements ObjectNode
 {
-    private final String errorMessage;
 
-    public ErrorNode(String msg)
+    public RamlDocumentNode()
     {
-        this.errorMessage = msg;
     }
 
-    public String getErrorMessage()
+    public RamlDocumentNode(RamlDocumentNode node)
     {
-        return errorMessage;
+        super(node);
     }
 
     @Override
     public Node copy()
     {
-        return this;
+        return new RamlDocumentNode(this);
     }
 
     @Override
     public NodeType getType()
     {
-        return NodeType.Error;
-    }
-
-    @Override
-    public String toString()
-    {
-        return String.format("%s [%s]", getClass().getSimpleName(), getErrorMessage());
+        return NodeType.Object;
     }
 }

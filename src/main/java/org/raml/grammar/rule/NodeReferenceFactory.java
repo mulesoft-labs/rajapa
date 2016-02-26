@@ -16,7 +16,7 @@
 package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
-import org.raml.nodes.impl.LibraryRefNode;
+import org.raml.impl.v10.nodes.LibraryRefNode;
 
 public class NodeReferenceFactory implements NodeFactory
 {

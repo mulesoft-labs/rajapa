@@ -15,9 +15,15 @@
  */
 package org.raml;
 
-import org.raml.impl.v10.Raml10Grammar;
+
 import org.raml.grammar.rule.Rule;
-import org.raml.nodes.*;
+import org.raml.impl.v08.grammar.Raml08Grammar;
+import org.raml.impl.v10.grammar.Raml10Grammar;
+import org.raml.impl.v10.RamlFragment;
+import org.raml.nodes.KeyValueNode;
+import org.raml.nodes.Node;
+import org.raml.nodes.ObjectNode;
+import org.raml.nodes.StringNode;
 import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.RamlContext;
 import org.raml.suggester.RamlContextType;
@@ -31,12 +37,11 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class RamlSuggester
 {
 
-
-    private static Raml10Grammar raml10Grammar = new Raml10Grammar();
 
     public List<Suggestion> suggestions(String document, int offset)
     {
@@ -156,8 +161,8 @@ public class RamlSuggester
             // Recreate path with the node at the correct indentation
             final List<Node> pathToRoot = createPathToRoot(node);
             // Follow the path from the root to the node and apply the rules for auto-completion.
-            final Rule rootRule = raml10Grammar.raml();
-            return rootRule.getSuggestions(pathToRoot);
+            final Rule rootRule = getRuleFor(document);
+            return rootRule != null ? rootRule.getSuggestions(pathToRoot) : Collections.<Suggestion> emptyList();
         }
         else
         {
@@ -195,10 +200,10 @@ public class RamlSuggester
             node = getValueNodeAtColumn(columnNumber, node);
             // Recreate path with the node at the correct indentation
             final List<Node> pathToRoot = createPathToRoot(node);
-            final Raml10Grammar raml10Grammar = new Raml10Grammar();
+
             // Follow the path from the root to the node and apply the rules for auto-completion.
-            final Rule rootRule = raml10Grammar.raml();
-            return rootRule.getSuggestions(pathToRoot);
+            final Rule rootRule = getRuleFor(document);
+            return rootRule != null ? rootRule.getSuggestions(pathToRoot) : Collections.<Suggestion> emptyList();
         }
         else
         {
@@ -412,5 +417,38 @@ public class RamlSuggester
         }
     }
 
+
+    @Nullable
+    public Rule getRuleFor(String stringContent)
+    {
+        final StringTokenizer lines = new StringTokenizer(stringContent, "\n");
+        if (lines.hasMoreElements())
+        {
+            final String header = lines.nextToken().trim();
+            final StringTokenizer headerParts = new StringTokenizer(header);
+            if (headerParts.hasMoreTokens())
+            {
+                final String raml = headerParts.nextToken();
+                if (RamlBuilder.RAML_HEADER_PREFIX.equals(raml))
+                {
+                    if (headerParts.hasMoreTokens())
+                    {
+                        final String version = headerParts.nextToken();
+                        if (RamlBuilder.RAML_10_VERSION.equals(version))
+                        {
+                            final String fragmentText = headerParts.hasMoreTokens() ? headerParts.nextToken() : "";
+                            final RamlFragment ramlFragment = RamlFragment.byName(fragmentText);
+                            return ramlFragment != null ? ramlFragment.getRule(new Raml10Grammar()) : null;
+                        }
+                        else if (RamlBuilder.RAML_08_VERSION.equals(version))
+                        {
+                            return new Raml08Grammar().raml();
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
 }

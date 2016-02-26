@@ -13,37 +13,18 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes;
+package org.raml.phase;
 
-public class ErrorNode extends AbstractRamlNode
+import org.raml.nodes.Node;
+
+/**
+ * Applies a transformation to a specific node and returns the new node.
+ */
+public interface Transformer
 {
-    private final String errorMessage;
 
-    public ErrorNode(String msg)
-    {
-        this.errorMessage = msg;
-    }
+    boolean matches(Node node);
 
-    public String getErrorMessage()
-    {
-        return errorMessage;
-    }
+    Node transform(Node node);
 
-    @Override
-    public Node copy()
-    {
-        return this;
-    }
-
-    @Override
-    public NodeType getType()
-    {
-        return NodeType.Error;
-    }
-
-    @Override
-    public String toString()
-    {
-        return String.format("%s [%s]", getClass().getSimpleName(), getErrorMessage());
-    }
 }

@@ -15,12 +15,17 @@
  */
 package org.raml.impl.v08;
 
-import org.raml.grammar.GrammarPhase;
+import org.raml.impl.commons.phase.IncludeResolver;
+import org.raml.impl.commons.phase.ResourceTypesTraitsTransformer;
+import org.raml.impl.commons.phase.StringTemplateExpressionTransformer;
+import org.raml.impl.v10.phase.TypesTransformer;
+import org.raml.phase.GrammarPhase;
+import org.raml.impl.v08.grammar.Raml08Grammar;
 import org.raml.loader.ResourceLoader;
 import org.raml.nodes.Node;
 import org.raml.nodes.snakeyaml.RamlNodeParser;
 import org.raml.phase.Phase;
-import org.raml.transformer.*;
+import org.raml.phase.TransformationPhase;
 
 import java.io.IOException;
 import java.util.Arrays;

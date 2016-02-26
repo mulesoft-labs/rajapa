@@ -13,37 +13,41 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes;
+package org.raml.impl.v10.nodes.types.builtin;
 
-public class ErrorNode extends AbstractRamlNode
+import java.util.List;
+
+import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
+import org.raml.nodes.ObjectNode;
+import org.raml.nodes.AbstractRamlNode;
+
+public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode
 {
-    private final String errorMessage;
 
-    public ErrorNode(String msg)
+    public ObjectTypeNode()
     {
-        this.errorMessage = msg;
     }
 
-    public String getErrorMessage()
+    protected ObjectTypeNode(ObjectTypeNode node)
     {
-        return errorMessage;
+        super(node);
+    }
+
+    public List<Node> getProperties()
+    {
+        return getSource().get("properties").getChildren();
     }
 
     @Override
     public Node copy()
     {
-        return this;
+        return new ObjectTypeNode(this);
     }
 
     @Override
     public NodeType getType()
     {
-        return NodeType.Error;
-    }
-
-    @Override
-    public String toString()
-    {
-        return String.format("%s [%s]", getClass().getSimpleName(), getErrorMessage());
+        return NodeType.Object;
     }
 }

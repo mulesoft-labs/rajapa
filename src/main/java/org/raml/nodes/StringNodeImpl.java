@@ -15,35 +15,43 @@
  */
 package org.raml.nodes;
 
-public class ErrorNode extends AbstractRamlNode
+public class StringNodeImpl extends AbstractRamlNode implements StringNode
 {
-    private final String errorMessage;
 
-    public ErrorNode(String msg)
+    private String value;
+
+    public StringNodeImpl(String value)
     {
-        this.errorMessage = msg;
+        this.value = value;
     }
 
-    public String getErrorMessage()
+    public StringNodeImpl(StringNodeImpl node)
     {
-        return errorMessage;
+        super(node);
+        this.value = node.value;
+    }
+
+    @Override
+    public String getValue()
+    {
+        return value;
     }
 
     @Override
     public Node copy()
     {
-        return this;
+        return new StringNodeImpl(this);
     }
 
     @Override
     public NodeType getType()
     {
-        return NodeType.Error;
+        return NodeType.String;
     }
 
     @Override
     public String toString()
     {
-        return String.format("%s [%s]", getClass().getSimpleName(), getErrorMessage());
+        return value;
     }
 }

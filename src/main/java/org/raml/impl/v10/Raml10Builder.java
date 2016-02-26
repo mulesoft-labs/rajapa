@@ -15,13 +15,16 @@
  */
 package org.raml.impl.v10;
 
-import org.raml.grammar.GrammarPhase;
+import org.raml.impl.v10.phase.TypesTransformer;
+import org.raml.phase.GrammarPhase;
 import org.raml.grammar.rule.ErrorNodeFactory;
+import org.raml.impl.v10.grammar.Raml10Grammar;
 import org.raml.loader.ResourceLoader;
 import org.raml.nodes.Node;
 import org.raml.nodes.snakeyaml.RamlNodeParser;
 import org.raml.phase.Phase;
-import org.raml.transformer.*;
+import org.raml.phase.TransformationPhase;
+import org.raml.impl.commons.phase.*;
 
 import java.io.IOException;
 import java.util.Arrays;

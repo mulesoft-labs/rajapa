@@ -19,7 +19,7 @@ import static org.yaml.snakeyaml.nodes.NodeId.mapping;
 import static org.yaml.snakeyaml.nodes.NodeId.scalar;
 import static org.yaml.snakeyaml.nodes.NodeId.sequence;
 
-import org.raml.nodes.impl.KeyValueNodeImpl;
+import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.NodeTuple;

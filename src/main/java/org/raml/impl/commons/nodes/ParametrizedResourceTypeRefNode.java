@@ -13,37 +13,37 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes;
+package org.raml.impl.commons.nodes;
 
-public class ErrorNode extends AbstractRamlNode
+import java.util.Map;
+
+import org.raml.nodes.Node;
+import org.raml.nodes.ParametrizedReferenceNode;
+
+public class ParametrizedResourceTypeRefNode extends ResourceTypeRefNode implements ParametrizedReferenceNode
 {
-    private final String errorMessage;
 
-    public ErrorNode(String msg)
+    public ParametrizedResourceTypeRefNode(ParametrizedResourceTypeRefNode node)
     {
-        this.errorMessage = msg;
+        super(node);
     }
 
-    public String getErrorMessage()
+    // Used by reflection
+    public ParametrizedResourceTypeRefNode(String name)
     {
-        return errorMessage;
+        super(name);
     }
 
     @Override
     public Node copy()
     {
-        return this;
+        return new ParametrizedResourceTypeRefNode(this);
     }
 
     @Override
-    public NodeType getType()
+    public Map<String, String> getParameters()
     {
-        return NodeType.Error;
+        return getParameters(this);
     }
 
-    @Override
-    public String toString()
-    {
-        return String.format("%s [%s]", getClass().getSimpleName(), getErrorMessage());
-    }
 }
