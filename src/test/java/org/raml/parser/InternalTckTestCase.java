@@ -59,14 +59,9 @@ public class InternalTckTestCase extends TestDataProvider
         final RamlBuilder builder = new RamlBuilder();
         final Node raml = builder.build(input);
         assertThat(raml, notNullValue());
-        String dump = new TckEmitter().dump(raml);
-
-
-        String expected = IOUtils.toString(new FileInputStream(this.expectedOutput));
-        System.out.println("dump = \n" + dump);
-        System.out.println("expected = \n" + expected);
+        dump = new TckEmitter().dump(raml);
+        expected = IOUtils.toString(new FileInputStream(this.expectedOutput));
         Assert.assertTrue(jsonEquals(dump, expected));
-
     }
 
     @Parameterized.Parameters(name = "{2}")

@@ -53,11 +53,9 @@ public class RamlBuilderTestCase extends TestDataProvider
         final RamlBuilder builder = new RamlBuilder();
         final Node raml = builder.build(input);
         assertThat(raml, notNullValue());
-        String dump = new TreeDumper().dump(raml);
-        String expectedOutput = IOUtils.toString(new FileInputStream(this.expectedOutput));
-        System.out.println("dump = \n" + dump);
-        System.out.println("expected = \n" + expectedOutput);
-        Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(expectedOutput));
+        dump = new TreeDumper().dump(raml);
+        expected = IOUtils.toString(new FileInputStream(this.expectedOutput));
+        Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(expected));
     }
 
     @Parameterized.Parameters(name = "{2}")

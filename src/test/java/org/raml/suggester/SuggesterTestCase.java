@@ -55,9 +55,8 @@ public class SuggesterTestCase extends TestDataProvider
         final String document = content.substring(0, offset) + content.substring(offset + CURSOR_KEYWORD.length());
         final List<Suggestion> suggestions = ramlSuggester.suggestions(document, offset - 1);
         final ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        final String dump = ow.writeValueAsString(suggestions);
-        final String expected = IOUtils.toString(new FileInputStream(this.expectedOutput));
-        System.out.println("dump = \n" + dump);
+        dump = ow.writeValueAsString(suggestions);
+        expected = IOUtils.toString(new FileInputStream(this.expectedOutput));
         Assert.assertTrue(jsonEquals(dump, expected));
     }
 

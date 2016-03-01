@@ -29,6 +29,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.Rule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 
 public abstract class TestDataProvider
 {
@@ -36,6 +39,30 @@ public abstract class TestDataProvider
     protected File input;
     protected File expectedOutput;
     protected String name;
+
+    protected String dump;
+    protected String expected;
+
+    @Rule
+    public TestWatcher watchman = new TestWatcher()
+    {
+        @Override
+        protected void failed(Throwable e, Description description)
+        {
+            System.out.println(StringUtils.repeat("=", 120));
+            System.out.println("\ndump\n----\n" + dump);
+            System.out.println(StringUtils.repeat("-", 120));
+            System.out.println("\nexpected\n--------\n" + expected);
+            System.out.println(StringUtils.repeat("=", 120));
+        }
+
+        @Override
+        protected void succeeded(Description description)
+        {
+            // nothing to do
+        }
+    };
+
 
     public TestDataProvider(File input, File expectedOutput, String name)
     {
@@ -105,7 +132,7 @@ public abstract class TestDataProvider
                 if (parent instanceof ObjectNode)
                 {
                     JsonNode remove = ((ObjectNode) parent).remove(filterNode);
-                    System.out.println("removed node \"" + filterNode + "\": " + remove);
+                    System.out.println("    >removed node \"" + filterNode + "\": " + remove);
                 }
             }
 
