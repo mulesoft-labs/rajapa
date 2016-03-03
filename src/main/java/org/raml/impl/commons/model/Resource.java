@@ -15,15 +15,27 @@
  */
 package org.raml.impl.commons.model;
 
+import org.raml.impl.commons.nodes.ResourceNode;
 import org.raml.nodes.Node;
 
-public class Resource
+public class Resource extends CommonAttributes
 {
 
-    private Node node;
+    private ResourceNode node;
 
-    public Resource(Node node)
+    public Resource(ResourceNode node)
     {
         this.node = node;
+    }
+
+    @Override
+    protected Node getNode()
+    {
+        return node.getValue();
+    }
+
+    public StringType relativeUri()
+    {
+        return new StringType(node.getRelativeUri());
     }
 }

@@ -15,26 +15,18 @@
  */
 package org.raml.impl.commons.model;
 
-import org.raml.impl.commons.nodes.TraitNode;
-import org.raml.nodes.Node;
+import java.util.List;
 
-public class Trait extends CommonAttributes
+public abstract class LibraryBase extends CommonAttributes
 {
 
-    private TraitNode node;
-
-    public Trait(Node node)
+    public List<Trait> traits()
     {
-        if (!(node instanceof TraitNode))
-        {
-            throw new IllegalArgumentException("Invalid node type: " + node.getClass().getName());
-        }
-        this.node = (TraitNode) node;
+        return getList("traits", Trait.class);
     }
 
-    @Override
-    protected Node getNode()
+    public List<ResourceType> resourceTypes()
     {
-        return node.getValue();
+        return getList("resourceTypes", ResourceType.class);
     }
 }

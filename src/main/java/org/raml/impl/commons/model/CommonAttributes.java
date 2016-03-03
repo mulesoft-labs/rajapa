@@ -15,26 +15,17 @@
  */
 package org.raml.impl.commons.model;
 
-import org.raml.impl.commons.nodes.TraitNode;
-import org.raml.nodes.Node;
-
-public class Trait extends CommonAttributes
+public abstract class CommonAttributes extends BaseModelElement
 {
 
-    private TraitNode node;
-
-    public Trait(Node node)
+    public String displayName()
     {
-        if (!(node instanceof TraitNode))
-        {
-            throw new IllegalArgumentException("Invalid node type: " + node.getClass().getName());
-        }
-        this.node = (TraitNode) node;
+        return getStringValue("displayName");
     }
 
-    @Override
-    protected Node getNode()
+    public StringType description()
     {
-        return node.getValue();
+        return getStringTypeValue("description");
     }
+
 }

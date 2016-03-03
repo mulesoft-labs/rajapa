@@ -55,12 +55,6 @@ public abstract class TestDataProvider
             System.out.println("\nexpected\n--------\n" + expected);
             System.out.println(StringUtils.repeat("=", 120));
         }
-
-        @Override
-        protected void succeeded(Description description)
-        {
-            // nothing to do
-        }
     };
 
 

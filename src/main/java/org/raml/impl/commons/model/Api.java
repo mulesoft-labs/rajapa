@@ -15,19 +15,15 @@
  */
 package org.raml.impl.commons.model;
 
-import static org.raml.impl.commons.model.builder.ModelUtils.getStringTypeValue;
-import static org.raml.impl.commons.model.builder.ModelUtils.getStringValue;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.raml.impl.commons.nodes.RamlDocumentNode;
-import org.raml.impl.commons.nodes.TraitNode;
-import org.raml.nodes.KeyValueNode;
+import org.raml.impl.commons.nodes.ResourceNode;
 import org.raml.nodes.Node;
 import org.raml.utils.NodeSelector;
 
-public class Api
+public class Api extends LibraryBase
 {
 
     private RamlDocumentNode node;
@@ -37,25 +33,35 @@ public class Api
         node = delegateNode;
     }
 
+    @Override
+    protected Node getNode()
+    {
+        return node;
+    }
+
     public String title()
     {
-        return getStringValue("title", node);
+        return getStringValue("title");
+    }
+
+    public String version()
+    {
+        return getStringValue("version");
+    }
+
+    public StringType baseUri()
+    {
+        return getStringTypeValue("baseUri");
     }
 
     public StringType mediaType()
     {
-        return getStringTypeValue("mediaType", node);
+        return getStringTypeValue("mediaType");
     }
 
-    public List<Trait> traits()
+    public List<DocumentationItem> documentation()
     {
-        ArrayList<Trait> traitList = new ArrayList<>();
-        Node traits = NodeSelector.selectFrom("traits", node);
-        for (Node trait : traits.getChildren())
-        {
-            traitList.add(new Trait(((TraitNode) trait).getValue()));
-        }
-        return traitList;
+        return getList("documentation", DocumentationItem.class);
     }
 
     public List<Resource> resources()
@@ -63,12 +69,28 @@ public class Api
         ArrayList<Resource> resultList = new ArrayList<>();
         for (Node item : node.getChildren())
         {
-            if (item instanceof KeyValueNode && ((KeyValueNode) item).getKey().toString().startsWith("/"))
+            if (item instanceof ResourceNode)
             {
-                resultList.add(new Resource(((KeyValueNode) item).getValue()));
+                resultList.add(new Resource((ResourceNode) item));
             }
         }
         return resultList;
+    }
+
+    public List<String> protocols()
+    {
+        ArrayList<String> resultList = new ArrayList<>();
+        Node parent = NodeSelector.selectFrom("protocols", node);
+        for (Node child : parent.getChildren())
+        {
+            resultList.add(child.toString());
+        }
+        return resultList;
+    }
+
+    public List<SecuritySchemeRef> securedBy()
+    {
+        return getList("securedBy", SecuritySchemeRef.class);
     }
 
 }

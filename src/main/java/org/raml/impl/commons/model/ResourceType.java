@@ -15,26 +15,31 @@
  */
 package org.raml.impl.commons.model;
 
-import org.raml.impl.commons.nodes.TraitNode;
+import org.raml.impl.commons.nodes.ResourceTypeNode;
 import org.raml.nodes.Node;
 
-public class Trait extends CommonAttributes
+public class ResourceType extends CommonAttributes
 {
 
-    private TraitNode node;
+    private ResourceTypeNode node;
 
-    public Trait(Node node)
+    public ResourceType(Node node)
     {
-        if (!(node instanceof TraitNode))
+        if (!(node instanceof ResourceTypeNode))
         {
             throw new IllegalArgumentException("Invalid node type: " + node.getClass().getName());
         }
-        this.node = (TraitNode) node;
+        this.node = (ResourceTypeNode) node;
     }
 
     @Override
     protected Node getNode()
     {
         return node.getValue();
+    }
+
+    public String usage()
+    {
+        return getStringValue("usage");
     }
 }

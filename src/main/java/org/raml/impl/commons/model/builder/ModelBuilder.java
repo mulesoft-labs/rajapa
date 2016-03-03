@@ -44,21 +44,19 @@ public class ModelBuilder
 
         public SimpleProxy(Object delegate)
         {
+            if (delegate == null)
+            {
+                throw new IllegalArgumentException("delegate cannot be null");
+            }
             this.delegate = delegate;
         }
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
         {
-            String methodName = method.getName();
             final Class<?> returnType = method.getReturnType();
             Type genericReturnType = method.getGenericReturnType();
-
             Method delegateMethod = findMatchingMethod(method);
-            if (delegateMethod == null)
-            {
-                throw new RuntimeException("Method not found: " + delegate.getClass().getName() + "." + methodName);
-            }
 
             // primitive or string
             if (returnType.isPrimitive() || String.class.isAssignableFrom(returnType))
@@ -70,21 +68,30 @@ public class ModelBuilder
             if (!(genericReturnType instanceof ParameterizedType))
             {
                 Object result = delegateMethod.invoke(delegate, args);
+                if (result == null)
+                {
+                    return null;
+                }
                 return Proxy.newProxyInstance(returnType.getClassLoader(), new Class[] {returnType}, new SimpleProxy(result));
             }
 
-            // list of spec interfaces
+            // list
             if (List.class.isAssignableFrom(returnType))
             {
                 List<Object> returnList = new ArrayList<>();
                 List<?> result = (List<?>) delegateMethod.invoke(delegate, args);
                 Class<?> itemClass = (Class<?>) ((ParameterizedType) genericReturnType).getActualTypeArguments()[0];
+                if (itemClass.isPrimitive() || String.class.isAssignableFrom(itemClass))
+                {
+                    return result;
+                }
                 for (Object item : result)
                 {
                     returnList.add(Proxy.newProxyInstance(itemClass.getClassLoader(), new Class[] {itemClass}, new SimpleProxy(item)));
                 }
                 return returnList;
             }
+
             throw new RuntimeException("case not handled yet... " + returnType.getName());
         }
 
@@ -92,11 +99,11 @@ public class ModelBuilder
         {
             try
             {
-                return delegate.getClass().getDeclaredMethod(method.getName(), method.getParameterTypes());
+                return delegate.getClass().getMethod(method.getName(), method.getParameterTypes());
             }
             catch (NoSuchMethodException e)
             {
-                return null;
+                throw new RuntimeException("Method not found: " + delegate.getClass().getName() + "." + method.getName());
             }
         }
     }
