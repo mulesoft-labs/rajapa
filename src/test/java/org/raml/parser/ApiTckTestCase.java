@@ -20,17 +20,11 @@ package org.raml.parser;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.flipkart.zjsonpatch.JsonDiff;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -65,13 +59,11 @@ public class ApiTckTestCase extends TestDataProvider
         final RamlBuilder builder = new RamlBuilder();
         final Node raml = builder.build(input);
         assertThat(raml, notNullValue());
-        String dump = new TckEmitter().dump(raml);
+        dump = new TckEmitter().dump(raml);
         dump = wrapTck(dump);
 
-        String expected = IOUtils.toString(new FileInputStream(this.expectedOutput));
-        System.out.println("dump = \n" + dump);
+        expected = IOUtils.toString(new FileInputStream(this.expectedOutput));
         Assert.assertTrue(jsonEquals(dump, expected));
-
     }
 
     private String wrapTck(String dump)

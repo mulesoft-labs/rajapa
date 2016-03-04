@@ -68,7 +68,7 @@ public class ResourceTypesTraitsMerger
             String key = ((KeyValueNode) child).getKey().toString();
             if (shouldIgnoreKey((KeyValueNode) child))
             {
-                logger.info("Ignoring key '{}'", key);
+                logger.debug("Ignoring key '{}'", key);
                 continue;
             }
 
@@ -80,20 +80,20 @@ public class ResourceTypesTraitsMerger
             Node node = NodeSelector.selectFrom(key, baseNode);
             if (node == null && optional)
             {
-                logger.info("Ignoring optional key {}", key);
+                logger.debug("Ignoring optional key {}", key);
             }
             else if (node == null)
             {
-                logger.info("Adding key '{}'", key);
+                logger.debug("Adding key '{}'", key);
                 baseNode.addChild(child);
             }
             else if (((KeyValueNode) child).getValue() instanceof SimpleTypeNode)
             {
-                logger.info("Scalar key already exists '{}'", key);
+                logger.debug("Scalar key already exists '{}'", key);
             }
             else
             {
-                logger.info("Merging values '{}' and '{}'", node.getParent(), child);
+                logger.debug("Merging values '{}' and '{}'", node.getParent(), child);
                 merge(node, ((KeyValueNode) child).getValue());
             }
         }

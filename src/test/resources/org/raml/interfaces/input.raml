@@ -1,0 +1,31 @@
+#%RAML 1.0
+title: api title
+version: v1
+baseUri: http://base.uri
+mediaType: application/json
+protocols: [HTTP, HTTPS]
+
+documentation:
+    - title: doc title 1
+      content: single line
+    - title: doc title 2
+      content: |
+           multi
+           line
+
+traits:
+    one:
+        displayName: uno
+        description: method description
+    two:
+        displayName: dos
+
+resourceTypes:
+    first:
+        usage: first usage
+
+/top:
+    description: top description
+    type: first
+    get:
+        description: get something

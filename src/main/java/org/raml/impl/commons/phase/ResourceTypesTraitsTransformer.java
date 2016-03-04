@@ -97,7 +97,7 @@ public class ResourceTypesTraitsTransformer implements Transformer
             for (TraitRefNode traitRef : traitRefs)
             {
                 String traitLevel = resourceTraitRefs.contains(traitRef) ? "resource" : "method";
-                logger.info("applying {} level trait '{}' to '{}.{}'", traitLevel, traitRef.getRefName(), resourceNode.getKey(), methodNode.getName());
+                logger.debug("applying {} level trait '{}' to '{}.{}'", traitLevel, traitRef.getRefName(), resourceNode.getKey(), methodNode.getName());
                 applyTrait(methodNode, traitRef, baseResourceNode);
             }
         }
