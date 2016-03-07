@@ -16,12 +16,32 @@
 package org.raml.impl.commons.grammar;
 
 import com.google.common.collect.Range;
-import org.raml.grammar.BaseGrammar;
-import org.raml.grammar.rule.*;
-import org.raml.impl.commons.nodes.*;
-import org.raml.nodes.Node;
 
 import java.math.BigInteger;
+
+import org.raml.grammar.BaseGrammar;
+import org.raml.grammar.rule.AnyOfRule;
+import org.raml.grammar.rule.KeyValueRule;
+import org.raml.grammar.rule.NodeFactory;
+import org.raml.grammar.rule.NodeReferenceFactory;
+import org.raml.grammar.rule.NodeReferenceRule;
+import org.raml.grammar.rule.ObjectRule;
+import org.raml.grammar.rule.ParametrizedNodeReferenceRule;
+import org.raml.grammar.rule.RegexValueRule;
+import org.raml.grammar.rule.Rule;
+import org.raml.grammar.rule.StringValueRule;
+import org.raml.impl.commons.nodes.MethodNode;
+import org.raml.impl.commons.nodes.ParametrizedResourceTypeRefNode;
+import org.raml.impl.commons.nodes.ParametrizedTraitRefNode;
+import org.raml.impl.commons.nodes.RamlDocumentNode;
+import org.raml.impl.commons.nodes.ResourceNode;
+import org.raml.impl.commons.nodes.ResourceTypeNode;
+import org.raml.impl.commons.nodes.ResourceTypeRefNode;
+import org.raml.impl.commons.nodes.SecuritySchemeNode;
+import org.raml.impl.commons.nodes.SecuritySchemeRefNode;
+import org.raml.impl.commons.nodes.TraitNode;
+import org.raml.impl.commons.nodes.TraitRefNode;
+import org.raml.nodes.Node;
 
 public abstract class BaseRamlGrammar extends BaseGrammar
 {
@@ -33,13 +53,17 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     public ObjectRule raml()
     {
+        return untitledRaml().with(titleField().description("Short plain-text label for the API."));
+    }
+
+    public ObjectRule untitledRaml()
+    {
         return objectType()
                            .with(descriptionField())
                            .with(schemasField())
                            .with(traitsField())
                            .with(resourceTypesField())
                            .with(securitySchemesField())
-                           .with(titleField().description("Short plain-text label for the API."))
                            .with(versionField())
                            .with(baseUriField())
                            .with(baseUriParametersField())

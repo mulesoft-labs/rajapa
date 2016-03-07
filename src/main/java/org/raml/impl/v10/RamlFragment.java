@@ -84,7 +84,7 @@ public enum RamlFragment
         @Override
         public Rule getRule(Raml10Grammar grammar)
         {
-            return null;
+            return grammar.extension(); // TODO overlay extra validations
         }
     },
     Extension
@@ -92,7 +92,7 @@ public enum RamlFragment
         @Override
         public Rule getRule(Raml10Grammar grammar)
         {
-            return null;
+            return grammar.extension();
         }
     },
     Default

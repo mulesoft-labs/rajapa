@@ -15,8 +15,15 @@
  */
 package org.raml.impl.v10.grammar;
 
-import org.raml.grammar.rule.*;
+import org.raml.grammar.rule.AnyOfRule;
+import org.raml.grammar.rule.KeyValueRule;
+import org.raml.grammar.rule.ObjectRule;
+import org.raml.grammar.rule.RegexValueRule;
+import org.raml.grammar.rule.Rule;
+import org.raml.grammar.rule.StringValueRule;
+import org.raml.grammar.rule.TypeNodeReferenceRule;
 import org.raml.impl.commons.grammar.BaseRamlGrammar;
+import org.raml.impl.commons.nodes.ExtendsNode;
 import org.raml.impl.v10.nodes.types.factories.TypeNodeFactory;
 import org.raml.nodes.StringNodeImpl;
 
@@ -93,6 +100,25 @@ public class Raml10Grammar extends BaseRamlGrammar
     {
         return field(usesKey(), library());
     }
+
+    // Extension
+    public Rule extension()
+    {
+        return untitledRaml()
+                             .with(requiredField(extendsKey(), stringType()).then(ExtendsNode.class))
+                             .with(optionalTitleField());
+    }
+
+    protected StringValueRule extendsKey()
+    {
+        return string("extends").description("The path to the base RAML document to be extended.");
+    }
+
+    protected KeyValueRule optionalTitleField()
+    {
+        return field(titleKey(), stringType());
+    }
+
 
     // Library
     public Rule library()

@@ -15,15 +15,24 @@
  */
 package org.raml;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+
 import org.apache.commons.io.IOUtils;
 import org.raml.grammar.rule.ErrorNodeFactory;
+import org.raml.impl.commons.RamlHeader;
 import org.raml.impl.v08.Raml08Builder;
 import org.raml.impl.v10.Raml10Builder;
-import org.raml.loader.*;
+import org.raml.loader.ClassPathResourceLoader;
+import org.raml.loader.CompositeResourceLoader;
+import org.raml.loader.FileResourceLoader;
+import org.raml.loader.ResourceLoader;
+import org.raml.loader.UrlResourceLoader;
 import org.raml.nodes.Node;
-
-import java.io.*;
-import java.util.StringTokenizer;
 
 /**
  * RamlBuilder create a Node representation of your raml.
@@ -33,11 +42,8 @@ import java.util.StringTokenizer;
 public class RamlBuilder
 {
 
-    public static final String RAML_10_VERSION = "1.0";
-    public static final String RAML_08_VERSION = "0.8";
-    public static final String RAML_HEADER_PREFIX = "#%RAML";
-
     public static int FIRST_PHASE = 1;
+    public static int SECOND_PHASE = 2;
 
     private int maxPhaseNumber;
 
@@ -66,54 +72,45 @@ public class RamlBuilder
                 new ClassPathResourceLoader(),
                 new FileResourceLoader(".")
                 );
-        return build(new StringReader(content), resourceLoader, "");
+        return build(content, resourceLoader, "");
     }
 
+    public Node build(String content, ResourceLoader resourceLoader, String resourceLocation)
+    {
+        return build(new StringReader(content), resourceLoader, resourceLocation);
+    }
 
     public Node build(Reader content, ResourceLoader resourceLoader, String resourceLocation)
     {
         try
         {
             final String stringContent = IOUtils.toString(content);
-            final StringTokenizer lines = new StringTokenizer(stringContent, "\n");
-            if (lines.hasMoreElements())
+            RamlHeader ramlHeader = RamlHeader.parse(stringContent);
+            if (RamlHeader.RAML_10_VERSION.equals(ramlHeader.getVersion()))
             {
-                final String header = lines.nextToken().trim();
-                final StringTokenizer headerParts = new StringTokenizer(header);
-                if (headerParts.hasMoreTokens())
-                {
-                    final String raml = headerParts.nextToken();
-                    if (RAML_HEADER_PREFIX.equals(raml))
-                    {
-                        if (headerParts.hasMoreTokens())
-                        {
-                            final String version = headerParts.nextToken();
-                            if (RAML_10_VERSION.equals(version))
-                            {
-                                final String fragmentText = headerParts.hasMoreTokens() ? headerParts.nextToken() : "";
-                                return new Raml10Builder().build(stringContent, fragmentText, resourceLoader, resourceLocation, maxPhaseNumber);
-                            }
-                            else if (RAML_08_VERSION.equals(version))
-                            {
-                                return new Raml08Builder().build(stringContent, resourceLoader, resourceLocation, maxPhaseNumber);
-                            }
-                            else
-                            {
-                                return ErrorNodeFactory.createUnsupportedVersion(version);
-                            }
-                        }
-                    }
-                }
-                return ErrorNodeFactory.createInvalidHeader(header);
+                return new Raml10Builder().build(stringContent, ramlHeader.getFragment(), resourceLoader, resourceLocation, maxPhaseNumber);
             }
-            else
-            {
-                return ErrorNodeFactory.createEmptyDocument();
-            }
+            return new Raml08Builder().build(stringContent, resourceLoader, resourceLocation, maxPhaseNumber);
         }
         catch (IOException ioe)
         {
             return ErrorNodeFactory.createInvalidInput(ioe);
+        }
+        catch (RamlHeader.InvalidHeaderVersionException e)
+        {
+            return ErrorNodeFactory.createUnsupportedVersion(e.getMessage());
+        }
+        catch (RamlHeader.InvalidHeaderFragmentException e)
+        {
+            return ErrorNodeFactory.createInvalidFragmentName(e.getMessage());
+        }
+        catch (RamlHeader.MissingHeaderException e)
+        {
+            return ErrorNodeFactory.createEmptyDocument();
+        }
+        catch (RamlHeader.InvalidHeaderException e)
+        {
+            return ErrorNodeFactory.createInvalidHeader(e.getMessage());
         }
     }
 

@@ -15,32 +15,41 @@
  */
 package org.raml.impl.v10;
 
-import org.raml.impl.v10.phase.TypesTransformer;
-import org.raml.phase.GrammarPhase;
-import org.raml.grammar.rule.ErrorNodeFactory;
-import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.loader.ResourceLoader;
-import org.raml.nodes.Node;
-import org.raml.nodes.snakeyaml.RamlNodeParser;
-import org.raml.phase.Phase;
-import org.raml.phase.TransformationPhase;
-import org.raml.impl.commons.phase.*;
-
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
+
+import org.raml.RamlBuilder;
+import org.raml.impl.commons.RamlHeader;
+import org.raml.impl.commons.phase.ExtensionsMerger;
+import org.raml.impl.commons.phase.IncludeResolver;
+import org.raml.impl.commons.phase.ResourceTypesTraitsTransformer;
+import org.raml.impl.commons.phase.StringTemplateExpressionTransformer;
+import org.raml.impl.v10.grammar.Raml10Grammar;
+import org.raml.impl.v10.phase.TypesTransformer;
+import org.raml.loader.ResourceLoader;
+import org.raml.nodes.ErrorNode;
+import org.raml.nodes.Node;
+import org.raml.nodes.StringNode;
+import org.raml.nodes.snakeyaml.RamlNodeParser;
+import org.raml.phase.GrammarPhase;
+import org.raml.phase.Phase;
+import org.raml.phase.TransformationPhase;
+import org.raml.utils.StreamUtils;
 
 public class Raml10Builder
 {
 
-    public Node build(String stringContent, String fragmentText, ResourceLoader resourceLoader, String resourceLocation, int maxPhaseNumber) throws IOException
+    public Node build(String stringContent, RamlFragment fragment, ResourceLoader resourceLoader, String resourceLocation, int maxPhaseNumber) throws IOException
     {
-        RamlFragment fragment = RamlFragment.byName(fragmentText);
-        if (fragment == null)
-        {
-            return ErrorNodeFactory.createInvalidFragmentName(fragmentText);
-        }
         Node rootNode = RamlNodeParser.parse(stringContent);
+        boolean applyExtension = false;
+        if (fragment == RamlFragment.Extension && maxPhaseNumber > RamlBuilder.FIRST_PHASE)
+        {
+            applyExtension = true;
+            maxPhaseNumber = RamlBuilder.SECOND_PHASE;
+        }
         final List<Phase> phases = createPhases(resourceLoader, resourceLocation, fragment);
         for (int i = 0; i < phases.size(); i++)
         {
@@ -50,7 +59,50 @@ public class Raml10Builder
                 rootNode = phase.apply(rootNode);
             }
         }
+        if (applyExtension && rootNode.findDescendantsWith(ErrorNode.class).isEmpty())
+        {
+            return applyExtension(rootNode, resourceLoader, resourceLocation);
+        }
         return rootNode;
+    }
+
+    private Node applyExtension(Node extensionNode, ResourceLoader resourceLoader, String resourceLocation) throws IOException
+    {
+        StringNode baseRef = (StringNode) extensionNode.get("extends");
+        RamlBuilder builder = new RamlBuilder(RamlBuilder.SECOND_PHASE);
+        InputStream baseStream = resourceLoader.fetchResource(baseRef.getValue());
+        String baseContent = StreamUtils.toString(baseStream);
+        Node baseNode = builder.build(baseContent, resourceLoader, resourceLocation);
+
+        if (!baseNode.findDescendantsWith(ErrorNode.class).isEmpty())
+        {
+            return baseNode;
+        }
+
+        if (isOverlayOrExtension(baseContent))
+        {
+            applyExtension(baseNode, resourceLoader, resourceLocation);
+        }
+
+        ExtensionsMerger.merge(baseNode, extensionNode);
+        return baseNode;
+    }
+
+    private boolean isOverlayOrExtension(String baseContent) throws IOException
+    {
+        try
+        {
+            RamlHeader ramlHeader = RamlHeader.parse(baseContent);
+            if (ramlHeader.getFragment() == RamlFragment.Extension || ramlHeader.getFragment() == RamlFragment.Overlay)
+            {
+                return true;
+            }
+        }
+        catch (RamlHeader.InvalidHeaderException e)
+        {
+            // ignore, detected by the builder
+        }
+        return false;
     }
 
 

@@ -17,6 +17,7 @@ package org.raml;
 
 
 import org.raml.grammar.rule.Rule;
+import org.raml.impl.commons.RamlHeader;
 import org.raml.impl.v08.grammar.Raml08Grammar;
 import org.raml.impl.v10.grammar.Raml10Grammar;
 import org.raml.impl.v10.RamlFragment;
@@ -429,18 +430,18 @@ public class RamlSuggester
             if (headerParts.hasMoreTokens())
             {
                 final String raml = headerParts.nextToken();
-                if (RamlBuilder.RAML_HEADER_PREFIX.equals(raml))
+                if (RamlHeader.RAML_HEADER_PREFIX.equals(raml))
                 {
                     if (headerParts.hasMoreTokens())
                     {
                         final String version = headerParts.nextToken();
-                        if (RamlBuilder.RAML_10_VERSION.equals(version))
+                        if (RamlHeader.RAML_10_VERSION.equals(version))
                         {
                             final String fragmentText = headerParts.hasMoreTokens() ? headerParts.nextToken() : "";
                             final RamlFragment ramlFragment = RamlFragment.byName(fragmentText);
                             return ramlFragment != null ? ramlFragment.getRule(new Raml10Grammar()) : null;
                         }
-                        else if (RamlBuilder.RAML_08_VERSION.equals(version))
+                        else if (RamlHeader.RAML_08_VERSION.equals(version))
                         {
                             return new Raml08Grammar().raml();
                         }
