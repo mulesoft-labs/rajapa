@@ -398,7 +398,7 @@ public class RamlSuggester
                         return searchNodeAt(child, location);
                     }
                 }
-                else if (child.getEndPosition().getIndex() > location)
+                else if (child.getEndPosition().getIndex() > location || isLastNode(child))
                 {
                     if (child.getChildren().isEmpty())
                     {
@@ -416,6 +416,13 @@ public class RamlSuggester
         {
             return root;
         }
+    }
+
+    private boolean isLastNode(Node node)
+    {
+        List<Node> children = node.getParent().getChildren();
+        Node lastChild = children.get(children.size() - 1);
+        return node.equals(lastChild);
     }
 
 
