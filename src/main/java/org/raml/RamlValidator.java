@@ -16,7 +16,7 @@
 package org.raml;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -29,7 +29,7 @@ public class RamlValidator
 
     public static final String USAGE = "Arguments: [-dump] file|url";
 
-    public static void main(String[] args) throws FileNotFoundException
+    public static void main(String[] args) throws IOException
     {
         Arguments arguments = parseArguments(args);
 

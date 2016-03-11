@@ -15,6 +15,9 @@
  */
 package org.raml.impl.commons.phase;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.raml.loader.ResourceLoader;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.Node;
@@ -23,8 +26,6 @@ import org.raml.nodes.snakeyaml.RamlNodeParser;
 import org.raml.nodes.snakeyaml.SYIncludeNode;
 import org.raml.phase.Transformer;
 import org.raml.utils.StreamUtils;
-
-import java.io.InputStream;
 
 
 public class IncludeResolver implements Transformer
@@ -51,32 +52,38 @@ public class IncludeResolver implements Transformer
 
         SYIncludeNode includeNode = (SYIncludeNode) tree;
         String resourcePath = resolvePath(includeNode.getIncludePath());
-        InputStream inputStream = resourceLoader.fetchResource(resourcePath);
+        try (InputStream inputStream = resourceLoader.fetchResource(resourcePath))
+        {
+            Node result;
+            if (inputStream == null)
+            {
+                String msg = "Include cannot be resolved: " + resourcePath;
+                result = new ErrorNode(msg);
+            }
+            else if (resourcePath.endsWith(".raml") || resourcePath.endsWith(".yaml") || resourcePath.endsWith(".yml"))
+            {
+                result = RamlNodeParser.parse(inputStream);
+            }
+            else
+            // scalar value
+            {
+                String newValue = StreamUtils.toString(inputStream);
+                result = new StringNodeImpl(newValue);
+            }
 
-        Node result;
-        if (inputStream == null)
-        {
-            String msg = "Include cannot be resolved: " + resourcePath;
-            result = new ErrorNode(msg);
-        }
-        else if (resourcePath.endsWith(".raml") || resourcePath.endsWith(".yaml") || resourcePath.endsWith(".yml"))
-        {
-            result = RamlNodeParser.parse(inputStream);
-        }
-        else
-        // scalar value
-        {
-            String newValue = StreamUtils.toString(inputStream);
-            result = new StringNodeImpl(newValue);
-        }
+            if (result == null)
+            {
+                String msg = "Include file is empty: " + resourcePath;
+                result = new ErrorNode(msg);
+            }
 
-        if (result == null)
-        {
-            String msg = "Include file is empty: " + resourcePath;
-            result = new ErrorNode(msg);
+            return result;
         }
-
-        return result;
+        catch (IOException e)
+        {
+            String msg = String.format("Include cannot be resolved: %s. (%s)", resourcePath, e.getMessage());
+            return new ErrorNode(msg);
+        }
     }
 
     private String resolvePath(String includePath)

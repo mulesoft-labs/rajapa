@@ -16,7 +16,6 @@
 package org.raml;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -57,13 +56,16 @@ public class RamlBuilder
         this.maxPhaseNumber = maxPhaseNumber;
     }
 
-    public Node build(File ramlFile) throws FileNotFoundException
+    public Node build(File ramlFile) throws IOException
     {
         final ResourceLoader resourceLoader = new CompositeResourceLoader(new UrlResourceLoader(),
                 new ClassPathResourceLoader(),
                 new FileResourceLoader("."),
                 new FileResourceLoader(ramlFile.getParent()));
-        return build(new FileReader(ramlFile), resourceLoader, "");
+        try (FileReader reader = new FileReader(ramlFile))
+        {
+            return build(reader, resourceLoader, "");
+        }
     }
 
     public Node build(String content)

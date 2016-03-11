@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class SpecInterfacesTestCase
 {
 
     @Test
-    public void full() throws FileNotFoundException
+    public void full() throws IOException
     {
         final RamlBuilder builder = new RamlBuilder();
         File input = new File("src/test/resources/org/raml/interfaces/input.raml");
