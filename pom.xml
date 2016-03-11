@@ -225,7 +225,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-shade-plugin</artifactId>
-                        <version>1.4</version>
+                        <version>2.4.3</version>
                         <executions>
                             <execution>
                                 <phase>package</phase>
@@ -235,11 +235,7 @@
                                 <configuration>
                                     <transformers>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                            <mainClass>org.raml.Validator</mainClass>
-                                        </transformer>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                            <resource>log4j.properties</resource>
-                                            <file>src/test/resources/log4j.properties</file>
+                                            <mainClass>org.raml.RamlValidator</mainClass>
                                         </transformer>
                                     </transformers>
                                 </configuration>
@@ -248,6 +244,13 @@
                     </plugin>
                 </plugins>
             </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                    <version>${slf4j.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 

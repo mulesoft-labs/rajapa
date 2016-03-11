@@ -15,43 +15,18 @@
  */
 package org.raml.nodes;
 
-public class DefaultPosition extends AbstractPosition
+public abstract class AbstractPosition implements Position
 {
-    private int index;
-    private int line;
-    private int column;
-    private String resource;
 
-    public DefaultPosition(int index, int line, int column, String resource)
+    @Override
+    public Position rightShift(int offset)
     {
-        this.index = index;
-        this.line = line;
-        this.column = column;
-        this.resource = resource;
+        return new DefaultPosition(getIndex() + offset, getLine(), getColumn() + offset, getResource());
     }
 
     @Override
-    public int getIndex()
+    public String toString()
     {
-        return index;
+        return String.format("[line=%d, col=%d]", getLine() + 1, getColumn() + 1);
     }
-
-    @Override
-    public int getLine()
-    {
-        return line;
-    }
-
-    @Override
-    public int getColumn()
-    {
-        return column;
-    }
-
-    @Override
-    public String getResource()
-    {
-        return resource;
-    }
-
 }

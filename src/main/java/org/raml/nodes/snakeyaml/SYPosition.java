@@ -15,11 +15,10 @@
  */
 package org.raml.nodes.snakeyaml;
 
-import org.raml.nodes.DefaultPosition;
-import org.raml.nodes.Position;
+import org.raml.nodes.AbstractPosition;
 import org.yaml.snakeyaml.error.Mark;
 
-public class SYPosition implements Position
+public class SYPosition extends AbstractPosition
 {
 
     private Mark mark;
@@ -54,9 +53,4 @@ public class SYPosition implements Position
         return null;
     }
 
-    @Override
-    public Position rightShift(int offset)
-    {
-        return new DefaultPosition(getIndex() + offset, getLine(), getIndex() + offset, getResource());
-    }
 }
