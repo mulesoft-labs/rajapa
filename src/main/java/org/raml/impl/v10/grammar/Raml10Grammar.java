@@ -178,6 +178,7 @@ public class Raml10Grammar extends BaseRamlGrammar
                                  .with(descriptionField())
                                  .with(annotationField())
                                  .with(defaultField())
+                                 .with(field(string("required"), booleanType()))
                                  .with(exampleField())
                                  .with(
                                          when("type", // todo what to do with inherited does not match object
@@ -198,7 +199,6 @@ public class Raml10Grammar extends BaseRamlGrammar
                                                                         .add(field(string("pattern"), stringType()))
                                                                         .add(field(string("minLength"), integerType()))
                                                                         .add(field(string("maxLength"), integerType()))
-                                                                        .add(field(string("required"), booleanType()))
                                                                         .add(field(string("enum"), array(stringType()))),
                                                  is(numericTypeLiteral())
                                                                          .add(field(string("minimum"), integerType()))
