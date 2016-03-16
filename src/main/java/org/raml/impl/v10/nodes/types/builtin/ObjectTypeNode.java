@@ -15,14 +15,16 @@
  */
 package org.raml.impl.v10.nodes.types.builtin;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.raml.impl.commons.nodes.PropertyNode;
+import org.raml.nodes.AbstractRamlNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
-import org.raml.nodes.AbstractRamlNode;
 
-public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode
+public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {
 
     public ObjectTypeNode()
@@ -34,10 +36,15 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode
         super(node);
     }
 
-    public List<Node> getProperties()
+    public List<PropertyNode> getProperties()
     {
-        Node properties = getSource().get("properties");
-        return properties != null ? properties.getChildren() : null;
+        ArrayList<PropertyNode> result = new ArrayList<>();
+        List<Node> properties = getSource().get("properties").getChildren();
+        for (Node property : properties)
+        {
+            result.add((PropertyNode) property);
+        }
+        return result;
     }
 
     @Override
@@ -50,5 +57,11 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode
     public NodeType getType()
     {
         return NodeType.Object;
+    }
+
+    @Override
+    public <T> T visit(TypeNodeVisitor<T> visitor)
+    {
+        return visitor.visitObject(this);
     }
 }

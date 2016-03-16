@@ -13,47 +13,39 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.snakeyaml;
+package org.raml.impl.commons.nodes;
 
-import org.raml.nodes.IntegerNode;
+import org.raml.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.yaml.snakeyaml.nodes.ScalarNode;
+import org.raml.nodes.StringNode;
 
-public class SYIntegerNode extends SYBaseRamlNode implements IntegerNode
+public class AnnotationTypeNode extends KeyValueNodeImpl
 {
 
-    public SYIntegerNode(SYIntegerNode node)
+    public AnnotationTypeNode()
+    {
+    }
+
+    public AnnotationTypeNode(AnnotationTypeNode node)
     {
         super(node);
     }
 
-    public SYIntegerNode(ScalarNode scalarNode)
+    public String getName()
     {
-        super(scalarNode);
+        final StringNode key = (StringNode) getKey();
+        return key.getValue();
     }
 
-    public Integer getValue()
+    public TypeNode getTypeNode()
     {
-        final String value = ((ScalarNode) getYamlNode()).getValue();
-        return Integer.valueOf(value);
-    }
-
-    @Override
-    public String toString()
-    {
-        return String.valueOf(getValue());
+        return (TypeNode) getValue();
     }
 
     @Override
     public Node copy()
     {
-        return new SYIntegerNode(this);
-    }
-
-    @Override
-    public NodeType getType()
-    {
-        return NodeType.Integer;
+        return new AnnotationTypeNode(this);
     }
 }

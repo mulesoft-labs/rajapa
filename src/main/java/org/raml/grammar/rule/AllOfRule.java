@@ -16,6 +16,7 @@
 package org.raml.grammar.rule;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,10 +31,14 @@ public class AllOfRule extends Rule
 
     private List<Rule> rules;
 
+    public AllOfRule(Rule... rules)
+    {
+        this(Arrays.asList(rules));
+    }
 
     public AllOfRule(List<Rule> rules)
     {
-        this.rules = rules;
+        this.rules = new ArrayList<>(rules);
     }
 
     @Override
@@ -46,6 +51,12 @@ public class AllOfRule extends Rule
             result.addAll(rule.getSuggestions(node));
         }
         return result;
+    }
+
+    public AllOfRule and(Rule rule)
+    {
+        this.rules.add(rule);
+        return this;
     }
 
     @Nullable
@@ -80,13 +91,20 @@ public class AllOfRule extends Rule
         }
         else
         {
-            if (this.matches(node))
+
+            for (Rule rule : rules)
             {
-                for (Rule rule : rules)
+                if (!rule.matches(node))
                 {
-                    node = rule.transform(node);
+                    return rule.transform(node);
                 }
             }
+
+            for (Rule rule : rules)
+            {
+                node = rule.transform(node);
+            }
+
         }
         return node;
     }

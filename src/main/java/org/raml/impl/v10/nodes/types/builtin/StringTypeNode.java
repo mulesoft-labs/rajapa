@@ -15,13 +15,15 @@
  */
 package org.raml.impl.v10.nodes.types.builtin;
 
+import javax.annotation.Nullable;
+
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
 import org.raml.nodes.AbstractRamlNode;
 import org.raml.utils.NodeSelector;
 
-public class StringTypeNode extends AbstractRamlNode implements ObjectNode
+public class StringTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {
 
     public StringTypeNode()
@@ -33,16 +35,19 @@ public class StringTypeNode extends AbstractRamlNode implements ObjectNode
         super(node);
     }
 
-    public int getMinLength()
+    @Nullable
+    public Integer getMinLength()
     {
         return NodeSelector.selectIntValue("minLength", getSource());
     }
 
-    public int getMaxLength()
+    @Nullable
+    public Integer getMaxLength()
     {
         return NodeSelector.selectIntValue("maxLength", getSource());
     }
 
+    @Nullable
     public String getPattern()
     {
         return NodeSelector.selectStringValue("pattern", getSource());
@@ -58,5 +63,11 @@ public class StringTypeNode extends AbstractRamlNode implements ObjectNode
     public NodeType getType()
     {
         return NodeType.Object;
+    }
+
+    @Override
+    public <T> T visit(TypeNodeVisitor<T> visitor)
+    {
+        return visitor.visitString(this);
     }
 }

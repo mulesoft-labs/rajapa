@@ -23,7 +23,10 @@ import org.raml.grammar.rule.Rule;
 import org.raml.grammar.rule.StringValueRule;
 import org.raml.grammar.rule.TypeNodeReferenceRule;
 import org.raml.impl.commons.grammar.BaseRamlGrammar;
+import org.raml.impl.commons.nodes.AnnotationNode;
+import org.raml.impl.commons.nodes.AnnotationTypeNode;
 import org.raml.impl.commons.nodes.ExtendsNode;
+import org.raml.impl.commons.nodes.PropertyNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.impl.v10.nodes.types.factories.TypeNodeFactory;
 import org.raml.nodes.StringNodeImpl;
@@ -82,7 +85,7 @@ public class Raml10Grammar extends BaseRamlGrammar
     // Common fields between rules
     protected KeyValueRule annotationField()
     {
-        return field(annotationKey(), any());
+        return field(annotationKey(), any()).then(AnnotationNode.class);
     }
 
     protected RegexValueRule annotationKey()
@@ -152,7 +155,7 @@ public class Raml10Grammar extends BaseRamlGrammar
 
     protected Rule annotationTypes()
     {
-        return objectType().with(field(stringType(), type()));
+        return objectType().with(field(stringType(), type()).then(AnnotationTypeNode.class));
     }
 
 
@@ -285,7 +288,7 @@ public class Raml10Grammar extends BaseRamlGrammar
     protected ObjectRule properties()
     {
         return objectType()
-                           .with(field(stringType(), ref("type")));
+                           .with(field(stringType(), ref("type")).then(PropertyNode.class));
     }
 
     protected Rule objectTypeLiteral()

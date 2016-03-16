@@ -36,6 +36,7 @@ public class KeyValueRule extends Rule
 
         this.keyRule = keyRule;
         this.valueRule = valueRule;
+        this.required = false;
     }
 
     public KeyValueRule required()

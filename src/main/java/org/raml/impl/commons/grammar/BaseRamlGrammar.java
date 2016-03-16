@@ -71,7 +71,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
                            .with(mediaTypeField())
                            .with(securedByField().description("The security schemes that apply to every resource and method in the API."))
                            .with(resourceField().then(ResourceNode.class))
-                           .with(nonOptionalField(documentationKey(), documentations()))
+                           .with(fieldWithRequiredValue(documentationKey(), documentations()))
                            .then(RamlDocumentNode.class);
     }
 
@@ -542,6 +542,6 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected Rule responseCodes()
     {
-        return range(Range.closed(new BigInteger("100"), new BigInteger("599")));
+        return range(Range.closed(100, 599));
     }
 }

@@ -20,7 +20,7 @@ import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
 import org.raml.nodes.AbstractRamlNode;
 
-public class BooleanTypeNode extends AbstractRamlNode implements ObjectNode
+public class BooleanTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {
 
     public BooleanTypeNode()
@@ -42,5 +42,11 @@ public class BooleanTypeNode extends AbstractRamlNode implements ObjectNode
     public NodeType getType()
     {
         return NodeType.Object;
+    }
+
+    @Override
+    public <T> T visit(TypeNodeVisitor<T> visitor)
+    {
+        return visitor.visitBoolean(this);
     }
 }
