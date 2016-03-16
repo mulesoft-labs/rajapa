@@ -13,9 +13,15 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes;
+package org.raml.impl.v10.nodes.types.builtin;
 
-public interface IntegerNode extends SimpleTypeNode<Integer>
+
+public interface TypeNodeVisitor<T>
 {
-    Integer getValue();
+
+    T visitString(StringTypeNode stringTypeNode);
+
+    T visitObject(ObjectTypeNode objectTypeNode);
+
+    T visitBoolean(BooleanTypeNode booleanTypeNode);
 }

@@ -56,14 +56,16 @@ public class NodeSelector
         return selectFrom(Arrays.asList(tokens), from);
     }
 
-    public static int selectIntValue(String path, Node from)
+    @Nullable
+    public static Integer selectIntValue(String path, Node from)
     {
-        return selectType(path, from, BigInteger.ZERO).intValue();
+        return selectType(path, from, null);
     }
 
+    @Nullable
     public static String selectStringValue(String path, Node from)
     {
-        return selectType(path, from, StringUtils.EMPTY);
+        return selectType(path, from, null);
     }
 
     public static <T> T selectType(String path, Node from, T defaultValue)

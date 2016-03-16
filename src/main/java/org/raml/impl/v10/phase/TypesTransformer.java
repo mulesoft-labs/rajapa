@@ -18,6 +18,7 @@ package org.raml.impl.v10.phase;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.raml.impl.commons.nodes.PropertyNode;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
@@ -51,10 +52,10 @@ public class TypesTransformer implements Transformer
                 {
                     for (String type : typeNode.getValue().split("\\|"))
                     {
-                        List<Node> unionProperties = getTypeProperties(getType(typesRoot, StringUtils.trim(type)));
-                        for (Node property : unionProperties)
+                        List<PropertyNode> unionProperties = getTypeProperties(getType(typesRoot, StringUtils.trim(type)));
+                        for (PropertyNode property : unionProperties)
                         {
-                            Node existingProperty = properties.get(((KeyValueNode) property).getKey().toString());
+                            Node existingProperty = properties.get(property.getName());
                             if (existingProperty != null)
                             {
                                 Node errorNode = new ErrorNode("property definition {" + property + "} overrides existing property: {" + existingProperty.getParent() + "}");
@@ -79,7 +80,7 @@ public class TypesTransformer implements Transformer
         return keyValueNode != null ? (SYObjectNode) keyValueNode.getValue() : null;
     }
 
-    private List<Node> getTypeProperties(ObjectTypeNode node)
+    private List<PropertyNode> getTypeProperties(ObjectTypeNode node)
     {
         return node.getProperties();
     }

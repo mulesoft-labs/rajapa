@@ -15,28 +15,23 @@
  */
 package org.raml.grammar.rule;
 
-import com.google.common.collect.Range;
 
 import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import org.raml.nodes.IntegerNode;
 import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
+import org.raml.nodes.StringNode;
 import org.raml.suggester.Suggestion;
 
-public class IntegerTypeRule extends AbstractTypeRule
+public class MaxLengthRule extends Rule
 {
+    private int maxLength;
 
-    @Nullable
-    private Range<Integer> range;
-
-    public IntegerTypeRule(@Nullable Range<Integer> range)
+    public MaxLengthRule(int maxLength)
     {
-        this.range = range;
+        this.maxLength = maxLength;
     }
 
     @Nonnull
@@ -46,37 +41,40 @@ public class IntegerTypeRule extends AbstractTypeRule
         return Collections.emptyList();
     }
 
-
     @Override
     public boolean matches(@Nonnull Node node)
     {
-        if (node instanceof IntegerNode)
+        if (node instanceof StringNode)
         {
-            if (range != null)
+            return ((StringNode) node).getValue().length() <= maxLength;
+        }
+        return false;
+    }
+
+    @Override
+    public Node transform(@Nonnull Node node)
+    {
+        if (matches(node))
+        {
+            if (getFactory() != null)
             {
-                return range.contains(((IntegerNode) node).getValue());
+                return getFactory().create(((StringNode) node).getValue());
             }
             else
             {
-                return true;
+                return node;
             }
         }
         else
         {
-            return false;
+            return ErrorNodeFactory.createInvalidMaxLength(maxLength);
         }
     }
+
 
     @Override
     public String getDescription()
     {
-        return "Integer";
-    }
-
-    @Nonnull
-    @Override
-    NodeType getType()
-    {
-        return NodeType.Integer;
+        return "Max length";
     }
 }

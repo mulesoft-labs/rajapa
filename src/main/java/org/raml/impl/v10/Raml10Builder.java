@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.raml.RamlBuilder;
 import org.raml.impl.commons.RamlHeader;
+import org.raml.impl.commons.phase.AnnotationValidationPhase;
 import org.raml.impl.commons.phase.ExtensionsMerger;
 import org.raml.impl.commons.phase.IncludeResolver;
 import org.raml.impl.commons.phase.ResourceTypesTraitsTransformer;
@@ -122,8 +123,10 @@ public class Raml10Builder
         // Applies resourceTypes and Traits Library
         final TransformationPhase third = new TransformationPhase(new ResourceTypesTraitsTransformer(), new TypesTransformer());
 
+        final AnnotationValidationPhase fourth = new AnnotationValidationPhase();
+
         // Schema Types example validation
-        return Arrays.asList(first, second, third);
+        return Arrays.asList(first, second, third, fourth);
 
     }
 }

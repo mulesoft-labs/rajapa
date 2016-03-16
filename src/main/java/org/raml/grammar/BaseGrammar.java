@@ -60,7 +60,7 @@ public class BaseGrammar
         return new IntegerTypeRule(null);
     }
 
-    public IntegerTypeRule range(Range<BigInteger> range)
+    public IntegerTypeRule range(Range<Integer> range)
     {
         return new IntegerTypeRule(range);
     }
@@ -75,7 +75,7 @@ public class BaseGrammar
         return new KeyValueRule(keyRule, optional(valueRule));
     }
 
-    public KeyValueRule nonOptionalField(Rule keyRule, Rule valueRule)
+    public KeyValueRule fieldWithRequiredValue(Rule keyRule, Rule valueRule)
     {
         return new KeyValueRule(keyRule, valueRule);
     }

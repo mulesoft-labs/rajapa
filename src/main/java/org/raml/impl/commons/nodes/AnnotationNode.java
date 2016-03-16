@@ -13,9 +13,34 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes;
+package org.raml.impl.commons.nodes;
 
-public interface IntegerNode extends SimpleTypeNode<Integer>
+import org.raml.nodes.KeyValueNodeImpl;
+import org.raml.nodes.Node;
+import org.raml.nodes.StringNode;
+
+public class AnnotationNode extends KeyValueNodeImpl
 {
-    Integer getValue();
+
+    public AnnotationNode()
+    {
+    }
+
+    public AnnotationNode(AnnotationNode node)
+    {
+        super(node);
+    }
+
+    public String getName()
+    {
+        final StringNode key = (StringNode) getKey();
+        String value = key.getValue();
+        return value.substring(1, value.length() - 1);
+    }
+
+    @Override
+    public Node copy()
+    {
+        return new AnnotationNode(this);
+    }
 }

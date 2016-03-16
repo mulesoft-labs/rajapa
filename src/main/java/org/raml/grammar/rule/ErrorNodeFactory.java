@@ -88,4 +88,14 @@ public class ErrorNodeFactory
     {
         return new ErrorNode("Error while reading the input. Reason " + ioe.getMessage());
     }
+
+    public static Node createInvalidMaxLength(int maxLength)
+    {
+        return new ErrorNode("Expected max length " + maxLength);
+    }
+
+    public static Node createInvalidMinLength(int minLength)
+    {
+        return new ErrorNode("Expected min length " + minLength);
+    }
 }
