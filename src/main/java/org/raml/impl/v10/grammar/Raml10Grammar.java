@@ -27,6 +27,7 @@ import org.raml.impl.commons.nodes.AnnotationNode;
 import org.raml.impl.commons.nodes.AnnotationTypeNode;
 import org.raml.impl.commons.nodes.ExtendsNode;
 import org.raml.impl.commons.nodes.PropertyNode;
+import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.impl.v10.nodes.types.factories.TypeNodeFactory;
 import org.raml.nodes.StringNodeImpl;
 
@@ -292,7 +293,7 @@ public class Raml10Grammar extends BaseRamlGrammar
 
     protected Rule objectTypeLiteral()
     {
-        return allOf(anyOf(string("object"), regex("^(?:[^|]+(?:\\|[^|]+)*)?$")), not(anyBuiltinType()));
+        return not(anyBuiltinType());
     }
 
 
