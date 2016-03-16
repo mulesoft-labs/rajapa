@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.snakeyaml.SYArrayNode;
 import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.raml.nodes.snakeyaml.SYStringNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
@@ -64,6 +65,48 @@ public class TypesTransformer implements Transformer
                             else
                             {
                                 properties.addChild(property);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else if (node instanceof ObjectTypeNode && node.get("type") instanceof SYArrayNode)
+        {
+            Node properties = node.get("properties");
+            final SYArrayNode typesNode = (SYArrayNode) node.get("type");
+            if (typesNode != null)
+            {
+                for (Node type : typesNode.getChildren())
+                {
+                    ObjectTypeNode typeNode = getType(typesRoot, StringUtils.trim(((SYStringNode) type).getValue()));
+                    if (properties == null)
+                    {
+                        SYObjectNode newProperties = (SYObjectNode) typeNode.get("properties");
+                        if (newProperties != null)
+                        {
+                            properties = newProperties.copy();
+                            node.addChild(properties);
+                        }
+                    }
+                    else
+                    {
+                        List<Node> unionProperties = getTypeProperties(typeNode);
+                        if (unionProperties != null)
+                        {
+                            for (Node property : unionProperties)
+                            {
+                                Node existingProperty = properties.get(((KeyValueNode) property).getKey().toString());
+                                if (existingProperty != null)
+                                {
+                                    Node errorNode = new ErrorNode("property definition {" + property + "} overrides existing property: {" + existingProperty.getParent() + "}");
+                                    errorNode.setSource(property);
+                                    properties.addChild(errorNode);
+                                }
+                                else
+                                {
+                                    properties.addChild(property);
+                                }
                             }
                         }
                     }

@@ -1,5 +1,5 @@
 [ {
-    "label" : "",
+    "label" : "secured",
     "description" : "Apply this to any method that needs to be secured",
     "value" : "secured"
 } ]

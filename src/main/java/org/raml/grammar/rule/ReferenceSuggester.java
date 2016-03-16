@@ -103,7 +103,7 @@ public class ReferenceSuggester
                         descriptionText = usage.toString();
                     }
                 }
-                result.add(new DefaultSuggestion(value, descriptionText, ""));
+                result.add(new DefaultSuggestion(value, descriptionText, value));
             }
         }
     }

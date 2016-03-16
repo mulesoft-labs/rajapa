@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.snakeyaml.SYStringNode;
+import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.Suggestion;
 
 public class ReferenceTypeSuggester extends ReferenceSuggester
@@ -49,6 +50,7 @@ public class ReferenceTypeSuggester extends ReferenceSuggester
                 }
             }
         }
+        result.add(new DefaultSuggestion("object", null, "Object"));
         return result;
     }
 

@@ -1,8 +1,4 @@
 [ {
-    "label" : "",
-    "description" : "",
-    "value" : "Person"
-}, {
     "label" : "Boolean",
     "description" : null,
     "value" : "boolean"
@@ -26,6 +22,10 @@
     "label" : "Object",
     "description" : null,
     "value" : "object"
+}, {
+    "label" : "Person",
+    "description" : "",
+    "value" : "Person"
 }, {
     "label" : "String",
     "description" : null,
