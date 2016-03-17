@@ -245,6 +245,12 @@ public class Raml10Grammar extends BaseRamlGrammar
                 new TypeNodeReferenceRule("types"));
     }
 
+    @Override
+    protected ObjectRule mimeType()
+    {
+        return super.mimeType().merge((ObjectRule) type());
+    }
+
     protected StringValueRule fileTypeLiteral()
     {
         return string("file");

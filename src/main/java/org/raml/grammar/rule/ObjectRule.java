@@ -216,4 +216,21 @@ public class ObjectRule extends Rule
         this.conditionalRules = conditional;
         return this;
     }
+
+    public ObjectRule merge(ObjectRule objectRule)
+    {
+        if (objectRule.conditionalRules != null)
+        {
+            if (this.conditionalRules != null)
+            {
+                throw new IllegalStateException("Cannot merge conditional rules.");
+            }
+            this.conditionalRules = objectRule.conditionalRules;
+        }
+        for (KeyValueRule keyValueRule : objectRule.fields)
+        {
+            this.fields.add(keyValueRule);
+        }
+        return this;
+    }
 }
