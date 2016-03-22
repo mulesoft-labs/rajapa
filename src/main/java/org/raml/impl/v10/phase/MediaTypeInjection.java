@@ -19,10 +19,19 @@ package org.raml.impl.v10.phase;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.raml.impl.commons.grammar.BaseRamlGrammar;
+import javax.annotation.Nonnull;
+
 import org.raml.impl.commons.nodes.BodyNode;
 import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.nodes.*;
+import org.raml.nodes.BaseNode;
+import org.raml.nodes.DefaultPosition;
+import org.raml.nodes.KeyValueNode;
+import org.raml.nodes.KeyValueNodeImpl;
+import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
+import org.raml.nodes.ObjectNode;
+import org.raml.nodes.Position;
+import org.raml.nodes.StringNode;
 import org.raml.phase.Phase;
 import org.raml.utils.NodeSelector;
 
@@ -94,6 +103,15 @@ public class MediaTypeInjection implements Phase
     private static class MediaTypeInjectedNode extends BaseNode implements ObjectNode
     {
 
+        public MediaTypeInjectedNode()
+        {
+        }
+
+        public MediaTypeInjectedNode(MediaTypeInjectedNode mediaTypeInjectedNode)
+        {
+            super(mediaTypeInjectedNode);
+        }
+
         @Override
         public Position getStartPosition()
         {
@@ -106,10 +124,11 @@ public class MediaTypeInjection implements Phase
             return getChildren().isEmpty() ? DefaultPosition.emptyPosition() : getChildren().get(0).getEndPosition();
         }
 
+        @Nonnull
         @Override
         public Node copy()
         {
-            return null;
+            return new MediaTypeInjectedNode(this);
         }
 
         @Override

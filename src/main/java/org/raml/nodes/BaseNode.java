@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.raml.utils.NodeSelector;
 
 public abstract class BaseNode implements Node
@@ -66,6 +69,7 @@ public abstract class BaseNode implements Node
         return getParent() == null ? this : getParent().getRootNode();
     }
 
+    @Nonnull
     @Override
     public <T extends Node> List<T> findDescendantsWith(Class<T> nodeType)
     {
@@ -80,6 +84,22 @@ public abstract class BaseNode implements Node
             result.addAll(child.findDescendantsWith(nodeType));
         }
         return result;
+    }
+
+    @Nullable
+    @Override
+    public <T extends Node> T findAncestorWith(Class<T> nodeType)
+    {
+        Node parent = getParent();
+        while (parent != null)
+        {
+            if (nodeType.isAssignableFrom(parent.getClass()))
+            {
+                return nodeType.cast(parent);
+            }
+            parent = parent.getParent();
+        }
+        return null;
     }
 
     @Override

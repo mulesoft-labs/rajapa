@@ -27,13 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.raml.phase.GrammarPhase;
-import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.nodes.ExecutionContext;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.ParametrizedReferenceNode;
-import org.raml.nodes.ReferenceNode;
 import org.raml.impl.commons.nodes.MethodNode;
 import org.raml.impl.commons.nodes.ResourceNode;
 import org.raml.impl.commons.nodes.ResourceTypeNode;
@@ -41,9 +34,15 @@ import org.raml.impl.commons.nodes.ResourceTypeRefNode;
 import org.raml.impl.commons.nodes.StringTemplateNode;
 import org.raml.impl.commons.nodes.TraitNode;
 import org.raml.impl.commons.nodes.TraitRefNode;
+import org.raml.impl.v10.grammar.Raml10Grammar;
+import org.raml.nodes.ExecutionContext;
+import org.raml.nodes.KeyValueNode;
+import org.raml.nodes.Node;
+import org.raml.nodes.ParametrizedReferenceNode;
 import org.raml.nodes.snakeyaml.SYBaseRamlNode;
 import org.raml.nodes.snakeyaml.SYNullNode;
 import org.raml.nodes.snakeyaml.SYObjectNode;
+import org.raml.phase.GrammarPhase;
 import org.raml.phase.Transformer;
 import org.raml.utils.NodeSelector;
 import org.slf4j.Logger;
@@ -65,7 +64,7 @@ public class ResourceTypesTraitsTransformer implements Transformer
     @Override
     public Node transform(Node node)
     {
-        ResourceNode resourceNode = findResourceNode((ReferenceNode) node);
+        ResourceNode resourceNode = node.findAncestorWith(ResourceNode.class);
         if (mergedResources.contains(resourceNode))
         {
             return node;
@@ -223,31 +222,6 @@ public class ResourceTypesTraitsTransformer implements Transformer
             }
         }
         return methodNodes;
-    }
-
-    private ResourceNode findResourceNode(ReferenceNode referenceNode)
-    {
-        // "type" at resource level
-        Node parent = NodeSelector.selectFrom("../../..", referenceNode);
-        if (parent instanceof ResourceNode)
-        {
-            return (ResourceNode) parent;
-        }
-
-        // "is" at resource level
-        parent = NodeSelector.selectFrom("../../../..", referenceNode);
-        if (parent instanceof ResourceNode)
-        {
-            return (ResourceNode) parent;
-        }
-
-        // "is" at method level
-        parent = NodeSelector.selectFrom("../../../../../..", referenceNode);
-        if (parent instanceof ResourceNode)
-        {
-            return (ResourceNode) parent;
-        }
-        throw new RuntimeException("Unreachable code: invalid node hierarchy");
     }
 
 }

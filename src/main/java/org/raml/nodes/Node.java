@@ -74,7 +74,7 @@ public interface Node
     void setSource(Node source);
 
     /**
-     * Returns the list of descendants nodes that is instance of with the specified class
+     * Returns the list of descendants nodes that are instances of the specified class
      *
      * @param nodeType The class that the node should implement
      * @param <T>      The type of the class
@@ -83,6 +83,15 @@ public interface Node
     @Nonnull
     <T extends Node> List<T> findDescendantsWith(Class<T> nodeType);
 
+    /**
+     * Returns the nearest ancestor node that is instance of the specified class
+     *
+     * @param nodeType The class that the node should implement
+     * @param <T>      The type of the class
+     * @return The matching type or null if none
+     */
+    @Nullable
+    <T extends Node> T findAncestorWith(Class<T> nodeType);
 
     /**
      * Return the source of this node.
@@ -121,6 +130,7 @@ public interface Node
      * Creates a new copy of this node
      * @return a new copy of this node
      */
+    @Nonnull
     Node copy();
 
     /**
