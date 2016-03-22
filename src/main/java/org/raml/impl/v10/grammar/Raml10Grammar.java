@@ -186,24 +186,16 @@ public class Raml10Grammar extends BaseRamlGrammar
                                  .with(exampleField())
                                  .with(
                                          when("type", // todo what to do with inherited does not match object
-                                                 is(objectTypeLiteral())
-                                                                        .add(field(string("properties"), properties()))
-                                                                        .add(field(string("minProperties"), integerType()))
-                                                                        .add(field(string("maxProperties"), integerType()))
-                                                                        .add(field(string("additionalProperties"), anyOf(stringType(), ref("type"))))
-                                                                        .add(field(string("patternProperties"), properties()))
-                                                                        .add(field(string("discriminator"), anyOf(stringType(), booleanType())))
-                                                                        .add(field(string("discriminatorValue"), stringType())),
-                                                 is(arrayTypeLiteral())
-                                                                       .add(field(string("uniqueItems"), booleanType()))
-                                                                       .add(field(string("items"), any())) // todo review this don't get what it is
-                                                                       .add(field(string("minItems"), integerType()))
-                                                                       .add(field(string("maxItems"), integerType())),
                                                  is(stringTypeLiteral())
                                                                         .add(field(string("pattern"), stringType()))
                                                                         .add(field(string("minLength"), integerType()))
                                                                         .add(field(string("maxLength"), integerType()))
                                                                         .add(field(string("enum"), array(stringType()))),
+                                                 is(arrayTypeLiteral())
+                                                                       .add(field(string("uniqueItems"), booleanType()))
+                                                                       .add(field(string("items"), any())) // todo review this don't get what it is
+                                                                       .add(field(string("minItems"), integerType()))
+                                                                       .add(field(string("maxItems"), integerType())),
                                                  is(numericTypeLiteral())
                                                                          .add(field(string("minimum"), integerType()))
                                                                          .add(field(string("maximum"), integerType()))
@@ -213,7 +205,15 @@ public class Raml10Grammar extends BaseRamlGrammar
                                                  is(fileTypeLiteral())
                                                                       .add(field(string("fileTypes"), any())) // todo finish
                                                                       .add(field(string("minLength"), integerType()))
-                                                                      .add(field(string("maxLength"), integerType()))
+                                                                      .add(field(string("maxLength"), integerType())),
+                                                 is(objectTypeLiteral())
+                                                                        .add(field(string("properties"), properties()))
+                                                                        .add(field(string("minProperties"), integerType()))
+                                                                        .add(field(string("maxProperties"), integerType()))
+                                                                        .add(field(string("additionalProperties"), anyOf(stringType(), ref("type"))))
+                                                                        .add(field(string("patternProperties"), properties()))
+                                                                        .add(field(string("discriminator"), anyOf(stringType(), booleanType())))
+                                                                        .add(field(string("discriminatorValue"), stringType()))
 
 
                                          ).defaultValue(new StringNodeImpl("string"))

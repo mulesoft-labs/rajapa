@@ -68,4 +68,10 @@ public class PropertyNode extends KeyValueNodeImpl
     {
         return new PropertyNode(this);
     }
+
+    @Override
+    public String toString()
+    {
+        return this.getName() + ":" + this.getValue().get("type");
+    }
 }

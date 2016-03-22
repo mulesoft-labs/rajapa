@@ -4,9 +4,12 @@ types:
  User:
    type: object
    properties:
-     firstname: string
-     lastname:  string
-     age:       number
+     firstname:
+       type: string
+     lastname:
+       type: string
+     age:
+       type: number
 /users/{id}:
  get:
    responses:

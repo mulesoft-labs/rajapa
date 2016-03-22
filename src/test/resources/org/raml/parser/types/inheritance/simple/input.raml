@@ -4,12 +4,15 @@ types:
   Person:
     type: object
     properties:
-      name: string
+      name:
+       type: string
   EmailOwner:
     type: object
     properties:
-      address: string
+      address:
+        type: string
   Employee:
     type: [Person, EmailOwner]
     properties:
-        id: string
+        id:
+          type: string
