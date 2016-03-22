@@ -289,9 +289,14 @@ public abstract class BaseRamlGrammar extends BaseGrammar
         return objectType().with(mimeTypeField());
     }
 
-    private KeyValueRule mimeTypeField()
+    public KeyValueRule mimeTypeField()
     {
-        return field(regex(MIME_TYPE_REGEX), mimeType());
+        return field(mimeTypeRegex(), mimeType());
+    }
+
+    public RegexValueRule mimeTypeRegex()
+    {
+        return regex(MIME_TYPE_REGEX);
     }
 
     protected ObjectRule mimeType()

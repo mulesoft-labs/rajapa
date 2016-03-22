@@ -54,4 +54,9 @@ public class DefaultPosition extends AbstractPosition
         return resource;
     }
 
+
+    public static DefaultPosition emptyPosition()
+    {
+        return new DefaultPosition(-1, -1, -1, "empty.raml");
+    }
 }

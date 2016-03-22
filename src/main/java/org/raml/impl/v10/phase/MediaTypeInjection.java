@@ -21,14 +21,8 @@ import java.util.List;
 
 import org.raml.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.impl.commons.nodes.BodyNode;
-import org.raml.nodes.BaseNode;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.KeyValueNodeImpl;
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.raml.nodes.ObjectNode;
-import org.raml.nodes.Position;
-import org.raml.nodes.StringNode;
+import org.raml.impl.v10.grammar.Raml10Grammar;
+import org.raml.nodes.*;
 import org.raml.phase.Phase;
 import org.raml.utils.NodeSelector;
 
@@ -83,7 +77,7 @@ public class MediaTypeInjection implements Phase
             KeyValueNode keyValue = new KeyValueNodeImpl(defaultMediaType.copy(), copy);
             injected.addChild(keyValue);
         }
-        bodyNode.setChild(1, injected);
+        bodyNode.setValue(injected);
     }
 
     private boolean hasExplicitMimeTypes(BodyNode bodyNode)
@@ -92,24 +86,24 @@ public class MediaTypeInjection implements Phase
         if (!children.isEmpty() && !children.get(0).getChildren().isEmpty())
         {
             Node key = children.get(0).getChildren().get(0);
-            return key.toString().matches(BaseRamlGrammar.MIME_TYPE_REGEX);
+            return new Raml10Grammar().mimeTypeRegex().matches(key);
         }
         return false;
     }
 
-    public static class MediaTypeInjectedNode extends BaseNode implements ObjectNode
+    private static class MediaTypeInjectedNode extends BaseNode implements ObjectNode
     {
 
         @Override
         public Position getStartPosition()
         {
-            return null;
+            return getParent() != null ? getParent().getStartPosition() : DefaultPosition.emptyPosition();
         }
 
         @Override
         public Position getEndPosition()
         {
-            return null;
+            return getChildren().isEmpty() ? DefaultPosition.emptyPosition() : getChildren().get(0).getEndPosition();
         }
 
         @Override
