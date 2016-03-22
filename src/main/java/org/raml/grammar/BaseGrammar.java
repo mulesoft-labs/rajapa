@@ -16,9 +16,11 @@
 package org.raml.grammar;
 
 import com.google.common.collect.Range;
+
 import org.raml.grammar.rule.*;
 
 import javax.annotation.Nonnull;
+
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -45,6 +47,16 @@ public class BaseGrammar
         return mapping;
     }
 
+    public DiscriminatorRule whenChildIs(Rule discriminator, Rule then)
+    {
+        return new DiscriminatorRule(discriminator, then);
+    }
+
+    public FieldPresentRule whenPresent(String selector, Rule then)
+    {
+        return new FieldPresentRule(selector, then);
+    }
+
     public AnyValueRule any()
     {
         return new AnyValueRule();
@@ -58,6 +70,16 @@ public class BaseGrammar
     public IntegerTypeRule integerType()
     {
         return new IntegerTypeRule(null);
+    }
+
+    public FloatTypeRule floatType()
+    {
+        return new FloatTypeRule();
+    }
+
+    public Rule numberType()
+    {
+        return anyOf(integerType(), floatType());
     }
 
     public IntegerTypeRule range(Range<Integer> range)
@@ -108,6 +130,11 @@ public class BaseGrammar
     public AnyOfRule anyOf(Rule... rules)
     {
         return new AnyOfRule(Arrays.asList(rules));
+    }
+
+    public AnyOfRule firstOf(Rule... rules)
+    {
+        return new FirstOfRule(Arrays.asList(rules));
     }
 
     public NegativeRule not(Rule rule)

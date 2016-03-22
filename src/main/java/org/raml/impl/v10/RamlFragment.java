@@ -76,7 +76,7 @@ public enum RamlFragment
         @Override
         public Rule getRule(Raml10Grammar grammar)
         {
-            return grammar.library();
+            return grammar.libraryValue();
         }
     },
     Overlay

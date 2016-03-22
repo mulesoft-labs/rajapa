@@ -27,7 +27,12 @@ public class Raml08Grammar extends BaseRamlGrammar
     protected ObjectRule mimeType()
     {
         return super.mimeType()
-                    .with(field(string("formParameters"), array(parameter())));
+                    .with(field(string("formParameters"), formParameters()));
+    }
+
+    protected Rule formParameters()
+    {
+        return objectType().with(field(stringType(), anyOf(parameter(), array(parameter()))));
     }
 
     @Override
@@ -95,12 +100,12 @@ public class Raml08Grammar extends BaseRamlGrammar
 
     private KeyValueRule maximumField()
     {
-        return field(string("maximum"), integerType()).description("The maximum attribute specifies the parameter's maximum value.");
+        return field(string("maximum"), numberType()).description("The maximum attribute specifies the parameter's maximum value.");
     }
 
     private KeyValueRule minimumField()
     {
-        return field(string("minimum"), integerType()).description("The minimum attribute specifies the parameter's minimum value.");
+        return field(string("minimum"), numberType()).description("The minimum attribute specifies the parameter's minimum value.");
     }
 
     private KeyValueRule exampleField()

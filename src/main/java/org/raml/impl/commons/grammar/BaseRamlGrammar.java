@@ -17,8 +17,6 @@ package org.raml.impl.commons.grammar;
 
 import com.google.common.collect.Range;
 
-import java.math.BigInteger;
-
 import org.raml.grammar.BaseGrammar;
 import org.raml.grammar.rule.AnyOfRule;
 import org.raml.grammar.rule.KeyValueRule;
@@ -30,6 +28,7 @@ import org.raml.grammar.rule.ParametrizedNodeReferenceRule;
 import org.raml.grammar.rule.RegexValueRule;
 import org.raml.grammar.rule.Rule;
 import org.raml.grammar.rule.StringValueRule;
+import org.raml.impl.commons.nodes.BodyNode;
 import org.raml.impl.commons.nodes.MethodNode;
 import org.raml.impl.commons.nodes.ParametrizedResourceTypeRefNode;
 import org.raml.impl.commons.nodes.ParametrizedTraitRefNode;
@@ -50,6 +49,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     public static final String RESOURCE_TYPES_KEY_NAME = "resourceTypes";
     public static final String TRAITS_KEY_NAME = "traits";
     public static final String SECURITY_SCHEMES_KEY_NAME = "securitySchemes";
+    public static final String MIME_TYPE_REGEX = "[A-z-_]+\\/[A-z-_]+";
 
     public ObjectRule raml()
     {
@@ -286,7 +286,12 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected Rule body()
     {
-        return objectType().with(field(regex("[A-z-_]+\\/[A-z-_]+"), mimeType()));
+        return objectType().with(mimeTypeField());
+    }
+
+    private KeyValueRule mimeTypeField()
+    {
+        return field(regex(MIME_TYPE_REGEX), mimeType());
     }
 
     protected ObjectRule mimeType()
@@ -364,7 +369,11 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule bodyField()
     {
-        return field(bodyKey(), body());
+        return field(bodyKey(),
+                firstOf(
+                        whenChildIs(mimeTypeField(), body()),
+                        whenPresent("/mediaType", mimeType())))
+                                                               .then(BodyNode.class);
     }
 
     protected StringValueRule bodyKey()

@@ -17,14 +17,12 @@ package org.raml.utils;
 
 import com.google.common.collect.Lists;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.ArrayNode;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
@@ -52,8 +50,15 @@ public class NodeSelector
     @Nullable
     public static Node selectFrom(String path, Node from)
     {
-        final String[] tokens = path.split("/");
-        return selectFrom(Arrays.asList(tokens), from);
+        if (path.startsWith("/"))
+        {
+            return selectFrom(path.substring(1), from.getRootNode());
+        }
+        else
+        {
+            final String[] tokens = path.split("/");
+            return selectFrom(Arrays.asList(tokens), from);
+        }
     }
 
     @Nullable

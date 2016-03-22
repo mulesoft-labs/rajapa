@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.raml.RamlBuilder;
+import org.raml.grammar.rule.ErrorNodeFactory;
 import org.raml.impl.commons.RamlHeader;
 import org.raml.impl.commons.phase.AnnotationValidationPhase;
 import org.raml.impl.commons.phase.ExtensionsMerger;
@@ -28,6 +29,7 @@ import org.raml.impl.commons.phase.IncludeResolver;
 import org.raml.impl.commons.phase.ResourceTypesTraitsTransformer;
 import org.raml.impl.commons.phase.StringTemplateExpressionTransformer;
 import org.raml.impl.v10.grammar.Raml10Grammar;
+import org.raml.impl.v10.phase.MediaTypeInjection;
 import org.raml.impl.v10.phase.TypesTransformer;
 import org.raml.loader.ResourceLoader;
 import org.raml.nodes.ErrorNode;
@@ -45,6 +47,10 @@ public class Raml10Builder
     public Node build(String stringContent, RamlFragment fragment, ResourceLoader resourceLoader, String resourceLocation, int maxPhaseNumber) throws IOException
     {
         Node rootNode = RamlNodeParser.parse(stringContent);
+        if (rootNode == null)
+        {
+            return ErrorNodeFactory.createEmptyDocument();
+        }
         boolean applyExtension = false;
         if (fragment == RamlFragment.Extension && maxPhaseNumber > RamlBuilder.FIRST_PHASE)
         {
@@ -58,6 +64,11 @@ public class Raml10Builder
             {
                 Phase phase = phases.get(i);
                 rootNode = phase.apply(rootNode);
+                List<ErrorNode> errorNodes = rootNode.findDescendantsWith(ErrorNode.class);
+                if (!errorNodes.isEmpty())
+                {
+                    return rootNode;
+                }
             }
         }
         if (applyExtension && rootNode.findDescendantsWith(ErrorNode.class).isEmpty())
@@ -110,9 +121,7 @@ public class Raml10Builder
     private List<Phase> createPhases(ResourceLoader resourceLoader, String resourceLocation, RamlFragment fragment)
     {
         // The first phase expands the includes.
-        final TransformationPhase first = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation), new StringTemplateExpressionTransformer(),
-                new TypesTransformer());
-        // Overlays and extensions.
+        final TransformationPhase first = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation), new StringTemplateExpressionTransformer());
 
         // Runs Schema. Applies the Raml rules and changes each node for a more specific. Annotations Library TypeSystem
         final GrammarPhase second = new GrammarPhase(fragment.getRule(new Raml10Grammar()));
@@ -125,8 +134,11 @@ public class Raml10Builder
 
         final AnnotationValidationPhase fourth = new AnnotationValidationPhase();
 
+        final MediaTypeInjection fifth = new MediaTypeInjection();
+
         // Schema Types example validation
-        return Arrays.asList(first, second, third, fourth);
+
+        return Arrays.asList(first, second, third, fourth, fifth);
 
     }
 }

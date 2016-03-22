@@ -34,7 +34,7 @@ public abstract class BaseNode implements Node
 
     public BaseNode(BaseNode node)
     {
-        this.source = node.source;
+        this.source = node;
         for (Node child : node.children)
         {
             addChild(child.copy());

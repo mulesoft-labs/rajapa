@@ -20,6 +20,7 @@ import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
 public class AnyOfRule extends Rule
 {
 
-    private List<Rule> rules;
+    protected List<Rule> rules;
 
 
     public AnyOfRule(List<Rule> rules)
@@ -90,7 +91,7 @@ public class AnyOfRule extends Rule
                 }
             }
         }
-        return node;
+        return rules.isEmpty() ? node : rules.get(0).transform(node);
     }
 
     @Override

@@ -27,7 +27,6 @@ import org.raml.impl.commons.nodes.AnnotationNode;
 import org.raml.impl.commons.nodes.AnnotationTypeNode;
 import org.raml.impl.commons.nodes.ExtendsNode;
 import org.raml.impl.commons.nodes.PropertyNode;
-import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.impl.v10.nodes.types.factories.TypeNodeFactory;
 import org.raml.nodes.StringNodeImpl;
 
@@ -127,20 +126,21 @@ public class Raml10Grammar extends BaseRamlGrammar
     // Library
     public Rule library()
     {
-        return objectType("library")
-                                    .with(field(
-                                            stringType(),
-                                            objectType()
-                                                        .with(typesField())
-                                                        .with(schemasField())
-                                                        .with(resourceTypesField())
-                                                        .with(traitsField())
-                                                        .with(securitySchemesField())
-                                                        .with(annotationTypesField())
-                                                        .with(annotationField())
-                                                        .with(field(usesKey(), ref("library")))
-                                            )
-                                    );
+        return objectType("library").with(field(stringType(), libraryValue()));
+    }
+
+    public Rule libraryValue()
+    {
+        return objectType()
+                           .with(typesField())
+                           .with(schemasField())
+                           .with(resourceTypesField())
+                           .with(traitsField())
+                           .with(securitySchemesField())
+                           .with(annotationTypesField())
+                           .with(annotationField())
+                           .with(field(usesKey(), ref("library")))
+                           .with(field(string("usage"), stringType()));
     }
 
     protected KeyValueRule annotationTypesField()
@@ -302,5 +302,9 @@ public class Raml10Grammar extends BaseRamlGrammar
         return not(anyBuiltinType());
     }
 
+    protected KeyValueRule mediaTypeField()
+    {
+        return field(mediaTypeKey(), anyOf(stringType(), array(stringType())));
+    }
 
 }

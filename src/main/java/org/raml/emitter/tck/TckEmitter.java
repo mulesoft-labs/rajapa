@@ -17,20 +17,28 @@ package org.raml.emitter.tck;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
-import org.raml.nodes.*;
-import org.raml.nodes.KeyValueNodeImpl;
+import org.raml.impl.commons.nodes.AnnotationNode;
 import org.raml.impl.commons.nodes.MethodNode;
 import org.raml.impl.commons.nodes.ResourceNode;
+import org.raml.nodes.ArrayNode;
+import org.raml.nodes.KeyValueNode;
+import org.raml.nodes.KeyValueNodeImpl;
+import org.raml.nodes.Node;
+import org.raml.nodes.NullNode;
+import org.raml.nodes.ObjectNode;
+import org.raml.nodes.ReferenceNode;
+import org.raml.nodes.SimpleTypeNode;
 import org.raml.nodes.StringNodeImpl;
 import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.NodeTuple;
 import org.yaml.snakeyaml.nodes.Tag;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TckEmitter
 {
@@ -111,6 +119,7 @@ public class TckEmitter
     {
         List<KeyValueNode> resourceNodes = new ArrayList<>();
         List<KeyValueNode> methodNodes = new ArrayList<>();
+        List<KeyValueNode> annotationNodes = new ArrayList<>();
 
         startMap(dump, depth);
 
@@ -130,16 +139,41 @@ public class TckEmitter
                 methodNodes.add((MethodNode) node);
                 continue;
             }
+            if (node instanceof AnnotationNode)
+            {
+                annotationNodes.add((AnnotationNode) node);
+                continue;
+            }
 
             dumpKeyValueNode(dump, depth, (KeyValueNode) node);
 
         }
         dumpCustomArrayIfPresent(dump, depth + 1, methodNodes, "methods", "method");
         dumpCustomArrayIfPresent(dump, depth + 1, resourceNodes, "resources", "relativeUri");
+        dumpAnnotationsIfPresent(dump, depth + 1, annotationNodes);
 
 
         removeLastSeparator(dump);
         dump.append(addNewline(dump)).append(indent(depth)).append(END_MAP).append(COMMA_SEP);
+    }
+
+    private void dumpAnnotationsIfPresent(StringBuilder dump, int depth, List<KeyValueNode> annotationNodes)
+    {
+        if (!annotationNodes.isEmpty())
+        {
+            dump.append(addNewline(dump)).append(indent(depth)).append(sanitizeScalarValue("annotations"))
+                .append(COLON_SEP).append(START_MAP).append(NEWLINE).append(indent(depth + 1));
+
+            for (KeyValueNode node : annotationNodes)
+            {
+                String key = node.getKey().toString();
+                KeyValueNode copy = new KeyValueNodeImpl(new StringNodeImpl(key.substring(1, key.length() - 1)), node.getValue());
+                dumpKeyValueNode(dump, depth, copy);
+
+            }
+            removeLastSeparator(dump);
+            dump.append(addNewline(dump)).append(indent(depth)).append(END_MAP).append(COMMA_SEP);
+        }
     }
 
     private void dumpCustomArrayIfPresent(StringBuilder dump, int depth, List<KeyValueNode> keyValueNodes, String key, String innerKey)

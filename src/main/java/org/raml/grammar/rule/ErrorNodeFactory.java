@@ -98,4 +98,9 @@ public class ErrorNodeFactory
     {
         return new ErrorNode("Expected min length " + minLength);
     }
+
+    public static Node createMissingField(String selector)
+    {
+        return new ErrorNode("Missing field " + selector);
+    }
 }

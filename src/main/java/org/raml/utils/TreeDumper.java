@@ -18,6 +18,7 @@ package org.raml.utils;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.raml.nodes.BooleanNode;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.IntegerNode;
 import org.raml.nodes.Node;
@@ -84,6 +85,10 @@ public class TreeDumper
         if (node instanceof IntegerNode)
         {
             dump.append(": ").append(((IntegerNode) node).getValue());
+        }
+        if (node instanceof BooleanNode)
+        {
+            dump.append(": ").append(((BooleanNode) node).getValue());
         }
         else if (node instanceof ErrorNode)
         {
