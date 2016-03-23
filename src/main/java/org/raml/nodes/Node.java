@@ -101,7 +101,7 @@ public interface Node
     Node getSource();
 
     /**
-     * Returns the children that matches the desired selector
+     * Returns the child node that matches the desired selector or <code>null</code> if there is no match 
      */
     @Nullable
     Node get(String selector);
