@@ -103,4 +103,9 @@ public class ErrorNodeFactory
     {
         return new ErrorNode("Missing field " + selector);
     }
+
+    public static Node createMissingAnnotationType(String type)
+    {
+        return new ErrorNode("Missing Annotation Type '" + type + "'");
+    }
 }

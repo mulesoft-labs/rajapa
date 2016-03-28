@@ -17,6 +17,7 @@ package org.raml.impl.v10.grammar;
 
 import org.raml.grammar.rule.AnyOfRule;
 import org.raml.grammar.rule.KeyValueRule;
+import org.raml.grammar.rule.NodeReferenceFactory;
 import org.raml.grammar.rule.ObjectRule;
 import org.raml.grammar.rule.RegexValueRule;
 import org.raml.grammar.rule.Rule;
@@ -24,6 +25,7 @@ import org.raml.grammar.rule.StringValueRule;
 import org.raml.grammar.rule.TypeNodeReferenceRule;
 import org.raml.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.impl.commons.nodes.AnnotationNode;
+import org.raml.impl.commons.nodes.AnnotationReferenceNode;
 import org.raml.impl.commons.nodes.AnnotationTypeNode;
 import org.raml.impl.commons.nodes.ExtendsNode;
 import org.raml.impl.commons.nodes.PropertyNode;
@@ -32,6 +34,8 @@ import org.raml.nodes.StringNodeImpl;
 
 public class Raml10Grammar extends BaseRamlGrammar
 {
+
+    public static final String ANNOTATION_TYPES_KEY_NAME = "annotationTypes";
 
     public ObjectRule raml()
     {
@@ -84,18 +88,18 @@ public class Raml10Grammar extends BaseRamlGrammar
     // Common fields between rules
     protected KeyValueRule annotationField()
     {
-        return field(annotationKey(), any()).then(AnnotationNode.class);
+        return field(annotationKey().then(new NodeReferenceFactory(AnnotationReferenceNode.class)), any()).then(AnnotationNode.class);
     }
 
     protected RegexValueRule annotationKey()
     {
-        return regex("\\(.+\\)")
-                                .label("(Annotation)")
-                                .suggest("(<cursor>)")
-                                .description("Annotations to be applied to this API. " +
-                                             "Annotations are any property whose key begins with \"(\" and ends with \")\" " +
-                                             "and whose name (the part between the beginning and ending parentheses) " +
-                                             "is a declared annotation name..");
+        return regex("\\((.+)\\)")
+                                  .label("(Annotation)")
+                                  .suggest("(<cursor>)")
+                                  .description("Annotations to be applied to this API. " +
+                                               "Annotations are any property whose key begins with \"(\" and ends with \")\" " +
+                                               "and whose name (the part between the beginning and ending parentheses) " +
+                                               "is a declared annotation name..");
     }
 
 
@@ -150,7 +154,7 @@ public class Raml10Grammar extends BaseRamlGrammar
 
     protected StringValueRule annotationTypesKey()
     {
-        return string("annotationTypes").description("Declarations of annotation types for use by annotations.");
+        return string(ANNOTATION_TYPES_KEY_NAME).description("Declarations of annotation types for use by annotations.");
     }
 
     protected Rule annotationTypes()

@@ -15,9 +15,10 @@
  */
 package org.raml.impl.commons.nodes;
 
+import javax.annotation.Nullable;
+
 import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
-import org.raml.nodes.StringNode;
 
 public class AnnotationNode extends KeyValueNodeImpl
 {
@@ -33,14 +34,25 @@ public class AnnotationNode extends KeyValueNodeImpl
 
     public String getName()
     {
-        final StringNode key = (StringNode) getKey();
-        String value = key.getValue();
-        return value.substring(1, value.length() - 1);
+        return getKey().getRefName();
+    }
+
+    @Nullable
+    public AnnotationTypeNode getAnnotationTypeNode()
+    {
+        AnnotationReferenceNode key = getKey();
+        return key.getRefNode();
     }
 
     @Override
     public Node copy()
     {
         return new AnnotationNode(this);
+    }
+
+    @Override
+    public AnnotationReferenceNode getKey()
+    {
+        return (AnnotationReferenceNode) super.getKey();
     }
 }

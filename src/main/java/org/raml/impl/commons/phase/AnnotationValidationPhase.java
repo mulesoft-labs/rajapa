@@ -18,6 +18,7 @@ package org.raml.impl.commons.phase;
 
 import java.util.List;
 
+import org.raml.grammar.rule.ErrorNodeFactory;
 import org.raml.grammar.rule.Rule;
 import org.raml.impl.commons.nodes.AnnotationNode;
 import org.raml.impl.commons.nodes.AnnotationTypeNode;
@@ -31,26 +32,23 @@ public class AnnotationValidationPhase implements Phase
     @Override
     public Node apply(Node tree)
     {
-        // TODO fix the search of the annotation type when is in a libary
-        final List<AnnotationTypeNode> annotationType = tree.findDescendantsWith(AnnotationTypeNode.class);
         final List<AnnotationNode> annotations = tree.findDescendantsWith(AnnotationNode.class);
-
         for (AnnotationNode annotation : annotations)
         {
             String annotationName = annotation.getName();
-            for (AnnotationTypeNode annotationTypeNode : annotationType)
+            AnnotationTypeNode annotationTypeNode = annotation.getAnnotationTypeNode();
+            if (annotationTypeNode == null)
             {
-                if (annotationTypeNode.getName().equals(annotationName))
-                {
-                    TypeNode typeNode = annotationTypeNode.getTypeNode();
-                    Rule rule = typeNode.visit(new TypeToRuleVisitor());
-                    Node value = annotation.getValue();
-                    Node transform = rule.transform(value);
-                    value.replaceWith(transform);
-                }
+                annotation.replaceWith(ErrorNodeFactory.createMissingAnnotationType(annotationName));
+                continue;
             }
+            TypeNode typeNode = annotationTypeNode.getTypeNode();
+            Rule rule = typeNode.visit(new TypeToRuleVisitor());
+            Node value = annotation.getValue();
+            Node transform = rule.transform(value);
+            value.replaceWith(transform);
         }
-
         return tree;
     }
+
 }

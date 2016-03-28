@@ -94,7 +94,11 @@ public class RegexValueRule extends Rule
             final Matcher matcher = getMatcher((StringNode) node);
             final int i = matcher.groupCount();
             final List<String> groups = new ArrayList<>();
-            for (int j = 0; j < i; j++)
+            if (i > 0)
+            {
+                matcher.matches();
+            }
+            for (int j = 1; j <= i; j++)
             {
                 final String group = matcher.group(j);
                 groups.add(group);
