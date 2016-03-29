@@ -77,6 +77,12 @@ public class AnnotationReferenceNode extends AbstractReferenceNode implements St
     }
 
     @Override
+    public String getLiteralValue()
+    {
+        return getValue();
+    }
+
+    @Override
     public String toString()
     {
         return getValue();

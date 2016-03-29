@@ -17,18 +17,23 @@ package org.raml.grammar.rule;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.raml.nodes.ObjectNode;
-import org.raml.suggester.Suggestion;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang.StringUtils;
+import org.raml.nodes.KeyValueNode;
+import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
+import org.raml.nodes.NullNode;
+import org.raml.nodes.ObjectNode;
+import org.raml.nodes.StringNode;
+import org.raml.suggester.Suggestion;
 
 public class ObjectRule extends Rule
 {
@@ -102,7 +107,10 @@ public class ObjectRule extends Rule
                 final Rule matchingRule = findMatchingRule(allFieldRules, child);
                 if (matchingRule != null)
                 {
-                    requiredRules.remove(matchingRule);
+                    if (requiredNodeHasValue(child))
+                    {
+                        requiredRules.remove(matchingRule);
+                    }
                     final Node newChild = matchingRule.transform(child);
                     child.replaceWith(newChild);
                 }
@@ -130,6 +138,23 @@ public class ObjectRule extends Rule
 
             return result;
         }
+    }
+
+    private boolean requiredNodeHasValue(Node node)
+    {
+        if (node instanceof KeyValueNode)
+        {
+            Node valueNode = ((KeyValueNode) node).getValue();
+            if (valueNode instanceof NullNode)
+            {
+                return false;
+            }
+            if (valueNode instanceof StringNode)
+            {
+                return StringUtils.isNotBlank(((StringNode) valueNode).getValue());
+            }
+        }
+        return true;
     }
 
     protected Node getResult(Node node)

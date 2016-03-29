@@ -15,9 +15,12 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import javax.annotation.Nullable;
+
 import org.raml.nodes.BaseNode;
 import org.raml.nodes.Position;
 import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.ScalarNode;
 
 public abstract class SYBaseRamlNode extends BaseNode
 {
@@ -50,6 +53,16 @@ public abstract class SYBaseRamlNode extends BaseNode
     public Position getEndPosition()
     {
         return new SYPosition(yamlNode.getEndMark());
+    }
+
+    @Nullable
+    public String getLiteralValue()
+    {
+        if (yamlNode instanceof ScalarNode)
+        {
+            return ((ScalarNode) getYamlNode()).getValue();
+        }
+        return null;
     }
 
 }

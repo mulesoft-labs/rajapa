@@ -410,7 +410,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule securedByField()
     {
-        return field(securedByKey(), array(anyOf(stringType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class)), any(), nullValue())));
+        return field(securedByKey(), array(anyOf(nullValue(), stringType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class)), any())));
     }
 
     protected KeyValueRule isField()

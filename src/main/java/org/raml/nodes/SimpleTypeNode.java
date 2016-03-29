@@ -18,5 +18,18 @@ package org.raml.nodes;
 public interface SimpleTypeNode<T> extends Node
 {
 
+    /**
+     * @return the value of the node
+     */
     T getValue();
+
+    /**
+     * in some cases the value of the node is different than the literal one
+     * e.g:  (literal value) -> (value)
+     *       001 -> 1
+     *       0xF -> 15
+     * @return the literal value of the node
+     *
+     */
+    String getLiteralValue();
 }

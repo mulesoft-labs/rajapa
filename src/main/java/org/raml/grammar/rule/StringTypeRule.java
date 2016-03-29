@@ -17,7 +17,9 @@ package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
+import org.raml.nodes.SimpleTypeNode;
 import org.raml.nodes.StringNode;
+import org.raml.nodes.StringNodeImpl;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
@@ -36,9 +38,8 @@ public class StringTypeRule extends AbstractTypeRule
     @Override
     public boolean matches(@Nonnull Node node)
     {
-        return node instanceof StringNode;
+        return node instanceof SimpleTypeNode;
     }
-
 
     @Override
     public String getDescription()
@@ -51,5 +52,16 @@ public class StringTypeRule extends AbstractTypeRule
     NodeType getType()
     {
         return NodeType.String;
+    }
+
+    @Override
+    public Node transform(@Nonnull Node node)
+    {
+        Node transform = super.transform(node);
+        if (transform == node && !(node instanceof StringNode))
+        {
+            transform = new StringNodeImpl(((SimpleTypeNode) node).getLiteralValue());
+        }
+        return transform;
     }
 }

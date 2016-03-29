@@ -36,6 +36,10 @@ public class SYIntegerNode extends SYBaseRamlNode implements IntegerNode
     public Integer getValue()
     {
         final String value = ((ScalarNode) getYamlNode()).getValue();
+        if (value != null && (value.startsWith("0x") || value.startsWith("0X")))
+        {
+            return Integer.valueOf(value.substring(2), 16);
+        }
         return Integer.valueOf(value);
     }
 

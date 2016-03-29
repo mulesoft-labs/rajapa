@@ -1,4 +1,5 @@
-RamlDocumentNode (Start: 11 , End: 18, Source: SYObjectNode)
-    KeyValueNodeImpl (Start: 11 , End: 17)
+RamlDocumentNode (Start: 11 , End: 21, Source: SYObjectNode)
+    ErrorNode: "Missing required field title" (Start: 11 , End: 21, Source: SYObjectNode)
+    KeyValueNodeImpl (Start: 11 , End: 20)
         SYStringNode: "title" (Start: 11 , End: 16)
-        ErrorNode: "Invalid type Null, expected String" (Start: 17 , End: 17, Source: SYNullNode)
+        SYStringNode: "" (Start: 18 , End: 20)

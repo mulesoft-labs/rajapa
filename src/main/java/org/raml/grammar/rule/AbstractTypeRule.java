@@ -31,7 +31,14 @@ public abstract class AbstractTypeRule extends Rule
         {
             if (getFactory() != null)
             {
-                return getFactory().create(((StringNode) node).getValue());
+                if (node instanceof StringNode)
+                {
+                    return getFactory().create(((StringNode) node).getValue());
+                }
+                else
+                {
+                    return getFactory().create();
+                }
             }
             else
             {

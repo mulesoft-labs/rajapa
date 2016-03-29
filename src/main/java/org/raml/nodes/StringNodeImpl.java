@@ -38,6 +38,12 @@ public class StringNodeImpl extends AbstractRamlNode implements StringNode
     }
 
     @Override
+    public String getLiteralValue()
+    {
+        return value;
+    }
+
+    @Override
     public Node copy()
     {
         return new StringNodeImpl(this);
