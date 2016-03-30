@@ -21,7 +21,7 @@ import org.raml.nodes.ObjectNode;
 import org.raml.nodes.AbstractRamlNode;
 import org.raml.utils.NodeSelector;
 
-public class NumericTypeNode extends AbstractRamlNode implements ObjectNode
+public class NumericTypeNode extends AbstractRamlNode implements TypeNode, ObjectNode
 {
 
     public NumericTypeNode()
@@ -63,5 +63,11 @@ public class NumericTypeNode extends AbstractRamlNode implements ObjectNode
     public NodeType getType()
     {
         return NodeType.Object;
+    }
+
+    @Override
+    public <T> T visit(TypeNodeVisitor<T> visitor)
+    {
+        return visitor.visitNumber(this);
     }
 }

@@ -24,4 +24,6 @@ public interface TypeNodeVisitor<T>
     T visitObject(ObjectTypeNode objectTypeNode);
 
     T visitBoolean(BooleanTypeNode booleanTypeNode);
+
+    T visitNumber(NumericTypeNode numericTypeNode);
 }

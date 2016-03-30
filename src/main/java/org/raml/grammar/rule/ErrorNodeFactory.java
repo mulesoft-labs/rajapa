@@ -99,6 +99,31 @@ public class ErrorNodeFactory
         return new ErrorNode("Expected min length " + minLength);
     }
 
+    public static Node createInvalidMinimumValue(Number minimumValue)
+    {
+        return new ErrorNode("Expected minimum value " + minimumValue);
+    }
+
+    public static Node createInvalidDivisorValue()
+    {
+        return new ErrorNode("Can not divide by 0");
+    }
+
+    public static Node createInvalidMultipleOfValue(Number multipleOfValue)
+    {
+        return new ErrorNode("Expected a multiple of " + multipleOfValue);
+    }
+
+    public static Node createInvalidMaximumValue(Number maximumValue)
+    {
+        return new ErrorNode("Expected maximum value " + maximumValue);
+    }
+
+    public static Node createInvalidRangeValue(Number minimumValue, Number maximumValue)
+    {
+        return new ErrorNode("Expected number between " + minimumValue + " and " + maximumValue);
+    }
+
     public static Node createMissingField(String selector)
     {
         return new ErrorNode("Missing field " + selector);

@@ -21,20 +21,28 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.raml.grammar.rule.AllOfRule;
 import org.raml.grammar.rule.BooleanTypeRule;
+import org.raml.grammar.rule.DivisorValueRule;
+import org.raml.grammar.rule.FloatTypeRule;
+import org.raml.grammar.rule.IntegerTypeRule;
 import org.raml.grammar.rule.KeyValueRule;
 import org.raml.grammar.rule.MaxLengthRule;
+import org.raml.grammar.rule.MaximumValueRule;
 import org.raml.grammar.rule.MinLengthRule;
+import org.raml.grammar.rule.MinimumValueRule;
 import org.raml.grammar.rule.ObjectRule;
+import org.raml.grammar.rule.RangeValueRule;
 import org.raml.grammar.rule.RegexValueRule;
 import org.raml.grammar.rule.Rule;
 import org.raml.grammar.rule.StringTypeRule;
 import org.raml.grammar.rule.StringValueRule;
 import org.raml.impl.commons.nodes.PropertyNode;
 import org.raml.impl.v10.nodes.types.builtin.BooleanTypeNode;
+import org.raml.impl.v10.nodes.types.builtin.NumericTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.impl.v10.nodes.types.builtin.TypeNodeVisitor;
+import org.raml.nodes.IntegerNode;
 
 
 public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
@@ -84,10 +92,35 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
         return objectRule;
     }
 
+
     @Override
     public Rule visitBoolean(BooleanTypeNode booleanTypeNode)
     {
         return new BooleanTypeRule();
+    }
+
+    @Override
+    public Rule visitNumber(NumericTypeNode numericTypeNode)
+    {
+        final AllOfRule typeRule = new AllOfRule();
+        if (numericTypeNode.getMinimum() != null && numericTypeNode.getMaximum() != null)
+        {
+            typeRule.and(new RangeValueRule(numericTypeNode.getMinimum(), numericTypeNode.getMaximum()));
+        }
+        else if (numericTypeNode.getMinimum() != null)
+        {
+            typeRule.and(new MinimumValueRule(numericTypeNode.getMinimum()));
+        }
+        else if (numericTypeNode.getMaximum() != null)
+        {
+            typeRule.and(new MaximumValueRule(numericTypeNode.getMaximum()));
+        }
+
+        if (numericTypeNode.getMultiple() != null)
+        {
+            typeRule.and(new DivisorValueRule(numericTypeNode.getMultiple()));
+        }
+        return typeRule;
     }
 
 
