@@ -15,6 +15,8 @@
  */
 package org.raml.impl.v10.nodes.types.builtin;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +27,12 @@ import org.raml.nodes.AbstractRamlNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
+import org.raml.nodes.snakeyaml.InheritedPropertiesInjectedNode;
 
 public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {
+
+    private List<InheritedPropertiesInjectedNode> inheritedProperties = Lists.newArrayList();
 
     public ObjectTypeNode()
     {
@@ -60,6 +65,21 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
     public NodeType getType()
     {
         return NodeType.Object;
+    }
+
+    public void addInheritedProperties(InheritedPropertiesInjectedNode node)
+    {
+        this.inheritedProperties.add(node);
+    }
+
+    public void setInheritedProperties(List<InheritedPropertiesInjectedNode> inheritedProperties)
+    {
+        this.inheritedProperties = inheritedProperties;
+    }
+
+    public List<InheritedPropertiesInjectedNode> getInheritedProperties()
+    {
+        return this.inheritedProperties;
     }
 
     @Override

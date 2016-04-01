@@ -25,6 +25,12 @@ public abstract class AbstractPosition implements Position
     }
 
     @Override
+    public Position leftShift(int offset)
+    {
+        return new DefaultPosition(getIndex() - offset, getLine(), getColumn() - offset, getResource());
+    }
+
+    @Override
     public String toString()
     {
         return String.format("[line=%d, col=%d]", getLine() + 1, getColumn() + 1);
