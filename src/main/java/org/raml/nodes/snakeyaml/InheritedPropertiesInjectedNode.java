@@ -15,54 +15,50 @@
  */
 package org.raml.nodes.snakeyaml;
 
-import org.apache.commons.lang.StringUtils;
-import org.raml.nodes.ArrayNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.yaml.snakeyaml.nodes.SequenceNode;
-
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
-public class SYArrayNode extends SYBaseRamlNode implements ArrayNode
+import org.raml.nodes.BaseNode;
+import org.raml.nodes.DefaultPosition;
+import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
+import org.raml.nodes.ObjectNode;
+import org.raml.nodes.Position;
+
+public class InheritedPropertiesInjectedNode extends BaseNode implements ObjectNode
 {
-    public SYArrayNode(SYArrayNode node)
+
+    public InheritedPropertiesInjectedNode()
     {
-        super(node);
     }
 
-    public SYArrayNode(SequenceNode sequenceNode)
+    public InheritedPropertiesInjectedNode(InheritedPropertiesInjectedNode inheritedPropertiesInjectedNode)
     {
-        super(sequenceNode);
+        super(inheritedPropertiesInjectedNode);
     }
 
     @Override
-    public String toString()
+    public Position getStartPosition()
     {
+        return DefaultPosition.emptyPosition();
+    }
 
-        final List<Node> children = getChildren();
-        final String join = StringUtils.join(children, ",");
-        return "Array[" + join + "]";
+    @Override
+    public Position getEndPosition()
+    {
+        return DefaultPosition.emptyPosition();
     }
 
     @Nonnull
     @Override
     public Node copy()
     {
-        return new SYArrayNode(this);
+        return new InheritedPropertiesInjectedNode(this);
     }
 
     @Override
     public NodeType getType()
     {
-        return NodeType.Array;
+        return NodeType.Object;
     }
 
-
-    @Override
-    public boolean isJsonStyle()
-    {
-        return !((SequenceNode) getYamlNode()).getFlowStyle();
-    }
 }

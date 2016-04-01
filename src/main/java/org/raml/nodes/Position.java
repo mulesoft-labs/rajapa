@@ -29,4 +29,6 @@ public interface Position
     String getResource();
 
     Position rightShift(int offset);
+
+    Position leftShift(int offset);
 }

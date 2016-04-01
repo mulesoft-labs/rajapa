@@ -15,18 +15,25 @@
  */
 package org.raml.impl.v10.phase;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.impl.commons.nodes.PropertyNode;
+import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.KeyValueNode;
+import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
+import org.raml.nodes.StringNodeImpl;
+import org.raml.nodes.snakeyaml.InheritedPropertiesInjectedNode;
 import org.raml.nodes.snakeyaml.SYArrayNode;
 import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.raml.nodes.snakeyaml.SYStringNode;
-import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
-import org.raml.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.phase.Transformer;
 import org.raml.utils.NodeUtils;
 
@@ -45,76 +52,108 @@ public class TypesTransformer implements Transformer
         SYObjectNode typesRoot = getTypesRoot(node);
         if (node instanceof UnionTypeNode)
         {
-            Node properties = node.get("properties");
-            if (properties != null)
-            {
-                final SYStringNode typeNode = (SYStringNode) node.get("type");
-                if (typeNode != null)
-                {
-                    for (String type : typeNode.getValue().split("\\|"))
-                    {
-                        List<PropertyNode> unionProperties = getTypeProperties(getType(typesRoot, StringUtils.trim(type)));
-                        for (PropertyNode property : unionProperties)
-                        {
-                            Node existingProperty = properties.get(property.getName());
-                            if (existingProperty != null)
-                            {
-                                Node errorNode = new ErrorNode("property definition {" + property + "} overrides existing property: {" + existingProperty.getParent() + "}");
-                                errorNode.setSource(property);
-                                properties.addChild(errorNode);
-                            }
-                            else
-                            {
-                                properties.addChild(property);
-                            }
-                        }
-                    }
-                }
-            }
+            transformUnionTypeProperties(node, typesRoot);
         }
         else if (node instanceof ObjectTypeNode && node.get("type") instanceof SYArrayNode)
         {
-            Node properties = node.get("properties");
-            final SYArrayNode typesNode = (SYArrayNode) node.get("type");
-            if (typesNode != null)
+            transformObjectTypeProperties(node, typesRoot);
+        }
+        return node;
+    }
+
+    private void transformObjectTypeProperties(Node node, SYObjectNode typesRoot)
+    {
+        Node properties = node.get("properties");
+        final SYArrayNode typesNode = (SYArrayNode) node.get("type");
+        if (typesNode != null)
+        {
+            Set<List<String>> typeCombinations = getAllPossibleTypes(typesNode);
+            for (List<String> combination : typeCombinations)
             {
-                for (Node type : typesNode.getChildren())
+                Node originalProperties = properties != null ? properties.copy() : null;
+                for (String objectType : combination)
                 {
-                    ObjectTypeNode typeNode = getType(typesRoot, StringUtils.trim(((SYStringNode) type).getValue()));
-                    if (properties == null)
-                    {
-                        SYObjectNode newProperties = (SYObjectNode) typeNode.get("properties");
-                        if (newProperties != null)
-                        {
-                            properties = newProperties.copy();
-                            node.addChild(properties);
-                        }
-                    }
-                    else
-                    {
-                        List<PropertyNode> unionProperties = getTypeProperties(typeNode);
-                        if (unionProperties != null)
-                        {
-                            for (Node property : unionProperties)
-                            {
-                                Node existingProperty = properties.get(((KeyValueNode) property).getKey().toString());
-                                if (existingProperty != null)
-                                {
-                                    Node errorNode = new ErrorNode("property definition {" + property + "} overrides existing property: {" + existingProperty.getParent() + "}");
-                                    errorNode.setSource(property);
-                                    properties.addChild(errorNode);
-                                }
-                                else
-                                {
-                                    properties.addChild(property);
-                                }
-                            }
-                        }
-                    }
+                    originalProperties = processType(typesRoot, originalProperties, objectType);
+                }
+                injectProperties((ObjectTypeNode) node, new StringNodeImpl(combination.toString()), (SYObjectNode) originalProperties);
+            }
+        }
+    }
+
+    private Node processType(SYObjectNode typesRoot, Node originalProperties, String objectType)
+    {
+        ObjectTypeNode typeNode = getType(typesRoot, objectType);
+        if (originalProperties == null)
+        {
+            SYObjectNode newProperties = (SYObjectNode) typeNode.get("properties");
+            if (newProperties != null)
+            {
+                originalProperties = newProperties.copy();
+            }
+        }
+        else
+        {
+            List<PropertyNode> unionProperties = getTypeProperties(typeNode);
+            addProperties(originalProperties, unionProperties);
+        }
+        return originalProperties;
+    }
+
+    private void transformUnionTypeProperties(Node node, SYObjectNode typesRoot)
+    {
+        Node properties = node.get("properties");
+        if (properties != null)
+        {
+            final SYStringNode typeNode = (SYStringNode) node.get("type");
+            if (typeNode != null)
+            {
+                for (String type : typeNode.getValue().split("\\|"))
+                {
+                    List<PropertyNode> unionProperties = getTypeProperties(getType(typesRoot, StringUtils.trim(type)));
+                    addProperties(properties, unionProperties);
                 }
             }
         }
-        return node;
+    }
+
+    private void addProperties(Node properties, List<PropertyNode> unionProperties)
+    {
+        if (unionProperties != null)
+        {
+            for (PropertyNode property : unionProperties)
+            {
+                Node existingProperty = properties.get(property.getName());
+                if (existingProperty != null)
+                {
+                    Node errorNode = new ErrorNode("property definition {" + property + "} overrides existing property: {" + existingProperty.getParent() + "}");
+                    errorNode.setSource(property);
+                    properties.addChild(errorNode);
+                }
+                else
+                {
+                    properties.addChild(property);
+                }
+            }
+        }
+    }
+
+    private Set<List<String>> getAllPossibleTypes(SYArrayNode typesNode)
+    {
+        List<Set<String>> types = Lists.newArrayList();
+        for (Node typeNode : typesNode.getChildren())
+        {
+            String typeElement = ((SYStringNode) typeNode).getValue();
+            Set<String> splitTypes = Sets.newHashSet();
+            for (String type : typeElement.split("\\|"))
+            {
+                if (StringUtils.isNotBlank(StringUtils.trimToNull(type)))
+                {
+                    splitTypes.add(StringUtils.trim(type));
+                }
+            }
+            types.add(splitTypes);
+        }
+        return Sets.cartesianProduct(types);
     }
 
     private SYObjectNode getTypesRoot(Node node)
@@ -131,5 +170,21 @@ public class TypesTransformer implements Transformer
     private ObjectTypeNode getType(SYObjectNode node, String typeName)
     {
         return (ObjectTypeNode) node.get(typeName);
+    }
+
+    private void injectProperties(ObjectTypeNode node, StringNodeImpl key, SYObjectNode properties)
+    {
+        InheritedPropertiesInjectedNode injected = new InheritedPropertiesInjectedNode();
+        KeyValueNode keyValue = new KeyValueNodeImpl(key, properties);
+        setKeyPosition(key, properties, injected, keyValue);
+        // node.addChild(injected);
+        node.addInheritedProperties(injected);
+    }
+
+    private void setKeyPosition(StringNodeImpl key, SYObjectNode properties, Node injected, KeyValueNode keyValue)
+    {
+        key.setEndPosition(properties.getStartPosition());
+        key.setStartPosition(properties.getStartPosition().leftShift(key.getValue().length()));
+        injected.addChild(keyValue);
     }
 }

@@ -15,9 +15,13 @@
  */
 package org.raml.utils;
 
+import com.google.common.collect.Lists;
+
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.nodes.BooleanNode;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.IntegerNode;
@@ -29,11 +33,11 @@ import org.raml.nodes.StringNode;
 public class TreeDumper
 {
 
-    public static final int TAB_SPACES = 4;
-    private StringBuilder dump;
+    private static final int TAB_SPACES = 4;
+    protected StringBuilder dump;
     private int indent = 0;
 
-    public TreeDumper(StringBuilder dump)
+    private TreeDumper(StringBuilder dump)
     {
         this.dump = dump;
     }
@@ -74,7 +78,7 @@ public class TreeDumper
         return dump.toString();
     }
 
-    private void dumpNode(Node node)
+    protected void dumpNode(Node node)
     {
 
         dump.append(node.getClass().getSimpleName());
@@ -114,17 +118,17 @@ public class TreeDumper
         }
     }
 
-    private void dedent()
+    protected void dedent()
     {
         indent--;
     }
 
-    private void indent()
+    protected void indent()
     {
         indent++;
     }
 
-    private void printIndent()
+    protected void printIndent()
     {
         dump.append(StringUtils.repeat(" ", indent * TAB_SPACES));
     }
