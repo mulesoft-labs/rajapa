@@ -52,25 +52,14 @@ public class MinLengthRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        if (matches(node))
-        {
-            if (getFactory() != null)
-            {
-                return getFactory().create(((StringNode) node).getValue());
-            }
-            else
-            {
-                return node;
-            }
-        }
-        else
+        if (!matches(node))
         {
             return ErrorNodeFactory.createInvalidMinLength(minLength);
         }
+        return createNodeUsingFactory(node, ((StringNode) node).getValue());
     }
-
 
     @Override
     public String getDescription()

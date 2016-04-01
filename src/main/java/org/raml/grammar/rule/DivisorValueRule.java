@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import org.raml.nodes.FloatingNode;
 import org.raml.nodes.IntegerNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.SimpleTypeNode;
 import org.raml.suggester.Suggestion;
 
 public class DivisorValueRule extends Rule
@@ -55,25 +56,11 @@ public class DivisorValueRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
         if (matches(node))
         {
-            if (getFactory() != null)
-            {
-                if (node instanceof IntegerNode)
-                {
-                    return getFactory().create(((IntegerNode) node).getValue());
-                }
-                else
-                {
-                    return getFactory().create(((FloatingNode) node).getValue());
-                }
-            }
-            else
-            {
-                return node;
-            }
+            return createNodeUsingFactory(node, ((SimpleTypeNode) node).getValue());
         }
         else
         {
@@ -85,7 +72,6 @@ public class DivisorValueRule extends Rule
             return ErrorNodeFactory.createInvalidMultipleOfValue(divisorValue);
         }
     }
-
 
     @Override
     public String getDescription()

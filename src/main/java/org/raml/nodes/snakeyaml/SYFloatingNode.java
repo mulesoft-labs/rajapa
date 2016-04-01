@@ -22,6 +22,8 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 
 import java.math.BigDecimal;
 
+import javax.annotation.Nonnull;
+
 public class SYFloatingNode extends SYBaseRamlNode implements FloatingNode
 {
     public SYFloatingNode(SYFloatingNode node)
@@ -47,6 +49,7 @@ public class SYFloatingNode extends SYBaseRamlNode implements FloatingNode
         return String.valueOf(getValue());
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

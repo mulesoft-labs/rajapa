@@ -15,56 +15,40 @@
  */
 package org.raml.impl.commons.nodes;
 
-import org.raml.impl.v10.grammar.Raml10Grammar;
+import javax.annotation.Nonnull;
+
 import org.raml.nodes.Node;
-import org.raml.nodes.AbstractReferenceNode;
-import org.raml.utils.NodeSelector;
+import org.raml.nodes.StringNode;
 
-import javax.annotation.Nullable;
-
-public class ResourceTypeRefNode extends AbstractReferenceNode
+public class ResourceTypeRefNode extends BaseResourceTypeRefNode implements StringNode
 {
-
-    private String name;
 
     public ResourceTypeRefNode(String name)
     {
-        this.name = name;
+        super(name);
     }
 
     public ResourceTypeRefNode(ResourceTypeRefNode node)
     {
         super(node);
-        this.name = node.name;
     }
 
-    @Override
-    public String getRefName()
-    {
-        return name;
-    }
-
-    @Override
-    @Nullable
-    public ResourceTypeNode getRefNode()
-    {
-        // We add the .. as the node selector selects the value and we want the key value pair
-        final Node resolve = NodeSelector.selectFrom(Raml10Grammar.RESOURCE_TYPES_KEY_NAME + "/*/" + getRefName() + "/..", getRelativeNode());
-        if (resolve instanceof ResourceTypeNode)
-        {
-            return (ResourceTypeNode) resolve;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
+    @Nonnull
     @Override
     public Node copy()
     {
         return new ResourceTypeRefNode(this);
     }
 
+    @Override
+    public String getValue()
+    {
+        return getRefName();
+    }
 
+    @Override
+    public String getLiteralValue()
+    {
+        return getValue();
+    }
 }

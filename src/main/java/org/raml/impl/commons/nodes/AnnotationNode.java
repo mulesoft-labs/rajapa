@@ -15,6 +15,7 @@
  */
 package org.raml.impl.commons.nodes;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.raml.nodes.KeyValueNodeImpl;
@@ -44,6 +45,7 @@ public class AnnotationNode extends KeyValueNodeImpl
         return key.getRefNode();
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

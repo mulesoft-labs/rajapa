@@ -15,14 +15,13 @@
  */
 package org.raml.grammar.rule;
 
+import java.io.IOException;
+import java.util.Collection;
+
 import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
-import org.raml.nodes.StringNode;
-
-import java.io.IOException;
-import java.util.Collection;
 
 public class ErrorNodeFactory
 {
@@ -32,9 +31,14 @@ public class ErrorNodeFactory
         return new ErrorNode("Unexpected key '" + key + "'. Options are : " + StringUtils.join(options, " or "));
     }
 
-    public static ErrorNode createInvalidElement(Node child)
+    public static ErrorNode createInvalidArrayElement(Node child)
     {
         return new ErrorNode("Invalid array element " + child + ".");
+    }
+
+    public static ErrorNode createInvalidNode(Node child)
+    {
+        return new ErrorNode("Invalid element " + child + ".");
     }
 
     public static ErrorNode createInvalidRootElement(Node rootNode, String expected)
@@ -132,5 +136,10 @@ public class ErrorNodeFactory
     public static Node createMissingAnnotationType(String type)
     {
         return new ErrorNode("Missing Annotation Type '" + type + "'");
+    }
+
+    public static Node createInvalidValue(Node node, String expected)
+    {
+        return new ErrorNode("Invalid value '" + node + "'. Expected " + expected);
     }
 }

@@ -17,6 +17,7 @@ package org.raml.grammar.rule;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.raml.nodes.StringNode;
 import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.Suggestion;
@@ -58,16 +59,21 @@ public class StringValueRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        if (getFactory() != null)
+        if (!(node instanceof StringNode))
         {
-            return getFactory().create(((StringNode) node).getValue());
+            ErrorNodeFactory.createInvalidType(node, NodeType.String);
         }
-        else
+        if (!matches(node))
         {
-            return node;
+            ErrorNodeFactory.createInvalidValue(node, value);
         }
+        if (node instanceof StringNode)
+        {
+            return createNodeUsingFactory(node, ((StringNode) node).getValue());
+        }
+        return createNodeUsingFactory(node);
     }
 
     @Override

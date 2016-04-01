@@ -20,6 +20,7 @@ import org.raml.nodes.Node;
 import org.raml.nodes.AbstractReferenceNode;
 import org.raml.utils.NodeSelector;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class LibraryRefNode extends AbstractReferenceNode
@@ -51,6 +52,7 @@ public class LibraryRefNode extends AbstractReferenceNode
         return NodeSelector.selectFrom(Raml10Grammar.USES_KEY_NAME + "/" + name, getRelativeNode());
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

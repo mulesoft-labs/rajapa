@@ -25,12 +25,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ArrayValueRule extends Rule
+public class ArrayRule extends Rule
 {
 
     private Rule of;
 
-    public ArrayValueRule(Rule of)
+    public ArrayRule(Rule of)
     {
         this.of = of;
     }
@@ -83,7 +83,7 @@ public class ArrayValueRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
         if (!matches(node))
         {
@@ -91,22 +91,18 @@ public class ArrayValueRule extends Rule
         }
         else
         {
-            Node result = node;
-            if (getFactory() != null)
-            {
-                result = getFactory().create();
-            }
+            Node result = createNodeUsingFactory(node);
             final List<Node> children = node.getChildren();
             for (Node child : children)
             {
                 if (of.matches(child))
                 {
-                    final Node transform = of.transform(child);
+                    final Node transform = of.apply(child);
                     child.replaceWith(transform);
                 }
                 else
                 {
-                    child.replaceWith(ErrorNodeFactory.createInvalidElement(child));
+                    child.replaceWith(ErrorNodeFactory.createInvalidArrayElement(child));
                 }
             }
             return result;

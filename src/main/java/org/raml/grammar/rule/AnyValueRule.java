@@ -39,9 +39,9 @@ public class AnyValueRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        return node;
+        return createNodeUsingFactory(node);
     }
 
     @Override

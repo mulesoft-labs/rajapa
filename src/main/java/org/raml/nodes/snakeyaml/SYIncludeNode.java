@@ -16,12 +16,14 @@
 package org.raml.nodes.snakeyaml;
 
 import com.google.common.collect.Lists;
+
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SYIncludeNode extends SYStringNode
 {
@@ -55,6 +57,7 @@ public class SYIncludeNode extends SYStringNode
         return getValue();
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

@@ -17,13 +17,15 @@ package org.raml.impl.commons.nodes;
 
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.raml.nodes.Node;
 import org.raml.nodes.ParametrizedReferenceNode;
 
-public class ParametrizedTraitRefNode extends TraitRefNode implements ParametrizedReferenceNode
+public class ParametrizedTraitRefNode extends BaseTraitRefNode implements ParametrizedReferenceNode
 {
 
-    public ParametrizedTraitRefNode(TraitRefNode node)
+    public ParametrizedTraitRefNode(ParametrizedTraitRefNode node)
     {
         super(node);
     }
@@ -34,6 +36,7 @@ public class ParametrizedTraitRefNode extends TraitRefNode implements Parametriz
         super(name);
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

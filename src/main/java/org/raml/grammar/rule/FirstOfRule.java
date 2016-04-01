@@ -26,7 +26,6 @@ import org.raml.suggester.Suggestion;
 public class FirstOfRule extends AnyOfRule
 {
 
-
     public FirstOfRule(List<Rule> rules)
     {
         super(rules);
@@ -44,26 +43,6 @@ public class FirstOfRule extends AnyOfRule
             }
         }
         return Collections.emptyList();
-    }
-
-    @Override
-    public Node transform(@Nonnull Node node)
-    {
-        if (getFactory() != null)
-        {
-            return getFactory().create();
-        }
-        else
-        {
-            for (Rule rule : rules)
-            {
-                if (rule.matches(node))
-                {
-                    return rule.transform(node);
-                }
-            }
-        }
-        return rules.isEmpty() ? node : rules.get(0).transform(node);
     }
 
 }

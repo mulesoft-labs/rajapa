@@ -10,8 +10,10 @@ RamlDocumentNode (Start: 11 , End: 144, Source: SYObjectNode)
                 SYObjectNode (Start: 48 , End: 75)
                     BodyNode (Start: 48 , End: 75, Source: KeyValueNodeImpl)
                         SYStringNode: "body" (Start: 48 , End: 52)
-                        SYObjectNode (Start: 60 , End: 75)
-                            ErrorNode: "Unexpected key 'example'. Options are : "[A-z-_]+\/[A-z-_]+"" (Start: 60 , End: 74, Source: KeyValueNodeImpl)
+                        ErrorNode: "Invalid element {
+example: bores
+}." (Start: 60 , End: 75, Source: SYObjectNode)
+                            KeyValueNodeImpl (Start: 60 , End: 74)
                                 SYStringNode: "example" (Start: 60 , End: 67)
                                 SYStringNode: "bores" (Start: 69 , End: 74)
     ResourceNode (Start: 75 , End: 144, Source: KeyValueNodeImpl)

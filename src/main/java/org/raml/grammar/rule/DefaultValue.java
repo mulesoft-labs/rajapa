@@ -13,35 +13,11 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.nodes;
+package org.raml.grammar.rule;
 
-import javax.annotation.Nonnull;
+import org.raml.nodes.Node;
 
-import org.raml.nodes.KeyValueNodeImpl;
-import org.raml.nodes.StringNode;
-
-public class ResourceTypeNode extends KeyValueNodeImpl
+public interface DefaultValue
 {
-
-    public ResourceTypeNode()
-    {
-    }
-
-    public ResourceTypeNode(ResourceTypeNode node)
-    {
-        super(node);
-    }
-
-    public String getName()
-    {
-        final StringNode key = (StringNode) getKey();
-        return key.getValue();
-    }
-
-    @Nonnull
-    @Override
-    public ResourceTypeNode copy()
-    {
-        return new ResourceTypeNode(this);
-    }
+    Node getDefaultValue(Node parent);
 }

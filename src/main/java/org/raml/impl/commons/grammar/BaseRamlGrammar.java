@@ -110,11 +110,17 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     public Rule resourceType()
     {
+        // TODO fine grained matching supporting parameters
         return objectType()
-                           .with(field(anyResourceTypeMethod(), methodValue()).then(MethodNode.class))
-                           .with(resourceTypeReferenceField())
-                           .with(isField())
-                           .with(field(stringType(), any())); // match anything else
+                           .with(field(regex("[^/].*"), any())); // match anything but nested resources
+    }
+
+    public Rule resourceTypeParamsResolved()
+    {
+        return objectType()
+                           .merge(baseResourceValue())
+                           .with(usageField())
+                           .with(field(anyResourceTypeMethod(), methodValue()).then(MethodNode.class));
     }
 
     // Documentation
@@ -206,7 +212,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     protected Rule resourceTypes()
     {
         // TODO resourceRule().with(parameterKey(), any())
-        return objectType().with(field(stringType(), any()).then(ResourceTypeNode.class));
+        return objectType().with(field(stringType(), resourceType()).then(ResourceTypeNode.class));
     }
 
 
@@ -214,16 +220,22 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     protected ObjectRule resourceValue()
     {
         return objectType("resourceValue")
-                                          .with(displayNameField())
-                                          .with(descriptionField())
+                                          .merge(baseResourceValue())
                                           .with(field(anyMethod(), methodValue()).then(MethodNode.class))
-                                          .with(isField().description("A list of the traits to apply to all methods declared (implicitly or explicitly) for this resource. "))
-                                          .with(resourceTypeReferenceField())
-                                          .with(securedByField().description("The security schemes that apply to all methods declared (implicitly or explicitly) for this resource."))
-                                          .with(field(uriParametersKey(), parameters()))
                                           .with(field(resourceKey(), ref("resourceValue")).then(ResourceNode.class));
     }
 
+    protected ObjectRule baseResourceValue()
+    {
+        return objectType()
+                           // .with(displayNameField().defaultValue(parentKey())) //TODO defaults
+                           .with(displayNameField())
+                           .with(descriptionField())
+                           .with(isField().description("A list of the traits to apply to all methods declared (implicitly or explicitly) for this resource. "))
+                           .with(resourceTypeReferenceField())
+                           .with(securedByField().description("The security schemes that apply to all methods declared (implicitly or explicitly) for this resource."))
+                           .with(field(uriParametersKey(), parameters()));
+    }
 
     protected Rule schemas()
     {
@@ -411,6 +423,11 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     protected KeyValueRule securedByField()
     {
         return field(securedByKey(), array(anyOf(nullValue(), stringType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class)), any())));
+    }
+
+    protected KeyValueRule usageField()
+    {
+        return field(string("usage"), stringType());
     }
 
     protected KeyValueRule isField()

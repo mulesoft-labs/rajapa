@@ -93,6 +93,7 @@ public class TemplateExpressionNode extends StringNodeImpl implements Executable
         return new StringTokenizer(value, "|");
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

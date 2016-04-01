@@ -17,10 +17,12 @@ package org.raml.impl.commons.nodes;
 
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.raml.nodes.Node;
 import org.raml.nodes.ParametrizedReferenceNode;
 
-public class ParametrizedResourceTypeRefNode extends ResourceTypeRefNode implements ParametrizedReferenceNode
+public class ParametrizedResourceTypeRefNode extends BaseResourceTypeRefNode implements ParametrizedReferenceNode
 {
 
     public ParametrizedResourceTypeRefNode(ParametrizedResourceTypeRefNode node)
@@ -34,6 +36,7 @@ public class ParametrizedResourceTypeRefNode extends ResourceTypeRefNode impleme
         super(name);
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

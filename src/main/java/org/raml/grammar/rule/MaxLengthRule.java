@@ -52,18 +52,11 @@ public class MaxLengthRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
         if (matches(node))
         {
-            if (getFactory() != null)
-            {
-                return getFactory().create(((StringNode) node).getValue());
-            }
-            else
-            {
-                return node;
-            }
+            return createNodeUsingFactory(node, ((StringNode) node).getValue());
         }
         else
         {

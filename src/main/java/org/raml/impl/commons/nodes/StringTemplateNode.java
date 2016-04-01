@@ -20,6 +20,8 @@ import org.raml.nodes.StringNodeImpl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class StringTemplateNode extends StringNodeImpl implements ExecutableNode
 {
 
@@ -69,6 +71,7 @@ public class StringTemplateNode extends StringNodeImpl implements ExecutableNode
         return new StringNodeImpl(content.toString());
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

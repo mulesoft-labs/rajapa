@@ -17,6 +17,8 @@ package org.raml.impl.v10.nodes.types.builtin;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
@@ -50,6 +52,7 @@ public class FileTypeNode extends AbstractRamlNode implements ObjectNode
         return NodeSelector.selectStringCollection("fileTypes", getSource());
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

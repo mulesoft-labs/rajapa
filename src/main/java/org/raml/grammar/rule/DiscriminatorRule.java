@@ -58,9 +58,9 @@ public class DiscriminatorRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        return delegate.transform(node);
+        return delegate.apply(node);
     }
 
     @Override

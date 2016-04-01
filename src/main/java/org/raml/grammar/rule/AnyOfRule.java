@@ -31,8 +31,12 @@ public class AnyOfRule extends Rule
     protected List<Rule> rules;
 
 
-    public AnyOfRule(List<Rule> rules)
+    public AnyOfRule(@Nonnull List<Rule> rules)
     {
+        if (rules.isEmpty())
+        {
+            throw new IllegalArgumentException("rules cannot be empty");
+        }
         this.rules = rules;
     }
 
@@ -75,23 +79,17 @@ public class AnyOfRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        if (getFactory() != null)
+        for (Rule rule : rules)
         {
-            return getFactory().create();
-        }
-        else
-        {
-            for (Rule rule : rules)
+            if (rule.matches(node))
             {
-                if (rule.matches(node))
-                {
-                    return rule.transform(node);
-                }
+                return createNodeUsingFactory(rule.apply(node));
             }
         }
-        return rules.isEmpty() ? node : rules.get(0).transform(node);
+
+        return ErrorNodeFactory.createInvalidNode(node);
     }
 
     @Override

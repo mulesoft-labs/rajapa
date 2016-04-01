@@ -17,7 +17,7 @@ package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
-import org.raml.nodes.StringNode;
+import org.raml.nodes.SimpleTypeNode;
 
 import javax.annotation.Nonnull;
 
@@ -25,24 +25,17 @@ public abstract class AbstractTypeRule extends Rule
 {
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
         if (matches(node))
         {
-            if (getFactory() != null)
+            if (node instanceof SimpleTypeNode)
             {
-                if (node instanceof StringNode)
-                {
-                    return getFactory().create(((StringNode) node).getValue());
-                }
-                else
-                {
-                    return getFactory().create();
-                }
+                return createNodeUsingFactory(node, ((SimpleTypeNode) node).getValue());
             }
             else
             {
-                return node;
+                return createNodeUsingFactory(node);
             }
         }
         else

@@ -15,6 +15,8 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import javax.annotation.Nonnull;
+
 import org.raml.nodes.NodeType;
 import org.raml.nodes.NullNode;
 import org.yaml.snakeyaml.nodes.Node;
@@ -43,6 +45,7 @@ public class SYNullNode extends SYBaseRamlNode implements NullNode
         return "null";
     }
 
+    @Nonnull
     @Override
     public org.raml.nodes.Node copy()
     {

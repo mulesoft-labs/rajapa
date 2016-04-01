@@ -15,6 +15,7 @@
  */
 package org.raml.impl.v10.nodes.types.builtin;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.raml.nodes.Node;
@@ -53,6 +54,7 @@ public class StringTypeNode extends AbstractRamlNode implements ObjectNode, Type
         return NodeSelector.selectStringValue("pattern", getSource());
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

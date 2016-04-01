@@ -27,18 +27,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.raml.impl.commons.nodes.BaseResourceTypeRefNode;
+import org.raml.impl.commons.nodes.BaseTraitRefNode;
 import org.raml.impl.commons.nodes.MethodNode;
 import org.raml.impl.commons.nodes.ResourceNode;
 import org.raml.impl.commons.nodes.ResourceTypeNode;
-import org.raml.impl.commons.nodes.ResourceTypeRefNode;
 import org.raml.impl.commons.nodes.StringTemplateNode;
 import org.raml.impl.commons.nodes.TraitNode;
-import org.raml.impl.commons.nodes.TraitRefNode;
 import org.raml.impl.v10.grammar.Raml10Grammar;
 import org.raml.nodes.ExecutionContext;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.ParametrizedReferenceNode;
+import org.raml.nodes.ReferenceNode;
 import org.raml.nodes.snakeyaml.SYBaseRamlNode;
 import org.raml.nodes.snakeyaml.SYNullNode;
 import org.raml.nodes.snakeyaml.SYObjectNode;
@@ -57,8 +58,8 @@ public class ResourceTypesTraitsTransformer implements Transformer
     @Override
     public boolean matches(Node node)
     {
-        return node instanceof TraitRefNode ||
-               node instanceof ResourceTypeRefNode;
+        return node instanceof BaseTraitRefNode ||
+               node instanceof BaseResourceTypeRefNode;
     }
 
     @Override
@@ -74,7 +75,7 @@ public class ResourceTypesTraitsTransformer implements Transformer
         checkTraits(resourceNode, resourceNode);
 
         // apply resource type if defined
-        ResourceTypeRefNode resourceTypeReference = findResourceTypeReference(resourceNode);
+        ReferenceNode resourceTypeReference = findResourceTypeReference(resourceNode);
         if (resourceTypeReference != null)
         {
             applyResourceType(resourceNode, resourceTypeReference, resourceNode);
@@ -87,13 +88,13 @@ public class ResourceTypesTraitsTransformer implements Transformer
     private void checkTraits(KeyValueNode resourceNode, ResourceNode baseResourceNode)
     {
         List<MethodNode> methodNodes = findMethodNodes(resourceNode);
-        List<TraitRefNode> resourceTraitRefs = findTraitReferences(resourceNode);
+        List<ReferenceNode> resourceTraitRefs = findTraitReferences(resourceNode);
 
         for (MethodNode methodNode : methodNodes)
         {
-            List<TraitRefNode> traitRefs = findTraitReferences(methodNode);
+            List<ReferenceNode> traitRefs = findTraitReferences(methodNode);
             traitRefs.addAll(resourceTraitRefs);
-            for (TraitRefNode traitRef : traitRefs)
+            for (ReferenceNode traitRef : traitRefs)
             {
                 String traitLevel = resourceTraitRefs.contains(traitRef) ? "resource" : "method";
                 logger.debug("applying {} level trait '{}' to '{}.{}'", traitLevel, traitRef.getRefName(), resourceNode.getKey(), methodNode.getName());
@@ -102,10 +103,14 @@ public class ResourceTypesTraitsTransformer implements Transformer
         }
     }
 
-    private void applyResourceType(KeyValueNode targetNode, ResourceTypeRefNode resourceTypeReference, ResourceNode baseResourceNode)
+    private void applyResourceType(KeyValueNode targetNode, ReferenceNode resourceTypeReference, ResourceNode baseResourceNode)
     {
-        ResourceTypeNode refNode = resourceTypeReference.getRefNode();
-        ResourceTypeNode templateNode = (ResourceTypeNode) refNode.copy();
+        ResourceTypeNode refNode = (ResourceTypeNode) resourceTypeReference.getRefNode();
+        if (refNode == null)
+        {
+            throw new IllegalStateException("Invalid reference"); // validated by grammar
+        }
+        ResourceTypeNode templateNode = refNode.copy();
         templateNode.setParent(refNode.getParent());
 
         // resolve parameters
@@ -117,14 +122,14 @@ public class ResourceTypesTraitsTransformer implements Transformer
         resolveParameters(templateNode, parameters);
 
         // apply grammar phase to generate method nodes
-        GrammarPhase parseMethodsPhase = new GrammarPhase(new Raml10Grammar().resourceType());
-        parseMethodsPhase.apply(templateNode.getValue());
+        GrammarPhase validatePhase = new GrammarPhase(new Raml10Grammar().resourceTypeParamsResolved());
+        validatePhase.apply(templateNode.getValue());
 
         // apply traits
         checkTraits(templateNode, baseResourceNode);
 
         // resolve inheritance
-        ResourceTypeRefNode parentTypeReference = findResourceTypeReference(templateNode);
+        ReferenceNode parentTypeReference = findResourceTypeReference(templateNode);
         if (parentTypeReference != null)
         {
             applyResourceType(templateNode, parentTypeReference, baseResourceNode);
@@ -148,15 +153,15 @@ public class ResourceTypesTraitsTransformer implements Transformer
         return parameters;
     }
 
-    private void applyTrait(MethodNode methodNode, TraitRefNode traitReference, ResourceNode baseResourceNode)
+    private void applyTrait(MethodNode methodNode, ReferenceNode traitReference, ResourceNode baseResourceNode)
     {
-        TraitNode refNode = traitReference.getRefNode();
+        TraitNode refNode = (TraitNode) traitReference.getRefNode();
         if (refNode == null)
         {
-            throw new RuntimeException("validated before?");
+            throw new IllegalStateException("Invalid reference"); // validated by grammar
         }
 
-        TraitNode copy = (TraitNode) refNode.copy();
+        TraitNode copy = refNode.copy();
 
         // resolve parameters
         Map<String, String> parameters = getBuiltinTraitParameters(methodNode, baseResourceNode);
@@ -191,24 +196,24 @@ public class ResourceTypesTraitsTransformer implements Transformer
         }
     }
 
-    private List<TraitRefNode> findTraitReferences(KeyValueNode keyValueNode)
+    private List<ReferenceNode> findTraitReferences(KeyValueNode keyValueNode)
     {
-        List<TraitRefNode> result = new ArrayList<>();
+        List<ReferenceNode> result = new ArrayList<>();
         Node isNode = NodeSelector.selectFrom("is", keyValueNode.getValue());
         if (isNode != null)
         {
             List<Node> children = isNode.getChildren();
             for (Node child : children)
             {
-                result.add((TraitRefNode) child);
+                result.add((ReferenceNode) child);
             }
         }
         return result;
     }
 
-    private ResourceTypeRefNode findResourceTypeReference(KeyValueNode resourceNode)
+    private ReferenceNode findResourceTypeReference(KeyValueNode resourceNode)
     {
-        return (ResourceTypeRefNode) NodeSelector.selectFrom("type", resourceNode.getValue());
+        return (ReferenceNode) NodeSelector.selectFrom("type", resourceNode.getValue());
     }
 
     private List<MethodNode> findMethodNodes(KeyValueNode resourceNode)

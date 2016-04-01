@@ -19,7 +19,6 @@ import org.raml.grammar.rule.ErrorNodeFactory;
 import org.raml.grammar.rule.Rule;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.Node;
-import org.raml.phase.Phase;
 
 public class GrammarPhase implements Phase
 {
@@ -36,7 +35,7 @@ public class GrammarPhase implements Phase
     {
         if (rootRule.matches(node))
         {
-            final Node result = rootRule.transform(node);
+            final Node result = rootRule.apply(node);
             node.replaceWith(result);
             return result;
         }

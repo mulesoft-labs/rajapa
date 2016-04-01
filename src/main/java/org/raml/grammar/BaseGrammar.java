@@ -62,9 +62,9 @@ public class BaseGrammar
         return new AnyValueRule();
     }
 
-    public ArrayValueRule array(Rule of)
+    public ArrayRule array(Rule of)
     {
-        return new ArrayValueRule(of);
+        return new ArrayRule(of);
     }
 
     public IntegerTypeRule integerType()

@@ -15,6 +15,8 @@
  */
 package org.raml.impl.commons.nodes;
 
+import javax.annotation.Nonnull;
+
 import org.raml.nodes.AbstractRamlNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
@@ -32,6 +34,7 @@ public class RamlDocumentNode extends AbstractRamlNode implements ObjectNode
         super(node);
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

@@ -57,6 +57,7 @@ public class KeyValueNodeImpl extends BaseNode implements KeyValueNode
         super.addChild(node);
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

@@ -144,7 +144,7 @@ public class Raml10Grammar extends BaseRamlGrammar
                            .with(annotationTypesField())
                            .with(annotationField())
                            .with(field(usesKey(), ref("library")))
-                           .with(field(string("usage"), stringType()));
+                           .with(usageField());
     }
 
     protected KeyValueRule annotationTypesField()

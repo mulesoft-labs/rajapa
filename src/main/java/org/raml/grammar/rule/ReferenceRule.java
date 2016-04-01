@@ -75,9 +75,9 @@ public class ReferenceRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        return getRef().transform(node);
+        return getRef().apply(node);
     }
 
     @Override

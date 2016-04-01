@@ -15,15 +15,15 @@
  */
 package org.raml.grammar.rule;
 
-import org.raml.nodes.IntegerNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.StringNode;
-import org.raml.suggester.Suggestion;
-
-import javax.annotation.Nonnull;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.raml.nodes.IntegerNode;
+import org.raml.nodes.Node;
+import org.raml.suggester.Suggestion;
 
 public class IntegerValueRule extends Rule
 {
@@ -57,16 +57,17 @@ public class IntegerValueRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        if (getFactory() != null)
+        if (!matches(node))
         {
-            return getFactory().create(((StringNode) node).getValue());
+            return ErrorNodeFactory.createInvalidValue(node, String.valueOf(number));
         }
         else
         {
-            return node;
+            return createNodeUsingFactory(node);
         }
+
     }
 
     @Override

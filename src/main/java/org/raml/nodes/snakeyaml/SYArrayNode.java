@@ -23,6 +23,8 @@ import org.yaml.snakeyaml.nodes.SequenceNode;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class SYArrayNode extends SYBaseRamlNode implements ArrayNode
 {
 
@@ -45,6 +47,7 @@ public class SYArrayNode extends SYBaseRamlNode implements ArrayNode
         return "Array[" + join + "]";
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

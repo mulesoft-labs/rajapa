@@ -20,6 +20,7 @@ import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -39,14 +40,41 @@ public abstract class Rule
 
     public abstract boolean matches(@Nonnull Node node);
 
-    public abstract Node transform(@Nonnull Node node);
+    /**
+     * Applies the rule to the node using the following criteria
+     * - if rule does not match returns an ErrorNode and stops processing
+     * - if rule matches, applies rules to children
+     * - if rule contains a NodeFactory, returns the result of it
+     * - else returns node
+     * <p/>
+     * Only structure rules ({@link ObjectRule}, {@link ArrayRule}, {@link KeyValueRule}) replace child nodes.
+     *
+     * @param node The current node
+     * @return the result of the factory or the current node
+     */
+    @Nonnull
+    public abstract Node apply(@Nonnull Node node);
 
     public abstract String getDescription();
 
     @Nullable
-    public NodeFactory getFactory()
+    private NodeFactory getFactory()
     {
         return factory;
+    }
+
+    @Nonnull
+    public Node createNodeUsingFactory(@Nonnull Node currentNode, Object... args)
+    {
+        if (getFactory() != null)
+        {
+            Node newNode = getFactory().create(args);
+            if (!newNode.getClass().equals(currentNode.getClass()))
+            {
+                return newNode;
+            }
+        }
+        return currentNode;
     }
 
     public Rule then(Class<? extends Node> clazz)

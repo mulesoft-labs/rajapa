@@ -15,6 +15,8 @@
  */
 package org.raml.nodes;
 
+import javax.annotation.Nonnull;
+
 public class ErrorNode extends AbstractRamlNode
 {
     private final String errorMessage;
@@ -29,6 +31,7 @@ public class ErrorNode extends AbstractRamlNode
         return errorMessage;
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

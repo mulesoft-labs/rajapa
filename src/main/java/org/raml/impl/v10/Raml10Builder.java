@@ -132,13 +132,16 @@ public class Raml10Builder
         // Applies resourceTypes and Traits Library
         final TransformationPhase third = new TransformationPhase(new ResourceTypesTraitsTransformer(), new TypesTransformer());
 
+        // Run grammar again to re-validate tree
+        final Phase thirdAndAHalf = second;
+
         final AnnotationValidationPhase fourth = new AnnotationValidationPhase();
 
         final MediaTypeInjection fifth = new MediaTypeInjection();
 
         // Schema Types example validation
 
-        return Arrays.asList(first, second, third, fourth, fifth);
+        return Arrays.asList(first, second, third, thirdAndAHalf, fourth, fifth);
 
     }
 }

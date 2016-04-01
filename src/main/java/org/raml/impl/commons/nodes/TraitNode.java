@@ -15,6 +15,8 @@
  */
 package org.raml.impl.commons.nodes;
 
+import javax.annotation.Nonnull;
+
 import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
 import org.raml.nodes.KeyValueNodeImpl;
@@ -37,8 +39,9 @@ public class TraitNode extends KeyValueNodeImpl
         return key.getValue();
     }
 
+    @Nonnull
     @Override
-    public Node copy()
+    public TraitNode copy()
     {
         return new TraitNode(this);
     }

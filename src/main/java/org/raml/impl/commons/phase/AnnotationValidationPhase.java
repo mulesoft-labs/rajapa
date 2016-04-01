@@ -45,7 +45,7 @@ public class AnnotationValidationPhase implements Phase
             TypeNode typeNode = annotationTypeNode.getTypeNode();
             Rule rule = typeNode.visit(new TypeToRuleVisitor());
             Node value = annotation.getValue();
-            Node transform = rule.transform(value);
+            Node transform = rule.apply(value);
             value.replaceWith(transform);
         }
         return tree;

@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.raml.impl.v10.nodes.LibraryRefNode;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
@@ -82,7 +83,7 @@ public class ObjectRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
         if (!matches(node))
         {
@@ -111,8 +112,13 @@ public class ObjectRule extends Rule
                     {
                         requiredRules.remove(matchingRule);
                     }
-                    final Node newChild = matchingRule.transform(child);
+                    final Node newChild = matchingRule.apply(child);
                     child.replaceWith(newChild);
+                }
+                else if (child instanceof LibraryRefNode)
+                {
+                    // TODO remove library ref nodes from object tree
+                    continue;
                 }
                 else
                 {
@@ -159,12 +165,7 @@ public class ObjectRule extends Rule
 
     protected Node getResult(Node node)
     {
-        Node result = node;
-        if (getFactory() != null)
-        {
-            result = getFactory().create(node);
-        }
-        return result;
+        return createNodeUsingFactory(node, node);
     }
 
     private List<KeyValueRule> getAllFieldRules(Node node)

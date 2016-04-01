@@ -17,9 +17,11 @@ package org.raml.grammar.rule;
 
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,18 +123,22 @@ public class KeyValueRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        Node result = node;
-        if (getFactory() != null)
+        if (!(node instanceof KeyValueNode))
         {
-            result = getFactory().create();
+            return ErrorNodeFactory.createInvalidType(node, NodeType.KeyValue);
         }
+        else if (!getKeyRule().matches(((KeyValueNode) node).getKey()))
+        {
+            return getKeyRule().apply(node);
+        }
+        final Node result = createNodeUsingFactory(node);
         final KeyValueNode keyValueNode = (KeyValueNode) node;
         final Node key = keyValueNode.getKey();
-        key.replaceWith(getKeyRule().transform(key));
+        key.replaceWith(getKeyRule().apply(key));
         final Node value = keyValueNode.getValue();
-        value.replaceWith(getValueRule().transform(value));
+        value.replaceWith(getValueRule().apply(value));
         return result;
     }
 

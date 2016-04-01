@@ -26,6 +26,7 @@ import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
+//TODO create ScalarTypeRule
 public class StringTypeRule extends AbstractTypeRule
 {
     @Nonnull
@@ -55,9 +56,9 @@ public class StringTypeRule extends AbstractTypeRule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        Node transform = super.transform(node);
+        Node transform = super.apply(node);
         if (transform == node && !(node instanceof StringNode))
         {
             transform = new StringNodeImpl(((SimpleTypeNode) node).getLiteralValue());

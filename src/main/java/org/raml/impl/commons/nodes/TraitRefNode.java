@@ -15,51 +15,42 @@
  */
 package org.raml.impl.commons.nodes;
 
-import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.nodes.Node;
-import org.raml.nodes.AbstractReferenceNode;
-import org.raml.utils.NodeSelector;
+import javax.annotation.Nonnull;
 
-public class TraitRefNode extends AbstractReferenceNode
+import org.raml.nodes.Node;
+import org.raml.nodes.StringNode;
+
+public class TraitRefNode extends BaseTraitRefNode implements StringNode
 {
 
     private String name;
 
     public TraitRefNode(String name)
     {
-        this.name = name;
+        super(name);
     }
 
     public TraitRefNode(TraitRefNode node)
     {
         super(node);
-        this.name = node.name;
     }
 
-    @Override
-    public String getRefName()
-    {
-        return name;
-    }
-
-    @Override
-    public TraitNode getRefNode()
-    {
-        // We add the .. as the node selector selects the value and we want the key value pair
-        final Node resolve = NodeSelector.selectFrom(Raml10Grammar.TRAITS_KEY_NAME + "/*/" + getRefName() + "/..", getRelativeNode());
-        if (resolve instanceof TraitNode)
-        {
-            return (TraitNode) resolve;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
+    @Nonnull
     @Override
     public Node copy()
     {
         return new TraitRefNode(this);
+    }
+
+    @Override
+    public String getValue()
+    {
+        return getRefName();
+    }
+
+    @Override
+    public String getLiteralValue()
+    {
+        return getValue();
     }
 }

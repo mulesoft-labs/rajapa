@@ -18,20 +18,21 @@ package org.raml.impl.commons.nodes;
 import javax.annotation.Nonnull;
 
 import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.nodes.Node;
 import org.raml.nodes.AbstractReferenceNode;
+import org.raml.nodes.Node;
 import org.raml.utils.NodeSelector;
 
-public class SecuritySchemeRefNode extends AbstractReferenceNode
+public class BaseTraitRefNode extends AbstractReferenceNode
 {
+
     private String name;
 
-    public SecuritySchemeRefNode(String name)
+    public BaseTraitRefNode(String name)
     {
         this.name = name;
     }
 
-    public SecuritySchemeRefNode(SecuritySchemeRefNode node)
+    public BaseTraitRefNode(BaseTraitRefNode node)
     {
         super(node);
         this.name = node.name;
@@ -44,13 +45,13 @@ public class SecuritySchemeRefNode extends AbstractReferenceNode
     }
 
     @Override
-    public SecuritySchemeNode getRefNode()
+    public TraitNode getRefNode()
     {
         // We add the .. as the node selector selects the value and we want the key value pair
-        final Node resolve = NodeSelector.selectFrom(Raml10Grammar.SECURITY_SCHEMES_KEY_NAME + "/*/" + getRefName() + "/..", getRelativeNode());
-        if (resolve instanceof SecuritySchemeNode)
+        final Node resolve = NodeSelector.selectFrom(Raml10Grammar.TRAITS_KEY_NAME + "/*/" + getRefName() + "/..", getRelativeNode());
+        if (resolve instanceof TraitNode)
         {
-            return (SecuritySchemeNode) resolve;
+            return (TraitNode) resolve;
         }
         else
         {
@@ -62,6 +63,6 @@ public class SecuritySchemeRefNode extends AbstractReferenceNode
     @Override
     public Node copy()
     {
-        return new SecuritySchemeRefNode(this);
+        return new BaseTraitRefNode(this);
     }
 }

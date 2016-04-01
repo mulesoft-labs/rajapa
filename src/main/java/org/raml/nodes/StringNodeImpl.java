@@ -15,6 +15,8 @@
  */
 package org.raml.nodes;
 
+import javax.annotation.Nonnull;
+
 public class StringNodeImpl extends AbstractRamlNode implements StringNode
 {
 
@@ -43,6 +45,7 @@ public class StringNodeImpl extends AbstractRamlNode implements StringNode
         return value;
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

@@ -18,6 +18,8 @@ package org.raml.impl.v10.nodes.types.builtin;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.raml.impl.commons.nodes.PropertyNode;
 import org.raml.nodes.AbstractRamlNode;
 import org.raml.nodes.Node;
@@ -47,6 +49,7 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
         return result;
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

@@ -15,12 +15,14 @@
  */
 package org.raml.grammar.rule;
 
-import org.raml.nodes.Node;
-import org.raml.suggester.Suggestion;
-
-import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.raml.nodes.Node;
+import org.raml.nodes.ParametrizedReferenceNode;
+import org.raml.suggester.Suggestion;
 
 public class ParametrizedNodeReferenceRule extends ObjectRule
 {
@@ -36,7 +38,7 @@ public class ParametrizedNodeReferenceRule extends ObjectRule
     public boolean matches(@Nonnull Node node)
     {
         // It should have at least one key value pair
-        return super.matches(node) && hasOneKey(node);
+        return (super.matches(node) && hasOneKey(node)) || node instanceof ParametrizedReferenceNode;
     }
 
     private boolean hasOneKey(@Nonnull Node node)
@@ -76,16 +78,12 @@ public class ParametrizedNodeReferenceRule extends ObjectRule
     @Override
     protected Node getResult(Node node)
     {
-        if (getFactory() != null)
-        {
-            // Get the key of the first key value pair
-            final String arg = node.getChildren().get(0).getChildren().get(0).toString();
-            return getFactory().create(arg);
-        }
-        else
+        if (node instanceof ParametrizedReferenceNode)
         {
             return node;
         }
+        final String arg = node.getChildren().get(0).getChildren().get(0).toString();
+        return createNodeUsingFactory(node, arg);
     }
 
     @Override

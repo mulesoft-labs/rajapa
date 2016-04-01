@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.raml.nodes.Node;
 import org.raml.suggester.Suggestion;
@@ -42,15 +41,6 @@ public class NegativeRule extends Rule
         return Collections.emptyList();
     }
 
-    @Nullable
-    public Rule getMatchingRule(Node node)
-    {
-        if (this.matches(node))
-        {
-            return this;
-        }
-        return null;
-    }
 
     @Override
     public boolean matches(@Nonnull Node node)
@@ -59,20 +49,18 @@ public class NegativeRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        if (getFactory() != null)
+        final Node result;
+        if (this.matches(node))
         {
-            return getFactory().create();
+            result = createNodeUsingFactory(node);
         }
         else
         {
-            if (this.matches(node))
-            {
-                node = rule.transform(node);
-            }
+            result = ErrorNodeFactory.createInvalidNode(node);
         }
-        return node;
+        return result;
     }
 
     @Override

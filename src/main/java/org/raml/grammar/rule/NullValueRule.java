@@ -40,16 +40,13 @@ public class NullValueRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        if (getFactory() != null)
+        if (!matches(node))
         {
-            return getFactory().create();
+            return ErrorNodeFactory.createInvalidValue(node, "<null>");
         }
-        else
-        {
-            return node;
-        }
+        return createNodeUsingFactory(node);
     }
 
     @Override

@@ -15,6 +15,8 @@
  */
 package org.raml.impl.v10.nodes.types.builtin;
 
+import javax.annotation.Nonnull;
+
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
@@ -53,6 +55,7 @@ public class NumericTypeNode extends AbstractRamlNode implements TypeNode, Objec
         return NodeSelector.selectStringValue("format", getSource());
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

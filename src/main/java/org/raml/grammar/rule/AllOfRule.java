@@ -83,30 +83,21 @@ public class AllOfRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        if (getFactory() != null)
+        for (Rule rule : rules)
         {
-            return getFactory().create();
+            if (!rule.matches(node))
+            {
+                return rule.apply(node);
+            }
         }
-        else
+
+        for (Rule rule : rules)
         {
-
-            for (Rule rule : rules)
-            {
-                if (!rule.matches(node))
-                {
-                    return rule.transform(node);
-                }
-            }
-
-            for (Rule rule : rules)
-            {
-                node = rule.transform(node);
-            }
-
+            node = rule.apply(node);
         }
-        return node;
+        return createNodeUsingFactory(node);
     }
 
     @Override

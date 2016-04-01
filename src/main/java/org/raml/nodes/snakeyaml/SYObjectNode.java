@@ -15,6 +15,8 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
@@ -45,6 +47,7 @@ public class SYObjectNode extends SYBaseRamlNode implements ObjectNode
         return "{\n" + StringUtils.join(getChildren(), ",\n") + "\n}";
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

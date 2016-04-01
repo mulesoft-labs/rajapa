@@ -15,6 +15,8 @@
  */
 package org.raml.impl.commons.nodes;
 
+import javax.annotation.Nonnull;
+
 import org.raml.nodes.Node;
 import org.raml.nodes.StringNode;
 import org.raml.nodes.KeyValueNodeImpl;
@@ -72,6 +74,7 @@ public class ResourceNode extends KeyValueNodeImpl
         return path.replace("}", "");
     }
 
+    @Nonnull
     @Override
     public Node copy()
     {

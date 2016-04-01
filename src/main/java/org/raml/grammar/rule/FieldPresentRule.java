@@ -56,11 +56,11 @@ public class FieldPresentRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
         if (isPresent(node))
         {
-            return delegate.transform(node);
+            return delegate.apply(node);
         }
         else
         {

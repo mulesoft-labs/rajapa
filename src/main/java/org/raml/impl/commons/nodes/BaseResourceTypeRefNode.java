@@ -16,22 +16,25 @@
 package org.raml.impl.commons.nodes;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.nodes.Node;
 import org.raml.nodes.AbstractReferenceNode;
+import org.raml.nodes.Node;
+import org.raml.nodes.StringNode;
 import org.raml.utils.NodeSelector;
 
-public class SecuritySchemeRefNode extends AbstractReferenceNode
+public class BaseResourceTypeRefNode extends AbstractReferenceNode
 {
+
     private String name;
 
-    public SecuritySchemeRefNode(String name)
+    public BaseResourceTypeRefNode(String name)
     {
         this.name = name;
     }
 
-    public SecuritySchemeRefNode(SecuritySchemeRefNode node)
+    public BaseResourceTypeRefNode(BaseResourceTypeRefNode node)
     {
         super(node);
         this.name = node.name;
@@ -44,13 +47,14 @@ public class SecuritySchemeRefNode extends AbstractReferenceNode
     }
 
     @Override
-    public SecuritySchemeNode getRefNode()
+    @Nullable
+    public ResourceTypeNode getRefNode()
     {
         // We add the .. as the node selector selects the value and we want the key value pair
-        final Node resolve = NodeSelector.selectFrom(Raml10Grammar.SECURITY_SCHEMES_KEY_NAME + "/*/" + getRefName() + "/..", getRelativeNode());
-        if (resolve instanceof SecuritySchemeNode)
+        final Node resolve = NodeSelector.selectFrom(Raml10Grammar.RESOURCE_TYPES_KEY_NAME + "/*/" + getRefName() + "/..", getRelativeNode());
+        if (resolve instanceof ResourceTypeNode)
         {
-            return (SecuritySchemeNode) resolve;
+            return (ResourceTypeNode) resolve;
         }
         else
         {
@@ -62,6 +66,7 @@ public class SecuritySchemeRefNode extends AbstractReferenceNode
     @Override
     public Node copy()
     {
-        return new SecuritySchemeRefNode(this);
+        return new BaseResourceTypeRefNode(this);
     }
+
 }

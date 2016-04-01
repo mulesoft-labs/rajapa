@@ -87,28 +87,25 @@ public class RegexValueRule extends Rule
     }
 
     @Override
-    public Node transform(@Nonnull Node node)
+    public Node apply(@Nonnull Node node)
     {
-        if (getFactory() != null)
+        if (!matches(node))
         {
-            final Matcher matcher = getMatcher((StringNode) node);
-            final int i = matcher.groupCount();
-            final List<String> groups = new ArrayList<>();
-            if (i > 0)
-            {
-                matcher.matches();
-            }
-            for (int j = 1; j <= i; j++)
-            {
-                final String group = matcher.group(j);
-                groups.add(group);
-            }
-            return getFactory().create(groups.toArray(new String[groups.size()]));
+            return ErrorNodeFactory.createInvalidValue(node, String.valueOf(value));
         }
-        else
+        final Matcher matcher = getMatcher((StringNode) node);
+        final int i = matcher.groupCount();
+        final List<String> groups = new ArrayList<>();
+        if (i > 0)
         {
-            return node;
+            matcher.matches();
         }
+        for (int j = 1; j <= i; j++)
+        {
+            final String group = matcher.group(j);
+            groups.add(group);
+        }
+        return createNodeUsingFactory(node, groups.toArray(new String[groups.size()]));
     }
 
     @Override
