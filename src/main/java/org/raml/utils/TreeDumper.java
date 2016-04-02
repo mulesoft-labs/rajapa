@@ -62,13 +62,25 @@ public class TreeDumper
         dump.append(")");
         dump.append("\n");
         indent();
-        Collection<Node> children = node.getChildren();
-        for (Node child : children)
+        for (Node child : getChildren(node))
         {
             dump(child);
         }
         dedent();
         return dump.toString();
+    }
+
+    private Collection<Node> getChildren(Node node)
+    {
+        Collection<Node> children = node.getChildren();
+        if (node instanceof ObjectTypeNode)
+        {
+            List<Node> merged = Lists.newArrayList();
+            merged.addAll(children);
+            merged.addAll(((ObjectTypeNode) node).getInheritedProperties());
+            children = merged;
+        }
+        return children;
     }
 
     protected void dumpNode(Node node)

@@ -27,7 +27,7 @@ import org.raml.nodes.AbstractRamlNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
-import org.raml.nodes.snakeyaml.InheritedPropertiesInjectedNode;
+import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 
 public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {

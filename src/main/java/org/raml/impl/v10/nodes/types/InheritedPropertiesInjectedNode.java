@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.snakeyaml;
+package org.raml.impl.v10.nodes.types;
 
 import javax.annotation.Nonnull;
 
@@ -36,12 +36,14 @@ public class InheritedPropertiesInjectedNode extends BaseNode implements ObjectN
         super(inheritedPropertiesInjectedNode);
     }
 
+    @Nonnull
     @Override
     public Position getStartPosition()
     {
         return DefaultPosition.emptyPosition();
     }
 
+    @Nonnull
     @Override
     public Position getEndPosition()
     {

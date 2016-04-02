@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.impl.commons.nodes.PropertyNode;
+import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.nodes.ErrorNode;
@@ -30,7 +31,6 @@ import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
 import org.raml.nodes.StringNodeImpl;
-import org.raml.nodes.snakeyaml.InheritedPropertiesInjectedNode;
 import org.raml.nodes.snakeyaml.SYArrayNode;
 import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.raml.nodes.snakeyaml.SYStringNode;
