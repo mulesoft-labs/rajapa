@@ -15,15 +15,18 @@
  */
 package org.raml.grammar.rule;
 
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.raml.suggester.Suggestion;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.raml.nodes.DefaultPosition;
+import org.raml.nodes.KeyValueNode;
+import org.raml.nodes.KeyValueNodeImpl;
+import org.raml.nodes.Node;
+import org.raml.nodes.NodeType;
+import org.raml.nodes.StringNodeImpl;
+import org.raml.suggester.Suggestion;
 
 public class KeyValueRule extends Rule
 {
@@ -32,6 +35,7 @@ public class KeyValueRule extends Rule
     private final Rule valueRule;
     private String description;
     private boolean required;
+    private DefaultValue defaultValue;
 
     public KeyValueRule(Rule keyRule, Rule valueRule)
     {
@@ -152,4 +156,30 @@ public class KeyValueRule extends Rule
     {
         return required;
     }
+
+    @Nonnull
+    public KeyValueRule defaultValue(DefaultValue defaultValue)
+    {
+        this.defaultValue = defaultValue;
+        return this;
+    }
+
+    public void applyDefault(Node parent)
+    {
+        if (defaultValue == null)
+        {
+            return;
+        }
+        if (!(getKeyRule() instanceof StringValueRule))
+        {
+            throw new RuntimeException("Key rule " + getKeyRule().getClass().getSimpleName() + " does not support default values");
+        }
+        Node keyNode = new StringNodeImpl(((StringValueRule) getKeyRule()).getValue());
+        Node valueNode = this.defaultValue.getDefaultValue(parent);
+        KeyValueNodeImpl newNode = new KeyValueNodeImpl(keyNode, valueNode);
+        newNode.setEndPosition(DefaultPosition.emptyPosition());
+        newNode.setStartPosition(DefaultPosition.emptyPosition());
+        parent.addChild(newNode);
+    }
+
 }

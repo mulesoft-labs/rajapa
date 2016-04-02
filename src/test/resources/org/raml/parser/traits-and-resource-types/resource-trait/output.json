@@ -18,6 +18,7 @@
         {
             "relativeUri": "/users",
             "is": ["secured"],
+            "displayName": "/users",
             "methods": [
                 {
                     "method": "get",
@@ -26,9 +27,11 @@
                         "access_token": {
                             "description": "Access Token",
                             "example": "5757gh76",
-                            "required": true
+                            "required": true,
+                            "displayName": "access_token"
                         }
-                    }
+                    },
+                    "displayName": "get"
                 }
             ]
         }

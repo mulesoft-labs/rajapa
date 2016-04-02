@@ -13,19 +13,20 @@
     "resources": [
         {
             "relativeUri": "/users",
+            "displayName": "/users",
             "methods": [
                 {
                     "method": "get",
-                    "is": [
-                        {
+                    "is": [{
                             "secured": {
                                 "header": "head"
                             }
-                        }
-                    ],
+                        }],
+                    "displayName": "get",
                     "headers": {
                         "head": {
-                            "type": "string"
+                            "type": "string",
+                            "displayName": "head"
                         }
                     }
                 }

@@ -32,7 +32,7 @@ public class Raml08Grammar extends BaseRamlGrammar
 
     protected Rule formParameters()
     {
-        return objectType().with(field(stringType(), anyOf(parameter(), array(parameter()))));
+        return objectType().with(field(scalarType(), anyOf(parameter(), array(parameter()))));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class Raml08Grammar extends BaseRamlGrammar
                                                                   .add(patternField())
                                                                   .add(minLengthField())
                                                                   .add(maxLengthField())
-                                                                  .add(enumField(stringType())),
+                                                                  .add(enumField(scalarType())),
                                            is(numericTypeLiteral())
                                                                    .add(minimumField())
                                                                    .add(maximumField())
@@ -154,7 +154,7 @@ public class Raml08Grammar extends BaseRamlGrammar
 
     private KeyValueRule patternField()
     {
-        return field(string("pattern"), stringType())
+        return field(string("pattern"), scalarType())
                                                      .description("The pattern attribute is a regular expression that a parameter of type string MUST match. " +
                                                                   "Regular expressions MUST follow the regular expression specification from ECMA 262/Perl 5. " +
                                                                   "The pattern MAY be enclosed in double quotes for readability and clarity.");

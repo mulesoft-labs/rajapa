@@ -94,31 +94,16 @@ public class ObjectRule extends Rule
             Node result = getResult(node);
             final List<Node> children = node.getChildren();
             final List<KeyValueRule> allFieldRules = getAllFieldRules(node);
-            final List<KeyValueRule> requiredRules = new ArrayList<>();
-            for (KeyValueRule fieldRule : allFieldRules)
-            {
-                if (fieldRule.isRequired())
-                {
-                    requiredRules.add(fieldRule);
-                }
-            }
+            final List<KeyValueRule> nonMatchingRules = new ArrayList<>(allFieldRules);
 
             for (Node child : children)
             {
                 final Rule matchingRule = findMatchingRule(allFieldRules, child);
                 if (matchingRule != null)
                 {
-                    if (requiredNodeHasValue(child))
-                    {
-                        requiredRules.remove(matchingRule);
-                    }
+                    nonMatchingRules.remove(matchingRule);
                     final Node newChild = matchingRule.apply(child);
                     child.replaceWith(newChild);
-                }
-                else if (child instanceof LibraryRefNode)
-                {
-                    // TODO remove library ref nodes from object tree
-                    continue;
                 }
                 else
                 {
@@ -134,33 +119,20 @@ public class ObjectRule extends Rule
                 }
             }
 
-            if (!requiredRules.isEmpty())
+            for (KeyValueRule rule : nonMatchingRules)
             {
-                for (KeyValueRule requiredRule : requiredRules)
+                if (rule.isRequired())
                 {
-                    result.addChild(ErrorNodeFactory.createRequiredValueNotFound(node, requiredRule.getKeyRule()));
+                    result.addChild(ErrorNodeFactory.createRequiredValueNotFound(node, rule.getKeyRule()));
+                }
+                else
+                {
+                    rule.applyDefault(node);
                 }
             }
 
             return result;
         }
-    }
-
-    private boolean requiredNodeHasValue(Node node)
-    {
-        if (node instanceof KeyValueNode)
-        {
-            Node valueNode = ((KeyValueNode) node).getValue();
-            if (valueNode instanceof NullNode)
-            {
-                return false;
-            }
-            if (valueNode instanceof StringNode)
-            {
-                return StringUtils.isNotBlank(((StringNode) valueNode).getValue());
-            }
-        }
-        return true;
     }
 
     protected Node getResult(Node node)

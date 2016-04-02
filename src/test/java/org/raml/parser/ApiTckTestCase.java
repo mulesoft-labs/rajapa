@@ -87,7 +87,7 @@ public class ApiTckTestCase extends TestDataProvider
 
     protected String[] getKeysToFilter()
     {
-        return new String[] {"__METADATA__", "displayName", "RAMLVersion"};
+        return new String[] {"__METADATA__", "RAMLVersion"};
     }
 
 }

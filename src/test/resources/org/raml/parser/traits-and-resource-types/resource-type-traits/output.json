@@ -36,23 +36,28 @@
         {
             "relativeUri": "/users",
             "type": "main",
-            "is": ["paged"],
+            "displayName": "/users",
             "description": "this is the main type",
+            "is": ["paged"],
             "methods": [
                 {
                     "method": "get",
                     "is": ["secured"],
                     "headers": {
                         "main": {
-                            "type": "string"
+                            "type": "string",
+                            "displayName": "main"
                         },
                         "secured": {
-                            "type": "string"
+                            "type": "string",
+                            "displayName": "secured"
                         },
                         "page": {
-                            "type": "integer"
+                            "type": "integer",
+                            "displayName": "page"
                         }
-                    }
+                    },
+                    "displayName": "get"
                 }
             ]
         }

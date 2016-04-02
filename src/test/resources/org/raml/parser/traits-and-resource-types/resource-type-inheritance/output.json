@@ -42,21 +42,26 @@
         {
             "relativeUri": "/users",
             "type": "main",
+            "displayName": "/users",
             "description": "this is the main type",
             "methods": [
                 {
                     "method": "get",
                     "headers": {
                         "main": {
-                            "type": "string"
+                            "type": "string",
+                            "displayName": "main"
                         },
                         "parent": {
-                            "type": "string"
+                            "type": "string",
+                            "displayName": "parent"
                         },
                         "grampa": {
-                            "type": "string"
+                            "type": "string",
+                            "displayName": "grampa"
                         }
-                    }
+                    },
+                    "displayName": "get"
                 }
             ]
         }

@@ -22,10 +22,12 @@ import javax.annotation.Nonnull;
 
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
+import org.raml.nodes.SimpleTypeNode;
 import org.raml.nodes.StringNode;
+import org.raml.nodes.StringNodeImpl;
 import org.raml.suggester.Suggestion;
 
-public class StringTypeRule extends AbstractTypeRule
+public class ScalarTypeRule extends AbstractTypeRule
 {
     @Nonnull
     @Override
@@ -37,7 +39,7 @@ public class StringTypeRule extends AbstractTypeRule
     @Override
     public boolean matches(@Nonnull Node node)
     {
-        return node instanceof StringNode;
+        return node instanceof SimpleTypeNode;
     }
 
     @Override
@@ -53,4 +55,15 @@ public class StringTypeRule extends AbstractTypeRule
         return NodeType.String;
     }
 
+    @Nonnull
+    @Override
+    public Node apply(@Nonnull Node node)
+    {
+        Node applied = super.apply(node);
+        if (applied == node && !(node instanceof StringNode))
+        {
+            applied = new StringNodeImpl(((SimpleTypeNode) node).getLiteralValue());
+        }
+        return applied;
+    }
 }

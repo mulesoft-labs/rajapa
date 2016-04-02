@@ -57,7 +57,7 @@ public class Raml10Grammar extends BaseRamlGrammar
     protected ObjectRule methodValue()
     {
         return super.methodValue()
-                    .with(field(queryStringKey(), anyOf(stringType(), type())))
+                    .with(field(queryStringKey(), anyOf(scalarType(), type())))
                     .with(annotationField());
     }
 
@@ -112,7 +112,7 @@ public class Raml10Grammar extends BaseRamlGrammar
     public Rule extension()
     {
         return untitledRaml()
-                             .with(requiredField(extendsKey(), stringType()).then(ExtendsNode.class))
+                             .with(requiredField(extendsKey(), scalarType()).then(ExtendsNode.class))
                              .with(optionalTitleField());
     }
 
@@ -123,14 +123,14 @@ public class Raml10Grammar extends BaseRamlGrammar
 
     protected KeyValueRule optionalTitleField()
     {
-        return field(titleKey(), stringType());
+        return field(titleKey(), scalarType());
     }
 
 
     // Library
     public Rule library()
     {
-        return objectType("library").with(field(stringType(), libraryValue()));
+        return objectType("library").with(field(scalarType(), libraryValue()));
     }
 
     public Rule libraryValue()
@@ -159,14 +159,14 @@ public class Raml10Grammar extends BaseRamlGrammar
 
     protected Rule annotationTypes()
     {
-        return objectType().with(field(stringType(), type()).then(AnnotationTypeNode.class));
+        return objectType().with(field(scalarType(), type()).then(AnnotationTypeNode.class));
     }
 
 
     protected Rule types()
     {
         return objectType()
-                           .with(field(stringType(), type()));
+                           .with(field(scalarType(), type()));
     }
 
 
@@ -191,10 +191,10 @@ public class Raml10Grammar extends BaseRamlGrammar
                                  .with(
                                          when("type", // todo what to do with inherited does not match object
                                                  is(stringTypeLiteral())
-                                                                        .add(field(string("pattern"), stringType()))
+                                                                        .add(field(string("pattern"), scalarType()))
                                                                         .add(field(string("minLength"), integerType()))
                                                                         .add(field(string("maxLength"), integerType()))
-                                                                        .add(field(string("enum"), array(stringType()))),
+                                                                        .add(field(string("enum"), array(scalarType()))),
                                                  is(arrayTypeLiteral())
                                                                        .add(field(string("uniqueItems"), booleanType()))
                                                                        .add(field(string("items"), any())) // todo review this don't get what it is
@@ -203,7 +203,7 @@ public class Raml10Grammar extends BaseRamlGrammar
                                                  is(numericTypeLiteral())
                                                                          .add(field(string("minimum"), integerType()))
                                                                          .add(field(string("maximum"), integerType()))
-                                                                         .add(field(string("format"), stringType()))
+                                                                         .add(field(string("format"), scalarType()))
                                                                          .add(field(string("multipleOf"), integerType()))
                                                                          .add(field(string("enum"), array(integerType()))),
                                                  is(fileTypeLiteral())
@@ -214,10 +214,10 @@ public class Raml10Grammar extends BaseRamlGrammar
                                                                         .add(field(string("properties"), properties()))
                                                                         .add(field(string("minProperties"), integerType()))
                                                                         .add(field(string("maxProperties"), integerType()))
-                                                                        .add(field(string("additionalProperties"), anyOf(stringType(), ref("type"))))
+                                                                        .add(field(string("additionalProperties"), anyOf(scalarType(), ref("type"))))
                                                                         .add(field(string("patternProperties"), properties()))
-                                                                        .add(field(string("discriminator"), anyOf(stringType(), booleanType())))
-                                                                        .add(field(string("discriminatorValue"), stringType()))
+                                                                        .add(field(string("discriminator"), anyOf(scalarType(), booleanType())))
+                                                                        .add(field(string("discriminatorValue"), scalarType()))
 
 
                                          ).defaultValue(new StringNodeImpl("string"))
@@ -298,7 +298,7 @@ public class Raml10Grammar extends BaseRamlGrammar
     protected ObjectRule properties()
     {
         return objectType()
-                           .with(field(stringType(), ref("type")).then(PropertyNode.class));
+                           .with(field(scalarType(), ref("type")).then(PropertyNode.class));
     }
 
     protected Rule objectTypeLiteral()
@@ -308,7 +308,7 @@ public class Raml10Grammar extends BaseRamlGrammar
 
     protected KeyValueRule mediaTypeField()
     {
-        return field(mediaTypeKey(), anyOf(stringType(), array(stringType())));
+        return field(mediaTypeKey(), anyOf(scalarType(), array(scalarType())));
     }
 
 }

@@ -33,18 +33,6 @@ public class SYNullNode extends SYBaseRamlNode implements NullNode
         super(yamlNode);
     }
 
-    @Override
-    public Object getValue()
-    {
-        return null;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "null";
-    }
-
     @Nonnull
     @Override
     public org.raml.nodes.Node copy()

@@ -52,15 +52,8 @@ public class TreeDumper
         printIndent();
         dumpNode(node);
         dump.append(" (");
-        if (node.getStartPosition() != null)
-        {
-            dump.append("Start: ").append(node.getStartPosition().getIndex());
-        }
-
-        if (node.getEndPosition() != null)
-        {
-            dump.append(" , End: ").append(node.getEndPosition().getIndex());
-        }
+        dump.append("Start: ").append(node.getStartPosition().getIndex());
+        dump.append(" , End: ").append(node.getEndPosition().getIndex());
         if (node.getSource() != null)
         {
             dump.append(", Source: ");
@@ -104,15 +97,8 @@ public class TreeDumper
             dump.append(" -> {").append(refNode == null ? "null" : refNode.getClass().getSimpleName());
             if (refNode != null)
             {
-                if (refNode.getStartPosition() != null)
-                {
-                    dump.append(" RefStart: ").append(refNode.getStartPosition().getIndex());
-                }
-
-                if (refNode.getEndPosition() != null)
-                {
-                    dump.append(" , RefEnd: ").append(refNode.getEndPosition().getIndex());
-                }
+                dump.append(" RefStart: ").append(refNode.getStartPosition().getIndex());
+                dump.append(" , RefEnd: ").append(refNode.getEndPosition().getIndex());
             }
             dump.append("}");
         }

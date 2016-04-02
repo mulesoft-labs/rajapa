@@ -19,6 +19,8 @@ import javax.annotation.Nonnull;
 
 public class KeyValueNodeImpl extends BaseNode implements KeyValueNode
 {
+    private Position startPosition;
+    private Position endPosition;
 
     public KeyValueNodeImpl()
     {
@@ -35,16 +37,28 @@ public class KeyValueNodeImpl extends BaseNode implements KeyValueNode
         super(node);
     }
 
+    @Nonnull
     @Override
     public Position getStartPosition()
     {
-        return getKey().getStartPosition();
+        return startPosition == null ? getKey().getStartPosition() : startPosition;
     }
 
+    @Nonnull
     @Override
     public Position getEndPosition()
     {
-        return getValue().getEndPosition();
+        return endPosition == null ? getValue().getEndPosition() : endPosition;
+    }
+
+    public void setStartPosition(Position startPosition)
+    {
+        this.startPosition = startPosition;
+    }
+
+    public void setEndPosition(Position endPosition)
+    {
+        this.endPosition = endPosition;
     }
 
     @Override

@@ -3,15 +3,18 @@
     "resources": [
         {
             "relativeUri": "/top",
+            "displayName": "/top",
             "methods": [
                 {
                     "method": "get",
-                    "description": "some description"
+                    "description": "some description",
+                    "displayName": "get"
                 }
             ],
             "resources": [
                 {
                     "relativeUri": "/{id}",
+                    "displayName": "/{id}",
                     "methods": [
                         {
                             "method": "put"

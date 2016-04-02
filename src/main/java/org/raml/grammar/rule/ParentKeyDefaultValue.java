@@ -15,36 +15,24 @@
  */
 package org.raml.grammar.rule;
 
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.raml.nodes.SimpleTypeNode;
-
 import javax.annotation.Nonnull;
 
-public abstract class AbstractTypeRule extends Rule
+import org.raml.nodes.KeyValueNode;
+import org.raml.nodes.Node;
+
+public class ParentKeyDefaultValue implements DefaultValue
 {
 
     @Nonnull
     @Override
-    public Node apply(@Nonnull Node node)
+    public Node getDefaultValue(Node parent)
     {
-        if (matches(node))
+        Node grampa = parent.getParent();
+        if (grampa == null || !(grampa instanceof KeyValueNode))
         {
-            if (node instanceof SimpleTypeNode)
-            {
-                return createNodeUsingFactory(node, ((SimpleTypeNode) node).getValue());
-            }
-            else
-            {
-                return createNodeUsingFactory(node);
-            }
+            return ErrorNodeFactory.createInvalidNode(parent);
         }
-        else
-        {
-            return ErrorNodeFactory.createInvalidType(node, getType());
-        }
+        Node keyNode = ((KeyValueNode) grampa).getKey();
+        return keyNode.copy();
     }
-
-    @Nonnull
-    abstract NodeType getType();
 }

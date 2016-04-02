@@ -15,9 +15,12 @@
  */
 package org.raml.grammar.rule;
 
+import javax.annotation.Nonnull;
+
 import org.raml.nodes.Node;
 
 public interface DefaultValue
 {
+    @Nonnull
     Node getDefaultValue(Node parent);
 }

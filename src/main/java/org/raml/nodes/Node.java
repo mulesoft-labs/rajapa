@@ -27,12 +27,14 @@ public interface Node
      * The start position of this node
      * @return The position
      */
+    @Nonnull
     Position getStartPosition();
 
     /**
      * The end position of this node
      * @return The position
      */
+    @Nonnull
     Position getEndPosition();
 
     /**

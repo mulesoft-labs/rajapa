@@ -15,6 +15,7 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.raml.nodes.BaseNode;
@@ -43,12 +44,14 @@ public abstract class SYBaseRamlNode extends BaseNode
         return yamlNode;
     }
 
+    @Nonnull
     @Override
     public Position getStartPosition()
     {
         return new SYPosition(yamlNode.getStartMark());
     }
 
+    @Nonnull
     @Override
     public Position getEndPosition()
     {

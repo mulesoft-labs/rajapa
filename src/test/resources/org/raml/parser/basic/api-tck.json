@@ -6,6 +6,7 @@
                 "displayName": "/top",
                 "methods": [
                     {
+                        "displayName": "get",
                         "description": "get something",
                         "method": "get"
                     }

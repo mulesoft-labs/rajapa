@@ -5,22 +5,17 @@
         "main": {
             "usage": "how to use this resource type",
             "description": "this is the main type",
-            "is": [
-                {
+            "is": [{
                     "paged": {
                         "header2": "<<header2>>"
                     }
-                }
-            ],
+                }],
             "get": {
-                "is": [
-                    {
-                        "secured":
-                            {
-                                "header3": "h3"
-                            }
-                    }
-                ],
+                "is": [{
+                        "secured": {
+                            "header3": "h3"
+                        }
+                    }],
                 "headers": {
                     "<<header1>>": {
                         "type": "string"
@@ -48,42 +43,42 @@
     "resources": [
         {
             "relativeUri": "/users",
-            "type":  {
+            "type": {
                 "main": {
                     "header1": "h1",
                     "header2": "h2"
                 }
             },
-            "is": [
-                {
+            "displayName": "/users",
+            "description": "this is the main type",
+            "is": [{
                     "paged": {
                         "header2": "h2"
                     }
-                }
-            ],
-            "description": "this is the main type",
+                }],
             "methods": [
                 {
                     "method": "get",
-                    "is": [
-                        {
-                            "secured":
-                            {
+                    "is": [{
+                            "secured": {
                                 "header3": "h3"
                             }
-                        }
-                    ],
+                        }],
                     "headers": {
                         "h1": {
-                            "type": "string"
+                            "type": "string",
+                            "displayName": "h1"
                         },
                         "h3": {
-                            "type": "string"
+                            "type": "string",
+                            "displayName": "h3"
                         },
                         "h2": {
-                            "type": "integer"
+                            "type": "integer",
+                            "displayName": "h2"
                         }
-                    }
+                    },
+                    "displayName": "get"
                 }
             ]
         }

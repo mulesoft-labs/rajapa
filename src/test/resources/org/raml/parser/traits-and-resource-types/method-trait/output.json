@@ -17,16 +17,19 @@
     "resources": [
         {
             "relativeUri": "/users",
+            "displayName": "/users",
             "methods": [
                 {
                     "method": "get",
                     "is": ["secured"],
+                    "displayName": "get",
                     "description": "Some requests require authentication.",
                     "headers": {
                         "access_token": {
                             "description": "Access Token",
                             "example": "5757gh76",
-                            "required": true
+                            "required": true,
+                            "displayName": "access_token"
                         }
                     }
                 }

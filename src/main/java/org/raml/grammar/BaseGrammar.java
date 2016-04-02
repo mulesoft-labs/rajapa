@@ -107,9 +107,9 @@ public class BaseGrammar
         return new KeyValueRule(keyRule, valueRule).required();
     }
 
-    public StringTypeRule stringType()
+    public ScalarTypeRule scalarType()
     {
-        return new StringTypeRule();
+        return new ScalarTypeRule();
     }
 
     public BooleanTypeRule booleanType()
@@ -157,6 +157,11 @@ public class BaseGrammar
         return anyOf(rule, nullValue());
     }
 
+    public MinLengthRule minLength(int length)
+    {
+        return new MinLengthRule(length);
+    }
+
     @Nonnull
     protected NullValueRule nullValue()
     {
@@ -173,4 +178,8 @@ public class BaseGrammar
         return new ConditionalRule(rule);
     }
 
+    public DefaultValue parentKey()
+    {
+        return new ParentKeyDefaultValue();
+    }
 }

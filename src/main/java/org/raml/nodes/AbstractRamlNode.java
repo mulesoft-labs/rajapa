@@ -15,6 +15,7 @@
  */
 package org.raml.nodes;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class AbstractRamlNode extends BaseNode
@@ -47,15 +48,17 @@ public abstract class AbstractRamlNode extends BaseNode
         this.startPosition = startPosition;
     }
 
+    @Nonnull
     @Override
     public Position getEndPosition()
     {
-        return endPosition != null ? endPosition : getSource() != null ? getSource().getEndPosition() : null;
+        return endPosition != null ? endPosition : getSource() != null ? getSource().getEndPosition() : DefaultPosition.emptyPosition();
     }
 
+    @Nonnull
     @Override
     public Position getStartPosition()
     {
-        return startPosition != null ? startPosition : getSource() != null ? getSource().getStartPosition() : null;
+        return startPosition != null ? startPosition : getSource() != null ? getSource().getStartPosition() : DefaultPosition.emptyPosition();
     }
 }

@@ -15,11 +15,14 @@
  */
 package org.raml.grammar.rule;
 
-import org.raml.nodes.Node;
-import org.raml.suggester.Suggestion;
+import java.util.List;
 
 import javax.annotation.Nonnull;
-import java.util.List;
+
+import org.raml.nodes.Node;
+import org.raml.nodes.ReferenceNode;
+import org.raml.nodes.SimpleTypeNode;
+import org.raml.suggester.Suggestion;
 
 public class NodeReferenceRule extends StringTypeRule
 {
@@ -36,5 +39,24 @@ public class NodeReferenceRule extends StringTypeRule
     public List<Suggestion> getSuggestions(Node node)
     {
         return suggester.getSuggestions(node);
+    }
+
+    @Override
+    public Node apply(@Nonnull Node node)
+    {
+        if (node instanceof ReferenceNode)
+        {
+            return node;
+        }
+        else
+        {
+            return super.apply(node);
+        }
+    }
+
+    @Override
+    public boolean matches(@Nonnull Node node)
+    {
+        return node instanceof SimpleTypeNode || node instanceof ReferenceNode;
     }
 }

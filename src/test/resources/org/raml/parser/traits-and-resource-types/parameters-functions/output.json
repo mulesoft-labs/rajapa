@@ -9,17 +9,17 @@
     "resources": [
         {
             "relativeUri": "/users",
+            "displayName": "/users",
             "methods": [
                 {
                     "method": "get",
-                    "is": [
-                        {
+                    "is": [{
                             "functional": {
                                 "param1": "mouse",
                                 "param2": "cats"
                             }
-                        }
-                    ],
+                        }],
+                    "displayName": "get",
                     "description": "there were two mice and one cat"
                 }
             ]

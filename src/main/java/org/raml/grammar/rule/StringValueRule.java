@@ -15,17 +15,17 @@
  */
 package org.raml.grammar.rule;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.StringNode;
 import org.raml.suggester.DefaultSuggestion;
 import org.raml.suggester.Suggestion;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class StringValueRule extends Rule
 {
@@ -58,6 +58,7 @@ public class StringValueRule extends Rule
         return this;
     }
 
+    @Nonnull
     @Override
     public Node apply(@Nonnull Node node)
     {
@@ -86,5 +87,10 @@ public class StringValueRule extends Rule
     public String getDescription()
     {
         return "\"" + value + "\"";
+    }
+
+    public String getValue()
+    {
+        return value;
     }
 }

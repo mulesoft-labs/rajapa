@@ -16,7 +16,6 @@
 package org.raml.parser;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -96,7 +95,6 @@ public class SpecInterfacesTestCase
         Resource top = resources.get(0);
         assertThat(top.relativeUri().value(), is("/top"));
         assertThat(top.description().value(), is("top description"));
-        assertThat(top.displayName(), nullValue()); // TODO calculated field
-        assertThat(top.displayName(), nullValue());
+        assertThat(top.displayName(), is("/top"));
     }
 }

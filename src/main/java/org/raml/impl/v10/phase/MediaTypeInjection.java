@@ -112,12 +112,14 @@ public class MediaTypeInjection implements Phase
             super(mediaTypeInjectedNode);
         }
 
+        @Nonnull
         @Override
         public Position getStartPosition()
         {
             return getParent() != null ? getParent().getStartPosition() : DefaultPosition.emptyPosition();
         }
 
+        @Nonnull
         @Override
         public Position getEndPosition()
         {

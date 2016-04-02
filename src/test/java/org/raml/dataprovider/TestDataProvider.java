@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -51,7 +53,28 @@ public abstract class TestDataProvider
         {
             System.out.println(StringUtils.repeat("=", 120));
             System.out.println("\ndump\n----\n" + dump);
+            updateTests();
             System.out.println(StringUtils.repeat("=", 120));
+        }
+
+        private void updateTests()
+        {
+            if (System.getProperty("updateTests") != null)
+            {
+                try
+                {
+                    String path = expectedOutput.getPath();
+                    path = path.replace("target/test-classes", "src/test/resources");
+                    Files.write(Paths.get(path), dump.getBytes("UTF-8"));
+                    String idx = "/test/resources";
+                    System.out.println(StringUtils.repeat("-", 120));
+                    System.out.println("---> rewriting output file: " + path.substring(path.indexOf(idx) + idx.length() + 1) + " <---");
+                }
+                catch (IOException ioe)
+                {
+                    throw new RuntimeException(ioe);
+                }
+            }
         }
     };
 

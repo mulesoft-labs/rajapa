@@ -19,6 +19,7 @@
     "resources": [
         {
             "relativeUri": "/users",
+            "displayName": "/users",
             "methods": [
                 {
                     "method": "get",
@@ -26,12 +27,15 @@
                     "headers": {
                         "present": {
                             "type": "string",
+                            "displayName": "present",
                             "example": "yes"
                         },
                         "fixed": {
-                            "example": "yes"
+                            "example": "yes",
+                            "displayName": "fixed"
                         }
-                    }
+                    },
+                    "displayName": "get"
                 }
             ]
         }

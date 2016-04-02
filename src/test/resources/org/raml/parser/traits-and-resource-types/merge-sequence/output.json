@@ -9,11 +9,13 @@
     "resources": [
         {
             "relativeUri": "/users",
+            "displayName": "/users",
             "methods": [
                 {
                     "method": "get",
                     "is": ["secured"],
-                    "protocols": ["HTTP", "HTTPS"]
+                    "protocols": ["HTTP", "HTTPS"],
+                    "displayName": "get"
                 }
             ]
         }

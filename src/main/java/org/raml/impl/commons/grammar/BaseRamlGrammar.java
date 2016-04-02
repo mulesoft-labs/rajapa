@@ -82,13 +82,13 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule baseUriField()
     {
-        return field(baseUriKey(), stringType());
+        return field(baseUriKey(), scalarType());
     }
 
 
     protected KeyValueRule titleField()
     {
-        return requiredField(titleKey(), stringType());
+        return requiredField(titleKey(), allOf(scalarType(), minLength(1)));
     }
 
 
@@ -100,12 +100,12 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule versionField()
     {
-        return field(versionKey(), stringType());
+        return field(versionKey(), scalarType());
     }
 
     protected KeyValueRule mediaTypeField()
     {
-        return field(mediaTypeKey(), stringType());
+        return field(mediaTypeKey(), scalarType());
     }
 
     public Rule resourceType()
@@ -138,7 +138,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule contentField()
     {
-        return requiredField(string("content"), stringType());
+        return requiredField(string("content"), scalarType());
     }
 
 
@@ -148,7 +148,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     {
         return objectType()
                            .with(
-                                   field(stringType(), securityScheme())
+                                   field(scalarType(), securityScheme())
                                                                         .then(SecuritySchemeNode.class)
                            );
     }
@@ -186,12 +186,12 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     protected Rule securitySchemeSettings()
     {
         return objectType()
-                           .with(field(string("requestTokenUri"), stringType()))
-                           .with(field(string("authorizationUri"), stringType()))
-                           .with(field(string("tokenCredentialsUri"), stringType()))
-                           .with(field(string("accessTokenUri"), stringType()))
-                           .with(field(string("authorizationGrants"), array(stringType())))
-                           .with(field(string("scopes"), array(stringType())));
+                           .with(field(string("requestTokenUri"), scalarType()))
+                           .with(field(string("authorizationUri"), scalarType()))
+                           .with(field(string("tokenCredentialsUri"), scalarType()))
+                           .with(field(string("accessTokenUri"), scalarType()))
+                           .with(field(string("authorizationGrants"), array(scalarType())))
+                           .with(field(string("scopes"), array(scalarType())));
     }
 
     // Traits
@@ -204,7 +204,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     {
         // TODO resourceRule().with(parameterKey(), any())
         return objectType("trait")
-                                  .with(field(stringType(), any())
+                                  .with(field(scalarType(), any())
                                                                   .then(TraitNode.class));
     }
 
@@ -212,7 +212,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     protected Rule resourceTypes()
     {
         // TODO resourceRule().with(parameterKey(), any())
-        return objectType().with(field(stringType(), resourceType()).then(ResourceTypeNode.class));
+        return objectType().with(field(scalarType(), resourceType()).then(ResourceTypeNode.class));
     }
 
 
@@ -240,7 +240,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     protected Rule schemas()
     {
         return objectType()
-                           .with(field(stringType(), stringType()));
+                           .with(field(scalarType(), scalarType()));
     }
 
     // Method
@@ -314,13 +314,13 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     protected ObjectRule mimeType()
     {
         return objectType()
-                           .with(field(string("schema"), stringType()))
-                           .with(field(string("example"), stringType()));
+                           .with(field(string("schema"), scalarType()))
+                           .with(field(string("example"), scalarType()));
     }
 
     protected Rule parameters()
     {
-        return objectType().with(field(stringType(), parameter()));
+        return objectType().with(field(scalarType(), parameter()));
     }
 
     /**
@@ -412,22 +412,22 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule descriptionField()
     {
-        return field(descriptionKey(), stringType());
+        return field(descriptionKey(), scalarType());
     }
 
     protected KeyValueRule displayNameField()
     {
-        return field(displayNameKey(), stringType());
+        return field(displayNameKey(), scalarType()).defaultValue(parentKey());
     }
 
     protected KeyValueRule securedByField()
     {
-        return field(securedByKey(), array(anyOf(nullValue(), stringType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class)), any())));
+        return field(securedByKey(), array(anyOf(nullValue(), scalarType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class)), any())));
     }
 
     protected KeyValueRule usageField()
     {
-        return field(string("usage"), stringType());
+        return field(string("usage"), scalarType());
     }
 
     protected KeyValueRule isField()
@@ -442,8 +442,8 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected Rule anyTypeReference(String referenceKey, Class<? extends Node> simpleClass, Class<? extends Node> parametrisedClass)
     {
-        final KeyValueRule paramsRule = field(stringType(), stringType());
-        final KeyValueRule typeWithParams = field(stringType(), objectType().with(paramsRule));
+        final KeyValueRule paramsRule = field(scalarType(), scalarType());
+        final KeyValueRule typeWithParams = field(scalarType(), objectType().with(paramsRule));
         final NodeFactory factory = new NodeReferenceFactory(simpleClass);
         final NodeFactory parametrisedFactory = new NodeReferenceFactory(parametrisedClass);
         return anyOf(new NodeReferenceRule(referenceKey).then(factory), new ParametrizedNodeReferenceRule(referenceKey).with(typeWithParams).then(parametrisedFactory));

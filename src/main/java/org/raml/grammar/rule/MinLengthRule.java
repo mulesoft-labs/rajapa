@@ -22,6 +22,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.raml.nodes.Node;
+import org.raml.nodes.SimpleTypeNode;
 import org.raml.nodes.StringNode;
 import org.raml.suggester.Suggestion;
 
@@ -44,9 +45,9 @@ public class MinLengthRule extends Rule
     @Override
     public boolean matches(@Nonnull Node node)
     {
-        if (node instanceof StringNode)
+        if (node instanceof SimpleTypeNode)
         {
-            return ((StringNode) node).getValue().length() >= minLength;
+            return ((SimpleTypeNode) node).getLiteralValue().length() >= minLength;
         }
         return false;
     }
