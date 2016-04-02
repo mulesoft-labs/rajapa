@@ -143,7 +143,7 @@ public class TypesTransformer implements Transformer
         for (Node typeNode : typesNode.getChildren())
         {
             String typeElement = ((SYStringNode) typeNode).getValue();
-            Set<String> splitTypes = Sets.newHashSet();
+            Set<String> splitTypes = Sets.newLinkedHashSet();
             for (String type : typeElement.split("\\|"))
             {
                 if (StringUtils.isNotBlank(StringUtils.trimToNull(type)))
