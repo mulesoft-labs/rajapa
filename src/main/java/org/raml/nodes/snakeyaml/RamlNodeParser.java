@@ -62,7 +62,7 @@ public class RamlNodeParser
         {
             ErrorNode errorNode = new ErrorNode(e.getMessage());
             Mark problemMark = e.getProblemMark();
-            errorNode.setStartPosition(new DefaultPosition(problemMark.getIndex(), problemMark.getLine(), 1, ""));
+            errorNode.setStartPosition(new DefaultPosition(problemMark.getIndex(), problemMark.getLine(), 0, ""));
             errorNode.setEndPosition(new DefaultPosition(problemMark.getIndex() + 1, problemMark.getLine(), problemMark.getColumn(), ""));
             return errorNode;
         }
