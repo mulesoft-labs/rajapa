@@ -109,8 +109,21 @@ public class TypesTransformer implements Transformer
             {
                 for (String type : typeNode.getValue().split("\\|"))
                 {
-                    List<PropertyNode> unionProperties = getTypeProperties(getType(typesRoot, StringUtils.trim(type)));
-                    addProperties(properties, unionProperties);
+                    String trimmedType = StringUtils.trim(type);
+                    ObjectTypeNode parentTypeNode = getType(typesRoot, trimmedType);
+                    if (parentTypeNode == null)
+                    {
+                        Node errorNode = new ErrorNode("inexistent type definition for " + trimmedType);
+                        errorNode.setSource(typeNode);
+                        typeNode.replaceWith(errorNode);
+                        // TODO - might be improved adding a multiple error for every type that's non existent - migueloliva - Apr 5, 2016
+                        return; // let's quit after the first error
+                    }
+                    else
+                    {
+                        List<PropertyNode> unionProperties = getTypeProperties(parentTypeNode);
+                        addProperties(properties, unionProperties);
+                    }
                 }
             }
         }
