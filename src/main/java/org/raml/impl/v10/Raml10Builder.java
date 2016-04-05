@@ -24,6 +24,7 @@ import org.raml.RamlBuilder;
 import org.raml.grammar.rule.ErrorNodeFactory;
 import org.raml.impl.commons.RamlHeader;
 import org.raml.impl.commons.phase.AnnotationValidationPhase;
+import org.raml.impl.commons.phase.ExampleValidationPhase;
 import org.raml.impl.commons.phase.ExtensionsMerger;
 import org.raml.impl.commons.phase.IncludeResolver;
 import org.raml.impl.commons.phase.ResourceTypesTraitsTransformer;
@@ -141,7 +142,9 @@ public class Raml10Builder
 
         // Schema Types example validation
 
-        return Arrays.asList(first, second, third, thirdAndAHalf, fourth, fifth);
+        final ExampleValidationPhase sixth = new ExampleValidationPhase();
+
+        return Arrays.asList(first, second, third, thirdAndAHalf, fourth, fifth, sixth);
 
     }
 }

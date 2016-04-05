@@ -40,6 +40,11 @@ public class BaseGrammar
         return new ObjectRule();
     }
 
+    public ExampleRule exampleType()
+    {
+        return new ExampleRule();
+    }
+
     public ObjectRule objectType(String name)
     {
         final ObjectRule mapping = objectType();

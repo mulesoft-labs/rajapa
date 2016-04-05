@@ -27,6 +27,7 @@ import org.raml.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.impl.commons.nodes.AnnotationNode;
 import org.raml.impl.commons.nodes.AnnotationReferenceNode;
 import org.raml.impl.commons.nodes.AnnotationTypeNode;
+import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.impl.commons.nodes.ExtendsNode;
 import org.raml.impl.commons.nodes.PropertyNode;
 import org.raml.impl.v10.nodes.types.factories.TypeNodeFactory;
@@ -228,7 +229,7 @@ public class Raml10Grammar extends BaseRamlGrammar
 
     protected KeyValueRule exampleField()
     {
-        return field(string("example"), any());
+        return field(string("example"), any().then(ExampleTypeNode.class));
     }
 
     private KeyValueRule defaultField()
