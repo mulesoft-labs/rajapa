@@ -72,6 +72,11 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
 
     public String getTypeName()
     {
+        Node type = this.getParent().getParent().get("type");
+        if (type != null && type instanceof StringNode && !"object".equals(((StringNode) type).getValue()))
+        {
+            return ((StringNode) type).getValue();
+        }
         return ((StringNode) ((KeyValueNode) this.getParent().getParent().getParent()).getKey()).getValue();
     }
 

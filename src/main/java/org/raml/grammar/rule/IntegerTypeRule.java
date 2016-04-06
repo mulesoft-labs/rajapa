@@ -39,6 +39,11 @@ public class IntegerTypeRule extends AbstractTypeRule
         this.range = range;
     }
 
+    public IntegerTypeRule()
+    {
+        this(null);
+    }
+
     @Nonnull
     @Override
     public List<Suggestion> getSuggestions(Node node)

@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class BaseGrammar
@@ -135,6 +136,11 @@ public class BaseGrammar
     public AnyOfRule anyOf(Rule... rules)
     {
         return new AnyOfRule(Arrays.asList(rules));
+    }
+
+    public AnyOfRule anyOf(List<Rule> rules)
+    {
+        return new AnyOfRule(rules);
     }
 
     public AnyOfRule firstOf(Rule... rules)
