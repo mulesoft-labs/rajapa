@@ -35,6 +35,7 @@ import org.raml.grammar.rule.RegexValueRule;
 import org.raml.grammar.rule.Rule;
 import org.raml.grammar.rule.StringTypeRule;
 import org.raml.grammar.rule.StringValueRule;
+import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.impl.commons.nodes.PropertyNode;
 import org.raml.impl.v10.nodes.types.builtin.BooleanTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.NumericTypeNode;
@@ -43,6 +44,10 @@ import org.raml.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.impl.v10.nodes.types.builtin.TypeNodeVisitor;
 import org.raml.nodes.IntegerNode;
+import org.raml.nodes.KeyValueNode;
+import org.raml.nodes.Node;
+import org.raml.nodes.StringNode;
+import org.raml.nodes.snakeyaml.SYStringNode;
 
 
 public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
@@ -76,8 +81,13 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
     @Override
     public Rule visitObject(ObjectTypeNode objectTypeNode)
     {
+        return getPropertiesRules(objectTypeNode.getProperties());
+    }
+
+    private ObjectRule getPropertiesRules(List<PropertyNode> properties)
+    {
         ObjectRule objectRule = new ObjectRule();
-        List<PropertyNode> properties = objectTypeNode.getProperties();
+
         for (PropertyNode property : properties)
         {
             TypeNode typeNode = property.getTypeNode();
@@ -121,6 +131,14 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
             typeRule.and(new DivisorValueRule(numericTypeNode.getMultiple()));
         }
         return typeRule;
+    }
+
+    @Override
+    public Rule visitExample(List<PropertyNode> properties)
+    {
+        ObjectRule propertiesRules = getPropertiesRules(properties);
+        propertiesRules.setStrict(true);
+        return propertiesRules;
     }
 
 

@@ -13,24 +13,42 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.v10.nodes.types.builtin;
-
+package org.raml.grammar.rule;
 
 import java.util.List;
 
-import org.raml.impl.commons.nodes.ExampleTypeNode;
-import org.raml.impl.commons.nodes.PropertyNode;
+import javax.annotation.Nonnull;
 
-public interface TypeNodeVisitor<T>
+import org.raml.nodes.Node;
+import org.raml.nodes.ObjectNode;
+import org.raml.suggester.Suggestion;
+
+public class ExampleRule extends Rule
 {
 
-    T visitString(StringTypeNode stringTypeNode);
 
-    T visitObject(ObjectTypeNode objectTypeNode);
+    @Nonnull
+    @Override
+    public List<Suggestion> getSuggestions(Node node)
+    {
+        return null;
+    }
 
-    T visitBoolean(BooleanTypeNode booleanTypeNode);
+    @Override
+    public boolean matches(@Nonnull Node node)
+    {
+        return node instanceof ObjectNode;
+    }
 
-    T visitNumber(NumericTypeNode numericTypeNode);
+    @Override
+    public Node apply(@Nonnull Node node)
+    {
+        return node;
+    }
 
-    T visitExample(List<PropertyNode> properties);
+    @Override
+    public String getDescription()
+    {
+        return null;
+    }
 }
