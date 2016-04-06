@@ -26,14 +26,10 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
-import org.raml.impl.v10.nodes.LibraryRefNode;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
-import org.raml.nodes.NullNode;
 import org.raml.nodes.ObjectNode;
-import org.raml.nodes.StringNode;
 import org.raml.suggester.Suggestion;
 
 public class ObjectRule extends Rule
@@ -41,9 +37,17 @@ public class ObjectRule extends Rule
     private List<KeyValueRule> fields;
     private ConditionalRules conditionalRules;
 
+    private boolean strict = false;
+
     public ObjectRule()
     {
         this.fields = new ArrayList<>();
+    }
+
+    public ObjectRule(boolean strict)
+    {
+        this();
+        this.strict = strict;
     }
 
     @Nonnull
@@ -75,11 +79,30 @@ public class ObjectRule extends Rule
         return false;
     }
 
-
     @Override
     public boolean matches(@Nonnull Node node)
     {
-        return node instanceof ObjectNode;
+        boolean isObjectNode = node instanceof ObjectNode;
+        if (!strict)
+        {
+            return isObjectNode;
+        }
+        else
+        {
+            return isObjectNode && allChildrenMatch(node);
+        }
+    }
+
+    private boolean allChildrenMatch(Node node)
+    {
+        List<Node> children = node.getChildren();
+        final List<KeyValueRule> allFieldRules = getAllFieldRules(node);
+        boolean matches = true;
+        for (KeyValueRule rule : allFieldRules)
+        {
+            matches &= matchesAny(rule, children);
+        }
+        return matches;
     }
 
     @Override
@@ -207,6 +230,16 @@ public class ObjectRule extends Rule
     public String getDescription()
     {
         return "Mapping";
+    }
+
+    public boolean isStrict()
+    {
+        return strict;
+    }
+
+    public void setStrict(boolean strict)
+    {
+        this.strict = strict;
     }
 
     public ObjectRule with(ConditionalRules conditional)

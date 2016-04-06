@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.raml.nodes.DefaultPosition;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.KeyValueNodeImpl;
@@ -35,6 +36,7 @@ public class KeyValueRule extends Rule
     private final Rule valueRule;
     private String description;
     private boolean required;
+
     private DefaultValue defaultValue;
 
     public KeyValueRule(Rule keyRule, Rule valueRule)

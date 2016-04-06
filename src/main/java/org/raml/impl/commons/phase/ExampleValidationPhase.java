@@ -15,10 +15,14 @@
  */
 package org.raml.impl.commons.phase;
 
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
+import org.raml.grammar.rule.AnyOfRule;
 import org.raml.grammar.rule.Rule;
 import org.raml.impl.commons.nodes.ExampleTypeNode;
+import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.nodes.Node;
 import org.raml.phase.Phase;
@@ -42,7 +46,15 @@ public class ExampleValidationPhase implements Phase
                 type = (ObjectTypeNode) types.get(example.getTypeName());
                 if (type != null)
                 {
-                    rule = example.visitProperties(new TypeToRuleVisitor(), type.getProperties());
+                    if (!type.getInheritedProperties().isEmpty())
+                    {
+                        List<Rule> inheritanceRules = getInheritanceRules(example, type);
+                        rule = new AnyOfRule(inheritanceRules);
+                    }
+                    else
+                    {
+                        rule = example.visitProperties(new TypeToRuleVisitor(), type.getProperties());
+                    }
                     transform = rule.apply(example);
                 }
 
@@ -58,5 +70,15 @@ public class ExampleValidationPhase implements Phase
             }
         }
         return tree;
+    }
+
+    private List<Rule> getInheritanceRules(ExampleTypeNode example, ObjectTypeNode type)
+    {
+        List<Rule> rules = Lists.newArrayList();
+        for (InheritedPropertiesInjectedNode inheritedProperties : type.getInheritedProperties())
+        {
+            rules.add(example.visitProperties(new TypeToRuleVisitor(), inheritedProperties.getProperties()));
+        }
+        return rules;
     }
 }

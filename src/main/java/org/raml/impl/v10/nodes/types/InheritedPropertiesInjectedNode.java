@@ -15,10 +15,16 @@
  */
 package org.raml.impl.v10.nodes.types;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
+import org.raml.impl.commons.nodes.PropertyNode;
 import org.raml.nodes.BaseNode;
 import org.raml.nodes.DefaultPosition;
+import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
@@ -34,6 +40,16 @@ public class InheritedPropertiesInjectedNode extends BaseNode implements ObjectN
     public InheritedPropertiesInjectedNode(InheritedPropertiesInjectedNode inheritedPropertiesInjectedNode)
     {
         super(inheritedPropertiesInjectedNode);
+    }
+
+    public List<PropertyNode> getProperties()
+    {
+        List<PropertyNode> properties = Lists.newArrayList();
+        for (Node propertyNode : ((KeyValueNode) this.getChildren().get(0)).getValue().getChildren())
+        {
+            properties.add((PropertyNode) propertyNode);
+        }
+        return properties;
     }
 
     @Nonnull

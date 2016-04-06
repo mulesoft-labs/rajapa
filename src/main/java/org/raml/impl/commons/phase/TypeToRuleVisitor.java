@@ -84,9 +84,10 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
         return getPropertiesRules(objectTypeNode.getProperties());
     }
 
-    private Rule getPropertiesRules(List<PropertyNode> properties)
+    private ObjectRule getPropertiesRules(List<PropertyNode> properties)
     {
         ObjectRule objectRule = new ObjectRule();
+
         for (PropertyNode property : properties)
         {
             TypeNode typeNode = property.getTypeNode();
@@ -135,7 +136,9 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
     @Override
     public Rule visitExample(List<PropertyNode> properties)
     {
-        return getPropertiesRules(properties);
+        ObjectRule propertiesRules = getPropertiesRules(properties);
+        propertiesRules.setStrict(true);
+        return propertiesRules;
     }
 
 
