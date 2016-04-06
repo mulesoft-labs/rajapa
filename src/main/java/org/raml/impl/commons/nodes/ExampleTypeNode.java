@@ -92,4 +92,10 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
     {
         return NodeType.Object;
     }
+
+    @Override
+    public String toString()
+    {
+        return getSource().toString();
+    }
 }
