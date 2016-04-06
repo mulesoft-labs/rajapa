@@ -41,13 +41,13 @@ public abstract class TestDataProvider
 {
 
     private static final String DEFAULT_IGNORE_TEST_FILE_NAME = "IGNORE_TEST_FILE_NAME_THAT_WONT_BE_CREATED_BY_MISTAKE"; // _AND_WILL_NOT_BREAK_ANYTHING_ELSE_PRETTY_PLEASE
-    
+
     protected File input;
     protected File expectedOutput;
     protected String name;
 
     private boolean ignoreTest;
-    
+
     protected String dump;
     protected String expected;
 
@@ -62,7 +62,7 @@ public abstract class TestDataProvider
             updateTests();
             System.out.println(StringUtils.repeat("=", 120));
         }
-        
+
         private void updateTests()
         {
             if (System.getProperty("updateTests") != null)
@@ -83,7 +83,7 @@ public abstract class TestDataProvider
             }
         }
     };
-    
+
     public TestDataProvider(File input, File expectedOutput, String name, boolean ignoreTest)
     {
         this.input = input;
@@ -91,9 +91,10 @@ public abstract class TestDataProvider
         this.name = name;
         this.ignoreTest = ignoreTest;
     }
-    
+
     @Before
-    public void ignoreTestIfAppropiate() {
+    public void ignoreTestIfAppropiate()
+    {
         Assume.assumeFalse(ignoreTest);
     }
 
@@ -101,8 +102,8 @@ public abstract class TestDataProvider
     {
         return getData(baseFolder, inputFileName, outputFileName, DEFAULT_IGNORE_TEST_FILE_NAME);
     }
-    
-    public static Collection<Object[]> getData(URI baseFolder, String inputFileName, String outputFileName, String ignoreTestFileName) throws URISyntaxException 
+
+    public static Collection<Object[]> getData(URI baseFolder, String inputFileName, String outputFileName, String ignoreTestFileName) throws URISyntaxException
     {
         return scanPath(StringUtils.EMPTY, baseFolder, inputFileName, outputFileName, ignoreTestFileName);
     }
