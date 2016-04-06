@@ -42,9 +42,9 @@ import org.raml.utils.TreeDumper;
 public class RamlBuilderTestCase extends TestDataProvider
 {
 
-    public RamlBuilderTestCase(File input, File expectedOutput, String name)
+    public RamlBuilderTestCase(File input, File expectedOutput, String name, boolean ignoreTest)
     {
-        super(input, expectedOutput, name);
+        super(input, expectedOutput, name, ignoreTest);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class RamlBuilderTestCase extends TestDataProvider
     @Parameterized.Parameters(name = "{2}")
     public static Collection<Object[]> getData() throws URISyntaxException
     {
-        return getData(RamlBuilderTestCase.class.getResource("").toURI(), "input.raml", "output.txt");
+        return getData(RamlBuilderTestCase.class.getResource("").toURI(), "input.raml", "output.txt", "ignore-test");
     }
 
 }

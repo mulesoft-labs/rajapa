@@ -43,9 +43,9 @@ public class ApiTckTestCase extends TestDataProvider
     private static final String INPUT_FILE_NAME = "input.raml";
     private static final String OUTPUT_FILE_NAME = "api-tck.json";
 
-    public ApiTckTestCase(File input, File expected, String name)
+    public ApiTckTestCase(File input, File expected, String name, boolean ignoreTest)
     {
-        super(input, expected, name);
+        super(input, expected, name, false);
     }
 
     @Test
@@ -85,6 +85,7 @@ public class ApiTckTestCase extends TestDataProvider
         return getData(ApiTckTestCase.class.getResource("").toURI(), INPUT_FILE_NAME, OUTPUT_FILE_NAME);
     }
 
+    @Override
     protected String[] getKeysToFilter()
     {
         return new String[] {"__METADATA__", "RAMLVersion"};
