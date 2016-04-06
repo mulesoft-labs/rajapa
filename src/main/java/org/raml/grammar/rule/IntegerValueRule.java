@@ -48,7 +48,7 @@ public class IntegerValueRule extends Rule
     {
         if (node instanceof IntegerNode)
         {
-            return ((IntegerNode) node).getValue().equals(number);
+            return ((IntegerNode) node).getValue().equals(number.intValue());
         }
         else
         {

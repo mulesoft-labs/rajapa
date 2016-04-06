@@ -15,6 +15,10 @@
  */
 package org.raml.impl.v10.nodes.types.builtin;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -22,6 +26,8 @@ import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
 import org.raml.nodes.AbstractRamlNode;
+import org.raml.nodes.StringNode;
+import org.raml.nodes.snakeyaml.SYArrayNode;
 import org.raml.utils.NodeSelector;
 
 public class StringTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
@@ -52,6 +58,21 @@ public class StringTypeNode extends AbstractRamlNode implements ObjectNode, Type
     public String getPattern()
     {
         return NodeSelector.selectStringValue("pattern", getSource());
+    }
+
+    @Nonnull
+    public List<String> getEnumValues()
+    {
+        Node values = this.get("enum");
+        List<String> enumValues = Lists.newArrayList();
+        if (values != null && values instanceof SYArrayNode)
+        {
+            for (Node node : values.getChildren())
+            {
+                enumValues.add(((StringNode) node).getValue());
+            }
+        }
+        return enumValues;
     }
 
     @Nonnull
