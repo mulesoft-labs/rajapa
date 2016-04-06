@@ -17,10 +17,13 @@ package org.raml.impl.commons.phase;
 
 import com.google.common.collect.Lists;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.raml.grammar.rule.AnyOfRule;
 import org.raml.grammar.rule.Rule;
+import org.raml.grammar.rule.StringValueRule;
+import org.raml.impl.commons.model.BuiltInType;
 import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
@@ -41,9 +44,10 @@ public class ExampleValidationPhase implements Phase
         for (ExampleTypeNode example : examples)
         {
             transform = null;
-            if (types != null)
+            String typeName = example.getTypeName();
+            if (types != null && !BuiltInType.isBuiltInType(typeName))
             {
-                type = (ObjectTypeNode) types.get(example.getTypeName());
+                type = (ObjectTypeNode) types.get(typeName);
                 if (type != null)
                 {
                     if (!type.getInheritedProperties().isEmpty())

@@ -15,11 +15,14 @@
  */
 package org.raml.impl.commons.phase;
 
+import com.google.common.collect.Lists;
+
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.grammar.rule.AllOfRule;
+import org.raml.grammar.rule.AnyOfRule;
 import org.raml.grammar.rule.BooleanTypeRule;
 import org.raml.grammar.rule.DivisorValueRule;
 import org.raml.grammar.rule.FloatTypeRule;
@@ -113,6 +116,8 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
     public Rule visitNumber(NumericTypeNode numericTypeNode)
     {
         final AllOfRule typeRule = new AllOfRule();
+        typeRule.and(new IntegerTypeRule());
+
         if (numericTypeNode.getMinimum() != null && numericTypeNode.getMaximum() != null)
         {
             typeRule.and(new RangeValueRule(numericTypeNode.getMinimum(), numericTypeNode.getMaximum()));

@@ -15,7 +15,10 @@
  */
 package org.raml.impl.commons.grammar;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
+
+import java.util.List;
 
 import org.raml.grammar.BaseGrammar;
 import org.raml.grammar.rule.AnyOfRule;
@@ -28,6 +31,7 @@ import org.raml.grammar.rule.ParametrizedNodeReferenceRule;
 import org.raml.grammar.rule.RegexValueRule;
 import org.raml.grammar.rule.Rule;
 import org.raml.grammar.rule.StringValueRule;
+import org.raml.impl.commons.model.BuiltInType;
 import org.raml.impl.commons.nodes.BodyNode;
 import org.raml.impl.commons.nodes.MethodNode;
 import org.raml.impl.commons.nodes.ParametrizedResourceTypeRefNode;
@@ -558,7 +562,12 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected AnyOfRule anyBuiltinType()
     {
-        return anyOf(string("string"), string("number"), string("integer"), string("boolean"), string("date"), string("file"));
+        List<Rule> builtInTypes = Lists.newArrayList();
+        for (BuiltInType builtInType : BuiltInType.values())
+        {
+            builtInTypes.add(string(builtInType.getType()));
+        }
+        return anyOf(builtInTypes);
     }
 
     protected AnyOfRule anyResourceTypeMethod()
