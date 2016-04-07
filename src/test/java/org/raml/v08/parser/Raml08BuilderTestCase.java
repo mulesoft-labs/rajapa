@@ -42,9 +42,9 @@ import static org.junit.Assert.assertThat;
 public class Raml08BuilderTestCase extends TestDataProvider
 {
 
-    public Raml08BuilderTestCase(File input, File expectedOutput, String name, boolean ignoreTest)
+    public Raml08BuilderTestCase(File input, File expectedOutput, String name)
     {
-        super(input, expectedOutput, name, ignoreTest);
+        super(input, expectedOutput, name);
     }
 
     @Test

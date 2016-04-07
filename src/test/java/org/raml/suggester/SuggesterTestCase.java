@@ -41,9 +41,9 @@ public class SuggesterTestCase extends TestDataProvider
     public static final String INPUT_FILE_NAME = "input.raml";
     public static final String OUTPUT_FILE_NAME = "output.json";
 
-    public SuggesterTestCase(File input, File expecteOutput, String name, boolean ignoreTest)
+    public SuggesterTestCase(File input, File expecteOutput, String name)
     {
-        super(input, expecteOutput, name, ignoreTest);
+        super(input, expecteOutput, name);
     }
 
     @Test

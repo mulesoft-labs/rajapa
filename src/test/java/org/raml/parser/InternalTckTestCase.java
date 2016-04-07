@@ -43,9 +43,9 @@ public class InternalTckTestCase extends TestDataProvider
     private static final String INPUT_FILE_NAME = "input.raml";
     private static final String OUTPUT_FILE_NAME = "output.json";
 
-    public InternalTckTestCase(File input, File expected, String name, boolean ignoreTest)
+    public InternalTckTestCase(File input, File expected, String name)
     {
-        super(input, expected, name, ignoreTest);
+        super(input, expected, name);
     }
 
     @Test

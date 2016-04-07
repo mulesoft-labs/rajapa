@@ -31,8 +31,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.junit.Assume;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
@@ -40,13 +38,9 @@ import org.junit.runner.Description;
 public abstract class TestDataProvider
 {
 
-    private static final String DEFAULT_IGNORE_TEST_FILE_NAME = "IGNORE_TEST_FILE_NAME_THAT_WONT_BE_CREATED_BY_MISTAKE"; // _AND_WILL_NOT_BREAK_ANYTHING_ELSE_PRETTY_PLEASE
-
     protected File input;
     protected File expectedOutput;
     protected String name;
-
-    private boolean ignoreTest;
 
     protected String dump;
     protected String expected;
@@ -84,31 +78,20 @@ public abstract class TestDataProvider
         }
     };
 
-    public TestDataProvider(File input, File expectedOutput, String name, boolean ignoreTest)
+
+    public TestDataProvider(File input, File expectedOutput, String name)
     {
         this.input = input;
         this.expectedOutput = expectedOutput;
         this.name = name;
-        this.ignoreTest = ignoreTest;
-    }
-
-    @Before
-    public void ignoreTestIfAppropiate()
-    {
-        Assume.assumeFalse(ignoreTest);
     }
 
     public static Collection<Object[]> getData(URI baseFolder, String inputFileName, String outputFileName) throws URISyntaxException
     {
-        return getData(baseFolder, inputFileName, outputFileName, DEFAULT_IGNORE_TEST_FILE_NAME);
+        return scanPath(StringUtils.EMPTY, baseFolder, inputFileName, outputFileName);
     }
 
-    public static Collection<Object[]> getData(URI baseFolder, String inputFileName, String outputFileName, String ignoreTestFileName) throws URISyntaxException
-    {
-        return scanPath(StringUtils.EMPTY, baseFolder, inputFileName, outputFileName, ignoreTestFileName);
-    }
-
-    private static List<Object[]> scanPath(String folderPath, URI baseFolder, String inputFileName, String outputFileName, String ignoreTestFileName)
+    private static List<Object[]> scanPath(String folderPath, URI baseFolder, String inputFileName, String outputFileName)
     {
         final File testFolder = new File(baseFolder);
         final File[] scenarios = testFolder.listFiles();
@@ -119,14 +102,13 @@ public abstract class TestDataProvider
             {
                 File input = new File(scenario, inputFileName);
                 File output = new File(scenario, outputFileName);
-                File ignoreTest = new File(scenario, ignoreTestFileName);
                 if (input.isFile() && output.isFile())
                 {
-                    result.add(new Object[] {input, output, folderPath + scenario.getName(), ignoreTest.exists()});
+                    result.add(new Object[] {input, output, folderPath + scenario.getName()});
                 }
                 else if (scenario.listFiles().length > 0)
                 {
-                    result.addAll(scanPath(scenario.getName() + ".", scenario.toURI(), inputFileName, outputFileName, ignoreTestFileName));
+                    result.addAll(scanPath(scenario.getName() + ".", scenario.toURI(), inputFileName, outputFileName));
                 }
             }
         }
