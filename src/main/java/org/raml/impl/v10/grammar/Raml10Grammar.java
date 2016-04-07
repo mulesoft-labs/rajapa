@@ -306,7 +306,7 @@ public class Raml10Grammar extends BaseRamlGrammar
     protected ObjectRule facets()
     {
         return objectType()
-                .with(field(scalarType(), ref("type")).then(PropertyNode.class));
+                           .with(field(scalarType(), ref("type")).then(PropertyNode.class));
     }
 
     protected Rule objectTypeLiteral()
