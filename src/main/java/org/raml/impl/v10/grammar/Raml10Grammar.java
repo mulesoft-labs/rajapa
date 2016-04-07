@@ -195,6 +195,7 @@ public class Raml10Grammar extends BaseRamlGrammar
                                                                         .add(field(string("pattern"), scalarType()))
                                                                         .add(field(string("minLength"), integerType()))
                                                                         .add(field(string("maxLength"), integerType()))
+                                                                        .add(field(string("facets"), facets()))
                                                                         .add(field(string("enum"), array(scalarType()))),
                                                  is(arrayTypeLiteral())
                                                                        .add(field(string("uniqueItems"), booleanType()))
@@ -300,6 +301,12 @@ public class Raml10Grammar extends BaseRamlGrammar
     {
         return objectType()
                            .with(field(scalarType(), ref("type")).then(PropertyNode.class));
+    }
+
+    protected ObjectRule facets()
+    {
+        return objectType()
+                .with(field(scalarType(), ref("type")).then(PropertyNode.class));
     }
 
     protected Rule objectTypeLiteral()
