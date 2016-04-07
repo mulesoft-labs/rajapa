@@ -31,6 +31,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
@@ -102,7 +104,7 @@ public abstract class TestDataProvider
             {
                 File input = new File(scenario, inputFileName);
                 File output = new File(scenario, outputFileName);
-                if (input.isFile() && output.isFile())
+                if (input.isFile() && (output.isFile() || existsOutputIgnoreFile(scenario, outputFileName)))
                 {
                     result.add(new Object[] {input, output, folderPath + scenario.getName()});
                 }
@@ -113,6 +115,17 @@ public abstract class TestDataProvider
             }
         }
         return result;
+    }
+
+    private static boolean existsOutputIgnoreFile(File scenario, String outputFileName)
+    {
+        return new File(scenario, outputFileName + ".ignore").isFile();
+    }
+
+    @Before
+    public void ignoreTestIfAppropiate()
+    {
+        Assume.assumeFalse(existsOutputIgnoreFile(expectedOutput.getParentFile(), expectedOutput.getName()));
     }
 
     protected boolean jsonEquals(String produced, String expected)
