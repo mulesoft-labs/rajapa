@@ -63,6 +63,12 @@ public interface Node
     void addChild(Node node);
 
     /**
+     * Removes a child.  The new child is going to have this as a parent
+     * @param node Adds a new child to this node
+     */
+    void removeChild(Node node);
+
+    /**
      * Sets the parent node to this node.
      * @param parent The new parent node
      */

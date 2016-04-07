@@ -29,6 +29,7 @@ import org.raml.impl.commons.phase.ExtensionsMerger;
 import org.raml.impl.commons.phase.IncludeResolver;
 import org.raml.impl.commons.phase.ResourceTypesTraitsTransformer;
 import org.raml.impl.commons.phase.StringTemplateExpressionTransformer;
+import org.raml.impl.commons.phase.SugarRushPhase;
 import org.raml.impl.v10.grammar.Raml10Grammar;
 import org.raml.impl.v10.phase.MediaTypeInjection;
 import org.raml.impl.v10.phase.TypesTransformer;
@@ -56,7 +57,7 @@ public class Raml10Builder
         if (fragment == RamlFragment.Extension && maxPhaseNumber > RamlBuilder.FIRST_PHASE)
         {
             applyExtension = true;
-            maxPhaseNumber = RamlBuilder.SECOND_PHASE;
+            maxPhaseNumber = RamlBuilder.SUGAR_PHASE;
         }
         final List<Phase> phases = createPhases(resourceLoader, resourceLocation, fragment);
         for (int i = 0; i < phases.size(); i++)
@@ -82,7 +83,7 @@ public class Raml10Builder
     private Node applyExtension(Node extensionNode, ResourceLoader resourceLoader, String resourceLocation) throws IOException
     {
         StringNode baseRef = (StringNode) extensionNode.get("extends");
-        RamlBuilder builder = new RamlBuilder(RamlBuilder.SECOND_PHASE);
+        RamlBuilder builder = new RamlBuilder(RamlBuilder.SUGAR_PHASE);
         InputStream baseStream = resourceLoader.fetchResource(baseRef.getValue());
         String baseContent = StreamUtils.toString(baseStream);
         Node baseNode = builder.build(baseContent, resourceLoader, resourceLocation);
@@ -128,6 +129,8 @@ public class Raml10Builder
         final GrammarPhase second = new GrammarPhase(fragment.getRule(new Raml10Grammar()));
         // Detect invalid references. Library resourceTypes and Traits. This point the nodes are good enough for Editors.
 
+        // sugar
+        final SugarRushPhase sugar = new SugarRushPhase();
         // Normalize resources and detects duplicated ones and more than one use of url parameters. ???
 
         // Applies resourceTypes and Traits Library
@@ -144,7 +147,7 @@ public class Raml10Builder
 
         final ExampleValidationPhase sixth = new ExampleValidationPhase();
 
-        return Arrays.asList(first, second, third, thirdAndAHalf, fourth, fifth, sixth);
+        return Arrays.asList(first, sugar, second, third, thirdAndAHalf, fourth, fifth, sixth);
 
     }
 }

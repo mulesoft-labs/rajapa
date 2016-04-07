@@ -64,6 +64,13 @@ public abstract class BaseNode implements Node
     }
 
     @Override
+    public void removeChild(Node node)
+    {
+        node.setParent(null);
+        children.remove(node);
+    }
+
+    @Override
     public Node getRootNode()
     {
         return getParent() == null ? this : getParent().getRootNode();
