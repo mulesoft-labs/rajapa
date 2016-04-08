@@ -200,6 +200,7 @@ public class Raml10Grammar extends BaseRamlGrammar
                                                  is(arrayTypeLiteral())
                                                                        .add(field(string("uniqueItems"), booleanType()))
                                                                        .add(field(string("items"), any())) // todo review this don't get what it is
+                                                                       .add(field(string("facets"), facets()))
                                                                        .add(field(string("minItems"), integerType()))
                                                                        .add(field(string("maxItems"), integerType())),
                                                  is(numericTypeLiteral())
@@ -207,9 +208,11 @@ public class Raml10Grammar extends BaseRamlGrammar
                                                                          .add(field(string("maximum"), integerType()))
                                                                          .add(field(string("format"), scalarType()))
                                                                          .add(field(string("multipleOf"), integerType()))
+                                                                         .add(field(string("facets"), facets()))
                                                                          .add(field(string("enum"), array(integerType()))),
                                                  is(fileTypeLiteral())
                                                                       .add(field(string("fileTypes"), any())) // todo finish
+                                                                      .add(field(string("facets"), facets()))
                                                                       .add(field(string("minLength"), integerType()))
                                                                       .add(field(string("maxLength"), integerType())),
                                                  is(objectTypeLiteral())
@@ -223,7 +226,11 @@ public class Raml10Grammar extends BaseRamlGrammar
 
 
                                          ).defaultValue(new StringNodeImpl("string"))
-                                 ).then(new TypeNodeFactory())
+                                 )
+                                 .with(field(
+                                         not(anyOf(string("type"), string("displayName"), string("description"), string("default"), string("required"), string("example"), string("examples"),
+                                                 string("type"))), any()))
+                                 .then(new TypeNodeFactory())
 
         ;
     }
