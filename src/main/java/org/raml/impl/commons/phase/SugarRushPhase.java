@@ -25,6 +25,7 @@ import org.raml.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
+import org.raml.nodes.ObjectNode;
 import org.raml.nodes.StringNode;
 import org.raml.nodes.StringNodeImpl;
 import org.raml.nodes.snakeyaml.SYStringNode;
@@ -38,7 +39,61 @@ public class SugarRushPhase implements Phase
     {
         sweetenBuiltInTypes(tree);
         sweetenObjects(tree);
+        sweetenTypeSystemObjects(tree);
         return tree;
+    }
+
+    private void sweetenTypeSystemObjects(Node tree)
+    {
+        final List<StringNode> basicSugar = tree.findDescendantsWith(StringNode.class);
+        for (StringNode sugarNode : basicSugar)
+        {
+            if (isTypeSystemObjectProperty(sugarNode))
+            {
+                if (sugarNode.getChildren().isEmpty() && isValidTypeSystemObject(tree, sugarNode))
+                {
+                    Node newNode = new ObjectTypeNode();
+                    newNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl(sugarNode.getValue())));
+                    // handleExample(sugarNode, newNode);
+                    sugarNode.replaceWith(newNode);
+                }
+            }
+        }
+    }
+
+    private boolean isValidTypeSystemObject(Node tree, StringNode sugarNode)
+    {
+        Node types = tree.get("types");
+        // handling special union types, this will be resolved in the types transformation phase.
+        String value = sugarNode.getValue();
+        if (value.contains("\\|") || value.endsWith("[]"))
+        {
+            return true;
+        }
+        if (types != null)
+        {
+            Node object = types.get(value);
+            return object != null && object instanceof ObjectNode;
+        }
+        return false;
+    }
+
+    private boolean isTypeSystemObjectProperty(StringNode sugarNode)
+    {
+        Node properties = sugarNode.getParent().getParent().getParent();
+        if (properties != null)
+        {
+            Node type = properties.getParent();
+            if (sugarNode.getParent() instanceof KeyValueNode)
+            {
+                KeyValueNode parentNode = ((KeyValueNode) sugarNode.getParent());
+                if (parentNode.getValue() instanceof StringNode && ((StringNode) parentNode.getValue()).getValue().equals(sugarNode.getValue()) && type.get("type") != null)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void sweetenBuiltInTypes(Node tree)
