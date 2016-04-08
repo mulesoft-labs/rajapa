@@ -40,7 +40,28 @@ public class SugarRushPhase implements Phase
         sweetenBuiltInTypes(tree);
         sweetenObjects(tree);
         sweetenTypeSystemObjects(tree);
+        sweetenAnnotations(tree);
         return tree;
+    }
+
+    private void sweetenAnnotations(Node tree)
+    {
+        Node annotationsNode = tree.get("annotationTypes");
+        if (annotationsNode != null)
+        {
+            for (Node annotation : annotationsNode.getChildren())
+            {
+                if (annotation instanceof KeyValueNode && ((KeyValueNode) annotation).getValue().get("type") == null)
+                {
+                    if (((KeyValueNode) annotation).getValue().get("properties") == null)
+                    {
+                        Node stringTypeNode = new StringTypeNode();
+                        stringTypeNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl("string")));
+                        ((KeyValueNode) annotation).getValue().replaceWith(stringTypeNode);
+                    }
+                }
+            }
+        }
     }
 
     private void sweetenTypeSystemObjects(Node tree)
