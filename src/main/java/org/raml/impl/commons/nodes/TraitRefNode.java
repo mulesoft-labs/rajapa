@@ -23,8 +23,6 @@ import org.raml.nodes.StringNode;
 public class TraitRefNode extends BaseTraitRefNode implements StringNode
 {
 
-    private String name;
-
     public TraitRefNode(String name)
     {
         super(name);

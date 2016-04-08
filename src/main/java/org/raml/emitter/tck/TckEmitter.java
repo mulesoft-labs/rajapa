@@ -186,10 +186,6 @@ public class TckEmitter
             for (KeyValueNode node : keyValueNodes)
             {
                 Node copy = copy(node.getValue());
-                if (copy instanceof NullNode)
-                {
-                    copy = new SYObjectNode(new MappingNode(Tag.MAP, new ArrayList<NodeTuple>(), null));
-                }
                 copy.addChild(0, new KeyValueNodeImpl(new StringNodeImpl(innerKey), node.getKey()));
                 dumpObject((ObjectNode) copy, dump, depth + 1);
             }
@@ -210,10 +206,13 @@ public class TckEmitter
 
     private Node copy(Node node)
     {
-        // TODO implement actual cloning and remove SY dependency
         if (node instanceof NullNode)
         {
             node = new SYObjectNode(new MappingNode(Tag.MAP, new ArrayList<NodeTuple>(), null));
+        }
+        else
+        {
+            node = node.copy();
         }
         return node;
     }

@@ -208,7 +208,6 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     public Rule trait()
     {
-        // TODO resourceRule().with(parameterKey(), any())
         return objectType("trait")
                                   .with(field(scalarType(), any())
                                                                   .then(TraitNode.class));
@@ -217,7 +216,6 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     // Resource Types
     protected Rule resourceTypes()
     {
-        // TODO resourceRule().with(parameterKey(), any())
         return objectType().with(field(scalarType(), resourceType()).then(ResourceTypeNode.class));
     }
 
@@ -234,7 +232,6 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     protected ObjectRule baseResourceValue()
     {
         return objectType()
-                           // .with(displayNameField().defaultValue(parentKey())) //TODO defaults
                            .with(displayNameField())
                            .with(descriptionField())
                            .with(isField().description("A list of the traits to apply to all methods declared (implicitly or explicitly) for this resource. "))
@@ -261,8 +258,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
                            .with(field(responseKey(), responses()))
                            .with(bodyField())
                            .with(protocolsField().description("A method can override the protocols specified in the resource or at the API root, by employing this property."))
-                           .with(isField()
-                                          .description("A list of the traits to apply to this method."))
+                           .with(isField().description("A list of the traits to apply to this method."))
                            .with(securedByField().description("The security schemes that apply to this method."));
     }
 
