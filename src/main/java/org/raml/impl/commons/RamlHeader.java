@@ -15,7 +15,9 @@
  */
 package org.raml.impl.commons;
 
-import java.io.IOException;
+import static org.raml.impl.commons.RamlVersion.RAML_08;
+import static org.raml.impl.commons.RamlVersion.RAML_10;
+
 import java.util.StringTokenizer;
 
 import org.raml.impl.v10.RamlFragment;
@@ -23,25 +25,23 @@ import org.raml.impl.v10.RamlFragment;
 public class RamlHeader
 {
 
-    public static final String RAML_10_VERSION = "1.0";
-    public static final String RAML_08_VERSION = "0.8";
     public static final String RAML_HEADER_PREFIX = "#%RAML";
 
-    private String version;
+    private RamlVersion version;
     private RamlFragment fragment;
 
-    public RamlHeader(String version, RamlFragment fragment)
+    public RamlHeader(RamlVersion version, RamlFragment fragment)
     {
         this.version = version;
         this.fragment = fragment;
     }
 
-    public RamlHeader(String version)
+    public RamlHeader(RamlVersion version)
     {
         this(version, null);
     }
 
-    public static RamlHeader parse(String stringContent) throws InvalidHeaderException, IOException
+    public static RamlHeader parse(String stringContent) throws InvalidHeaderException
     {
         final StringTokenizer lines = new StringTokenizer(stringContent, "\n");
         if (lines.hasMoreElements())
@@ -55,27 +55,27 @@ public class RamlHeader
                 {
                     if (headerParts.hasMoreTokens())
                     {
-                        final String version = headerParts.nextToken();
-                        if (RAML_10_VERSION.equals(version))
+                        String stringVersion = headerParts.nextToken();
+                        RamlVersion version;
+                        try
+                        {
+                            version = RamlVersion.parse(stringVersion);
+                        }
+                        catch (IllegalArgumentException e)
+                        {
+                            throw new InvalidHeaderVersionException(stringVersion);
+                        }
+                        if (version == RAML_10)
                         {
                             final String fragmentText = headerParts.hasMoreTokens() ? headerParts.nextToken() : "";
-
                             RamlFragment fragment = RamlFragment.byName(fragmentText);
                             if (fragment == null)
                             {
                                 throw new InvalidHeaderFragmentException(fragmentText);
                             }
-
-                            return new RamlHeader(RAML_10_VERSION, fragment);
+                            return new RamlHeader(RAML_10, fragment);
                         }
-                        else if (RAML_08_VERSION.equals(version))
-                        {
-                            return new RamlHeader(RAML_08_VERSION);
-                        }
-                        else
-                        {
-                            throw new InvalidHeaderVersionException(version);
-                        }
+                        return new RamlHeader(RAML_08);
                     }
                 }
             }
@@ -87,7 +87,7 @@ public class RamlHeader
         }
     }
 
-    public String getVersion()
+    public RamlVersion getVersion()
     {
         return version;
     }

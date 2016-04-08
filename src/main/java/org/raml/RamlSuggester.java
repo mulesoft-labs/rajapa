@@ -16,11 +16,20 @@
 package org.raml;
 
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.raml.grammar.rule.Rule;
 import org.raml.impl.commons.RamlHeader;
+import org.raml.impl.commons.RamlVersion;
 import org.raml.impl.v08.grammar.Raml08Grammar;
 import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.impl.v10.RamlFragment;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
@@ -30,15 +39,6 @@ import org.raml.suggester.RamlContext;
 import org.raml.suggester.RamlContextType;
 import org.raml.suggester.Suggestion;
 import org.raml.utils.Inflector;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
 
 public class RamlSuggester
 {
@@ -429,32 +429,21 @@ public class RamlSuggester
     @Nullable
     public Rule getRuleFor(String stringContent)
     {
-        final StringTokenizer lines = new StringTokenizer(stringContent, "\n");
-        if (lines.hasMoreElements())
+        try
         {
-            final String header = lines.nextToken().trim();
-            final StringTokenizer headerParts = new StringTokenizer(header);
-            if (headerParts.hasMoreTokens())
+            RamlHeader ramlHeader = RamlHeader.parse(stringContent);
+            if (RamlVersion.RAML_08 == ramlHeader.getVersion())
             {
-                final String raml = headerParts.nextToken();
-                if (RamlHeader.RAML_HEADER_PREFIX.equals(raml))
-                {
-                    if (headerParts.hasMoreTokens())
-                    {
-                        final String version = headerParts.nextToken();
-                        if (RamlHeader.RAML_10_VERSION.equals(version))
-                        {
-                            final String fragmentText = headerParts.hasMoreTokens() ? headerParts.nextToken() : "";
-                            final RamlFragment ramlFragment = RamlFragment.byName(fragmentText);
-                            return ramlFragment != null ? ramlFragment.getRule(new Raml10Grammar()) : null;
-                        }
-                        else if (RamlHeader.RAML_08_VERSION.equals(version))
-                        {
-                            return new Raml08Grammar().raml();
-                        }
-                    }
-                }
+                return new Raml08Grammar().raml();
             }
+            if (ramlHeader.getFragment() != null)
+            {
+                return ramlHeader.getFragment().getRule(new Raml10Grammar());
+            }
+        }
+        catch (RamlHeader.InvalidHeaderException e)
+        {
+            // ignore, just return null
         }
         return null;
     }

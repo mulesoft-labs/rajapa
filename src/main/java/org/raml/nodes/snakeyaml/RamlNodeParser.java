@@ -15,6 +15,14 @@
  */
 package org.raml.nodes.snakeyaml;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+
+import javax.annotation.Nullable;
+
 import org.raml.nodes.DefaultPosition;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.Node;
@@ -22,28 +30,37 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.scanner.ScannerException;
 
-import javax.annotation.Nullable;
-import java.io.*;
-
 public class RamlNodeParser
 {
 
     @Nullable
     public static Node parse(InputStream inputStream)
     {
+        return parse(inputStream, false);
+    }
+
+    @Nullable
+    public static Node parse(InputStream inputStream, boolean supportLibraries)
+    {
         try
         {
-            return parse(new InputStreamReader(inputStream, "UTF-8"));
+            return parse(new InputStreamReader(inputStream, "UTF-8"), supportLibraries);
         }
         catch (UnsupportedEncodingException e)
         {
-            return parse(new InputStreamReader(inputStream));
+            return parse(new InputStreamReader(inputStream), supportLibraries);
         }
     }
 
 
     @Nullable
     public static Node parse(Reader reader)
+    {
+        return parse(reader, false);
+    }
+
+    @Nullable
+    public static Node parse(Reader reader, boolean supportLibraries)
     {
         try
         {
@@ -55,7 +72,7 @@ public class RamlNodeParser
             }
             else
             {
-                return new SYModelWrapper().wrap(composedNode);
+                return new SYModelWrapper(supportLibraries).wrap(composedNode);
             }
         }
         catch (final ScannerException e)
@@ -72,5 +89,11 @@ public class RamlNodeParser
     public static Node parse(String content)
     {
         return parse(new StringReader(content));
+    }
+
+    @Nullable
+    public static Node parse(String content, boolean supportLibraries)
+    {
+        return parse(new StringReader(content), supportLibraries);
     }
 }

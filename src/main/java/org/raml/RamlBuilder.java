@@ -15,6 +15,8 @@
  */
 package org.raml;
 
+import static org.raml.impl.commons.RamlVersion.RAML_10;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -88,7 +90,7 @@ public class RamlBuilder
         {
             final String stringContent = IOUtils.toString(content);
             RamlHeader ramlHeader = RamlHeader.parse(stringContent);
-            if (RamlHeader.RAML_10_VERSION.equals(ramlHeader.getVersion()))
+            if (RAML_10 == ramlHeader.getVersion())
             {
                 return new Raml10Builder().build(stringContent, ramlHeader.getFragment(), resourceLoader, resourceLocation, maxPhaseNumber);
             }

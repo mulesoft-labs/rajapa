@@ -31,6 +31,14 @@ import org.yaml.snakeyaml.nodes.Tag;
 public class SYModelWrapper
 {
 
+    private boolean supportLibraries;
+    private int depth;
+
+    public SYModelWrapper(boolean supportLibraries)
+    {
+        this.supportLibraries = supportLibraries;
+    }
+
     private static class MappingNodeMerger extends SafeConstructor
     {
         void merge(MappingNode mappingNode)
@@ -69,14 +77,47 @@ public class SYModelWrapper
             new MappingNodeMerger().merge(mappingNode);
         }
         SYObjectNode mapping = new SYObjectNode(mappingNode);
+        depth++;
         for (NodeTuple nodeTuple : mappingNode.getValue())
         {
+            checkForUsesKey(nodeTuple);
             Node key = wrap(nodeTuple.getKeyNode());
             Node value = wrap(nodeTuple.getValueNode());
             KeyValueNodeImpl keyValue = new KeyValueNodeImpl(key, value);
             mapping.addChild(keyValue);
         }
+        depth--;
         return mapping;
+    }
+
+    /*
+     * check if tuple is a 'uses' definition at root level and inject !include tags for each library reference
+     */
+    private void checkForUsesKey(NodeTuple nodeTuple)
+    {
+        if (!supportLibraries)
+        {
+            return;
+        }
+        if (depth > 1)
+        {
+            return;
+        }
+        if (!(nodeTuple.getKeyNode() instanceof ScalarNode) ||
+            !"uses".equals(((ScalarNode) nodeTuple.getKeyNode()).getValue()))
+        {
+            return;
+        }
+        if (nodeTuple.getValueNode() instanceof MappingNode)
+        {
+            for (NodeTuple libTuple : ((MappingNode) nodeTuple.getValueNode()).getValue())
+            {
+                if (libTuple.getValueNode() instanceof ScalarNode)
+                {
+                    libTuple.getValueNode().setTag(INCLUDE_TAG);
+                }
+            }
+        }
     }
 
     private Node wrap(ScalarNode scalarNode)

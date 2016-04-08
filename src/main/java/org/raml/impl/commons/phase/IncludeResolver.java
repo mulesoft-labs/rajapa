@@ -18,6 +18,7 @@ package org.raml.impl.commons.phase;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.raml.impl.commons.RamlHeader;
 import org.raml.loader.ResourceLoader;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.Node;
@@ -54,21 +55,31 @@ public class IncludeResolver implements Transformer
         String resourcePath = resolvePath(includeNode.getIncludePath());
         try (InputStream inputStream = resourceLoader.fetchResource(resourcePath))
         {
-            Node result;
             if (inputStream == null)
             {
                 String msg = "Include cannot be resolved: " + resourcePath;
-                result = new ErrorNode(msg);
+                return new ErrorNode(msg);
             }
-            else if (resourcePath.endsWith(".raml") || resourcePath.endsWith(".yaml") || resourcePath.endsWith(".yml"))
+            Node result;
+            String includeContent = StreamUtils.toString(inputStream);
+            if (resourcePath.endsWith(".raml") || resourcePath.endsWith(".yaml") || resourcePath.endsWith(".yml"))
             {
-                result = RamlNodeParser.parse(inputStream);
+                boolean supportUses = false;
+                try
+                {
+                    RamlHeader ramlHeader = RamlHeader.parse(includeContent);
+                    supportUses = ramlHeader.getFragment() != null;
+                }
+                catch (RamlHeader.InvalidHeaderException e)
+                {
+                    // no valid header defined => !supportUses
+                }
+                result = RamlNodeParser.parse(includeContent, supportUses);
             }
             else
             // scalar value
             {
-                String newValue = StreamUtils.toString(inputStream);
-                result = new StringNodeImpl(newValue);
+                result = new StringNodeImpl(includeContent);
             }
 
             if (result == null)
