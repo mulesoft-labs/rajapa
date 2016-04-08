@@ -66,7 +66,7 @@ public class SugarRushPhase implements Phase
         Node types = tree.get("types");
         // handling special union types, this will be resolved in the types transformation phase.
         String value = sugarNode.getValue();
-        if (value.contains("\\|") || value.endsWith("[]"))
+        if (value.contains("|") || value.endsWith("[]"))
         {
             return true;
         }
@@ -80,6 +80,11 @@ public class SugarRushPhase implements Phase
 
     private boolean isTypeSystemObjectProperty(StringNode sugarNode)
     {
+        //union type node, will be resolved in type transformation phase.
+        if(sugarNode.getValue().contains("|"))
+        {
+            return true;
+        }
         Node properties = sugarNode.getParent().getParent().getParent();
         if (properties != null)
         {
