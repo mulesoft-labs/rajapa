@@ -20,7 +20,7 @@ import java.io.InputStream;
 
 import org.raml.impl.commons.RamlHeader;
 import org.raml.loader.ResourceLoader;
-import org.raml.nodes.ErrorNode;
+import org.raml.nodes.IncludeErrorNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.StringNodeImpl;
 import org.raml.nodes.snakeyaml.RamlNodeParser;
@@ -58,7 +58,7 @@ public class IncludeResolver implements Transformer
             if (inputStream == null)
             {
                 String msg = "Include cannot be resolved: " + resourcePath;
-                return new ErrorNode(msg);
+                return new IncludeErrorNode(msg);
             }
             Node result;
             String includeContent = StreamUtils.toString(inputStream);
@@ -85,7 +85,7 @@ public class IncludeResolver implements Transformer
             if (result == null)
             {
                 String msg = "Include file is empty: " + resourcePath;
-                result = new ErrorNode(msg);
+                result = new IncludeErrorNode(msg);
             }
 
             return result;
@@ -93,7 +93,7 @@ public class IncludeResolver implements Transformer
         catch (IOException e)
         {
             String msg = String.format("Include cannot be resolved: %s. (%s)", resourcePath, e.getMessage());
-            return new ErrorNode(msg);
+            return new IncludeErrorNode(msg);
         }
     }
 
