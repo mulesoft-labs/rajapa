@@ -35,6 +35,7 @@ import org.raml.impl.commons.model.BuiltInType;
 import org.raml.impl.commons.nodes.BodyNode;
 import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.impl.commons.nodes.MethodNode;
+import org.raml.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.impl.commons.nodes.ParametrizedResourceTypeRefNode;
 import org.raml.impl.commons.nodes.ParametrizedTraitRefNode;
 import org.raml.impl.commons.nodes.RamlDocumentNode;
@@ -320,7 +321,8 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     {
         return objectType()
                            .with(field(string("schema"), scalarType()))
-                           .with(field(string("example"), any().then(ExampleTypeNode.class)));
+                           .with(field(string("example"), any().then(ExampleTypeNode.class)))
+                           .with(field(string("examples"), any().then(MultipleExampleTypeNode.class)));
     }
 
     protected Rule parameters()

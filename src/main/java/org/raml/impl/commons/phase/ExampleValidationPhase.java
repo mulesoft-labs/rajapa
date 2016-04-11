@@ -25,8 +25,10 @@ import org.raml.grammar.rule.Rule;
 import org.raml.grammar.rule.StringValueRule;
 import org.raml.impl.commons.model.BuiltInType;
 import org.raml.impl.commons.nodes.ExampleTypeNode;
+import org.raml.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
 import org.raml.phase.Phase;
 
@@ -59,7 +61,23 @@ public class ExampleValidationPhase implements Phase
                     {
                         rule = example.visitProperties(new TypeToRuleVisitor(), type.getProperties());
                     }
-                    transform = rule.apply(example);
+                    if (example instanceof MultipleExampleTypeNode)
+                    {
+                        for (Node childExample : example.getChildren())
+                        {
+                            Node exampleValue = ((KeyValueNodeImpl) childExample).getValue();
+                            transform = rule.apply(exampleValue);
+                            if (transform != null)
+                            {
+                                exampleValue.replaceWith(transform);
+                                transform = null;
+                            }
+                        }
+                    }
+                    else if (example instanceof ExampleTypeNode)
+                    {
+                        transform = rule.apply(example);
+                    }
                 }
 
             }

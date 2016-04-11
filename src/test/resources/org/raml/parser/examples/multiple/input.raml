@@ -29,3 +29,18 @@ types:
           name: Doe Enterprise
           value: Silver
           age: AA
+  get:
+    description: Returns an organisation entity.
+    responses:
+      201:
+        body:
+          application/json:
+            type: Org
+            examples:
+              acme:
+                name: Acme
+              softwareCorp:
+                name: Software Corp
+                address: 35 Central Street
+                value: Gold # validate against instance of the `value` property
+                age: AA
