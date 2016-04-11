@@ -321,8 +321,18 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     {
         return objectType()
                            .with(field(string("schema"), scalarType()))
-                           .with(field(string("example"), any().then(ExampleTypeNode.class)))
-                           .with(field(string("examples"), any().then(MultipleExampleTypeNode.class)));
+                           .with(exampleFieldRule())
+                           .with(multipleExampleFieldRule());
+    }
+
+    protected KeyValueRule exampleFieldRule()
+    {
+        return field(string("example"), any().then(ExampleTypeNode.class));
+    }
+
+    protected KeyValueRule multipleExampleFieldRule()
+    {
+        return field(string("examples"), any().then(MultipleExampleTypeNode.class));
     }
 
     protected Rule parameters()

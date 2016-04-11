@@ -27,7 +27,6 @@ import org.raml.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.impl.commons.nodes.AnnotationNode;
 import org.raml.impl.commons.nodes.AnnotationReferenceNode;
 import org.raml.impl.commons.nodes.AnnotationTypeNode;
-import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.impl.commons.nodes.ExtendsNode;
 import org.raml.impl.commons.nodes.PropertyNode;
 import org.raml.impl.v10.nodes.types.factories.TypeNodeFactory;
@@ -188,7 +187,8 @@ public class Raml10Grammar extends BaseRamlGrammar
                                  .with(annotationField())
                                  .with(defaultField())
                                  .with(field(string("required"), booleanType()))
-                                 .with(exampleField())
+                                 .with(exampleFieldRule())
+                                 .with(multipleExampleFieldRule())
                                  .with(
                                          when("type", // todo what to do with inherited does not match object
                                                  is(stringTypeLiteral())
@@ -225,11 +225,6 @@ public class Raml10Grammar extends BaseRamlGrammar
                                  ).then(new TypeNodeFactory())
 
         ;
-    }
-
-    protected KeyValueRule exampleField()
-    {
-        return field(string("example"), any().then(ExampleTypeNode.class));
     }
 
     private KeyValueRule defaultField()
