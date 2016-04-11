@@ -26,10 +26,12 @@ import org.raml.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.impl.v10.nodes.types.builtin.TypeNodeVisitor;
 import org.raml.nodes.AbstractRamlNode;
+import org.raml.nodes.DefaultPosition;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
+import org.raml.nodes.Position;
 import org.raml.nodes.StringNode;
 
 public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
@@ -41,7 +43,7 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
     {
     }
 
-    protected ExampleTypeNode(ExampleTypeNode node)
+    protected ExampleTypeNode(AbstractRamlNode node)
     {
         super(node);
     }
@@ -89,7 +91,9 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
     @Override
     public Node copy()
     {
-        return new ExampleTypeNode(this);
+        ExampleTypeNode exampleTypeNode = new ExampleTypeNode();
+        exampleTypeNode.setSource(this.getSource().copy());
+        return exampleTypeNode;
     }
 
     @Override

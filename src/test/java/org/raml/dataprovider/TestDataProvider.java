@@ -123,7 +123,7 @@ public abstract class TestDataProvider
     }
 
     @Before
-    public void ignoreTestIfAppropiate()
+    public void ignoreTestIfAppropriate()
     {
         Assume.assumeFalse(existsOutputIgnoreFile(expectedOutput.getParentFile(), expectedOutput.getName()));
     }

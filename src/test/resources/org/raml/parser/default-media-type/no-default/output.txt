@@ -36,7 +36,7 @@ example: bores
                                 SYObjectNode (Start: 130 , End: 144)
                                     KeyValueNodeImpl (Start: 130 , End: 143)
                                         SYStringNode: "example" (Start: 130 , End: 137)
-                                        SYStringNode: "pepe" (Start: 139 , End: 143)
+                                        ExampleTypeNode (Start: 139 , End: 143, Source: SYStringNode)
                                     KeyValueNodeImpl (Start: -1 , End: -1)
                                         StringNodeImpl: "displayName" (Start: -1 , End: -1)
                                         SYStringNode: "application/csv" (Start: 105 , End: 120, Source: SYStringNode)

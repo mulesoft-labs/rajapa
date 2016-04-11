@@ -26,6 +26,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
@@ -82,7 +83,7 @@ public class ObjectRule extends Rule
     @Override
     public boolean matches(@Nonnull Node node)
     {
-        boolean isObjectNode = node instanceof ObjectNode;
+        boolean isObjectNode = node instanceof ObjectNode || node instanceof ExampleTypeNode;
         if (!strict)
         {
             return isObjectNode;
@@ -100,7 +101,7 @@ public class ObjectRule extends Rule
         boolean matches = true;
         for (KeyValueRule rule : allFieldRules)
         {
-            matches &= matchesAny(rule, children);
+            matches &= matchesAny(rule, children) || !rule.isRequired();
         }
         return matches;
     }
