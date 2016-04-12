@@ -28,7 +28,6 @@ import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringJoiner;
 
 import javax.annotation.Nonnull;
 
@@ -72,9 +71,18 @@ public class JsonSchemaValidationRule extends Rule
     @Override
     public Node apply(@Nonnull Node node)
     {
+        if (schema == null)
+        {
+            return ErrorNodeFactory.createInvalidJsonExampleNode("Invalid JsonSchema");
+        }
         try
         {
-            JsonNode json = JsonLoader.fromString(((SYStringNode) node.getSource()).getValue());
+            SYStringNode source = (SYStringNode) node.getSource();
+            if (source == null)
+            {
+                return ErrorNodeFactory.createInvalidJsonExampleNode("Source was null");
+            }
+            JsonNode json = JsonLoader.fromString(source.getValue());
             ProcessingReport report = schema.validate(json);
             if (!report.isSuccess())
             {

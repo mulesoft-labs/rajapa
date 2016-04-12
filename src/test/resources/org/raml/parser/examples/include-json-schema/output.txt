@@ -31,7 +31,7 @@ RamlDocumentNode (Start: 11 , End: 154, Source: SYObjectNode)
 }" (Start: 61 , End: 79, Source: SYIncludeNode)
                     KeyValueNodeImpl (Start: 84 , End: 154)
                         SYStringNode: "example" (Start: 84 , End: 91)
-                        ErrorNode: "{
+                        ErrorNode: "Error validating JSON. Error: {
 instance type (string) does not match any allowed primitive type (allowed: ["integer"]),
 instance type (integer) does not match any allowed primitive type (allowed: ["string"])
 }" (Start: 93 , End: 154, Source: ExampleTypeNode)

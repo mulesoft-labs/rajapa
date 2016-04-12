@@ -145,6 +145,11 @@ public class ErrorNodeFactory
 
     public static Node createInvalidJsonExampleNode(String error)
     {
-        return new ErrorNode(error);
+        return new ErrorNode("Error validating JSON. Error: " + error);
+    }
+
+    public static Node createInvalidXmlExampleNode(String error)
+    {
+        return new ErrorNode("Error validating XML. Error: " + error);
     }
 }

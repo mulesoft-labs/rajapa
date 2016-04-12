@@ -22,6 +22,7 @@ import java.util.List;
 import org.raml.grammar.rule.AnyOfRule;
 import org.raml.grammar.rule.Rule;
 import org.raml.grammar.rule.JsonSchemaValidationRule;
+import org.raml.grammar.rule.XmlSchemaValidationRule;
 import org.raml.impl.commons.model.BuiltInType;
 import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.impl.commons.nodes.MultipleExampleTypeNode;
@@ -53,9 +54,17 @@ public class ExampleValidationPhase implements Phase
                 if (type != null)
                 {
                     Node schemaType = type.get("type");
-                    if (schemaType != null && schemaType instanceof StringNode && ((StringNode) schemaType).getValue().startsWith("{"))
+                    if (schemaType != null && schemaType instanceof StringNode && (((StringNode) schemaType).getValue().startsWith("{") || ((StringNode) schemaType).getValue().startsWith("<")))
                     {
-                        rule = new JsonSchemaValidationRule(((StringNode) schemaType).getValue());
+                        String value = ((StringNode) schemaType).getValue();
+                        if (value.startsWith("{"))
+                        {
+                            rule = new JsonSchemaValidationRule(value);
+                        }
+                        else if (value.startsWith("<"))
+                        {
+                            rule = new XmlSchemaValidationRule(value);
+                        }
                     }
                     else if (!type.getInheritedProperties().isEmpty())
                     {
