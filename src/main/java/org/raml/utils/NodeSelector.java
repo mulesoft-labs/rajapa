@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.ArrayNode;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
@@ -35,6 +36,7 @@ public class NodeSelector
 
     public static final String PARENT_EXPR = "..";
     public static final String WILDCARD_SELECTOR = "*";
+    public static final String ENCODED_SLASH = "\\\\/";
 
     /**
      * Resolves a path in the specified node. The path uses a very simple expression system like xpath where each element is separated by /.
@@ -56,7 +58,7 @@ public class NodeSelector
         }
         else
         {
-            final String[] tokens = path.split("/");
+            final String[] tokens = path.split("(?<!\\\\)/");
             return selectFrom(Arrays.asList(tokens), from);
         }
     }
@@ -185,7 +187,7 @@ public class NodeSelector
                 final Node key = ((KeyValueNode) child).getKey();
                 if (key instanceof SimpleTypeNode)
                 {
-                    if (token.equals(String.valueOf(((SimpleTypeNode) key).getValue())))
+                    if (token.equals(encodePath(String.valueOf(((SimpleTypeNode) key).getValue()))))
                     {
                         result = ((KeyValueNode) child).getValue();
                         break;
@@ -196,4 +198,8 @@ public class NodeSelector
         return result;
     }
 
+    public static String encodePath(final String path)
+    {
+        return path.replaceAll("/", ENCODED_SLASH);
+    }
 }

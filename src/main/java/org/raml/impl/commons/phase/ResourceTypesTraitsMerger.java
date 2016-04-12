@@ -33,13 +33,21 @@ public class ResourceTypesTraitsMerger
 
     static void merge(Node baseNode, Node copyNode)
     {
-        if (baseNode instanceof ObjectNode && copyNode instanceof ObjectNode)
+        if (copyNode instanceof NullNode)
+        {
+            return; // nothing to do here if copyNode is null
+        }
+        else if (baseNode instanceof ObjectNode && copyNode instanceof ObjectNode)
         {
             merge((ObjectNode) baseNode, (ObjectNode) copyNode);
         }
         else if (baseNode instanceof ArrayNode && copyNode instanceof ArrayNode)
         {
             merge((ArrayNode) baseNode, (ArrayNode) copyNode);
+        }
+        else if (baseNode instanceof NullNode)
+        {
+            baseNode.replaceWith(copyNode);
         }
         else
         {
@@ -77,7 +85,7 @@ public class ResourceTypesTraitsMerger
             {
                 key = key.substring(0, key.length() - 1);
             }
-            Node node = NodeSelector.selectFrom(key, baseNode);
+            Node node = NodeSelector.selectFrom(NodeSelector.encodePath(key), baseNode);
             if (node == null && optional)
             {
                 logger.debug("Ignoring optional key {}", key);
