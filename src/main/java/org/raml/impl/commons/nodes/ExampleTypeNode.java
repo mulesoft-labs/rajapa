@@ -33,6 +33,7 @@ import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
 import org.raml.nodes.Position;
 import org.raml.nodes.StringNode;
+import org.raml.nodes.snakeyaml.SYStringNode;
 
 public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {
@@ -77,7 +78,19 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
         Node type = this.getParent().getParent().get("type");
         if (type != null && type instanceof StringNode && !"object".equals(((StringNode) type).getValue()))
         {
-            return ((StringNode) type).getValue();
+            String value = ((StringNode) type).getValue();
+            if (value.startsWith("{"))
+            {
+                return ((SYStringNode) ((KeyValueNode) this.getParent().getParent().getParent()).getKey()).getValue();
+            }
+            else if (value.startsWith("<"))
+            {
+                // TODO: xml schema validation
+            }
+            else
+            {
+                return value;
+            }
         }
         return ((StringNode) ((KeyValueNode) this.getParent().getParent().getParent()).getKey()).getValue();
     }

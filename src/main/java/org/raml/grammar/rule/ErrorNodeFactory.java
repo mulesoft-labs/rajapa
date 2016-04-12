@@ -142,4 +142,9 @@ public class ErrorNodeFactory
     {
         return new ErrorNode("Invalid value '" + node + "'. Expected " + expected);
     }
+
+    public static Node createInvalidJsonExampleNode(String error)
+    {
+        return new ErrorNode(error);
+    }
 }

@@ -17,12 +17,11 @@ package org.raml.impl.commons.phase;
 
 import com.google.common.collect.Lists;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.raml.grammar.rule.AnyOfRule;
 import org.raml.grammar.rule.Rule;
-import org.raml.grammar.rule.StringValueRule;
+import org.raml.grammar.rule.JsonSchemaValidationRule;
 import org.raml.impl.commons.model.BuiltInType;
 import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.impl.commons.nodes.MultipleExampleTypeNode;
@@ -30,6 +29,7 @@ import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
+import org.raml.nodes.StringNode;
 import org.raml.phase.Phase;
 
 public class ExampleValidationPhase implements Phase
@@ -42,7 +42,7 @@ public class ExampleValidationPhase implements Phase
         Node types = tree.get("types");
         Node transform;
         ObjectTypeNode type;
-        Rule rule;
+        Rule rule = null;
         for (ExampleTypeNode example : examples)
         {
             transform = null;
@@ -52,7 +52,12 @@ public class ExampleValidationPhase implements Phase
                 type = (ObjectTypeNode) types.get(typeName);
                 if (type != null)
                 {
-                    if (!type.getInheritedProperties().isEmpty())
+                    Node schemaType = type.get("type");
+                    if (schemaType != null && schemaType instanceof StringNode && ((StringNode) schemaType).getValue().startsWith("{"))
+                    {
+                        rule = new JsonSchemaValidationRule(((StringNode) schemaType).getValue());
+                    }
+                    else if (!type.getInheritedProperties().isEmpty())
                     {
                         List<Rule> inheritanceRules = getInheritanceRules(example, type);
                         rule = new AnyOfRule(inheritanceRules);
@@ -67,14 +72,11 @@ public class ExampleValidationPhase implements Phase
                         {
                             Node exampleValue = ((KeyValueNodeImpl) childExample).getValue();
                             transform = rule.apply(exampleValue);
-                            if (transform != null)
-                            {
-                                exampleValue.replaceWith(transform);
-                                transform = null;
-                            }
+                            exampleValue.replaceWith(transform);
+                            transform = null;
                         }
                     }
-                    else if (example instanceof ExampleTypeNode)
+                    else
                     {
                         transform = rule.apply(example);
                     }

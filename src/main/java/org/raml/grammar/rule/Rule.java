@@ -21,6 +21,7 @@ import org.raml.suggester.Suggestion;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 

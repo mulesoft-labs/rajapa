@@ -296,7 +296,6 @@
             <artifactId>juniversalchardet</artifactId>
             <version>1.0.3</version>
         </dependency>
-
         <!--test deps -->
         <dependency>
             <groupId>junit</groupId>
