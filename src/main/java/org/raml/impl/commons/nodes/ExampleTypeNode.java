@@ -22,9 +22,11 @@ import javax.annotation.Nonnull;
 import org.raml.grammar.rule.AnyValueRule;
 import org.raml.impl.v10.nodes.types.builtin.BooleanTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.NumericTypeNode;
+import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.impl.v10.nodes.types.builtin.TypeNodeVisitor;
+import org.raml.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.nodes.AbstractRamlNode;
 import org.raml.nodes.DefaultPosition;
 import org.raml.nodes.KeyValueNode;
@@ -33,12 +35,11 @@ import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
 import org.raml.nodes.Position;
 import org.raml.nodes.StringNode;
+import org.raml.nodes.StringNodeImpl;
 import org.raml.nodes.snakeyaml.SYStringNode;
 
 public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {
-
-    private List<PropertyNode> properties;
 
     public ExampleTypeNode()
     {
@@ -79,25 +80,28 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
         if (type != null && type instanceof StringNode && !"object".equals(((StringNode) type).getValue()))
         {
             String value = ((StringNode) type).getValue();
-            if (value.startsWith("{"))
+            if (value.startsWith("{") || value.startsWith("<"))
             {
                 return ((SYStringNode) ((KeyValueNode) this.getParent().getParent().getParent()).getKey()).getValue();
             }
-            else if (value.startsWith("<"))
+            else if ("array".equals(value))
             {
-                // TODO: xml schema validation
+                return ((StringNode) type.getParent().getParent().get("items")).getValue();
             }
             else
             {
-                return value;
+                Node parent = this.getParent().getParent().getParent();
+                if (parent != null && parent instanceof KeyValueNode && ((KeyValueNode) parent).getKey() instanceof StringNode && ((KeyValueNode) parent).getValue() instanceof ObjectTypeNode)
+                {
+                    return ((StringNode) ((KeyValueNode) parent).getKey()).getValue();
+                }
+                else
+                {
+                    return value;
+                }
             }
         }
         return ((StringNode) ((KeyValueNode) this.getParent().getParent().getParent()).getKey()).getValue();
-    }
-
-    public void setProperties(List<PropertyNode> properties)
-    {
-        this.properties = properties;
     }
 
     @Nonnull
@@ -120,4 +124,11 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
     {
         return getSource().toString();
     }
+
+    public boolean isArrayExample()
+    {
+        Node type = this.getParent().getParent().get("type");
+        return type instanceof StringNode && "array".equals(((StringNode) type).getValue());
+    }
+
 }

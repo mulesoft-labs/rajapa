@@ -172,6 +172,10 @@ public class TypesTransformer implements Transformer
     private SYObjectNode getTypesRoot(Node node)
     {
         final KeyValueNode keyValueNode = (KeyValueNode) NodeUtils.getAncestor(node, 3);
+        if (keyValueNode.getKey() instanceof SYStringNode && "items".equals(((SYStringNode) keyValueNode.getKey()).getValue()))
+        {
+            return (SYObjectNode) NodeUtils.getAncestor(keyValueNode, 3);
+        }
         return keyValueNode != null ? (SYObjectNode) keyValueNode.getValue() : null;
     }
 

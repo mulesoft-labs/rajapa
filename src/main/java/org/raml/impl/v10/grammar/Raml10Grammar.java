@@ -15,6 +15,7 @@
  */
 package org.raml.impl.v10.grammar;
 
+import org.raml.grammar.rule.AllOfRule;
 import org.raml.grammar.rule.AnyOfRule;
 import org.raml.grammar.rule.KeyValueRule;
 import org.raml.grammar.rule.NodeReferenceFactory;
@@ -286,9 +287,9 @@ public class Raml10Grammar extends BaseRamlGrammar
         return string("date");
     }
 
-    protected RegexValueRule arrayTypeLiteral()
+    protected AnyOfRule arrayTypeLiteral()
     {
-        return regex(".+\\[\\]");
+        return new AnyOfRule(regex(".+\\[\\]"), string("array"));
     }
 
     protected ObjectRule properties()

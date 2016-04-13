@@ -28,6 +28,7 @@ import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
 import org.raml.nodes.StringNode;
 import org.raml.nodes.StringNodeImpl;
+import org.raml.nodes.snakeyaml.SYNullNode;
 import org.raml.nodes.snakeyaml.SYStringNode;
 import org.raml.phase.Phase;
 
@@ -151,6 +152,41 @@ public class SugarRushPhase implements Phase
                         handleExample(sugarNode, newNode);
                         sugarNode.replaceWith(newNode);
                     }
+                }
+            }
+            else if ("array".equals(sugarNode.getValue()))
+            {
+                if (sugarNode.getParent() != null && sugarNode.getParent().getParent() != null)
+                {
+                    Node itemsNode = sugarNode.getParent().getParent().get("items");
+                    if (itemsNode instanceof SYNullNode)
+                    {
+                        itemsNode.replaceWith(new StringNodeImpl(new StringNodeImpl("string")));
+                    }
+                }
+            }
+            else if (sugarNode.getValue() != null && sugarNode.getValue().endsWith("[]"))
+            {
+                Node parent = sugarNode.getParent();
+                Node key = parent instanceof KeyValueNode ? ((KeyValueNode) parent).getKey() : null;
+                String keyString = key instanceof StringNode ? ((StringNode) key).getValue() : null;
+                if (parent instanceof KeyValueNode && "type".equals(keyString))
+                {
+                    Node grandParent = parent.getParent();
+                    grandParent.removeChild(parent);
+                    grandParent.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl("array")));
+                    KeyValueNodeImpl items = new KeyValueNodeImpl(new StringNodeImpl("items"), new StringNodeImpl(sugarNode.getValue().split("\\[")[0]));
+                    items.setSource(parent);
+                    grandParent.addChild(items);
+                }
+                else
+                {
+                    Node newNode = new ObjectTypeNode();
+                    newNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl("array")));
+                    KeyValueNodeImpl items = new KeyValueNodeImpl(new StringNodeImpl("items"), new StringNodeImpl(sugarNode.getValue().split("\\[")[0]));
+                    items.setSource(parent);
+                    newNode.addChild(items);
+                    sugarNode.replaceWith(newNode);
                 }
             }
         }

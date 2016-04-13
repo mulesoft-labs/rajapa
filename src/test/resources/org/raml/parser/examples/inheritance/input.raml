@@ -1,0 +1,25 @@
+ #%RAML 1.0
+
+title: Raml example
+version: 1.0
+protocols: [ HTTP, HTTPS ]
+
+baseUri: https://eleonora.com
+mediaType: [application/json,  application/xml]
+
+types:
+  Person:
+    type: object
+    properties:
+      firstname: string
+      lastname:  string
+      title?:    string
+  Admin:
+    type: Person
+    properties:
+      clearanceLevel:
+        enum: [low, high]
+    example:
+      firstname: eleo
+      lastname:  ortega
+      clearanceLevel: medium

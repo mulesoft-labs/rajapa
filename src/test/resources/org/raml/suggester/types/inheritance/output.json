@@ -1,4 +1,8 @@
 [ {
+    "label" : "Array",
+    "description" : null,
+    "value" : "array"
+}, {
     "label" : "Boolean",
     "description" : null,
     "value" : "boolean"

@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +39,11 @@ public class AnyOfRule extends Rule
             throw new IllegalArgumentException("rules cannot be empty");
         }
         this.rules = rules;
+    }
+
+    public AnyOfRule(Rule... rules)
+    {
+        this(Arrays.asList(rules));
     }
 
     @Override

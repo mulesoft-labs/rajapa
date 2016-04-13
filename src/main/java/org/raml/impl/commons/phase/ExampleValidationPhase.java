@@ -28,8 +28,11 @@ import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
+import org.raml.nodes.ObjectNode;
 import org.raml.nodes.StringNode;
 import org.raml.phase.Phase;
 
@@ -43,12 +46,12 @@ public class ExampleValidationPhase implements Phase
         Node types = tree.get("types");
         Node transform;
         ObjectTypeNode type;
-        Rule rule = null;
         for (ExampleTypeNode example : examples)
         {
+            Rule rule = null;
             transform = null;
             String typeName = example.getTypeName();
-            if (types != null && !BuiltInType.isBuiltInType(typeName))
+            if (types != null && !BuiltInType.isBuiltInType(typeName) && !isBuiltInTypeAlias(typeName, tree))
             {
                 type = (ObjectTypeNode) types.get(typeName);
                 if (type != null)
@@ -75,11 +78,23 @@ public class ExampleValidationPhase implements Phase
                     {
                         rule = example.visitProperties(new TypeToRuleVisitor(), type.getProperties());
                     }
-                    if (example instanceof MultipleExampleTypeNode)
+                    if (example instanceof MultipleExampleTypeNode || example.isArrayExample())
                     {
                         for (Node childExample : example.getChildren())
                         {
-                            Node exampleValue = ((KeyValueNodeImpl) childExample).getValue();
+                            Node exampleValue;
+                            if (childExample instanceof KeyValueNode)
+                            {
+                                exampleValue = ((KeyValueNodeImpl) childExample).getValue();
+                            }
+                            else if (childExample instanceof ObjectNode)
+                            {
+                                exampleValue = childExample;
+                            }
+                            else
+                            {
+                                break;
+                            }
                             transform = rule.apply(exampleValue);
                             exampleValue.replaceWith(transform);
                             transform = null;
@@ -94,6 +109,7 @@ public class ExampleValidationPhase implements Phase
             }
             else
             {
+
                 rule = example.visit(new TypeToRuleVisitor());
                 transform = rule.apply(example.getSource());
             }
@@ -103,6 +119,21 @@ public class ExampleValidationPhase implements Phase
             }
         }
         return tree;
+    }
+
+    private boolean isBuiltInTypeAlias(String typeName, Node tree)
+    {
+        Node types = tree.get("types");
+        if (types != null)
+        {
+            Node type = types.get(typeName);
+            if (type != null && type.get("type") != null && type.get("type") instanceof StringNode)
+            {
+                String objectType = ((StringNode) type.get("type")).getValue();
+                return BuiltInType.isBuiltInType(objectType);
+            }
+        }
+        return false;
     }
 
     private List<Rule> getInheritanceRules(ExampleTypeNode example, ObjectTypeNode type)
