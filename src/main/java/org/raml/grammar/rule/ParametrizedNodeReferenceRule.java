@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 
 import org.raml.nodes.Node;
 import org.raml.nodes.ParametrizedReferenceNode;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 public class ParametrizedNodeReferenceRule extends ObjectRule
@@ -48,21 +49,20 @@ public class ParametrizedNodeReferenceRule extends ObjectRule
 
 
     @Override
-    public List<Suggestion> getSuggestions(List<Node> pathToRoot)
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot, RamlParsingContext context)
     {
         switch (pathToRoot.size())
         {
         case 1:
-            return getSuggestions(pathToRoot.get(0));
+            return getSuggestions(pathToRoot.get(0), context);
         default:
             return Collections.emptyList();
         }
-
     }
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         if (hasOneKey(node))
         {
@@ -71,7 +71,7 @@ public class ParametrizedNodeReferenceRule extends ObjectRule
         }
         else
         {
-            return super.getSuggestions(node);
+            return super.getSuggestions(node, context);
         }
     }
 

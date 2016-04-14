@@ -1,5 +1,6 @@
 [ {
   "label" : "foo",
   "description" : "",
-  "value" : "foo"
+  "value" : "foo",
+  "prefix" : ""
 } ]

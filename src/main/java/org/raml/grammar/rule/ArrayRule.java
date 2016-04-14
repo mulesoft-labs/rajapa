@@ -18,6 +18,7 @@ package org.raml.grammar.rule;
 import org.raml.nodes.ArrayNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
@@ -37,9 +38,9 @@ public class ArrayRule extends Rule
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
-        final List<Suggestion> suggestions = of.getSuggestions(node);
+        final List<Suggestion> suggestions = of.getSuggestions(node, context);
         final List<Suggestion> result = new ArrayList<>();
         for (Suggestion suggestion : suggestions)
         {
@@ -56,7 +57,7 @@ public class ArrayRule extends Rule
     }
 
     @Override
-    public List<Suggestion> getSuggestions(List<Node> pathToRoot)
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot, RamlParsingContext context)
     {
         if (pathToRoot.isEmpty())
         {
@@ -68,9 +69,9 @@ public class ArrayRule extends Rule
             switch (pathToRoot.size())
             {
             case 1:
-                return getSuggestions(mappingNode);
+                return getSuggestions(mappingNode, context);
             default:
-                return of.getSuggestions(pathToRoot.subList(1, pathToRoot.size()));
+                return of.getSuggestions(pathToRoot.subList(1, pathToRoot.size()), context);
             }
         }
     }

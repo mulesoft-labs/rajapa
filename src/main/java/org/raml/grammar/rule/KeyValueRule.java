@@ -20,13 +20,13 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.raml.nodes.DefaultPosition;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.StringNodeImpl;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 public class KeyValueRule extends Rule
@@ -55,17 +55,16 @@ public class KeyValueRule extends Rule
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
-        return getValueRule().getSuggestions(node);
+        return getValueRule().getSuggestions(node, context);
     }
 
     @Nonnull
-    public List<Suggestion> getKeySuggestions(Node node)
+    public List<Suggestion> getKeySuggestions(Node node, RamlParsingContext context)
     {
-        final List<Suggestion> suggestions = getKeyRule().getSuggestions(node);
-
-        List<Suggestion> result = new ArrayList<>();
+        final List<Suggestion> suggestions = getKeyRule().getSuggestions(node, context);
+        final List<Suggestion> result = new ArrayList<>();
         for (Suggestion suggestion : suggestions)
         {
             Suggestion keySuggest = suggestion;
@@ -77,19 +76,18 @@ public class KeyValueRule extends Rule
             result.add(keySuggest);
         }
         return result;
-
     }
 
     @Override
-    public List<Suggestion> getSuggestions(List<Node> pathToRoot)
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot, RamlParsingContext context)
     {
         if (!pathToRoot.isEmpty())
         {
-            return valueRule.getSuggestions(pathToRoot.subList(1, pathToRoot.size()));
+            return valueRule.getSuggestions(pathToRoot.subList(1, pathToRoot.size()), context);
         }
         else
         {
-            return super.getSuggestions(pathToRoot);
+            return super.getSuggestions(pathToRoot, context);
         }
     }
 

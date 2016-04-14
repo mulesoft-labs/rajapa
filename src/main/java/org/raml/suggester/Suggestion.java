@@ -34,16 +34,28 @@ public interface Suggestion extends Comparable<Suggestion>
     String getValue();
 
     /**
-     * Creates an new Suggestion based on this suggestion but changing the description with the specified
+     * @return the prefix that must be append to the value when inserting into de document
+     */
+    String getPrefix();
+
+    /**
+     * Creates a new Suggestion based on this suggestion but changing the description with the specified
      * @param description The new description
      * @return A new suggestion with the new description.
      */
     Suggestion withDescription(String description);
 
     /**
-     * Creates an new Suggestion based on this suggestion but changing the value with the specified
+     * Creates a new Suggestion based on this suggestion but changing the value with the specified
      * @param value The new value
      * @return A new suggestion with the new value.
      */
     Suggestion withValue(String value);
+
+    /**
+     * Creates a new Suggestion based on this but changing the prefix
+     * @param prefix The prefix
+     * @return A new suggestion with the prefix changed.
+     */
+    Suggestion withPrefix(String prefix);
 }

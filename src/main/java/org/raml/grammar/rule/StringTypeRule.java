@@ -23,13 +23,14 @@ import javax.annotation.Nonnull;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.StringNode;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 public class StringTypeRule extends AbstractTypeRule
 {
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         return Collections.emptyList();
     }

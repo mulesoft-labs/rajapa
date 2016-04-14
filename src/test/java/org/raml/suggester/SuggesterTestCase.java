@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collection;
@@ -41,9 +42,9 @@ public class SuggesterTestCase extends TestDataProvider
     public static final String INPUT_FILE_NAME = "input.raml";
     public static final String OUTPUT_FILE_NAME = "output.json";
 
-    public SuggesterTestCase(File input, File expecteOutput, String name)
+    public SuggesterTestCase(File input, File expectedOutput, String name)
     {
-        super(input, expecteOutput, name);
+        super(input, expectedOutput, name);
     }
 
     @Test
@@ -53,7 +54,7 @@ public class SuggesterTestCase extends TestDataProvider
         final String content = IOUtils.toString(new FileInputStream(input), "UTF-8");
         final int offset = content.indexOf(CURSOR_KEYWORD);
         final String document = content.substring(0, offset) + content.substring(offset + CURSOR_KEYWORD.length());
-        final List<Suggestion> suggestions = ramlSuggester.suggestions(document, offset - 1);
+        final List<Suggestion> suggestions = ramlSuggester.suggestions(document, offset - 1).getSuggestions();
         final ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         dump = ow.writeValueAsString(suggestions);
         expected = IOUtils.toString(new FileInputStream(this.expectedOutput));

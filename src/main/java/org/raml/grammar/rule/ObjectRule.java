@@ -17,22 +17,18 @@ package org.raml.grammar.rule;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeSet;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.raml.impl.commons.nodes.ExampleTypeNode;
+import org.apache.commons.lang.StringUtils;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.nodes.ObjectNode;
+import org.raml.suggester.RamlParsingContext;
+import org.raml.suggester.RamlParsingContextType;
 import org.raml.suggester.Suggestion;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class ObjectRule extends Rule
 {
@@ -54,7 +50,7 @@ public class ObjectRule extends Rule
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         List<Suggestion> result = new ArrayList<>();
         final List<KeyValueRule> fieldRules = getAllFieldRules(node);
@@ -62,8 +58,20 @@ public class ObjectRule extends Rule
         {
             if (rule.repeated() || !matchesAny(rule, node.getChildren()))
             {
-                // We return the suggestions of the key
-                result.addAll(rule.getKeySuggestions(node));
+                if (context.getContextType() == RamlParsingContextType.VALUE)
+                {
+                    final List<Suggestion> keySuggestions = rule.getKeySuggestions(node, context);
+                    String prefix = "\n" + StringUtils.repeat(" ", node.getStartPosition().getColumn() + 2);
+                    for (Suggestion keySuggestion : keySuggestions)
+                    {
+                        result.add(keySuggestion.withPrefix(prefix));
+                    }
+                }
+                else
+                {
+                    // We return the suggestions of the key
+                    result.addAll(rule.getKeySuggestions(node, context));
+                }
             }
         }
         return result;
@@ -84,7 +92,7 @@ public class ObjectRule extends Rule
     @Override
     public boolean matches(@Nonnull Node node)
     {
-        boolean isObjectNode = node instanceof ObjectNode || node instanceof ExampleTypeNode;
+        boolean isObjectNode = node instanceof ObjectNode;
         if (!strict)
         {
             return isObjectNode;
@@ -207,7 +215,7 @@ public class ObjectRule extends Rule
     }
 
     @Override
-    public List<Suggestion> getSuggestions(List<Node> pathToRoot)
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot, RamlParsingContext context)
     {
         if (pathToRoot.isEmpty())
         {
@@ -219,11 +227,11 @@ public class ObjectRule extends Rule
             switch (pathToRoot.size())
             {
             case 1:
-                return getSuggestions(mappingNode);
+                return getSuggestions(mappingNode, context);
             default:
                 final Node node = pathToRoot.get(1);
                 final Rule matchingRule = findMatchingRule(getAllFieldRules(mappingNode), node);
-                return matchingRule == null ? Collections.<Suggestion> emptyList() : matchingRule.getSuggestions(pathToRoot.subList(1, pathToRoot.size()));
+                return matchingRule == null ? Collections.<Suggestion> emptyList() : matchingRule.getSuggestions(pathToRoot.subList(1, pathToRoot.size()), context);
             }
         }
     }

@@ -21,12 +21,24 @@ public class DefaultSuggestion implements Suggestion, Comparable<Suggestion>
     private String label;
     private String description;
     private String value;
+    private String prefix;
 
     public DefaultSuggestion(String value, String description, String label)
+    {
+        this(value, description, label, "");
+    }
+
+    public DefaultSuggestion(String value, String description, String label, String prefix)
     {
         this.value = value;
         this.description = description;
         this.label = label;
+        this.prefix = prefix;
+    }
+
+    public String getPrefix()
+    {
+        return prefix;
     }
 
     @Override
@@ -57,6 +69,12 @@ public class DefaultSuggestion implements Suggestion, Comparable<Suggestion>
     public Suggestion withValue(String value)
     {
         return new DefaultSuggestion(value, getDescription(), getLabel());
+    }
+
+    @Override
+    public Suggestion withPrefix(String prefix)
+    {
+        return new DefaultSuggestion(getValue(), getDescription(), getLabel(), prefix);
     }
 
     @Override

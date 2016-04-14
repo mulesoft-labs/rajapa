@@ -34,23 +34,26 @@ import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
 import org.raml.nodes.StringNode;
-import org.raml.suggester.DefaultSuggestion;
-import org.raml.suggester.RamlContext;
-import org.raml.suggester.RamlContextType;
-import org.raml.suggester.Suggestion;
+import org.raml.suggester.*;
 import org.raml.utils.Inflector;
 
 public class RamlSuggester
 {
 
-
-    public List<Suggestion> suggestions(String document, int offset)
+    /**
+     * Returns the suggestions for the specified document at the given position.
+     * In most common cases the offset will be the cursor position.
+     * @param document The raml document
+     * @param offset The offset from the begging of the document
+     * @return The suggestions
+     */
+    public Suggestions suggestions(String document, int offset)
     {
         final List<Suggestion> result = new ArrayList<>();
-        final RamlContext ramlContext = getContext(document, offset);
-        final int location = ramlContext.getLocation();
-        final String content = ramlContext.getContent();
-        final List<Suggestion> suggestions = getSuggestions(document, offset, ramlContext, location);
+        final RamlParsingContext ramlParsingContext = getContext(document, offset);
+        final int location = ramlParsingContext.getLocation();
+        final String content = ramlParsingContext.getContent();
+        final List<Suggestion> suggestions = getSuggestions(ramlParsingContext, document, offset, location);
         if (content.isEmpty())
         {
             result.addAll(suggestions);
@@ -65,15 +68,14 @@ public class RamlSuggester
                 }
             }
         }
-
         Collections.sort(result);
-        return result;
+        return new Suggestions(result, content, location);
 
     }
 
-    private List<Suggestion> getSuggestions(String document, int offset, RamlContext ramlContext, int location)
+    private List<Suggestion> getSuggestions(RamlParsingContext context, String document, int offset, int location)
     {
-        switch (ramlContext.getTokenType())
+        switch (context.getContextType())
         {
         case FUNCTION_CALL:
             return getFunctionCallSuggestions();
@@ -82,9 +84,9 @@ public class RamlSuggester
         case LIBRARY_CALL:
         case ITEM:
         case VALUE:
-            return getSuggestionsAt(document, offset, location);
+            return getSuggestionsAt(context, document, offset, location);
         default:
-            return getSuggestionByColumn(document, offset, location);
+            return getSuggestionByColumn(context, document, offset, location);
 
         }
     }
@@ -129,7 +131,7 @@ public class RamlSuggester
         final List<Suggestion> suggestions = new ArrayList<>();
         suggestions.add(new DefaultSuggestion("resourcePath", "The resource's full URI relative to the baseUri (if any)", ""));
         suggestions.add(new DefaultSuggestion("resourcePathName", "The rightmost path fragment of the resource's relative URI, " +
-                                                                  "omitting any parametrizing brackets (\"{\" and \"}\")", ""));
+                                                                  "omitting any parametrize brackets (\"{\" and \"}\")", ""));
         return suggestions;
     }
 
@@ -148,7 +150,7 @@ public class RamlSuggester
         return suggestions;
     }
 
-    private List<Suggestion> getSuggestionsAt(String document, int offset, int location)
+    private List<Suggestion> getSuggestionsAt(RamlParsingContext context, String document, int offset, int location)
     {
         final Node root = getRootNode(document, offset, location);
         Node node = searchNodeAt(root, location);
@@ -163,7 +165,7 @@ public class RamlSuggester
             final List<Node> pathToRoot = createPathToRoot(node);
             // Follow the path from the root to the node and apply the rules for auto-completion.
             final Rule rootRule = getRuleFor(document);
-            return rootRule != null ? rootRule.getSuggestions(pathToRoot) : Collections.<Suggestion> emptyList();
+            return rootRule != null ? rootRule.getSuggestions(pathToRoot, context) : Collections.<Suggestion> emptyList();
         }
         else
         {
@@ -190,7 +192,7 @@ public class RamlSuggester
         }
     }
 
-    private List<Suggestion> getSuggestionByColumn(String document, int offset, int location)
+    private List<Suggestion> getSuggestionByColumn(RamlParsingContext context, String document, int offset, int location)
     {
         // // I don't care column number unless is an empty new line
         int columnNumber = getColumnNumber(document, offset);
@@ -204,7 +206,7 @@ public class RamlSuggester
 
             // Follow the path from the root to the node and apply the rules for auto-completion.
             final Rule rootRule = getRuleFor(document);
-            return rootRule != null ? rootRule.getSuggestions(pathToRoot) : Collections.<Suggestion> emptyList();
+            return rootRule != null ? rootRule.getSuggestions(pathToRoot, context) : Collections.<Suggestion> emptyList();
         }
         else
         {
@@ -213,9 +215,9 @@ public class RamlSuggester
     }
 
     @Nonnull
-    private RamlContext getContext(String document, int offset)
+    private RamlParsingContext getContext(String document, int offset)
     {
-        RamlContext context = null;
+        RamlParsingContext context = null;
         int location = offset;
         final StringBuilder content = new StringBuilder();
         while (location >= 0 && context == null)
@@ -224,13 +226,13 @@ public class RamlSuggester
             switch (character)
             {
             case ':':
-                context = new RamlContext(RamlContextType.VALUE, revertAndTrim(content), location + 1);
+                context = new RamlParsingContext(RamlParsingContextType.VALUE, revertAndTrim(content), location + 1);
                 break;
             case ',':
             case '[':
             case '{':
             case '-':
-                context = new RamlContext(RamlContextType.ITEM, revertAndTrim(content), location);
+                context = new RamlParsingContext(RamlParsingContextType.ITEM, revertAndTrim(content), location);
                 break;
             case '<':
                 if (location > 0)
@@ -242,15 +244,15 @@ public class RamlSuggester
                         final String[] split = contextContent.split("\\|");
                         if (split.length > 1)
                         {
-                            context = new RamlContext(RamlContextType.FUNCTION_CALL, split[split.length - 1].trim(), location);
+                            context = new RamlParsingContext(RamlParsingContextType.FUNCTION_CALL, split[split.length - 1].trim(), location);
                         }
                         else if (contextContent.endsWith("|"))
                         {
-                            context = new RamlContext(RamlContextType.FUNCTION_CALL, "", location);
+                            context = new RamlParsingContext(RamlParsingContextType.FUNCTION_CALL, "", location);
                         }
                         else
                         {
-                            context = new RamlContext(RamlContextType.STRING_TEMPLATE, contextContent, location);
+                            context = new RamlParsingContext(RamlParsingContextType.STRING_TEMPLATE, contextContent, location);
                         }
                         break;
                     }
@@ -258,10 +260,10 @@ public class RamlSuggester
                 content.append(character);
                 break;
             case '.':
-                context = new RamlContext(RamlContextType.LIBRARY_CALL, revertAndTrim(content), location);
+                context = new RamlParsingContext(RamlParsingContextType.LIBRARY_CALL, revertAndTrim(content), location);
                 break;
             case '\n':
-                context = new RamlContext(RamlContextType.ANY, revertAndTrim(content), location);
+                context = new RamlParsingContext(RamlParsingContextType.ANY, revertAndTrim(content), location);
                 break;
             default:
                 content.append(character);
@@ -271,7 +273,7 @@ public class RamlSuggester
 
         if (context == null)
         {
-            context = new RamlContext(RamlContextType.ANY, revertAndTrim(content), location);
+            context = new RamlParsingContext(RamlParsingContextType.ANY, revertAndTrim(content), location);
         }
 
         return context;
@@ -420,7 +422,12 @@ public class RamlSuggester
 
     private boolean isLastNode(Node node)
     {
-        List<Node> children = node.getParent().getChildren();
+        final Node parent = node.getParent();
+        if (parent == null)
+        {
+            return false;
+        }
+        List<Node> children = parent.getChildren();
         Node lastChild = children.get(children.size() - 1);
         return node.equals(lastChild);
     }

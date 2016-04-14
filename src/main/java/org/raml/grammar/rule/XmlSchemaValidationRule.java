@@ -29,6 +29,7 @@ import javax.xml.validation.SchemaFactory;
 
 import org.raml.nodes.Node;
 import org.raml.nodes.snakeyaml.SYStringNode;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 import org.xml.sax.SAXException;
 
@@ -52,7 +53,7 @@ public class XmlSchemaValidationRule extends Rule
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         return Lists.newArrayList();
     }

@@ -16,12 +16,12 @@
 package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,9 +36,13 @@ public abstract class Rule
 
     }
 
-    @Nonnull
-    public abstract List<Suggestion> getSuggestions(Node node);
 
+    /**
+     * Check if the current rule matches the specified node
+     *
+     * @param node The node to check with
+     * @return True if it matches otherwise false
+     */
     public abstract boolean matches(@Nonnull Node node);
 
     /**
@@ -90,15 +94,30 @@ public abstract class Rule
         return this;
     }
 
-    public List<Suggestion> getSuggestions(List<Node> pathToRoot)
+    /**
+     * Returns the list of suggestions after navigating through the path
+     * @param pathToRoot The path of nodes to get of the node from where we want the suggestions
+     * @param context The parse context
+     * @return The list of suggestions
+     */
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot, RamlParsingContext context)
     {
         if (!pathToRoot.isEmpty())
         {
-            return getSuggestions(pathToRoot.get(0));
+            return getSuggestions(pathToRoot.get(0), context);
         }
         else
         {
             return Collections.emptyList();
         }
     }
+
+    /**
+     * Returns the suggestions of this specific rule
+     * @param node The node
+     * @param context The parse context
+     * @return The list of suggestions for the specified rule
+     */
+    @Nonnull
+    public abstract List<Suggestion> getSuggestions(Node node, RamlParsingContext context);
 }

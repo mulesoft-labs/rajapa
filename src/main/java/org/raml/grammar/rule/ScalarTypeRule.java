@@ -25,13 +25,14 @@ import org.raml.nodes.NodeType;
 import org.raml.nodes.SimpleTypeNode;
 import org.raml.nodes.StringNode;
 import org.raml.nodes.StringNodeImpl;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 public class ScalarTypeRule extends AbstractTypeRule
 {
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         return Collections.emptyList();
     }

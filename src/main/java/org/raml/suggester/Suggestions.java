@@ -13,41 +13,39 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.grammar.rule;
+package org.raml.suggester;
 
-import org.raml.nodes.Node;
-import org.raml.suggester.RamlParsingContext;
-import org.raml.suggester.Suggestion;
-
-import javax.annotation.Nonnull;
-import java.util.Collections;
 import java.util.List;
 
-public class AnyValueRule extends Rule
+/**
+ * Represent a set of suggestions.
+ */
+public class Suggestions
 {
-    @Nonnull
-    @Override
-    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
+    private int location;
+    private String replaceWord;
+    private List<Suggestion> suggestions;
+
+
+    public Suggestions(List<Suggestion> suggestions, String replaceWord, int location)
     {
-        return Collections.emptyList();
+        this.suggestions = suggestions;
+        this.replaceWord = replaceWord;
+        this.location = location;
     }
 
-
-    @Override
-    public boolean matches(@Nonnull Node node)
+    public List<Suggestion> getSuggestions()
     {
-        return true;
+        return suggestions;
     }
 
-    @Override
-    public Node apply(@Nonnull Node node)
+    public String getReplaceWord()
     {
-        return createNodeUsingFactory(node);
+        return replaceWord;
     }
 
-    @Override
-    public String getDescription()
+    public int getLocation()
     {
-        return "any";
+        return location;
     }
 }

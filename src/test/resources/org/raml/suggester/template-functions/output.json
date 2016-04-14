@@ -1,17 +1,21 @@
 [ {
   "label" : "camelize",
   "description" : "",
-  "value" : "!camelize"
+  "value" : "!camelize",
+  "prefix" : ""
 }, {
   "label" : "capitalize",
   "description" : "",
-  "value" : "!capitalize"
+  "value" : "!capitalize",
+  "prefix" : ""
 }, {
   "label" : "pluralize",
   "description" : "",
-  "value" : "!pluralize"
+  "value" : "!pluralize",
+  "prefix" : ""
 }, {
   "label" : "singularize",
   "description" : "",
-  "value" : "!singularize"
+  "value" : "!singularize",
+  "prefix" : ""
 } ]

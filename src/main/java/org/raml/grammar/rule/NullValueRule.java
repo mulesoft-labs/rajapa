@@ -17,6 +17,7 @@ package org.raml.grammar.rule;
 
 import org.raml.nodes.Node;
 import org.raml.nodes.NullNode;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
@@ -27,7 +28,7 @@ public class NullValueRule extends Rule
 {
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         return Collections.emptyList();
     }

@@ -1,5 +1,6 @@
 [ {
   "label" : "library1",
   "description" : "",
-  "value" : "library1"
+  "value" : "library1",
+  "prefix" : ""
 } ]

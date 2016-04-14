@@ -35,6 +35,7 @@ import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.raml.nodes.snakeyaml.SYStringNode;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 public class JsonSchemaValidationRule extends Rule
@@ -58,7 +59,7 @@ public class JsonSchemaValidationRule extends Rule
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         return Lists.newArrayList();
     }

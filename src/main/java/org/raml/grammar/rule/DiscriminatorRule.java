@@ -22,6 +22,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.raml.nodes.Node;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 public class DiscriminatorRule extends Rule
@@ -38,12 +39,12 @@ public class DiscriminatorRule extends Rule
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         List<Node> children = node.getChildren();
         if (children.isEmpty() || discriminator.matches(children.get(0)))
         {
-            return delegate.getSuggestions(node);
+            return delegate.getSuggestions(node, context);
         }
 
         return Collections.emptyList();

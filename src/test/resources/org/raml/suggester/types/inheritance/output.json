@@ -1,37 +1,46 @@
 [ {
-    "label" : "Array",
-    "description" : null,
-    "value" : "array"
+  "label" : "Array",
+  "description" : null,
+  "value" : "array",
+  "prefix" : ""
 }, {
-    "label" : "Boolean",
-    "description" : null,
-    "value" : "boolean"
+  "label" : "Boolean",
+  "description" : null,
+  "value" : "boolean",
+  "prefix" : ""
 }, {
-    "label" : "Date",
-    "description" : null,
-    "value" : "date"
+  "label" : "Date",
+  "description" : null,
+  "value" : "date",
+  "prefix" : ""
 }, {
-    "label" : "File",
-    "description" : null,
-    "value" : "file"
+  "label" : "File",
+  "description" : null,
+  "value" : "file",
+  "prefix" : ""
 }, {
-    "label" : "Integer",
-    "description" : null,
-    "value" : "integer"
+  "label" : "Integer",
+  "description" : null,
+  "value" : "integer",
+  "prefix" : ""
 }, {
-    "label" : "Number",
-    "description" : null,
-    "value" : "number"
+  "label" : "Number",
+  "description" : null,
+  "value" : "number",
+  "prefix" : ""
 }, {
-    "label" : "Object",
-    "description" : null,
-    "value" : "object"
+  "label" : "Object",
+  "description" : null,
+  "value" : "object",
+  "prefix" : ""
 }, {
-    "label" : "Person",
-    "description" : "",
-    "value" : "Person"
+  "label" : "Person",
+  "description" : "",
+  "value" : "Person",
+  "prefix" : ""
 }, {
-    "label" : "String",
-    "description" : null,
-    "value" : "string"
+  "label" : "String",
+  "description" : null,
+  "value" : "string",
+  "prefix" : ""
 } ]

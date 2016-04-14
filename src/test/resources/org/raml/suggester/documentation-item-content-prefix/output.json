@@ -1,5 +1,6 @@
 [ {
   "label" : "Title",
   "description" : "Title of documentation section.",
-  "value" : "title: "
+  "value" : "title: ",
+  "prefix" : ""
 } ]

@@ -21,6 +21,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.raml.nodes.Node;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 public class FirstOfRule extends AnyOfRule
@@ -33,13 +34,13 @@ public class FirstOfRule extends AnyOfRule
 
     @Override
     @Nonnull
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         for (Rule rule : rules)
         {
             if (rule.matches(node))
             {
-                return rule.getSuggestions(node);
+                return rule.getSuggestions(node, context);
             }
         }
         return Collections.emptyList();

@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import org.raml.nodes.IntegerNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 public class IntegerTypeRule extends AbstractTypeRule
@@ -46,7 +47,7 @@ public class IntegerTypeRule extends AbstractTypeRule
 
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         return Collections.emptyList();
     }

@@ -15,32 +15,7 @@
  */
 package org.raml.suggester;
 
-public class RamlContext
+public enum RamlParsingContextType
 {
-
-    private RamlContextType tokenType;
-    private String content;
-    private int location;
-
-    public RamlContext(RamlContextType tokenType, String content, int location)
-    {
-        this.tokenType = tokenType;
-        this.content = content;
-        this.location = location;
-    }
-
-    public String getContent()
-    {
-        return content;
-    }
-
-    public RamlContextType getTokenType()
-    {
-        return tokenType;
-    }
-
-    public int getLocation()
-    {
-        return location;
-    }
+    FUNCTION_CALL, LIBRARY_CALL, VALUE, ITEM, STRING_TEMPLATE, ANY
 }

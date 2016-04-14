@@ -24,13 +24,14 @@ import org.raml.nodes.BooleanNode;
 import org.raml.nodes.Node;
 import org.raml.nodes.NodeType;
 import org.raml.suggester.DefaultSuggestion;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 public class BooleanTypeRule extends AbstractTypeRule
 {
     @Nonnull
     @Override
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         return Arrays.<Suggestion> asList(new DefaultSuggestion("true", "Boolean true", ""), new DefaultSuggestion("false", "Boolean false", ""));
     }

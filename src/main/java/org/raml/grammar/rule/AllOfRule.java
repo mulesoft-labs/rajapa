@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.raml.nodes.Node;
+import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 
 public class AllOfRule extends Rule
@@ -43,12 +44,12 @@ public class AllOfRule extends Rule
 
     @Override
     @Nonnull
-    public List<Suggestion> getSuggestions(Node node)
+    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
         final List<Suggestion> result = new ArrayList<>();
         for (Rule rule : rules)
         {
-            result.addAll(rule.getSuggestions(node));
+            result.addAll(rule.getSuggestions(node, context));
         }
         return result;
     }
@@ -119,7 +120,7 @@ public class AllOfRule extends Rule
     }
 
     @Override
-    public List<Suggestion> getSuggestions(List<Node> pathToRoot)
+    public List<Suggestion> getSuggestions(List<Node> pathToRoot, RamlParsingContext context)
     {
         if (!pathToRoot.isEmpty())
         {
@@ -127,10 +128,10 @@ public class AllOfRule extends Rule
             final Rule innerRule = getMatchingRule(peek);
             if (innerRule != null)
             {
-                final List<Suggestion> suggestions = innerRule.getSuggestions(pathToRoot);
+                final List<Suggestion> suggestions = innerRule.getSuggestions(pathToRoot, context);
                 if (suggestions.isEmpty())
                 {
-                    return getSuggestions(peek);
+                    return getSuggestions(peek, context);
                 }
                 else
                 {
@@ -139,7 +140,7 @@ public class AllOfRule extends Rule
             }
             else
             {
-                return getSuggestions(peek);
+                return getSuggestions(peek, context);
             }
 
         }
