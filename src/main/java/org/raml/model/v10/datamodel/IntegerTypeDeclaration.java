@@ -19,9 +19,5 @@ package org.raml.model.v10.datamodel;
 public interface IntegerTypeDeclaration extends NumberTypeDeclaration
 {
 
-    /**
-     * Value format
-     **/
-    String format();
 
 }

@@ -16,14 +16,14 @@
 package org.raml.model.v08.common;
 
 import org.raml.model.v08.core.BasicNode;
-import org.raml.model.v08.systemTypes.MarkdownString;
+import org.raml.model.v08.system.types.MarkdownString;
 
 
 public interface RAMLLanguageElement extends BasicNode
 {
 
     /**
-     * The description attribute describes the intended use or meaning of the $self. This value MAY be formatted using Markdown [MARKDOWN]
+     * The description attribute describes the intended use or meaning of the $self. This value MAY be formatted using Markdown.
      **/
     MarkdownString description();
 

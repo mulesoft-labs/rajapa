@@ -15,11 +15,11 @@
  */
 package org.raml.model.v10.api;
 
-import org.raml.model.v10.common.RAMLLanguageElement;
-import org.raml.model.v10.systemTypes.MarkdownString;
+import org.raml.model.v10.common.Annotable;
+import org.raml.model.v10.system.types.MarkdownString;
 
 
-public interface DocumentationItem extends RAMLLanguageElement
+public interface DocumentationItem extends Annotable
 {
 
     /**

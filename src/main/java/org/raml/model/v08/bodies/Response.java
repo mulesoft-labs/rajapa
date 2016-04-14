@@ -18,7 +18,7 @@ package org.raml.model.v08.bodies;
 import java.util.List;
 import org.raml.model.v08.common.RAMLLanguageElement;
 import org.raml.model.v08.parameters.Parameter;
-import org.raml.model.v08.systemTypes.StatusCodeString;
+import org.raml.model.v08.system.types.StatusCodeString;
 
 
 public interface Response extends RAMLLanguageElement
@@ -31,17 +31,13 @@ public interface Response extends RAMLLanguageElement
 
 
     /**
-     * An API's methods may support custom header values in responses. The custom, non-standard HTTP headers MUST be specified by the headers property.
-     *         API's may include the the placeholder token {?} in a header name to indicate that any number of headers that conform to the specified format can be sent in responses. This is particularly useful for APIs that allow HTTP headers that conform to some naming convention to send arbitrary, custom data.
-     * 
-     * In the following example, the header x-metadata-{?} is used to send metadata that has been saved with the media.
+     * An API's methods may support custom header values in responses. The custom, non-standard HTTP headers MUST be specified by the headers property. API's may include the the placeholder token {?} in a header name to indicate that any number of headers that conform to the specified format can be sent in responses. This is particularly useful for APIs that allow HTTP headers that conform to some naming convention to send arbitrary, custom data.
      **/
     List<Parameter> headers();
 
 
     /**
-     * Each response MAY contain a body property, which conforms to the same structure as request body properties (see Body). Responses that can return more than one response code MAY therefore have multiple bodies defined.
-     * For APIs without a priori knowledge of the response types for their responses, "*&#47;*" MAY be used to indicate that responses that do not matching other defined data types MUST be accepted. Processing applications MUST match the most descriptive media type first if "*&#47;*" is used.
+     * Each response MAY contain a body property, which conforms to the same structure as request body properties (see Body). Responses that can return more than one response code MAY therefore have multiple bodies defined. For APIs without a priori knowledge of the response types for their responses, `*&#47;*` MAY be used to indicate that responses that do not matching other defined data types MUST be accepted. Processing applications MUST match the most descriptive media type first if `*&#47;*` is used.
      **/
     List<BodyLike> body();
 

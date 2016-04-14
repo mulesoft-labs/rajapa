@@ -15,12 +15,9 @@
  */
 package org.raml.model.v10.datamodel;
 
-import org.raml.model.v10.systemTypes.DateFormatSpec;
-
 
 public interface DateTypeDeclaration extends TypeDeclaration
 {
 
-    DateFormatSpec dateFormat();
 
 }

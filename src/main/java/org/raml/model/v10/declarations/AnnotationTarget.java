@@ -15,7 +15,7 @@
  */
 package org.raml.model.v10.declarations;
 
-import org.raml.model.v10.systemTypes.ValueType;
+import org.raml.model.v10.system.types.ValueType;
 
 
 public interface AnnotationTarget extends ValueType

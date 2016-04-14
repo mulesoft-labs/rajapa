@@ -30,13 +30,13 @@ public interface ObjectTypeDeclaration extends TypeDeclaration
     /**
      * The minimum number of properties allowed for instances of this type.
      **/
-    Double minProperties();
+    Integer minProperties();
 
 
     /**
      * The maximum number of properties allowed for instances of this type.
      **/
-    Double maxProperties();
+    Integer maxProperties();
 
 
     /**

@@ -19,9 +19,5 @@ package org.raml.model.v10.datamodel;
 public interface UnionTypeDeclaration extends TypeDeclaration
 {
 
-    /**
-     * Type property name to be used as a discriminator or boolean
-     **/
-    String discriminator();
 
 }

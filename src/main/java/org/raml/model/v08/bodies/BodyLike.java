@@ -18,8 +18,8 @@ package org.raml.model.v08.bodies;
 import java.util.List;
 import org.raml.model.v08.common.RAMLLanguageElement;
 import org.raml.model.v08.parameters.Parameter;
-import org.raml.model.v08.systemTypes.ExampleString;
-import org.raml.model.v08.systemTypes.SchemaString;
+import org.raml.model.v08.system.types.ExampleString;
+import org.raml.model.v08.system.types.SchemaString;
 
 
 public interface BodyLike extends RAMLLanguageElement
@@ -32,29 +32,19 @@ public interface BodyLike extends RAMLLanguageElement
 
 
     /**
-     * The structure of a request or response body MAY be further specified by the schema property under the appropriate media type.
-     * 
-     * The schema key CANNOT be specified if a body's media type is application&#47;x-www-form-urlencoded or multipart&#47;form-data.
-     * 
-     * All parsers of RAML MUST be able to interpret JSON Schema [JSON_SCHEMA] and XML Schema [XML_SCHEMA].
-     * 
-     * Schema MAY be declared inline or in an external file. However, if the schema is sufficiently large so as to make it difficult for a person to read the API definition, or the schema is reused across multiple APIs or across multiple miles in the same API, the !include user-defined data type SHOULD be used instead of including the content inline.
-     * Alternatively, the value of the schema field MAY be the name of a schema specified in the root-level schemas property (see Named Parameters, or it MAY be declared in an external file and included by using the by using the RAML !include user-defined data type.
+     * The structure of a request or response body MAY be further specified by the schema property under the appropriate media type. The schema key CANNOT be specified if a body's media type is application&#47;x-www-form-urlencoded or multipart&#47;form-data. All parsers of RAML MUST be able to interpret JSON Schema and XML Schema. Schema MAY be declared inline or in an external file. However, if the schema is sufficiently large so as to make it difficult for a person to read the API definition, or the schema is reused across multiple APIs or across multiple miles in the same API, the !include user-defined data type SHOULD be used instead of including the content inline. Alternatively, the value of the schema field MAY be the name of a schema specified in the root-level schemas property, or it MAY be declared in an external file and included by using the by using the RAML !include user-defined data type.
      **/
     SchemaString schema();
 
 
     /**
      * Documentation generators MUST use body properties' example attributes to generate example invocations.
-     * This example shows example attributes for two body property media types.
      **/
     ExampleString example();
 
 
     /**
-     * Web forms REQUIRE special encoding and custom declaration.
-     * If the API's media type is either application&#47;x-www-form-urlencoded or multipart&#47;form-data, the formParameters property MUST specify the name-value pairs that the API is expecting.
-     * The formParameters property is a map in which the key is the name of the web form parameter, and the value is itself a map the specifies the web form parameter's attributes
+     * Web forms REQUIRE special encoding and custom declaration. If the API's media type is either application&#47;x-www-form-urlencoded or multipart&#47;form-data, the formParameters property MUST specify the name-value pairs that the API is expecting. The formParameters property is a map in which the key is the name of the web form parameter, and the value is itself a map the specifies the web form parameter's attributes.
      **/
     List<Parameter> formParameters();
 

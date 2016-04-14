@@ -15,7 +15,8 @@
  */
 package org.raml.model.v10.declarations;
 
-import org.raml.model.v10.systemTypes.Reference;
+import org.raml.model.v10.datamodel.TypeDeclaration;
+import org.raml.model.v10.system.types.Reference;
 
 
 public interface AnnotationRef extends Reference
@@ -24,6 +25,6 @@ public interface AnnotationRef extends Reference
     /**
      * Returns referenced annotation
      **/
-    AnnotationTypeDeclaration annotation();
+    TypeDeclaration annotation();
 
 }

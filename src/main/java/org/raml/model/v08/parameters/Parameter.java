@@ -54,7 +54,7 @@ public interface Parameter extends RAMLLanguageElement
     /**
      * The default attribute specifies the default value to use for the property if the property is omitted or its value is not specified. This SHOULD NOT be interpreted as a requirement for the client to send the default attribute's value if there is no other value to send. Instead, the default attribute's value is the value the server uses if the client does not send a value.
      **/
-    Object default_();
+    Object defaultValue();
 
 
     /**

@@ -15,7 +15,7 @@
  */
 package org.raml.model.v08.bodies;
 
-import org.raml.model.v08.systemTypes.XMLSchemaString;
+import org.raml.model.v08.system.types.XMLSchemaString;
 
 
 public interface XMLBody extends BodyLike

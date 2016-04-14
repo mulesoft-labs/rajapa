@@ -16,18 +16,23 @@
 package org.raml.model.v10.datamodel;
 
 import java.util.List;
-import org.raml.model.v10.common.RAMLLanguageElement;
-import org.raml.model.v10.declarations.AnnotationRef;
-import org.raml.model.v10.systemTypes.MarkdownString;
+import org.raml.model.v10.common.Annotable;
+import org.raml.model.v10.declarations.AnnotationTarget;
 
 
-public interface TypeDeclaration extends RAMLLanguageElement
+public interface TypeDeclaration extends Annotable
 {
 
     /**
      * name of the parameter
      **/
     String name();
+
+
+    /**
+     * The displayName attribute specifies the type display name. It is a friendly name used only for  display or documentation purposes. If displayName is not specified, it defaults to the element's key (the name of the property itself).
+     **/
+    String displayName();
 
 
     /**
@@ -63,13 +68,13 @@ public interface TypeDeclaration extends RAMLLanguageElement
     /**
      * Provides default value for a property
      **/
-    Object default_();
+    Object defaultValue();
 
 
     /**
-     * An object containing named examples of instances of this type. This can be used, e.g., by documentation generators to generate sample values for an object of this type. Cannot be present if the examples property is present.
+     * An example of this type instance represented as string. This can be used, e.g., by documentation generators to generate sample values for an object of this type. Cannot be present if the examples property is present.
      **/
-    List<ExampleSpec> examples();
+    List<ExampleSpec> example();
 
 
     /**
@@ -85,21 +90,24 @@ public interface TypeDeclaration extends RAMLLanguageElement
 
 
     /**
-     * An alternate, human-friendly name for the type
-     **/
-    String displayName();
-
-
-    /**
      * A longer, human-friendly description of the type
      **/
-    MarkdownString description();
+    String description();
+
+
+    XMLFacetInfo xml();
 
 
     /**
-     * Most of RAML model elements may have attached annotations decribing additional meta data about this element
+     * Restrictions on where annotations of this type can be applied. If this property is specified, annotations of this type may only be applied on a property corresponding to one of the target names specified as the value of this property.
      **/
-    List<AnnotationRef> annotations();
+    List<AnnotationTarget> allowedTargets();
+
+
+    /**
+     * Whether the type represents annotation
+     **/
+    Boolean isAnnotation();
 
 
     /**
@@ -118,11 +126,5 @@ public interface TypeDeclaration extends RAMLLanguageElement
      * Returns object representation of example, if possible
      **/
     TypeInstance structuredExample();
-
-
-    /**
-     * An example of this type instance represented as string. This can be used, e.g., by documentation generators to generate sample values for an object of this type. Cannot be present if the examples property is present.
-     **/
-    String example();
 
 }

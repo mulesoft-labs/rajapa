@@ -16,7 +16,7 @@
 package org.raml.model.v08.api;
 
 import org.raml.model.v08.common.RAMLSimpleElement;
-import org.raml.model.v08.systemTypes.SchemaString;
+import org.raml.model.v08.system.types.SchemaString;
 
 
 public interface GlobalSchema extends RAMLSimpleElement

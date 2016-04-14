@@ -18,11 +18,9 @@ package org.raml.model.v10.api;
 import java.util.List;
 import org.raml.model.v10.bodies.MimeType;
 import org.raml.model.v10.datamodel.TypeDeclaration;
-import org.raml.model.v10.declarations.AnnotationRef;
-import org.raml.model.v10.methodsAndResources.Resource;
-import org.raml.model.v10.methodsAndResources.SecuritySchemeRef;
-import org.raml.model.v10.systemTypes.FullUriTemplateString;
-import org.raml.model.v10.systemTypes.MarkdownString;
+import org.raml.model.v10.resources.Resource;
+import org.raml.model.v10.security.SecuritySchemeRef;
+import org.raml.model.v10.system.types.FullUriTemplateString;
 
 
 public interface Api extends LibraryBase
@@ -35,7 +33,7 @@ public interface Api extends LibraryBase
 
 
     /**
-     * The version of the API, e.g. "v1"
+     * The version of the API, e.g. 'v1'
      **/
     String version();
 
@@ -47,9 +45,21 @@ public interface Api extends LibraryBase
 
 
     /**
+     * Named parameters used in the baseUri (template)
+     **/
+    List<TypeDeclaration> baseUriParameters();
+
+
+    /**
+     * The protocols supported by the API
+     **/
+    List<String> protocols();
+
+
+    /**
      * The default media type to use for request and response bodies (payloads), e.g. "application&#47;json"
      **/
-    MimeType mediaType();
+    List<MimeType> mediaType();
 
 
     /**
@@ -71,38 +81,8 @@ public interface Api extends LibraryBase
 
 
     /**
-     * The displayName attribute specifies the $self's display name. It is a friendly name used only for display or documentation purposes. If displayName is not specified, it defaults to the element's key (the name of the property itself).
-     **/
-    String displayName();
-
-
-    /**
-     * A longer, human-friendly description of the API
-     **/
-    MarkdownString description();
-
-
-    /**
-     * Most of RAML model elements may have attached annotations decribing additional meta data about this element
-     **/
-    List<AnnotationRef> annotations();
-
-
-    /**
      * Returns RAML version. "RAML10" string is returned for RAML 1.0. "RAML08" string is returned for RAML 0.8.
      **/
     String RAMLVersion();
-
-
-    /**
-     * Named parameters used in the baseUri (template)
-     **/
-    List<TypeDeclaration> baseUriParameters();
-
-
-    /**
-     * The protocols supported by the API
-     **/
-    List<String> protocols();
 
 }

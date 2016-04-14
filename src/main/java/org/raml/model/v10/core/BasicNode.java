@@ -25,7 +25,6 @@ public interface BasicNode extends AbstractWrapperNode
      **/
     BasicNode parent();
 
-
     Object toJSON();
 
     /**

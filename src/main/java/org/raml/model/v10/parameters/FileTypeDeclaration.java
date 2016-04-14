@@ -17,7 +17,7 @@ package org.raml.model.v10.parameters;
 
 import java.util.List;
 import org.raml.model.v10.datamodel.TypeDeclaration;
-import org.raml.model.v10.systemTypes.ContentType;
+import org.raml.model.v10.system.types.ContentType;
 
 
 public interface FileTypeDeclaration extends TypeDeclaration
@@ -32,12 +32,12 @@ public interface FileTypeDeclaration extends TypeDeclaration
     /**
      * The minLength attribute specifies the parameter value's minimum number of bytes.
      **/
-    Double minLength();
+    Long minLength();
 
 
     /**
      * The maxLength attribute specifies the parameter value's maximum number of bytes.
      **/
-    Double maxLength();
+    Long maxLength();
 
 }

@@ -15,7 +15,7 @@
  */
 package org.raml.model.v08.bodies;
 
-import org.raml.model.v08.systemTypes.JSonSchemaString;
+import org.raml.model.v08.system.types.JSonSchemaString;
 
 
 public interface JSONBody extends BodyLike

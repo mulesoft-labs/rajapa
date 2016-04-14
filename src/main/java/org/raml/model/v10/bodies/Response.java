@@ -16,14 +16,12 @@
 package org.raml.model.v10.bodies;
 
 import java.util.List;
-import org.raml.model.v10.common.RAMLLanguageElement;
+import org.raml.model.v10.common.Annotable;
 import org.raml.model.v10.datamodel.TypeDeclaration;
-import org.raml.model.v10.declarations.AnnotationRef;
-import org.raml.model.v10.systemTypes.MarkdownString;
-import org.raml.model.v10.systemTypes.StatusCodeString;
+import org.raml.model.v10.system.types.StatusCodeString;
 
 
-public interface Response extends RAMLLanguageElement
+public interface Response extends Annotable
 {
 
     /**
@@ -45,20 +43,8 @@ public interface Response extends RAMLLanguageElement
 
 
     /**
-     * An alternate, human-friendly name for the response
-     **/
-    String displayName();
-
-
-    /**
      * A longer, human-friendly description of the response
      **/
-    MarkdownString description();
-
-
-    /**
-     * Most of RAML model elements may have attached annotations decribing additional meta data about this element
-     **/
-    List<AnnotationRef> annotations();
+    String description();
 
 }

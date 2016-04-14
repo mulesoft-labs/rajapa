@@ -15,14 +15,17 @@
  */
 package org.raml.model.v10.datamodel;
 
-import java.util.List;
-import org.raml.model.v10.common.RAMLLanguageElement;
-import org.raml.model.v10.declarations.AnnotationRef;
-import org.raml.model.v10.systemTypes.MarkdownString;
+import org.raml.model.v10.common.Annotable;
 
 
-public interface ExampleSpec extends RAMLLanguageElement
+public interface ExampleSpec extends Annotable
 {
+
+    /**
+     * String representation of example
+     **/
+    Object value();
+
 
     /**
      * By default, examples are validated against any type declaration. Set this to false to allow examples that need not validate.
@@ -37,32 +40,8 @@ public interface ExampleSpec extends RAMLLanguageElement
 
 
     /**
-     * An alternate, human-friendly name for the example
-     **/
-    String displayName();
-
-
-    /**
-     * A longer, human-friendly description of the example
-     **/
-    MarkdownString description();
-
-
-    /**
-     * Most of RAML model elements may have attached annotations decribing additional meta data about this element
-     **/
-    List<AnnotationRef> annotations();
-
-
-    /**
      * Returns object representation of example, if possible
      **/
     TypeInstance structuredContent();
-
-
-    /**
-     * String representation of example
-     **/
-    String content();
 
 }

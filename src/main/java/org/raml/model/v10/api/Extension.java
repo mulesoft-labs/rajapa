@@ -26,14 +26,8 @@ public interface Extension extends Api
 
 
     /**
-     * Location of a valid RAML API definition (or overlay or extension), the extension is applied to,
+     * Location of a valid RAML API definition (or overlay or extension), the extension is applied to
      **/
-    String masterRef();
-
-
-    /**
-     * Short plain-text label for the API
-     **/
-    String title();
+    String extendsApi();
 
 }

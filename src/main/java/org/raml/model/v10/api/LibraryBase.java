@@ -16,45 +16,26 @@
 package org.raml.model.v10.api;
 
 import java.util.List;
-import org.raml.model.v10.common.RAMLLanguageElement;
+import org.raml.model.v10.common.Annotable;
 import org.raml.model.v10.datamodel.TypeDeclaration;
-import org.raml.model.v10.declarations.AnnotationTypeDeclaration;
-import org.raml.model.v10.methodsAndResources.AbstractSecurityScheme;
-import org.raml.model.v10.methodsAndResources.ResourceType;
-import org.raml.model.v10.methodsAndResources.Trait;
+import org.raml.model.v10.methods.Trait;
+import org.raml.model.v10.resources.ResourceType;
+import org.raml.model.v10.security.AbstractSecurityScheme;
 
 
-public interface LibraryBase extends RAMLLanguageElement
+public interface LibraryBase extends Annotable
 {
 
     /**
      * Alias for the equivalent "types" property, for compatibility with RAML 0.8. Deprecated - API definitions should use the "types" property, as the "schemas" alias for that property name may be removed in a future RAML version. The "types" property allows for XML and JSON schemas.
      **/
-    List<GlobalSchema> schemas();
+    List<TypeDeclaration> schemas();
 
 
     /**
      * Declarations of (data) types for use within this API
      **/
     List<TypeDeclaration> types();
-
-
-    /**
-     * Declarations of annotation types for use by annotations
-     **/
-    List<AnnotationTypeDeclaration> annotationTypes();
-
-
-    /**
-     * Declarations of security schemes for use within this API.
-     **/
-    List<AbstractSecurityScheme> securitySchemes();
-
-
-    /**
-     * Importing libraries
-     **/
-    List<Library> uses();
 
 
     /**
@@ -67,5 +48,17 @@ public interface LibraryBase extends RAMLLanguageElement
      * Declarations of resource types for use within this API
      **/
     List<ResourceType> resourceTypes();
+
+
+    /**
+     * Declarations of annotation types for use by annotations
+     **/
+    List<TypeDeclaration> annotationTypes();
+
+
+    /**
+     * Declarations of security schemes for use within this API.
+     **/
+    List<AbstractSecurityScheme> securitySchemes();
 
 }

@@ -15,7 +15,7 @@
  */
 package org.raml.model.v10.bodies;
 
-import org.raml.model.v10.systemTypes.StringType;
+import org.raml.model.v10.system.types.StringType;
 
 
 public interface MimeType extends StringType

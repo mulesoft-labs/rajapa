@@ -34,12 +34,12 @@ public interface ArrayTypeDeclaration extends TypeDeclaration
     /**
      * Minimum amount of items in array
      **/
-    Double minItems();
+    Integer minItems();
 
 
     /**
      * Maximum amount of items in array
      **/
-    Double maxItems();
+    Integer maxItems();
 
 }
