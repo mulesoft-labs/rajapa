@@ -20,6 +20,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.raml.grammar.rule.AnyValueRule;
+import org.raml.grammar.rule.JSonDumper;
 import org.raml.impl.v10.nodes.types.builtin.BooleanTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.NumericTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
@@ -123,6 +124,11 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
     public String toString()
     {
         return getSource().toString();
+    }
+
+    public String toJsonString()
+    {
+        return JSonDumper.dump(getSource());
     }
 
     public boolean isArrayExample()

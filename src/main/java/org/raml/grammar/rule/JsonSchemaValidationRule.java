@@ -31,7 +31,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.raml.nodes.snakeyaml.SYStringNode;
 import org.raml.suggester.Suggestion;
 
@@ -77,12 +79,28 @@ public class JsonSchemaValidationRule extends Rule
         }
         try
         {
-            SYStringNode source = (SYStringNode) node.getSource();
+            Node source = node.getSource();
             if (source == null)
             {
                 return ErrorNodeFactory.createInvalidJsonExampleNode("Source was null");
             }
-            JsonNode json = JsonLoader.fromString(source.getValue());
+            String value = null;
+
+            if (source instanceof SYStringNode)
+            {
+                value = ((SYStringNode) source).getValue();
+            }
+            else if (source instanceof SYObjectNode)
+            {
+                value = ((ExampleTypeNode) node).toJsonString();
+            }
+
+            if (value == null)
+            {
+                return ErrorNodeFactory.createInvalidJsonExampleNode("Source example is not valid: " + source);
+            }
+
+            JsonNode json = JsonLoader.fromString(value);
             ProcessingReport report = schema.validate(json);
             if (!report.isSuccess())
             {
