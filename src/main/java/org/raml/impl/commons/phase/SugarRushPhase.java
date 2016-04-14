@@ -45,21 +45,38 @@ public class SugarRushPhase implements Phase
         return tree;
     }
 
-    private void sweetenAnnotations(Node tree)
+    private void sweetenBuiltInTypes(Node tree)
     {
-        Node annotationsNode = tree.get("annotationTypes");
-        if (annotationsNode != null)
+        final List<StringNode> basicSugar = tree.findDescendantsWith(StringNode.class);
+
+        for (StringNode sugarNode : basicSugar)
         {
-            for (Node annotation : annotationsNode.getChildren())
+            if (BuiltInType.isBuiltInType(sugarNode.getValue()) && !isTypePresentBasic(sugarNode))
             {
-                if (annotation instanceof KeyValueNode && ((KeyValueNode) annotation).getValue().get("type") == null)
+                handleBuiltInType(sugarNode);
+            }
+            else if ("array".equals(sugarNode.getValue()))
+            {
+                handleArray(sugarNode);
+            }
+            else if (isArraySugar(sugarNode))
+            {
+                handleObjectArray(sugarNode);
+            }
+        }
+    }
+
+    private void sweetenObjects(Node tree)
+    {
+        final List<StringNode> basicSugar = tree.findDescendantsWith(StringNode.class);
+        for (StringNode sugarNode : basicSugar)
+        {
+            if ("properties".equals(sugarNode.getValue()))
+            {
+                if (!isTypePresentObject(sugarNode))
                 {
-                    if (((KeyValueNode) annotation).getValue().get("properties") == null)
-                    {
-                        Node stringTypeNode = new StringTypeNode();
-                        stringTypeNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl("string")));
-                        ((KeyValueNode) annotation).getValue().replaceWith(stringTypeNode);
-                    }
+                    Node grandParent = sugarNode.getParent().getParent();
+                    grandParent.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl("object")));
                 }
             }
         }
@@ -83,6 +100,111 @@ public class SugarRushPhase implements Phase
         }
     }
 
+    private void sweetenAnnotations(Node tree)
+    {
+        Node annotationsNode = tree.get("annotationTypes");
+        if (annotationsNode != null)
+        {
+            for (Node annotation : annotationsNode.getChildren())
+            {
+                if (isTypeMissingInAnnotation(annotation))
+                {
+                    if (isStringAnnotation(annotation))
+                    {
+                        setTypeString(annotation);
+                    }
+                }
+            }
+        }
+    }
+
+    private void handleObjectArray(StringNode sugarNode)
+    {
+        Node parent = sugarNode.getParent();
+        Node key = isKeyValueNode(parent) ? ((KeyValueNode) parent).getKey() : null;
+        String keyString = key instanceof StringNode ? ((StringNode) key).getValue() : null;
+        if (parent instanceof KeyValueNode && "type".equals(keyString))
+        {
+            Node grandParent = parent.getParent();
+            grandParent.removeChild(parent);
+            KeyValueNodeImpl items = handleArraySugar(sugarNode, grandParent);
+            items.setSource(parent);
+            grandParent.addChild(items);
+        }
+        else
+        {
+            Node newNode = new ObjectTypeNode();
+            KeyValueNodeImpl items = handleArraySugar(sugarNode, newNode);
+            items.setSource(parent);
+            newNode.addChild(items);
+            sugarNode.replaceWith(newNode);
+        }
+
+    }
+
+    private boolean isArraySugar(StringNode sugarNode)
+    {
+        return sugarNode.getValue() != null && sugarNode.getValue().endsWith("[]");
+    }
+
+    private void handleArray(StringNode sugarNode)
+    {
+        if (sugarNode.getParent() != null && sugarNode.getParent().getParent() != null)
+        {
+            Node itemsNode = sugarNode.getParent().getParent().get("items");
+            if (itemsNode instanceof SYNullNode)
+            {
+                itemsNode.replaceWith(new StringNodeImpl(new StringNodeImpl("string")));
+            }
+        }
+    }
+
+    private KeyValueNodeImpl handleArraySugar(StringNode sugarNode, Node grandParent)
+    {
+        String value = sugarNode.getValue().split("\\[")[0];
+        grandParent.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl("array")));
+        return new KeyValueNodeImpl(new StringNodeImpl("items"), new StringNodeImpl(value));
+    }
+
+    private void handleBuiltInType(StringNode sugarNode)
+    {
+        if (sugarNode.getChildren().isEmpty())
+        {
+            Node newNode = getSugarNode(sugarNode.getValue());
+            if (newNode != null)
+            {
+                newNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl(sugarNode.getValue())));
+                handleExample(sugarNode, newNode);
+                sugarNode.replaceWith(newNode);
+            }
+        }
+    }
+
+    private void setTypeString(Node annotation)
+    {
+        if (isKeyValueNode(annotation))
+        {
+            Node stringTypeNode = new StringTypeNode();
+            stringTypeNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl("string")));
+            ((KeyValueNode) annotation).getValue().replaceWith(stringTypeNode);
+        }
+    }
+
+    private boolean isStringAnnotation(Node annotation)
+    {
+        return isKeyValueNode(annotation) && ((KeyValueNode) annotation).getValue().get("properties") == null;
+    }
+
+    private boolean isKeyValueNode(Node annotation)
+    {
+        return annotation instanceof KeyValueNode;
+    }
+
+    private boolean isTypeMissingInAnnotation(Node annotation)
+    {
+        return (isKeyValueNode(annotation)) && (((KeyValueNode) annotation).getValue().get("type") == null);
+    }
+
     private boolean isValidTypeSystemObject(Node tree, StringNode sugarNode)
     {
         Node types = tree.get("types");
@@ -103,7 +225,7 @@ public class SugarRushPhase implements Phase
     private boolean isUnion(StringNode sugarNode)
     {
         String value = sugarNode.getValue();
-        if (sugarNode.getParent() instanceof KeyValueNode)
+        if (isKeyValueNode(sugarNode.getParent()))
         {
             KeyValueNode parent = (KeyValueNode) sugarNode.getParent();
             String key = ((StringNode) parent.getKey()).getValue();
@@ -111,6 +233,7 @@ public class SugarRushPhase implements Phase
         }
         return false;
     }
+
 
     private boolean isTypeSystemObjectProperty(StringNode sugarNode)
     {
@@ -123,7 +246,7 @@ public class SugarRushPhase implements Phase
         if (properties != null)
         {
             Node type = properties.getParent();
-            if (sugarNode.getParent() instanceof KeyValueNode)
+            if (isKeyValueNode(sugarNode.getParent()))
             {
                 KeyValueNode parentNode = ((KeyValueNode) sugarNode.getParent());
                 if (parentNode.getValue() instanceof StringNode && ((StringNode) parentNode.getValue()).getValue().equals(sugarNode.getValue()) && type.get("type") != null)
@@ -133,80 +256,6 @@ public class SugarRushPhase implements Phase
             }
         }
         return false;
-    }
-
-    private void sweetenBuiltInTypes(Node tree)
-    {
-        final List<StringNode> basicSugar = tree.findDescendantsWith(StringNode.class);
-
-        for (StringNode sugarNode : basicSugar)
-        {
-            if (BuiltInType.isBuiltInType(sugarNode.getValue()) && !isTypePresentBasic(sugarNode))
-            {
-                if (sugarNode.getChildren().isEmpty())
-                {
-                    Node newNode = getSugarNode(sugarNode.getValue());
-                    if (newNode != null)
-                    {
-                        newNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl(sugarNode.getValue())));
-                        handleExample(sugarNode, newNode);
-                        sugarNode.replaceWith(newNode);
-                    }
-                }
-            }
-            else if ("array".equals(sugarNode.getValue()))
-            {
-                if (sugarNode.getParent() != null && sugarNode.getParent().getParent() != null)
-                {
-                    Node itemsNode = sugarNode.getParent().getParent().get("items");
-                    if (itemsNode instanceof SYNullNode)
-                    {
-                        itemsNode.replaceWith(new StringNodeImpl(new StringNodeImpl("string")));
-                    }
-                }
-            }
-            else if (sugarNode.getValue() != null && sugarNode.getValue().endsWith("[]"))
-            {
-                Node parent = sugarNode.getParent();
-                Node key = parent instanceof KeyValueNode ? ((KeyValueNode) parent).getKey() : null;
-                String keyString = key instanceof StringNode ? ((StringNode) key).getValue() : null;
-                if (parent instanceof KeyValueNode && "type".equals(keyString))
-                {
-                    Node grandParent = parent.getParent();
-                    grandParent.removeChild(parent);
-                    grandParent.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl("array")));
-                    KeyValueNodeImpl items = new KeyValueNodeImpl(new StringNodeImpl("items"), new StringNodeImpl(sugarNode.getValue().split("\\[")[0]));
-                    items.setSource(parent);
-                    grandParent.addChild(items);
-                }
-                else
-                {
-                    Node newNode = new ObjectTypeNode();
-                    newNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl("array")));
-                    KeyValueNodeImpl items = new KeyValueNodeImpl(new StringNodeImpl("items"), new StringNodeImpl(sugarNode.getValue().split("\\[")[0]));
-                    items.setSource(parent);
-                    newNode.addChild(items);
-                    sugarNode.replaceWith(newNode);
-                }
-            }
-        }
-    }
-
-
-    private void sweetenObjects(Node tree)
-    {
-        final List<StringNode> basicSugar = tree.findDescendantsWith(StringNode.class);
-        for (StringNode sugarNode : basicSugar)
-        {
-            if ("properties".equals(sugarNode.getValue()))
-            {
-                if (!isTypePresentObject(sugarNode))
-                {
-                    Node grandParent = sugarNode.getParent().getParent();
-                    grandParent.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl("object")));
-                }
-            }
-        }
     }
 
     private void handleExample(Node sugarNode, Node newNode)
@@ -223,7 +272,7 @@ public class SugarRushPhase implements Phase
     private boolean isTypePresentBasic(Node sugarNode)
     {
         Node parent = sugarNode.getParent();
-        if (parent instanceof KeyValueNode && ((KeyValueNode) parent).getKey() instanceof SYStringNode)
+        if (isKeyValueNode(parent) && ((KeyValueNode) parent).getKey() instanceof SYStringNode)
         {
             SYStringNode key = (SYStringNode) ((KeyValueNode) parent).getKey();
             return "type".equals(key.getValue());
