@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.raml.impl.commons.nodes.PropertyNode;
 import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.KeyValueNode;
@@ -82,19 +83,22 @@ public class TypesTransformer implements Transformer
 
     private Node processType(SYObjectNode typesRoot, Node originalProperties, String objectType)
     {
-        ObjectTypeNode typeNode = getType(typesRoot, objectType);
-        if (originalProperties == null)
+        TypeNode typeNode = getType(typesRoot, objectType);
+        if (typeNode instanceof ObjectTypeNode)
         {
-            SYObjectNode newProperties = (SYObjectNode) typeNode.get("properties");
-            if (newProperties != null)
+            if (originalProperties == null)
             {
-                originalProperties = newProperties.copy();
+                SYObjectNode newProperties = (SYObjectNode) typeNode.get("properties");
+                if (newProperties != null)
+                {
+                    originalProperties = newProperties.copy();
+                }
             }
-        }
-        else
-        {
-            List<PropertyNode> unionProperties = getTypeProperties(typeNode);
-            addProperties(originalProperties, unionProperties);
+            else
+            {
+                List<PropertyNode> unionProperties = getTypeProperties((ObjectTypeNode) typeNode);
+                addProperties(originalProperties, unionProperties);
+            }
         }
         return originalProperties;
     }
@@ -110,7 +114,7 @@ public class TypesTransformer implements Transformer
                 for (String type : typeNode.getValue().split("\\|"))
                 {
                     String trimmedType = StringUtils.trim(type);
-                    ObjectTypeNode parentTypeNode = getType(typesRoot, trimmedType);
+                    ObjectTypeNode parentTypeNode = (ObjectTypeNode) getType(typesRoot, trimmedType);
                     if (parentTypeNode == null)
                     {
                         Node errorNode = new ErrorNode("inexistent type definition for " + trimmedType);
@@ -184,9 +188,9 @@ public class TypesTransformer implements Transformer
         return node.getProperties();
     }
 
-    private ObjectTypeNode getType(SYObjectNode node, String typeName)
+    private TypeNode getType(SYObjectNode node, String typeName)
     {
-        return (ObjectTypeNode) node.get(typeName);
+        return (TypeNode) node.get(typeName);
     }
 
     private void injectProperties(ObjectTypeNode node, StringNodeImpl key, SYObjectNode properties)
