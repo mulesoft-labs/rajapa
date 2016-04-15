@@ -110,7 +110,7 @@ public class ObjectRule extends Rule
         boolean matches = true;
         for (KeyValueRule rule : allFieldRules)
         {
-            matches &= matchesAny(rule, children) || !rule.isRequired();
+            matches &= !rule.isRequired() || matchesAny(rule, children);
         }
         return matches;
     }
