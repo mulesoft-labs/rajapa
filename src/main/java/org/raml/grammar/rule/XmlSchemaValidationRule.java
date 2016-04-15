@@ -30,7 +30,7 @@ import javax.xml.validation.SchemaFactory;
 import org.raml.grammar.rule.xml.XsdResourceResolver;
 import org.raml.loader.ResourceLoader;
 import org.raml.nodes.Node;
-import org.raml.nodes.snakeyaml.SYStringNode;
+import org.raml.nodes.StringNode;
 import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
 import org.xml.sax.SAXException;
@@ -75,11 +75,27 @@ public class XmlSchemaValidationRule extends Rule
         {
             return ErrorNodeFactory.createInvalidXmlExampleNode("Invalid XmlSchema");
         }
-        SYStringNode source = (SYStringNode) node.getSource();
+        Node source = node.getSource();
         if (source == null)
         {
-            return ErrorNodeFactory.createInvalidXmlExampleNode("Source was null");
+            if (!(node instanceof StringNode))
+            {
+                return ErrorNodeFactory.createInvalidXmlExampleNode("Source was null");
+            }
+            else
+            {
+                source = node;
+            }
         }
+        if (source instanceof StringNode)
+        {
+            internalValidateExample(node, (StringNode) source);
+        }
+        return node;
+    }
+
+    private void internalValidateExample(@Nonnull Node node, StringNode source)
+    {
         String value = source.getValue();
         try
         {
@@ -89,7 +105,6 @@ public class XmlSchemaValidationRule extends Rule
         {
             node.replaceWith(ErrorNodeFactory.createInvalidXmlExampleNode(e.getMessage()));
         }
-        return node;
     }
 
     @Override

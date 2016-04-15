@@ -6,7 +6,8 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="firstName" type="xs:string"/>
-                <xs:element name="lastName" type="xs:integer"/>
+                <xs:element name="lastName" type="xs:string"/>
+                <xs:element name="age" type="xs:integer"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

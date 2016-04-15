@@ -104,6 +104,10 @@ public class ExampleValidationPhase implements Phase
                             {
                                 exampleValue = childExample;
                             }
+                            else if (childExample instanceof StringNode)
+                            {
+                                exampleValue = childExample;
+                            }
                             else
                             {
                                 break;

@@ -3,8 +3,14 @@ title: API with Examples
 types:
   User:
     type: !include xsd-includer.xsd
-    example: |
-      <Person>
-          <firstName>Bob</firstName>
-          <lastName>Marley</lastName>
-      </Person>
+    examples:
+      - <Person>
+            <firstName>Bob</firstName>
+            <lastName>Marley</lastName>
+            <age>ten</age>
+        </Person>
+      - <Person>
+            <firstName>Donald</firstName>
+            <lastName>Trump</lastName>
+            <age>1000</age>
+        </Person>
