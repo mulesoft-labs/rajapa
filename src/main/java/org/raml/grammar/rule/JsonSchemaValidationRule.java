@@ -33,6 +33,8 @@ import javax.annotation.Nonnull;
 
 import org.raml.impl.commons.nodes.ExampleTypeNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.ObjectNode;
+import org.raml.nodes.StringNode;
 import org.raml.nodes.snakeyaml.SYObjectNode;
 import org.raml.nodes.snakeyaml.SYStringNode;
 import org.raml.suggester.RamlParsingContext;
@@ -83,13 +85,20 @@ public class JsonSchemaValidationRule extends Rule
             Node source = node.getSource();
             if (source == null)
             {
-                return ErrorNodeFactory.createInvalidJsonExampleNode("Source was null");
+                if (!(node instanceof StringNode) && !(node instanceof ObjectNode))
+                {
+                    return ErrorNodeFactory.createInvalidJsonExampleNode("Source was null");
+                }
+                else
+                {
+                    source = node;
+                }
             }
             String value = null;
 
-            if (source instanceof SYStringNode)
+            if (source instanceof StringNode)
             {
-                value = ((SYStringNode) source).getValue();
+                value = ((StringNode) source).getValue();
             }
             else if (source instanceof SYObjectNode)
             {

@@ -29,7 +29,9 @@ import javax.xml.validation.SchemaFactory;
 
 import org.raml.grammar.rule.xml.XsdResourceResolver;
 import org.raml.loader.ResourceLoader;
+import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.Node;
+import org.raml.nodes.ObjectNode;
 import org.raml.nodes.StringNode;
 import org.raml.suggester.RamlParsingContext;
 import org.raml.suggester.Suggestion;
@@ -78,13 +80,18 @@ public class XmlSchemaValidationRule extends Rule
         Node source = node.getSource();
         if (source == null)
         {
-            if (!(node instanceof StringNode))
+            if (!(node instanceof ObjectNode))
             {
                 return ErrorNodeFactory.createInvalidXmlExampleNode("Source was null");
             }
             else
             {
-                source = node;
+                if (node.getChildren().size() == 1 &&
+                    node.getChildren().get(0) instanceof KeyValueNode &&
+                    (((KeyValueNode) node.getChildren().get(0)).getValue()) instanceof StringNode)
+                {
+                    source = ((KeyValueNode) node.getChildren().get(0)).getValue();
+                }
             }
         }
         if (source instanceof StringNode)

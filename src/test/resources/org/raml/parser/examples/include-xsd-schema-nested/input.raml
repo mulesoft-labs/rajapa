@@ -4,13 +4,15 @@ types:
   User:
     type: !include xsd-includer.xsd
     examples:
-      - <Person>
-            <firstName>Bob</firstName>
-            <lastName>Marley</lastName>
-            <age>ten</age>
-        </Person>
-      - <Person>
-            <firstName>Donald</firstName>
-            <lastName>Trump</lastName>
-            <age>1000</age>
-        </Person>
+      - bad: |
+          <Person>
+              <firstName>Bob</firstName>
+              <lastName>Marley</lastName>
+              <age>ten</age>
+          </Person>
+      - good: |
+          <Person>
+              <firstName>Donald</firstName>
+              <lastName>Trump</lastName>
+              <age>1000</age>
+          </Person>
