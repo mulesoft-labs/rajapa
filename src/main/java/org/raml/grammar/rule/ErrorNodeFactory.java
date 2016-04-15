@@ -152,4 +152,9 @@ public class ErrorNodeFactory
     {
         return new ErrorNode("Error validating XML. Error: " + error);
     }
+
+    public static ErrorNode createInexistentType(String typeName)
+    {
+        return new ErrorNode("Inexistent type definition for " + typeName);
+    }
 }

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.raml.grammar.rule.ErrorNodeFactory;
 import org.raml.impl.commons.nodes.PropertyNode;
 import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
@@ -68,7 +69,7 @@ public class TypesTransformer implements Transformer
         final SYArrayNode typesNode = (SYArrayNode) node.get("type");
         if (typesNode != null)
         {
-            Set<List<String>> typeCombinations = getAllPossibleTypes(typesNode);
+            Set<List<String>> typeCombinations = validateAndGetPossibleTypes(typesNode, typesRoot);
             for (List<String> combination : typeCombinations)
             {
                 Node originalProperties = properties != null ? properties.copy() : null;
@@ -84,6 +85,7 @@ public class TypesTransformer implements Transformer
     private Node processType(SYObjectNode typesRoot, Node originalProperties, String objectType)
     {
         TypeNode typeNode = getType(typesRoot, objectType);
+
         if (typeNode instanceof ObjectTypeNode)
         {
             if (originalProperties == null)
@@ -117,7 +119,7 @@ public class TypesTransformer implements Transformer
                     ObjectTypeNode parentTypeNode = (ObjectTypeNode) getType(typesRoot, trimmedType);
                     if (parentTypeNode == null)
                     {
-                        Node errorNode = new ErrorNode("inexistent type definition for " + trimmedType);
+                        Node errorNode = ErrorNodeFactory.createInexistentType(trimmedType);
                         errorNode.setSource(typeNode);
                         typeNode.replaceWith(errorNode);
                         // TODO - might be improved adding a multiple error for every type that's non existent - migueloliva - Apr 5, 2016
@@ -132,6 +134,7 @@ public class TypesTransformer implements Transformer
             }
         }
     }
+
 
     private void addProperties(Node properties, List<PropertyNode> unionProperties)
     {
@@ -154,7 +157,7 @@ public class TypesTransformer implements Transformer
         }
     }
 
-    private Set<List<String>> getAllPossibleTypes(SYArrayNode typesNode)
+    private Set<List<String>> validateAndGetPossibleTypes(SYArrayNode typesNode, SYObjectNode typesRoot)
     {
         List<Set<String>> types = Lists.newArrayList();
         for (Node typeNode : typesNode.getChildren())
@@ -165,7 +168,18 @@ public class TypesTransformer implements Transformer
             {
                 if (StringUtils.isNotBlank(StringUtils.trimToNull(type)))
                 {
-                    splitTypes.add(StringUtils.trim(type));
+                    final String objectType = StringUtils.trim(type);
+
+                    final TypeNode typeDefinition = getType(typesRoot, objectType);
+                    if (typeDefinition == null)
+                    {
+                        Node error = ErrorNodeFactory.createInexistentType(objectType);
+                        typeNode.replaceWith(error);
+                    }
+                    else
+                    {
+                        splitTypes.add(objectType);
+                    }
                 }
             }
             types.add(splitTypes);
