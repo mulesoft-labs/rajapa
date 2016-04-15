@@ -29,9 +29,9 @@ import org.raml.impl.commons.model.builder.ModelBuilder;
 import org.raml.impl.commons.nodes.RamlDocumentNode;
 import org.raml.model.v10.api.Api;
 import org.raml.model.v10.api.DocumentationItem;
-import org.raml.model.v10.methodsAndResources.Resource;
-import org.raml.model.v10.methodsAndResources.ResourceType;
-import org.raml.model.v10.methodsAndResources.Trait;
+import org.raml.model.v10.methods.Trait;
+import org.raml.model.v10.resources.Resource;
+import org.raml.model.v10.resources.ResourceType;
 import org.raml.nodes.ErrorNode;
 import org.raml.nodes.Node;
 
@@ -61,7 +61,8 @@ public class SpecInterfacesTestCase
         assertThat(api.title(), is("api title"));
         assertThat(api.version(), is("v1"));
         assertThat(api.baseUri().value(), is("http://base.uri"));
-        assertThat(api.mediaType().value(), is("application/json"));
+        assertThat(api.mediaType().size(), is(1));
+        assertThat(api.mediaType().get(0).value(), is("application/json"));
         assertThat(api.protocols().size(), is(2));
         assertThat(api.protocols().get(0), is("HTTP"));
         assertThat(api.protocols().get(1), is("HTTPS"));

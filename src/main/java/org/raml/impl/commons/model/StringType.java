@@ -15,6 +15,9 @@
  */
 package org.raml.impl.commons.model;
 
+import org.raml.nodes.Node;
+import org.raml.nodes.SimpleTypeNode;
+
 public class StringType
 {
     private String value;
@@ -22,6 +25,15 @@ public class StringType
     public StringType(String value)
     {
         this.value = value;
+    }
+
+    public StringType(Node node)
+    {
+        if (!(node instanceof SimpleTypeNode))
+        {
+            throw new IllegalArgumentException("Invalid node type: " + node.getClass().getName());
+        }
+        this.value = ((SimpleTypeNode) node).getLiteralValue();
     }
 
     public String value()

@@ -21,6 +21,7 @@ import org.raml.model.v10.datamodel.TypeDeclaration;
 import org.raml.model.v10.methods.Method;
 import org.raml.model.v10.methods.TraitRef;
 import org.raml.model.v10.security.SecuritySchemeRef;
+import org.raml.model.v10.system.types.MarkdownString;
 
 
 public interface ResourceBase extends Annotable
@@ -44,7 +45,9 @@ public interface ResourceBase extends Annotable
     ResourceTypeRef type();
 
 
-    String description();
+    // TODO --def-system-bug--
+    // String description();
+    MarkdownString description();
 
 
     /**

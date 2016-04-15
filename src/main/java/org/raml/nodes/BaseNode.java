@@ -50,6 +50,7 @@ public abstract class BaseNode implements Node
         return parent;
     }
 
+    @Nonnull
     @Override
     public List<Node> getChildren()
     {

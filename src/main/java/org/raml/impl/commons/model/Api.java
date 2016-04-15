@@ -54,9 +54,9 @@ public class Api extends LibraryBase
         return getStringTypeValue("baseUri");
     }
 
-    public StringType mediaType()
+    public List<StringType> mediaType()
     {
-        return getStringTypeValue("mediaType");
+        return getList("mediaType", StringType.class);
     }
 
     public List<DocumentationItem> documentation()

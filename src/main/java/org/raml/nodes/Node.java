@@ -54,6 +54,7 @@ public interface Node
      * All the children
      * @return The Children
      */
+    @Nonnull
     List<Node> getChildren();
 
     /**

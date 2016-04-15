@@ -42,16 +42,30 @@ public abstract class BaseModelElement
     {
         ArrayList<T> resultList = new ArrayList<>();
         Node parent = NodeSelector.selectFrom(key, getNode());
-        for (Node child : parent.getChildren())
+        if (parent != null)
         {
-            try
+            List<Node> nodes = new ArrayList<>();
+            if (parent.getChildren().isEmpty())
             {
-                Constructor<T> constructor = clazz.getConstructor(Node.class);
-                resultList.add(constructor.newInstance(child));
+                // case when using syntactic sugar for single element
+                // that does not require to be in a sequence
+                nodes.add(parent);
             }
-            catch (Exception e)
+            else
             {
-                throw new RuntimeException(e);
+                nodes = parent.getChildren();
+            }
+            for (Node child : nodes)
+            {
+                try
+                {
+                    Constructor<T> constructor = clazz.getConstructor(Node.class);
+                    resultList.add(constructor.newInstance(child));
+                }
+                catch (Exception e)
+                {
+                    throw new RuntimeException(e);
+                }
             }
         }
         return resultList;
