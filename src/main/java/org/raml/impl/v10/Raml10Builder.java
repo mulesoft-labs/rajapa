@@ -145,7 +145,7 @@ public class Raml10Builder
 
         // Schema Types example validation
 
-        final ExampleValidationPhase sixth = new ExampleValidationPhase();
+        final ExampleValidationPhase sixth = new ExampleValidationPhase(resourceLoader, resourceLocation);
 
         return Arrays.asList(first, sugar, second, third, thirdAndAHalf, fourth, fifth, sixth);
 

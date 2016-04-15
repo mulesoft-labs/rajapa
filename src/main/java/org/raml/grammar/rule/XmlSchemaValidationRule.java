@@ -27,6 +27,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.raml.grammar.rule.xml.XsdResourceResolver;
+import org.raml.loader.ResourceLoader;
 import org.raml.nodes.Node;
 import org.raml.nodes.snakeyaml.SYStringNode;
 import org.raml.suggester.RamlParsingContext;
@@ -38,11 +40,12 @@ public class XmlSchemaValidationRule extends Rule
 
     private Schema schema;
 
-    public XmlSchemaValidationRule(String schema)
+    public XmlSchemaValidationRule(String schema, ResourceLoader resourceLoader, String actualPath)
     {
         try
         {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            factory.setResourceResolver(new XsdResourceResolver(resourceLoader, actualPath));
             this.schema = factory.newSchema(new StreamSource(new StringReader(schema)));
         }
         catch (SAXException e)

@@ -29,15 +29,28 @@ import org.raml.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.loader.ResourceLoader;
 import org.raml.nodes.KeyValueNode;
 import org.raml.nodes.KeyValueNodeImpl;
 import org.raml.nodes.Node;
 import org.raml.nodes.ObjectNode;
 import org.raml.nodes.StringNode;
+import org.raml.nodes.snakeyaml.RamlNodeParser;
+import org.raml.nodes.snakeyaml.SYStringNode;
 import org.raml.phase.Phase;
 
 public class ExampleValidationPhase implements Phase
 {
+
+    private ResourceLoader resourceLoader;
+    private final String actualPath;
+
+
+    public ExampleValidationPhase(ResourceLoader resourceLoader, String actualPath)
+    {
+        this.resourceLoader = resourceLoader;
+        this.actualPath = actualPath;
+    }
 
     @Override
     public Node apply(Node tree)
@@ -66,7 +79,7 @@ public class ExampleValidationPhase implements Phase
                         }
                         else if (value.startsWith("<"))
                         {
-                            rule = new XmlSchemaValidationRule(value);
+                            rule = new XmlSchemaValidationRule(value, resourceLoader, actualPath);
                         }
                     }
                     else if (!type.getInheritedProperties().isEmpty())
@@ -102,14 +115,20 @@ public class ExampleValidationPhase implements Phase
                     }
                     else
                     {
-                        transform = rule.apply(example);
+                        if (example.getSource() instanceof StringNode && !(rule instanceof JsonSchemaValidationRule || rule instanceof XmlSchemaValidationRule))
+                        {
+                            Node transformed = RamlNodeParser.parse(((SYStringNode) example.getSource()).getValue());
+                            transform = rule.apply(transformed);
+                        }
+                        else
+                        {
+                            transform = rule.apply(example);
+                        }
                     }
                 }
-
             }
             else
             {
-
                 rule = example.visit(new TypeToRuleVisitor());
                 transform = rule.apply(example.getSource());
             }
