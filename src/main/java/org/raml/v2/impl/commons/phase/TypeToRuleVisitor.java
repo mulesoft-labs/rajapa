@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.phase;
+package org.raml.v2.impl.commons.phase;
 
 import com.google.common.collect.Lists;
 
@@ -22,30 +22,30 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.grammar.rule.AllOfRule;
-import org.raml.grammar.rule.AnyOfRule;
-import org.raml.grammar.rule.BooleanTypeRule;
-import org.raml.grammar.rule.DivisorValueRule;
-import org.raml.grammar.rule.IntegerTypeRule;
-import org.raml.grammar.rule.IntegerValueRule;
-import org.raml.grammar.rule.KeyValueRule;
-import org.raml.grammar.rule.MaxLengthRule;
-import org.raml.grammar.rule.MaximumValueRule;
-import org.raml.grammar.rule.MinLengthRule;
-import org.raml.grammar.rule.MinimumValueRule;
-import org.raml.grammar.rule.ObjectRule;
-import org.raml.grammar.rule.RangeValueRule;
-import org.raml.grammar.rule.RegexValueRule;
-import org.raml.grammar.rule.Rule;
-import org.raml.grammar.rule.StringTypeRule;
-import org.raml.grammar.rule.StringValueRule;
-import org.raml.impl.commons.nodes.PropertyNode;
-import org.raml.impl.v10.nodes.types.builtin.BooleanTypeNode;
-import org.raml.impl.v10.nodes.types.builtin.NumericTypeNode;
-import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
-import org.raml.impl.v10.nodes.types.builtin.StringTypeNode;
-import org.raml.impl.v10.nodes.types.builtin.TypeNode;
-import org.raml.impl.v10.nodes.types.builtin.TypeNodeVisitor;
+import org.raml.v2.grammar.rule.AllOfRule;
+import org.raml.v2.grammar.rule.AnyOfRule;
+import org.raml.v2.grammar.rule.BooleanTypeRule;
+import org.raml.v2.grammar.rule.DivisorValueRule;
+import org.raml.v2.grammar.rule.IntegerTypeRule;
+import org.raml.v2.grammar.rule.IntegerValueRule;
+import org.raml.v2.grammar.rule.KeyValueRule;
+import org.raml.v2.grammar.rule.MaxLengthRule;
+import org.raml.v2.grammar.rule.MaximumValueRule;
+import org.raml.v2.grammar.rule.MinLengthRule;
+import org.raml.v2.grammar.rule.MinimumValueRule;
+import org.raml.v2.grammar.rule.ObjectRule;
+import org.raml.v2.grammar.rule.RangeValueRule;
+import org.raml.v2.grammar.rule.RegexValueRule;
+import org.raml.v2.grammar.rule.Rule;
+import org.raml.v2.grammar.rule.StringTypeRule;
+import org.raml.v2.grammar.rule.StringValueRule;
+import org.raml.v2.impl.commons.nodes.PropertyNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.TypeNodeVisitor;
 
 
 public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>

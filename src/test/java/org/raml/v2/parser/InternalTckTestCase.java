@@ -14,7 +14,7 @@
  * language governing permissions and limitations under the License.
  */
 
-package org.raml.parser;
+package org.raml.v2.parser;
 
 
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -31,10 +31,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.raml.RamlBuilder;
-import org.raml.dataprovider.TestDataProvider;
-import org.raml.emitter.tck.TckEmitter;
-import org.raml.nodes.Node;
+import org.raml.v2.RamlBuilder;
+import org.raml.v2.dataprovider.TestDataProvider;
+import org.raml.v2.emitter.tck.TckEmitter;
+import org.raml.v2.nodes.Node;
 
 @RunWith(Parameterized.class)
 public class InternalTckTestCase extends TestDataProvider

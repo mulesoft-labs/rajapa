@@ -13,13 +13,13 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes;
+package org.raml.v2.nodes;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.raml.impl.v10.nodes.LibraryRefNode;
+import org.raml.v2.impl.v10.nodes.LibraryRefNode;
 
 public abstract class AbstractReferenceNode extends AbstractRamlNode implements ReferenceNode
 {

@@ -13,19 +13,19 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.v08;
+package org.raml.v2.impl.v08;
 
-import org.raml.impl.commons.phase.IncludeResolver;
-import org.raml.impl.commons.phase.ResourceTypesTraitsTransformer;
-import org.raml.impl.commons.phase.StringTemplateExpressionTransformer;
-import org.raml.impl.v10.phase.TypesTransformer;
-import org.raml.phase.GrammarPhase;
-import org.raml.impl.v08.grammar.Raml08Grammar;
-import org.raml.loader.ResourceLoader;
-import org.raml.nodes.Node;
-import org.raml.nodes.snakeyaml.RamlNodeParser;
-import org.raml.phase.Phase;
-import org.raml.phase.TransformationPhase;
+import org.raml.v2.impl.commons.phase.IncludeResolver;
+import org.raml.v2.impl.commons.phase.ResourceTypesTraitsTransformer;
+import org.raml.v2.impl.commons.phase.StringTemplateExpressionTransformer;
+import org.raml.v2.impl.v10.phase.TypesTransformer;
+import org.raml.v2.phase.GrammarPhase;
+import org.raml.v2.impl.v08.grammar.Raml08Grammar;
+import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
+import org.raml.v2.phase.Phase;
+import org.raml.v2.phase.TransformationPhase;
 
 import java.io.IOException;
 import java.util.Arrays;

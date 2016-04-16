@@ -13,13 +13,13 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.snakeyaml;
+package org.raml.v2.nodes.snakeyaml;
 
 import javax.annotation.Nonnull;
 
-import org.raml.nodes.IntegerNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
+import org.raml.v2.nodes.IntegerNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.NodeType;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
 public class SYIntegerNode extends SYBaseRamlNode implements IntegerNode

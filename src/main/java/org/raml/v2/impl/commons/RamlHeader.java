@@ -13,14 +13,14 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons;
+package org.raml.v2.impl.commons;
 
-import static org.raml.impl.commons.RamlVersion.RAML_08;
-import static org.raml.impl.commons.RamlVersion.RAML_10;
+import static org.raml.v2.impl.commons.RamlVersion.RAML_08;
+import static org.raml.v2.impl.commons.RamlVersion.RAML_10;
 
 import java.util.StringTokenizer;
 
-import org.raml.impl.v10.RamlFragment;
+import org.raml.v2.impl.v10.RamlFragment;
 
 public class RamlHeader
 {

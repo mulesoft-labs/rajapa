@@ -13,10 +13,10 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v08.api;
+package org.raml.v2.model.v08.api;
 
-import org.raml.model.v08.common.RAMLSimpleElement;
-import org.raml.model.v08.system.types.MarkdownString;
+import org.raml.v2.model.v08.common.RAMLSimpleElement;
+import org.raml.v2.model.v08.system.types.MarkdownString;
 
 
 public interface DocumentationItem extends RAMLSimpleElement

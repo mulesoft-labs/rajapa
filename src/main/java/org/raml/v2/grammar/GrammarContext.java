@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.grammar;
+package org.raml.v2.grammar;
 
-import org.raml.grammar.rule.Rule;
+import org.raml.v2.grammar.rule.Rule;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;

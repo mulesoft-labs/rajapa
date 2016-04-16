@@ -13,12 +13,16 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.v08.grammar;
+package org.raml.v2.impl.v08.grammar;
 
-import org.raml.grammar.rule.*;
-import org.raml.impl.commons.grammar.BaseRamlGrammar;
-import org.raml.impl.v10.nodes.types.factories.TypeNodeFactory;
-import org.raml.nodes.StringNodeImpl;
+import org.raml.v2.grammar.rule.AnyOfRule;
+import org.raml.v2.grammar.rule.KeyValueRule;
+import org.raml.v2.grammar.rule.ObjectRule;
+import org.raml.v2.grammar.rule.Rule;
+import org.raml.v2.grammar.rule.StringValueRule;
+import org.raml.v2.impl.commons.grammar.BaseRamlGrammar;
+import org.raml.v2.impl.v10.nodes.types.factories.TypeNodeFactory;
+import org.raml.v2.nodes.StringNodeImpl;
 
 public class Raml08Grammar extends BaseRamlGrammar
 {

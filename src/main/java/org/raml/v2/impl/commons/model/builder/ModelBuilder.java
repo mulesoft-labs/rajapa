@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.model.builder;
+package org.raml.v2.impl.commons.model.builder;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -23,8 +23,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.raml.impl.commons.model.Api;
-import org.raml.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.impl.commons.model.Api;
+import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 
 public class ModelBuilder
 {

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.v10.nodes.types.builtin;
+package org.raml.v2.impl.v10.nodes.types.builtin;
 
 import com.google.common.collect.Lists;
 
@@ -22,12 +22,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.raml.impl.commons.nodes.PropertyNode;
-import org.raml.nodes.AbstractRamlNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.raml.nodes.ObjectNode;
-import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
+import org.raml.v2.impl.commons.nodes.PropertyNode;
+import org.raml.v2.nodes.AbstractRamlNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.NodeType;
+import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 
 public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {

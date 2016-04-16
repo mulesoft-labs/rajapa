@@ -13,35 +13,35 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.v10;
+package org.raml.v2.impl.v10;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import org.raml.RamlBuilder;
-import org.raml.grammar.rule.ErrorNodeFactory;
-import org.raml.impl.commons.RamlHeader;
-import org.raml.impl.commons.phase.AnnotationValidationPhase;
-import org.raml.impl.commons.phase.ExampleValidationPhase;
-import org.raml.impl.commons.phase.ExtensionsMerger;
-import org.raml.impl.commons.phase.IncludeResolver;
-import org.raml.impl.commons.phase.ResourceTypesTraitsTransformer;
-import org.raml.impl.commons.phase.StringTemplateExpressionTransformer;
-import org.raml.impl.commons.phase.SugarRushPhase;
-import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.impl.v10.phase.MediaTypeInjection;
-import org.raml.impl.v10.phase.TypesTransformer;
-import org.raml.loader.ResourceLoader;
-import org.raml.nodes.ErrorNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.StringNode;
-import org.raml.nodes.snakeyaml.RamlNodeParser;
-import org.raml.phase.GrammarPhase;
-import org.raml.phase.Phase;
-import org.raml.phase.TransformationPhase;
-import org.raml.utils.StreamUtils;
+import org.raml.v2.RamlBuilder;
+import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.impl.commons.RamlHeader;
+import org.raml.v2.impl.commons.phase.AnnotationValidationPhase;
+import org.raml.v2.impl.commons.phase.ExampleValidationPhase;
+import org.raml.v2.impl.commons.phase.ExtensionsMerger;
+import org.raml.v2.impl.commons.phase.IncludeResolver;
+import org.raml.v2.impl.commons.phase.ResourceTypesTraitsTransformer;
+import org.raml.v2.impl.commons.phase.StringTemplateExpressionTransformer;
+import org.raml.v2.impl.commons.phase.SugarRushPhase;
+import org.raml.v2.impl.v10.grammar.Raml10Grammar;
+import org.raml.v2.impl.v10.phase.MediaTypeInjection;
+import org.raml.v2.impl.v10.phase.TypesTransformer;
+import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.nodes.ErrorNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.StringNode;
+import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
+import org.raml.v2.phase.GrammarPhase;
+import org.raml.v2.phase.Phase;
+import org.raml.v2.phase.TransformationPhase;
+import org.raml.v2.utils.StreamUtils;
 
 public class Raml10Builder
 {

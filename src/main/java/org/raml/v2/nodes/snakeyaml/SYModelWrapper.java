@@ -13,14 +13,14 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.snakeyaml;
+package org.raml.v2.nodes.snakeyaml;
 
 import static org.yaml.snakeyaml.nodes.NodeId.mapping;
 import static org.yaml.snakeyaml.nodes.NodeId.scalar;
 import static org.yaml.snakeyaml.nodes.NodeId.sequence;
 
-import org.raml.nodes.KeyValueNodeImpl;
-import org.raml.nodes.Node;
+import org.raml.v2.nodes.KeyValueNodeImpl;
+import org.raml.v2.nodes.Node;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.NodeTuple;

@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml;
+package org.raml.v2;
 
-import static org.raml.impl.commons.RamlVersion.RAML_10;
+import static org.raml.v2.impl.commons.RamlVersion.RAML_10;
 
 import java.io.File;
 import java.io.FileReader;
@@ -24,16 +24,16 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.apache.commons.io.IOUtils;
-import org.raml.grammar.rule.ErrorNodeFactory;
-import org.raml.impl.commons.RamlHeader;
-import org.raml.impl.v08.Raml08Builder;
-import org.raml.impl.v10.Raml10Builder;
-import org.raml.loader.ClassPathResourceLoader;
-import org.raml.loader.CompositeResourceLoader;
-import org.raml.loader.FileResourceLoader;
-import org.raml.loader.ResourceLoader;
-import org.raml.loader.UrlResourceLoader;
-import org.raml.nodes.Node;
+import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.impl.commons.RamlHeader;
+import org.raml.v2.impl.v08.Raml08Builder;
+import org.raml.v2.impl.v10.Raml10Builder;
+import org.raml.v2.loader.ClassPathResourceLoader;
+import org.raml.v2.loader.CompositeResourceLoader;
+import org.raml.v2.loader.FileResourceLoader;
+import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.loader.UrlResourceLoader;
+import org.raml.v2.nodes.Node;
 
 /**
  * RamlBuilder create a Node representation of your raml.

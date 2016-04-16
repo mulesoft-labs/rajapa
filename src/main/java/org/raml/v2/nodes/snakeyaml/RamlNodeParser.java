@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.snakeyaml;
+package org.raml.v2.nodes.snakeyaml;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,9 +23,9 @@ import java.io.UnsupportedEncodingException;
 
 import javax.annotation.Nullable;
 
-import org.raml.nodes.DefaultPosition;
-import org.raml.nodes.ErrorNode;
-import org.raml.nodes.Node;
+import org.raml.v2.nodes.DefaultPosition;
+import org.raml.v2.nodes.ErrorNode;
+import org.raml.v2.nodes.Node;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.scanner.ScannerException;

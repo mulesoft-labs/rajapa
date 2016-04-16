@@ -15,7 +15,7 @@
  */
 
 
-package org.raml.v08.parser;
+package org.raml.v2.v08.parser;
 
 
 import org.apache.commons.io.IOUtils;
@@ -24,10 +24,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.raml.RamlBuilder;
-import org.raml.dataprovider.TestDataProvider;
-import org.raml.nodes.Node;
-import org.raml.utils.TreeDumper;
+import org.raml.v2.RamlBuilder;
+import org.raml.v2.dataprovider.TestDataProvider;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.utils.TreeDumper;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -14,7 +14,7 @@
  * language governing permissions and limitations under the License.
  */
 
-package org.raml.nodes;
+package org.raml.v2.nodes;
 
 public interface ArrayNode extends Node
 {

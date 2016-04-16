@@ -13,31 +13,31 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.phase;
+package org.raml.v2.impl.commons.phase;
 
 import com.google.common.collect.Lists;
 
 import java.util.List;
 
-import org.raml.grammar.rule.AnyOfRule;
-import org.raml.grammar.rule.Rule;
-import org.raml.grammar.rule.JsonSchemaValidationRule;
-import org.raml.grammar.rule.XmlSchemaValidationRule;
-import org.raml.impl.commons.model.BuiltInType;
-import org.raml.impl.commons.nodes.ExampleTypeNode;
-import org.raml.impl.commons.nodes.MultipleExampleTypeNode;
-import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
-import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
-import org.raml.impl.v10.nodes.types.builtin.TypeNode;
-import org.raml.loader.ResourceLoader;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.KeyValueNodeImpl;
-import org.raml.nodes.Node;
-import org.raml.nodes.ObjectNode;
-import org.raml.nodes.StringNode;
-import org.raml.nodes.snakeyaml.RamlNodeParser;
-import org.raml.nodes.snakeyaml.SYStringNode;
-import org.raml.phase.Phase;
+import org.raml.v2.grammar.rule.AnyOfRule;
+import org.raml.v2.grammar.rule.Rule;
+import org.raml.v2.grammar.rule.JsonSchemaValidationRule;
+import org.raml.v2.grammar.rule.XmlSchemaValidationRule;
+import org.raml.v2.impl.commons.model.BuiltInType;
+import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
+import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
+import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.nodes.KeyValueNode;
+import org.raml.v2.nodes.KeyValueNodeImpl;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.StringNode;
+import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
+import org.raml.v2.nodes.snakeyaml.SYStringNode;
+import org.raml.v2.phase.Phase;
 
 public class ExampleValidationPhase implements Phase
 {

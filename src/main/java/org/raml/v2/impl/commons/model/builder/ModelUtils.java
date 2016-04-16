@@ -13,11 +13,11 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.model.builder;
+package org.raml.v2.impl.commons.model.builder;
 
-import org.raml.impl.commons.model.StringType;
-import org.raml.nodes.Node;
-import org.raml.utils.NodeSelector;
+import org.raml.v2.impl.commons.model.StringType;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.utils.NodeSelector;
 
 public class ModelUtils
 {

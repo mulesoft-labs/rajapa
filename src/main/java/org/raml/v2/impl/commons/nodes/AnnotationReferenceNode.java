@@ -13,16 +13,16 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.nodes;
+package org.raml.v2.impl.commons.nodes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.nodes.AbstractReferenceNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.StringNode;
-import org.raml.utils.NodeSelector;
+import org.raml.v2.impl.v10.grammar.Raml10Grammar;
+import org.raml.v2.nodes.AbstractReferenceNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.StringNode;
+import org.raml.v2.utils.NodeSelector;
 
 public class AnnotationReferenceNode extends AbstractReferenceNode implements StringNode
 {

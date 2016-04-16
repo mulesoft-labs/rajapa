@@ -13,12 +13,12 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v10.methods;
+package org.raml.v2.model.v10.methods;
 
 import java.util.List;
-import org.raml.model.v10.datamodel.TypeDeclaration;
-import org.raml.model.v10.security.SecuritySchemeRef;
-import org.raml.model.v10.system.types.MarkdownString;
+import org.raml.v2.model.v10.datamodel.TypeDeclaration;
+import org.raml.v2.model.v10.security.SecuritySchemeRef;
+import org.raml.v2.model.v10.system.types.MarkdownString;
 
 
 public interface MethodBase extends Operation

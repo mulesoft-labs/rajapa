@@ -13,12 +13,12 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.snakeyaml;
+package org.raml.v2.nodes.snakeyaml;
 
 import javax.annotation.Nonnull;
 
-import org.raml.nodes.NodeType;
-import org.raml.nodes.NullNode;
+import org.raml.v2.nodes.NodeType;
+import org.raml.v2.nodes.NullNode;
 import org.yaml.snakeyaml.nodes.Node;
 
 public class SYNullNode extends SYBaseRamlNode implements NullNode
@@ -35,7 +35,7 @@ public class SYNullNode extends SYBaseRamlNode implements NullNode
 
     @Nonnull
     @Override
-    public org.raml.nodes.Node copy()
+    public org.raml.v2.nodes.Node copy()
     {
         return new SYNullNode(this);
     }

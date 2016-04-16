@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.snakeyaml;
+package org.raml.v2.nodes.snakeyaml;
 
 import com.google.common.collect.Lists;
 
@@ -22,7 +22,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.nodes.Node;
+import org.raml.v2.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
 public class SYIncludeNode extends SYStringNode

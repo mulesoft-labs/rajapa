@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v08.system.types;
+package org.raml.v2.model.v08.system.types;
 
 
 public interface SchemaString extends StringType

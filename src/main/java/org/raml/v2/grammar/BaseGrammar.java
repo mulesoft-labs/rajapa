@@ -13,18 +13,43 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.grammar;
+package org.raml.v2.grammar;
 
 import com.google.common.collect.Range;
-
-import org.raml.grammar.rule.*;
-
-import javax.annotation.Nonnull;
 
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import javax.annotation.Nonnull;
+
+import org.raml.v2.grammar.rule.AllOfRule;
+import org.raml.v2.grammar.rule.AnyOfRule;
+import org.raml.v2.grammar.rule.AnyValueRule;
+import org.raml.v2.grammar.rule.ArrayRule;
+import org.raml.v2.grammar.rule.BooleanTypeRule;
+import org.raml.v2.grammar.rule.ConditionalRule;
+import org.raml.v2.grammar.rule.ConditionalRules;
+import org.raml.v2.grammar.rule.DefaultValue;
+import org.raml.v2.grammar.rule.DiscriminatorRule;
+import org.raml.v2.grammar.rule.ExampleRule;
+import org.raml.v2.grammar.rule.FieldPresentRule;
+import org.raml.v2.grammar.rule.FirstOfRule;
+import org.raml.v2.grammar.rule.FloatTypeRule;
+import org.raml.v2.grammar.rule.IntegerTypeRule;
+import org.raml.v2.grammar.rule.IntegerValueRule;
+import org.raml.v2.grammar.rule.KeyValueRule;
+import org.raml.v2.grammar.rule.MinLengthRule;
+import org.raml.v2.grammar.rule.NegativeRule;
+import org.raml.v2.grammar.rule.NullValueRule;
+import org.raml.v2.grammar.rule.ObjectRule;
+import org.raml.v2.grammar.rule.ParentKeyDefaultValue;
+import org.raml.v2.grammar.rule.ReferenceRule;
+import org.raml.v2.grammar.rule.RegexValueRule;
+import org.raml.v2.grammar.rule.Rule;
+import org.raml.v2.grammar.rule.ScalarTypeRule;
+import org.raml.v2.grammar.rule.StringValueRule;
 
 public class BaseGrammar
 {

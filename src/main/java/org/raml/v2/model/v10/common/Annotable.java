@@ -13,11 +13,11 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v10.common;
+package org.raml.v2.model.v10.common;
 
 import java.util.List;
-import org.raml.model.v10.declarations.AnnotationRef;
-import org.raml.model.v10.fragment.BasicFragmentNode;
+import org.raml.v2.model.v10.declarations.AnnotationRef;
+import org.raml.v2.model.v10.fragment.BasicFragmentNode;
 
 
 public interface Annotable extends BasicFragmentNode

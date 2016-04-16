@@ -13,14 +13,14 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v08.methods;
+package org.raml.v2.model.v08.methods;
 
 import java.util.List;
-import org.raml.model.v08.bodies.BodyLike;
-import org.raml.model.v08.bodies.Response;
-import org.raml.model.v08.common.RAMLLanguageElement;
-import org.raml.model.v08.parameters.Parameter;
-import org.raml.model.v08.security.SecuritySchemeRef;
+import org.raml.v2.model.v08.bodies.BodyLike;
+import org.raml.v2.model.v08.bodies.Response;
+import org.raml.v2.model.v08.common.RAMLLanguageElement;
+import org.raml.v2.model.v08.parameters.Parameter;
+import org.raml.v2.model.v08.security.SecuritySchemeRef;
 
 
 public interface MethodBase extends RAMLLanguageElement

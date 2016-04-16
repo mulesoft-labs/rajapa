@@ -13,12 +13,12 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.grammar.rule;
+package org.raml.v2.grammar.rule;
 
 import javax.annotation.Nonnull;
 
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
+import org.raml.v2.nodes.KeyValueNode;
+import org.raml.v2.nodes.Node;
 
 public class ParentKeyDefaultValue implements DefaultValue
 {

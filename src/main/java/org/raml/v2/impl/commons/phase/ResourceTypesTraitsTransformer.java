@@ -16,9 +16,9 @@
 /*
  *
  */
-package org.raml.impl.commons.phase;
+package org.raml.v2.impl.commons.phase;
 
-import static org.raml.impl.commons.phase.ResourceTypesTraitsMerger.merge;
+import static org.raml.v2.impl.commons.phase.ResourceTypesTraitsMerger.merge;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,25 +27,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.raml.impl.commons.nodes.BaseResourceTypeRefNode;
-import org.raml.impl.commons.nodes.BaseTraitRefNode;
-import org.raml.impl.commons.nodes.MethodNode;
-import org.raml.impl.commons.nodes.ResourceNode;
-import org.raml.impl.commons.nodes.ResourceTypeNode;
-import org.raml.impl.commons.nodes.StringTemplateNode;
-import org.raml.impl.commons.nodes.TraitNode;
-import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.nodes.ExecutionContext;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.ParametrizedReferenceNode;
-import org.raml.nodes.ReferenceNode;
-import org.raml.nodes.snakeyaml.SYBaseRamlNode;
-import org.raml.nodes.snakeyaml.SYNullNode;
-import org.raml.nodes.snakeyaml.SYObjectNode;
-import org.raml.phase.GrammarPhase;
-import org.raml.phase.Transformer;
-import org.raml.utils.NodeSelector;
+import org.raml.v2.impl.commons.nodes.BaseResourceTypeRefNode;
+import org.raml.v2.impl.commons.nodes.BaseTraitRefNode;
+import org.raml.v2.impl.commons.nodes.MethodNode;
+import org.raml.v2.impl.commons.nodes.ResourceNode;
+import org.raml.v2.impl.commons.nodes.ResourceTypeNode;
+import org.raml.v2.impl.commons.nodes.StringTemplateNode;
+import org.raml.v2.impl.commons.nodes.TraitNode;
+import org.raml.v2.impl.v10.grammar.Raml10Grammar;
+import org.raml.v2.nodes.ExecutionContext;
+import org.raml.v2.nodes.KeyValueNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.ParametrizedReferenceNode;
+import org.raml.v2.nodes.ReferenceNode;
+import org.raml.v2.nodes.snakeyaml.SYBaseRamlNode;
+import org.raml.v2.nodes.snakeyaml.SYNullNode;
+import org.raml.v2.nodes.snakeyaml.SYObjectNode;
+import org.raml.v2.phase.GrammarPhase;
+import org.raml.v2.phase.Transformer;
+import org.raml.v2.utils.NodeSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

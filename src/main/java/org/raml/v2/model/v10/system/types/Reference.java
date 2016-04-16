@@ -13,10 +13,10 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v10.system.types;
+package org.raml.v2.model.v10.system.types;
 
-import org.raml.model.v10.core.AttributeNode;
-import org.raml.model.v10.datamodel.TypeInstance;
+import org.raml.v2.model.v10.core.AttributeNode;
+import org.raml.v2.model.v10.datamodel.TypeInstance;
 
 
 public interface Reference extends AttributeNode

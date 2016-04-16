@@ -13,18 +13,18 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.grammar.rule;
+package org.raml.v2.grammar.rule;
 
 import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.raml.nodes.FloatingNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.raml.suggester.RamlParsingContext;
-import org.raml.suggester.Suggestion;
+import org.raml.v2.nodes.FloatingNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.NodeType;
+import org.raml.v2.suggester.RamlParsingContext;
+import org.raml.v2.suggester.Suggestion;
 
 public class FloatTypeRule extends AbstractTypeRule
 {

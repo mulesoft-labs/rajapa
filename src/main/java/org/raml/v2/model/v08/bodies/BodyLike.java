@@ -13,13 +13,13 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v08.bodies;
+package org.raml.v2.model.v08.bodies;
 
 import java.util.List;
-import org.raml.model.v08.common.RAMLLanguageElement;
-import org.raml.model.v08.parameters.Parameter;
-import org.raml.model.v08.system.types.ExampleString;
-import org.raml.model.v08.system.types.SchemaString;
+import org.raml.v2.model.v08.common.RAMLLanguageElement;
+import org.raml.v2.model.v08.parameters.Parameter;
+import org.raml.v2.model.v08.system.types.ExampleString;
+import org.raml.v2.model.v08.system.types.SchemaString;
 
 
 public interface BodyLike extends RAMLLanguageElement

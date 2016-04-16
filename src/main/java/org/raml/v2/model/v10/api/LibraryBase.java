@@ -13,14 +13,14 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v10.api;
+package org.raml.v2.model.v10.api;
 
 import java.util.List;
-import org.raml.model.v10.common.Annotable;
-import org.raml.model.v10.datamodel.TypeDeclaration;
-import org.raml.model.v10.methods.Trait;
-import org.raml.model.v10.resources.ResourceType;
-import org.raml.model.v10.security.AbstractSecurityScheme;
+import org.raml.v2.model.v10.common.Annotable;
+import org.raml.v2.model.v10.datamodel.TypeDeclaration;
+import org.raml.v2.model.v10.methods.Trait;
+import org.raml.v2.model.v10.resources.ResourceType;
+import org.raml.v2.model.v10.security.AbstractSecurityScheme;
 
 
 public interface LibraryBase extends Annotable

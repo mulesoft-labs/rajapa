@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.utils;
+package org.raml.v2.utils;
 
 import com.google.common.collect.Lists;
 
@@ -21,13 +21,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
-import org.raml.nodes.BooleanNode;
-import org.raml.nodes.ErrorNode;
-import org.raml.nodes.IntegerNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.ReferenceNode;
-import org.raml.nodes.StringNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.nodes.BooleanNode;
+import org.raml.v2.nodes.ErrorNode;
+import org.raml.v2.nodes.IntegerNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.ReferenceNode;
+import org.raml.v2.nodes.StringNode;
 
 
 public class TreeDumper

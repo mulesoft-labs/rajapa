@@ -13,12 +13,12 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.phase;
+package org.raml.v2.phase;
 
-import org.raml.grammar.rule.ErrorNodeFactory;
-import org.raml.grammar.rule.Rule;
-import org.raml.nodes.ErrorNode;
-import org.raml.nodes.Node;
+import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.grammar.rule.Rule;
+import org.raml.v2.nodes.ErrorNode;
+import org.raml.v2.nodes.Node;
 
 public class GrammarPhase implements Phase
 {

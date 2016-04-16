@@ -13,14 +13,14 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.nodes;
+package org.raml.v2.impl.commons.nodes;
 
-import org.raml.grammar.rule.ErrorNodeFactory;
-import org.raml.nodes.ExecutableNode;
-import org.raml.nodes.ExecutionContext;
-import org.raml.nodes.Node;
-import org.raml.nodes.StringNodeImpl;
-import org.raml.utils.Inflector;
+import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.nodes.ExecutableNode;
+import org.raml.v2.nodes.ExecutionContext;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.StringNodeImpl;
+import org.raml.v2.utils.Inflector;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

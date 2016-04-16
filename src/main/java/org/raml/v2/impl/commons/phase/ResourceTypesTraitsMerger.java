@@ -16,15 +16,21 @@
 /*
  *
  */
-package org.raml.impl.commons.phase;
+package org.raml.v2.impl.commons.phase;
 
 import com.google.common.collect.ImmutableSet;
-import org.raml.nodes.*;
-import org.raml.utils.NodeSelector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Set;
+
+import org.raml.v2.nodes.ArrayNode;
+import org.raml.v2.nodes.KeyValueNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.NullNode;
+import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.SimpleTypeNode;
+import org.raml.v2.utils.NodeSelector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ResourceTypesTraitsMerger
 {

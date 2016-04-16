@@ -13,10 +13,10 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v10.security;
+package org.raml.v2.model.v10.security;
 
 import java.util.List;
-import org.raml.model.v10.system.types.FixedUriString;
+import org.raml.v2.model.v10.system.types.FixedUriString;
 
 
 public interface OAuth1SecuritySchemeSettings extends SecuritySchemeSettings

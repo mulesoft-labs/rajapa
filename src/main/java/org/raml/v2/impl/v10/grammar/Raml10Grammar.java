@@ -13,25 +13,25 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.v10.grammar;
+package org.raml.v2.impl.v10.grammar;
 
-import org.raml.grammar.rule.AllOfRule;
-import org.raml.grammar.rule.AnyOfRule;
-import org.raml.grammar.rule.KeyValueRule;
-import org.raml.grammar.rule.NodeReferenceFactory;
-import org.raml.grammar.rule.ObjectRule;
-import org.raml.grammar.rule.RegexValueRule;
-import org.raml.grammar.rule.Rule;
-import org.raml.grammar.rule.StringValueRule;
-import org.raml.grammar.rule.TypeNodeReferenceRule;
-import org.raml.impl.commons.grammar.BaseRamlGrammar;
-import org.raml.impl.commons.nodes.AnnotationNode;
-import org.raml.impl.commons.nodes.AnnotationReferenceNode;
-import org.raml.impl.commons.nodes.AnnotationTypeNode;
-import org.raml.impl.commons.nodes.ExtendsNode;
-import org.raml.impl.commons.nodes.PropertyNode;
-import org.raml.impl.v10.nodes.types.factories.TypeNodeFactory;
-import org.raml.nodes.StringNodeImpl;
+import org.raml.v2.grammar.rule.AllOfRule;
+import org.raml.v2.grammar.rule.AnyOfRule;
+import org.raml.v2.grammar.rule.KeyValueRule;
+import org.raml.v2.grammar.rule.NodeReferenceFactory;
+import org.raml.v2.grammar.rule.ObjectRule;
+import org.raml.v2.grammar.rule.RegexValueRule;
+import org.raml.v2.grammar.rule.Rule;
+import org.raml.v2.grammar.rule.StringValueRule;
+import org.raml.v2.grammar.rule.TypeNodeReferenceRule;
+import org.raml.v2.impl.commons.grammar.BaseRamlGrammar;
+import org.raml.v2.impl.commons.nodes.AnnotationNode;
+import org.raml.v2.impl.commons.nodes.AnnotationReferenceNode;
+import org.raml.v2.impl.commons.nodes.AnnotationTypeNode;
+import org.raml.v2.impl.commons.nodes.ExtendsNode;
+import org.raml.v2.impl.commons.nodes.PropertyNode;
+import org.raml.v2.impl.v10.nodes.types.factories.TypeNodeFactory;
+import org.raml.v2.nodes.StringNodeImpl;
 
 public class Raml10Grammar extends BaseRamlGrammar
 {

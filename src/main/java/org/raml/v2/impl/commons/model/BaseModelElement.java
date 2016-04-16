@@ -13,15 +13,15 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.model;
+package org.raml.v2.impl.commons.model;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.raml.impl.commons.model.builder.ModelUtils;
-import org.raml.nodes.Node;
-import org.raml.utils.NodeSelector;
+import org.raml.v2.impl.commons.model.builder.ModelUtils;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.utils.NodeSelector;
 
 public abstract class BaseModelElement
 {

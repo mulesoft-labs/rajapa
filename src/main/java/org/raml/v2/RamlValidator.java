@@ -13,16 +13,16 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml;
+package org.raml.v2;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.emitter.tck.TckEmitter;
-import org.raml.nodes.ErrorNode;
-import org.raml.nodes.Node;
+import org.raml.v2.emitter.tck.TckEmitter;
+import org.raml.v2.nodes.ErrorNode;
+import org.raml.v2.nodes.Node;
 
 public class RamlValidator
 {

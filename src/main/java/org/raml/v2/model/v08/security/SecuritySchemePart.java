@@ -13,11 +13,11 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v08.security;
+package org.raml.v2.model.v08.security;
 
 import java.util.List;
-import org.raml.model.v08.methods.MethodBase;
-import org.raml.model.v08.methods.TraitRef;
+import org.raml.v2.model.v08.methods.MethodBase;
+import org.raml.v2.model.v08.methods.TraitRef;
 
 
 public interface SecuritySchemePart extends MethodBase

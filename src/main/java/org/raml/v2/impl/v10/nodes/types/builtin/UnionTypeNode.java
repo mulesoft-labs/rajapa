@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.v10.nodes.types.builtin;
+package org.raml.v2.impl.v10.nodes.types.builtin;
 
 public class UnionTypeNode extends ObjectTypeNode
 {

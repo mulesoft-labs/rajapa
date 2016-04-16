@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.suggester;
+package org.raml.v2.suggester;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -31,8 +31,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.raml.RamlSuggester;
-import org.raml.dataprovider.TestDataProvider;
+import org.raml.v2.RamlSuggester;
+import org.raml.v2.dataprovider.TestDataProvider;
 
 @RunWith(Parameterized.class)
 public class SuggesterTestCase extends TestDataProvider

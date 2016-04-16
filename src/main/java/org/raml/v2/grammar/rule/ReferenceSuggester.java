@@ -13,16 +13,16 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.grammar.rule;
+package org.raml.v2.grammar.rule;
 
-import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.nodes.ArrayNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.ObjectNode;
-import org.raml.nodes.StringNode;
-import org.raml.suggester.DefaultSuggestion;
-import org.raml.suggester.Suggestion;
-import org.raml.utils.NodeSelector;
+import org.raml.v2.impl.v10.grammar.Raml10Grammar;
+import org.raml.v2.nodes.ArrayNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.StringNode;
+import org.raml.v2.suggester.DefaultSuggestion;
+import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.utils.NodeSelector;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

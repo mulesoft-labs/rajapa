@@ -13,40 +13,40 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.grammar;
+package org.raml.v2.impl.commons.grammar;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 
 import java.util.List;
 
-import org.raml.grammar.BaseGrammar;
-import org.raml.grammar.rule.AnyOfRule;
-import org.raml.grammar.rule.KeyValueRule;
-import org.raml.grammar.rule.NodeFactory;
-import org.raml.grammar.rule.NodeReferenceFactory;
-import org.raml.grammar.rule.NodeReferenceRule;
-import org.raml.grammar.rule.ObjectRule;
-import org.raml.grammar.rule.ParametrizedNodeReferenceRule;
-import org.raml.grammar.rule.RegexValueRule;
-import org.raml.grammar.rule.Rule;
-import org.raml.grammar.rule.StringValueRule;
-import org.raml.impl.commons.model.BuiltInType;
-import org.raml.impl.commons.nodes.BodyNode;
-import org.raml.impl.commons.nodes.ExampleTypeNode;
-import org.raml.impl.commons.nodes.MethodNode;
-import org.raml.impl.commons.nodes.MultipleExampleTypeNode;
-import org.raml.impl.commons.nodes.ParametrizedResourceTypeRefNode;
-import org.raml.impl.commons.nodes.ParametrizedTraitRefNode;
-import org.raml.impl.commons.nodes.RamlDocumentNode;
-import org.raml.impl.commons.nodes.ResourceNode;
-import org.raml.impl.commons.nodes.ResourceTypeNode;
-import org.raml.impl.commons.nodes.ResourceTypeRefNode;
-import org.raml.impl.commons.nodes.SecuritySchemeNode;
-import org.raml.impl.commons.nodes.SecuritySchemeRefNode;
-import org.raml.impl.commons.nodes.TraitNode;
-import org.raml.impl.commons.nodes.TraitRefNode;
-import org.raml.nodes.Node;
+import org.raml.v2.grammar.BaseGrammar;
+import org.raml.v2.grammar.rule.AnyOfRule;
+import org.raml.v2.grammar.rule.KeyValueRule;
+import org.raml.v2.grammar.rule.NodeFactory;
+import org.raml.v2.grammar.rule.NodeReferenceFactory;
+import org.raml.v2.grammar.rule.NodeReferenceRule;
+import org.raml.v2.grammar.rule.ObjectRule;
+import org.raml.v2.grammar.rule.ParametrizedNodeReferenceRule;
+import org.raml.v2.grammar.rule.RegexValueRule;
+import org.raml.v2.grammar.rule.Rule;
+import org.raml.v2.grammar.rule.StringValueRule;
+import org.raml.v2.impl.commons.model.BuiltInType;
+import org.raml.v2.impl.commons.nodes.BodyNode;
+import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
+import org.raml.v2.impl.commons.nodes.MethodNode;
+import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
+import org.raml.v2.impl.commons.nodes.ParametrizedResourceTypeRefNode;
+import org.raml.v2.impl.commons.nodes.ParametrizedTraitRefNode;
+import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.impl.commons.nodes.ResourceNode;
+import org.raml.v2.impl.commons.nodes.ResourceTypeNode;
+import org.raml.v2.impl.commons.nodes.ResourceTypeRefNode;
+import org.raml.v2.impl.commons.nodes.SecuritySchemeNode;
+import org.raml.v2.impl.commons.nodes.SecuritySchemeRefNode;
+import org.raml.v2.impl.commons.nodes.TraitNode;
+import org.raml.v2.impl.commons.nodes.TraitRefNode;
+import org.raml.v2.nodes.Node;
 
 public abstract class BaseRamlGrammar extends BaseGrammar
 {

@@ -13,20 +13,20 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.phase;
+package org.raml.v2.impl.commons.phase;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.raml.impl.commons.RamlHeader;
-import org.raml.loader.ResourceLoader;
-import org.raml.nodes.IncludeErrorNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.StringNodeImpl;
-import org.raml.nodes.snakeyaml.RamlNodeParser;
-import org.raml.nodes.snakeyaml.SYIncludeNode;
-import org.raml.phase.Transformer;
-import org.raml.utils.StreamUtils;
+import org.raml.v2.impl.commons.RamlHeader;
+import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.nodes.IncludeErrorNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.StringNodeImpl;
+import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
+import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
+import org.raml.v2.phase.Transformer;
+import org.raml.v2.utils.StreamUtils;
 
 
 public class IncludeResolver implements Transformer

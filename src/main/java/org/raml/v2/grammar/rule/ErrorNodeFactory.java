@@ -13,15 +13,15 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.grammar.rule;
+package org.raml.v2.grammar.rule;
 
 import java.io.IOException;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.nodes.ErrorNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
+import org.raml.v2.nodes.ErrorNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.NodeType;
 
 public class ErrorNodeFactory
 {

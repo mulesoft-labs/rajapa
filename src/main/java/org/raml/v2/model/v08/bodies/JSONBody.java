@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v08.bodies;
+package org.raml.v2.model.v08.bodies;
 
-import org.raml.model.v08.system.types.JSonSchemaString;
+import org.raml.v2.model.v08.system.types.JSonSchemaString;
 
 
 public interface JSONBody extends BodyLike

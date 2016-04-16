@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.utils;
+package org.raml.v2.utils;
 
-import org.raml.nodes.Node;
+import org.raml.v2.nodes.Node;
 
 import javax.annotation.Nullable;
 

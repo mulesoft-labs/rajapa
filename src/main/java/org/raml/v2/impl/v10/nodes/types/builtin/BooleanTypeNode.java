@@ -13,14 +13,14 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.v10.nodes.types.builtin;
+package org.raml.v2.impl.v10.nodes.types.builtin;
 
 import javax.annotation.Nonnull;
 
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.raml.nodes.ObjectNode;
-import org.raml.nodes.AbstractRamlNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.NodeType;
+import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.AbstractRamlNode;
 
 public class BooleanTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {

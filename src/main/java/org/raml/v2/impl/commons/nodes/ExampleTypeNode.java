@@ -13,31 +13,31 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.nodes;
+package org.raml.v2.impl.commons.nodes;
 
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.raml.grammar.rule.AnyValueRule;
-import org.raml.grammar.rule.JSonDumper;
-import org.raml.impl.v10.nodes.types.builtin.BooleanTypeNode;
-import org.raml.impl.v10.nodes.types.builtin.NumericTypeNode;
-import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
-import org.raml.impl.v10.nodes.types.builtin.StringTypeNode;
-import org.raml.impl.v10.nodes.types.builtin.TypeNode;
-import org.raml.impl.v10.nodes.types.builtin.TypeNodeVisitor;
-import org.raml.impl.v10.nodes.types.builtin.UnionTypeNode;
-import org.raml.nodes.AbstractRamlNode;
-import org.raml.nodes.DefaultPosition;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
-import org.raml.nodes.ObjectNode;
-import org.raml.nodes.Position;
-import org.raml.nodes.StringNode;
-import org.raml.nodes.StringNodeImpl;
-import org.raml.nodes.snakeyaml.SYStringNode;
+import org.raml.v2.grammar.rule.AnyValueRule;
+import org.raml.v2.grammar.rule.JSonDumper;
+import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.TypeNodeVisitor;
+import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
+import org.raml.v2.nodes.AbstractRamlNode;
+import org.raml.v2.nodes.DefaultPosition;
+import org.raml.v2.nodes.KeyValueNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.NodeType;
+import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.Position;
+import org.raml.v2.nodes.StringNode;
+import org.raml.v2.nodes.StringNodeImpl;
+import org.raml.v2.nodes.snakeyaml.SYStringNode;
 
 public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {

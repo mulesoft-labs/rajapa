@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.parser;
+package org.raml.v2.parser;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -24,16 +24,16 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
-import org.raml.RamlBuilder;
-import org.raml.impl.commons.model.builder.ModelBuilder;
-import org.raml.impl.commons.nodes.RamlDocumentNode;
-import org.raml.model.v10.api.Api;
-import org.raml.model.v10.api.DocumentationItem;
-import org.raml.model.v10.methods.Trait;
-import org.raml.model.v10.resources.Resource;
-import org.raml.model.v10.resources.ResourceType;
-import org.raml.nodes.ErrorNode;
-import org.raml.nodes.Node;
+import org.raml.v2.RamlBuilder;
+import org.raml.v2.impl.commons.model.builder.ModelBuilder;
+import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.model.v10.api.Api;
+import org.raml.v2.model.v10.api.DocumentationItem;
+import org.raml.v2.model.v10.methods.Trait;
+import org.raml.v2.model.v10.resources.Resource;
+import org.raml.v2.model.v10.resources.ResourceType;
+import org.raml.v2.nodes.ErrorNode;
+import org.raml.v2.nodes.Node;
 
 public class SpecInterfacesTestCase
 {
@@ -42,7 +42,7 @@ public class SpecInterfacesTestCase
     public void full() throws IOException
     {
         final RamlBuilder builder = new RamlBuilder();
-        File input = new File("src/test/resources/org/raml/interfaces/input.raml");
+        File input = new File("src/test/resources/org/raml/v2/interfaces/input.raml");
         assertTrue(input.isFile());
         final Node raml = builder.build(input);
         List<ErrorNode> errors = raml.findDescendantsWith(ErrorNode.class);

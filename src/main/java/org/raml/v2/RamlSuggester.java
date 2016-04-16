@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml;
+package org.raml.v2;
 
 
 import java.lang.reflect.Method;
@@ -25,17 +25,21 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.raml.grammar.rule.Rule;
-import org.raml.impl.commons.RamlHeader;
-import org.raml.impl.commons.RamlVersion;
-import org.raml.impl.v08.grammar.Raml08Grammar;
-import org.raml.impl.v10.grammar.Raml10Grammar;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.ObjectNode;
-import org.raml.nodes.StringNode;
-import org.raml.suggester.*;
-import org.raml.utils.Inflector;
+import org.raml.v2.grammar.rule.Rule;
+import org.raml.v2.impl.commons.RamlHeader;
+import org.raml.v2.impl.commons.RamlVersion;
+import org.raml.v2.impl.v08.grammar.Raml08Grammar;
+import org.raml.v2.impl.v10.grammar.Raml10Grammar;
+import org.raml.v2.nodes.KeyValueNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.StringNode;
+import org.raml.v2.suggester.DefaultSuggestion;
+import org.raml.v2.suggester.RamlParsingContext;
+import org.raml.v2.suggester.RamlParsingContextType;
+import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.suggester.Suggestions;
+import org.raml.v2.utils.Inflector;
 
 public class RamlSuggester
 {

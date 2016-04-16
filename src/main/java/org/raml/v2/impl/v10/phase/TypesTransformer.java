@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.v10.phase;
+package org.raml.v2.impl.v10.phase;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -22,22 +22,22 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.grammar.rule.ErrorNodeFactory;
-import org.raml.impl.commons.nodes.PropertyNode;
-import org.raml.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
-import org.raml.impl.v10.nodes.types.builtin.ObjectTypeNode;
-import org.raml.impl.v10.nodes.types.builtin.TypeNode;
-import org.raml.impl.v10.nodes.types.builtin.UnionTypeNode;
-import org.raml.nodes.ErrorNode;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.KeyValueNodeImpl;
-import org.raml.nodes.Node;
-import org.raml.nodes.StringNodeImpl;
-import org.raml.nodes.snakeyaml.SYArrayNode;
-import org.raml.nodes.snakeyaml.SYObjectNode;
-import org.raml.nodes.snakeyaml.SYStringNode;
-import org.raml.phase.Transformer;
-import org.raml.utils.NodeUtils;
+import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.impl.commons.nodes.PropertyNode;
+import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
+import org.raml.v2.nodes.ErrorNode;
+import org.raml.v2.nodes.KeyValueNode;
+import org.raml.v2.nodes.KeyValueNodeImpl;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.StringNodeImpl;
+import org.raml.v2.nodes.snakeyaml.SYArrayNode;
+import org.raml.v2.nodes.snakeyaml.SYObjectNode;
+import org.raml.v2.nodes.snakeyaml.SYStringNode;
+import org.raml.v2.phase.Transformer;
+import org.raml.v2.utils.NodeUtils;
 
 public class TypesTransformer implements Transformer
 {

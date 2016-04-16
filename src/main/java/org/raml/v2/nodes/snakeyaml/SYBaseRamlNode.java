@@ -13,13 +13,13 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.snakeyaml;
+package org.raml.v2.nodes.snakeyaml;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.raml.nodes.BaseNode;
-import org.raml.nodes.Position;
+import org.raml.v2.nodes.BaseNode;
+import org.raml.v2.nodes.Position;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 

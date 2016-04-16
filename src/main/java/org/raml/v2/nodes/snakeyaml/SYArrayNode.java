@@ -13,12 +13,12 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.nodes.snakeyaml;
+package org.raml.v2.nodes.snakeyaml;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.nodes.ArrayNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.NodeType;
+import org.raml.v2.nodes.ArrayNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.NodeType;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 
 import java.util.List;

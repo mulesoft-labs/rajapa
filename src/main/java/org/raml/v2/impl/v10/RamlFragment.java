@@ -13,11 +13,11 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.v10;
+package org.raml.v2.impl.v10;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.grammar.rule.Rule;
-import org.raml.impl.v10.grammar.Raml10Grammar;
+import org.raml.v2.grammar.rule.Rule;
+import org.raml.v2.impl.v10.grammar.Raml10Grammar;
 
 import javax.annotation.Nullable;
 

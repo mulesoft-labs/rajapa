@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.utils;
+package org.raml.v2.utils;
 
 import com.google.common.collect.Lists;
 
@@ -24,12 +24,12 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.nodes.ArrayNode;
-import org.raml.nodes.KeyValueNode;
-import org.raml.nodes.Node;
-import org.raml.nodes.ObjectNode;
-import org.raml.nodes.SimpleTypeNode;
-import org.raml.nodes.snakeyaml.SYArrayNode;
+import org.raml.v2.nodes.ArrayNode;
+import org.raml.v2.nodes.KeyValueNode;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.SimpleTypeNode;
+import org.raml.v2.nodes.snakeyaml.SYArrayNode;
 
 public class NodeSelector
 {

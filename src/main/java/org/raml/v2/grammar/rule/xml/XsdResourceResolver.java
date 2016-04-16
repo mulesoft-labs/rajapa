@@ -13,15 +13,15 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.grammar.rule.xml;
+package org.raml.v2.grammar.rule.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.raml.loader.ResourceLoader;
-import org.raml.utils.StreamUtils;
+import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.utils.StreamUtils;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 

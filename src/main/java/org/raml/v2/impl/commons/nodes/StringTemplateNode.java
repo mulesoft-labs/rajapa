@@ -13,14 +13,18 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.nodes;
-
-import org.raml.nodes.*;
-import org.raml.nodes.StringNodeImpl;
+package org.raml.v2.impl.commons.nodes;
 
 import java.util.List;
 
 import javax.annotation.Nonnull;
+
+import org.raml.v2.nodes.ErrorNode;
+import org.raml.v2.nodes.ExecutableNode;
+import org.raml.v2.nodes.ExecutionContext;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.StringNode;
+import org.raml.v2.nodes.StringNodeImpl;
 
 public class StringTemplateNode extends StringNodeImpl implements ExecutableNode
 {

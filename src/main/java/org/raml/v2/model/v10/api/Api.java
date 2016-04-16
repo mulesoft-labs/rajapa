@@ -13,14 +13,14 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v10.api;
+package org.raml.v2.model.v10.api;
 
 import java.util.List;
-import org.raml.model.v10.bodies.MimeType;
-import org.raml.model.v10.datamodel.TypeDeclaration;
-import org.raml.model.v10.resources.Resource;
-import org.raml.model.v10.security.SecuritySchemeRef;
-import org.raml.model.v10.system.types.FullUriTemplateString;
+import org.raml.v2.model.v10.bodies.MimeType;
+import org.raml.v2.model.v10.datamodel.TypeDeclaration;
+import org.raml.v2.model.v10.resources.Resource;
+import org.raml.v2.model.v10.security.SecuritySchemeRef;
+import org.raml.v2.model.v10.system.types.FullUriTemplateString;
 
 
 public interface Api extends LibraryBase

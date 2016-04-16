@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v08.methods;
+package org.raml.v2.model.v08.methods;
 
-import org.raml.model.v08.system.types.TypeInstance;
+import org.raml.v2.model.v08.system.types.TypeInstance;
 
 
 public interface Trait extends MethodBase

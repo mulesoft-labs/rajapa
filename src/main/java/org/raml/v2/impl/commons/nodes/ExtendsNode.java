@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.impl.commons.nodes;
+package org.raml.v2.impl.commons.nodes;
 
-import org.raml.nodes.KeyValueNodeImpl;
+import org.raml.v2.nodes.KeyValueNodeImpl;
 
 public class ExtendsNode extends KeyValueNodeImpl
 {

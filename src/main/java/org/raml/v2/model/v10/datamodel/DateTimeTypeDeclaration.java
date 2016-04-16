@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v10.datamodel;
+package org.raml.v2.model.v10.datamodel;
 
 
 public interface DateTimeTypeDeclaration extends TypeDeclaration

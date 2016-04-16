@@ -13,11 +13,11 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.model.v10.datamodel;
+package org.raml.v2.model.v10.datamodel;
 
 import java.util.List;
-import org.raml.model.v10.common.Annotable;
-import org.raml.model.v10.declarations.AnnotationTarget;
+import org.raml.v2.model.v10.common.Annotable;
+import org.raml.v2.model.v10.declarations.AnnotationTarget;
 
 
 public interface TypeDeclaration extends Annotable
