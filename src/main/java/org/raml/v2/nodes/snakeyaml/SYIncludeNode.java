@@ -48,8 +48,15 @@ public class SYIncludeNode extends SYStringNode
             {
                 String basePath = ((SYIncludeNode) possibleSource).getIncludePath();
                 List<String> segments = Lists.newArrayList(basePath.split("/"));
-                segments.remove(segments.size() - 1);
-                return StringUtils.join(segments, "/") + "/" + getValue();
+                if (segments.size() > 1)
+                {
+                    segments.remove(segments.size() - 1);
+                    return StringUtils.join(segments, "/") + "/" + getValue();
+                }
+                else
+                {
+                    return getValue();
+                }
             }
             current = current.getParent();
         }

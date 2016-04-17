@@ -28,11 +28,10 @@ import org.raml.v2.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.impl.commons.RamlHeader;
 import org.raml.v2.impl.v08.Raml08Builder;
 import org.raml.v2.impl.v10.Raml10Builder;
-import org.raml.v2.loader.ClassPathResourceLoader;
 import org.raml.v2.loader.CompositeResourceLoader;
+import org.raml.v2.loader.DefaultResourceLoader;
 import org.raml.v2.loader.FileResourceLoader;
 import org.raml.v2.loader.ResourceLoader;
-import org.raml.v2.loader.UrlResourceLoader;
 import org.raml.v2.nodes.Node;
 
 /**
@@ -61,23 +60,23 @@ public class RamlBuilder
 
     public Node build(File ramlFile) throws IOException
     {
-        final ResourceLoader resourceLoader = new CompositeResourceLoader(new UrlResourceLoader(),
-                new ClassPathResourceLoader(),
-                new FileResourceLoader("."),
+        final ResourceLoader resourceLoader = new CompositeResourceLoader(
+                new DefaultResourceLoader(),
                 new FileResourceLoader(ramlFile.getParent()));
         try (FileReader reader = new FileReader(ramlFile))
         {
-            return build(reader, resourceLoader, "");
+            return build(reader, resourceLoader, ramlFile.getName());
         }
     }
 
     public Node build(String content)
     {
-        final ResourceLoader resourceLoader = new CompositeResourceLoader(new UrlResourceLoader(),
-                new ClassPathResourceLoader(),
-                new FileResourceLoader(".")
-                );
-        return build(content, resourceLoader, "");
+        return build(content, "");
+    }
+
+    public Node build(String content, String resourceLocation)
+    {
+        return build(content, new DefaultResourceLoader(), resourceLocation);
     }
 
     public Node build(String content, ResourceLoader resourceLoader, String resourceLocation)
@@ -116,6 +115,10 @@ public class RamlBuilder
         catch (RamlHeader.InvalidHeaderException e)
         {
             return ErrorNodeFactory.createInvalidHeader(e.getMessage());
+        }
+        finally
+        {
+            IOUtils.closeQuietly(content);
         }
     }
 

@@ -15,6 +15,7 @@
  */
 package org.raml.v2.impl.commons.phase;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -52,7 +53,7 @@ public class IncludeResolver implements Transformer
     {
 
         SYIncludeNode includeNode = (SYIncludeNode) tree;
-        String resourcePath = resolvePath(includeNode.getIncludePath());
+        String resourcePath = applyResourceLocation(includeNode.getIncludePath());
         try (InputStream inputStream = resourceLoader.fetchResource(resourcePath))
         {
             if (inputStream == null)
@@ -97,14 +98,32 @@ public class IncludeResolver implements Transformer
         }
     }
 
-    private String resolvePath(String includePath)
+    private String applyResourceLocation(String includePath)
     {
-        // TODO works for relative only for now
-        int lastSlash = resourceLocation.lastIndexOf("/");
-        if (lastSlash != -1)
+        String result = includePath;
+        if (!isAbsolute(includePath))
         {
-            return resourceLocation.substring(0, lastSlash + 1) + includePath;
+            int lastSlash = resourceLocation.lastIndexOf("/");
+            if (lastSlash != -1)
+            {
+                result = resourceLocation.substring(0, lastSlash + 1) + includePath;
+            }
         }
-        return includePath;
+        return result;
+    }
+
+    private boolean isAbsolute(String includePath)
+    {
+        if (includePath.startsWith("http:") ||
+            includePath.startsWith("https:") ||
+            includePath.startsWith("file:"))
+        {
+            return true;
+        }
+        if (new File(includePath).isAbsolute())
+        {
+            return true;
+        }
+        return false;
     }
 }

@@ -17,9 +17,19 @@ package org.raml.v2.loader;
 
 import java.io.InputStream;
 
+import javax.annotation.Nullable;
+
 public interface ResourceLoader
 {
 
+    /**
+     * Returns an input stream for reading the specified resource.
+     *
+     * @param resourceName the resource to try to fetch
+     * @return An input stream for reading the resource, or <tt>null</tt>
+     *         if the resource could not be found
+     */
+    @Nullable
     InputStream fetchResource(String resourceName);
 
 }
