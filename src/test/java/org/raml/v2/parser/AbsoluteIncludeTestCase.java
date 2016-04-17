@@ -24,8 +24,8 @@ import org.hamcrest.text.IsEqualIgnoringWhiteSpace;
 import org.junit.Assert;
 import org.junit.Test;
 import org.raml.v2.RamlBuilder;
+import org.raml.v2.emitter.tck.TckEmitter;
 import org.raml.v2.nodes.Node;
-import org.raml.v2.utils.TreeDumper;
 
 public class AbsoluteIncludeTestCase
 {
@@ -36,7 +36,7 @@ public class AbsoluteIncludeTestCase
         final RamlBuilder builder = new RamlBuilder();
         final Node raml = builder.build(getRaml(), "some/location/input.raml");
         assertThat(raml, notNullValue());
-        String dump = new TreeDumper().dump(raml);
+        String dump = new TckEmitter().dump(raml);
         Assert.assertThat(dump, IsEqualIgnoringWhiteSpace.equalToIgnoringWhiteSpace(getExpectedOutput()));
     }
 
@@ -50,12 +50,9 @@ public class AbsoluteIncludeTestCase
 
     private String getExpectedOutput()
     {
-        return "RamlDocumentNode (Start: 11 , End: 167, Source: SYObjectNode)\n" +
-               "    KeyValueNodeImpl (Start: 11 , End: 34)\n" +
-               "        SYStringNode: \"title\" (Start: 11 , End: 16)\n" +
-               "        SYStringNode: \"absolute include\" (Start: 18 , End: 34)\n" +
-               "    KeyValueNodeImpl (Start: 35 , End: 167)\n" +
-               "        SYStringNode: \"description\" (Start: 35 , End: 46)\n" +
-               "        StringNodeImpl: \"some description\" (Start: 48 , End: 167, Source: SYIncludeNode)\n";
+        return "{\n" +
+               "    \"title\": \"absolute include\",\n" +
+               "    \"description\": \"some description\"\n" +
+               "}\n";
     }
 }
