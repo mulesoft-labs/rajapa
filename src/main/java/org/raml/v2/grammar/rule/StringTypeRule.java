@@ -40,7 +40,7 @@ public class StringTypeRule extends AbstractTypeRule
     @Override
     public boolean matches(@Nonnull Node node)
     {
-        return node instanceof StringNode || (node.getParent() instanceof AnnotationNode && node instanceof SYNullNode);
+        return node instanceof StringNode;
     }
 
     @Override
