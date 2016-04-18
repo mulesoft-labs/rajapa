@@ -18,12 +18,9 @@ package org.raml.v2.nodes.snakeyaml;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.v2.grammar.rule.JSonDumper;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.ObjectNode;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.nodes.MappingNode;
 
 public class SYObjectNode extends SYBaseRamlNode implements ObjectNode

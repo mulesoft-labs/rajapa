@@ -20,9 +20,11 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.raml.v2.impl.commons.nodes.AnnotationNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.StringNode;
+import org.raml.v2.nodes.snakeyaml.SYNullNode;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.Suggestion;
 
@@ -38,7 +40,7 @@ public class StringTypeRule extends AbstractTypeRule
     @Override
     public boolean matches(@Nonnull Node node)
     {
-        return node instanceof StringNode;
+        return node instanceof StringNode || (node.getParent() instanceof AnnotationNode && node instanceof SYNullNode);
     }
 
     @Override

@@ -46,7 +46,15 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
     public List<PropertyNode> getProperties()
     {
         ArrayList<PropertyNode> result = new ArrayList<>();
-        List<Node> properties = getSource().get("properties").getChildren();
+        List<Node> properties = Lists.newArrayList();
+        if (getSource().get("properties") != null)
+        {
+            properties = getSource().get("properties").getChildren();
+        }
+        else if (this.get("properties") != null)
+        {
+            properties = this.get("properties").getChildren();
+        }
         for (Node property : properties)
         {
             result.add((PropertyNode) property);

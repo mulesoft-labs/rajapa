@@ -32,6 +32,7 @@ import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.StringNodeImpl;
 import org.raml.v2.nodes.snakeyaml.SYArrayNode;
 import org.raml.v2.nodes.snakeyaml.SYObjectNode;
@@ -131,6 +132,14 @@ public class TypesTransformer implements Transformer
                         addProperties(properties, unionProperties);
                     }
                 }
+            }
+        }
+        else if (node.get("type") != null && node.get("type") instanceof StringNode)
+        {
+            ObjectTypeNode parentTypeNode = (ObjectTypeNode) getType(typesRoot, StringUtils.trim(((StringNode) node.get("type")).getValue()));
+            if (parentTypeNode != null && parentTypeNode.get("properties") != null)
+            {
+                node.addChild(parentTypeNode.get("properties").getParent());
             }
         }
     }
