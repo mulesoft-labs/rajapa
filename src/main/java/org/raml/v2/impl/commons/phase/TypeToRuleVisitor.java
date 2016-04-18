@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.raml.v2.grammar.rule.AllOfRule;
 import org.raml.v2.grammar.rule.AnyOfRule;
+import org.raml.v2.grammar.rule.ArrayRule;
 import org.raml.v2.grammar.rule.BooleanTypeRule;
 import org.raml.v2.grammar.rule.DivisorValueRule;
 import org.raml.v2.grammar.rule.IntegerTypeRule;
@@ -33,6 +34,7 @@ import org.raml.v2.grammar.rule.MaxLengthRule;
 import org.raml.v2.grammar.rule.MaximumValueRule;
 import org.raml.v2.grammar.rule.MinLengthRule;
 import org.raml.v2.grammar.rule.MinimumValueRule;
+import org.raml.v2.grammar.rule.ObjectListRule;
 import org.raml.v2.grammar.rule.ObjectRule;
 import org.raml.v2.grammar.rule.RangeValueRule;
 import org.raml.v2.grammar.rule.RegexValueRule;
@@ -50,7 +52,6 @@ import org.raml.v2.impl.v10.nodes.types.builtin.TypeNodeVisitor;
 
 public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
 {
-
 
     @Override
     public Rule visitString(StringTypeNode stringTypeNode)
@@ -84,7 +85,14 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
     @Override
     public Rule visitObject(ObjectTypeNode objectTypeNode)
     {
-        return getPropertiesRules(objectTypeNode.getProperties());
+        if (objectTypeNode.isArray())
+        {
+            return new ObjectListRule(getPropertiesRules(objectTypeNode.getProperties()));
+        }
+        else
+        {
+            return getPropertiesRules(objectTypeNode.getProperties());
+        }
     }
 
     private ObjectRule getPropertiesRules(List<PropertyNode> properties)
@@ -150,6 +158,13 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
         propertiesRules.setStrict(true);
         return propertiesRules;
     }
+
+    @Override
+    public Rule visitExampleList(List<PropertyNode> properties)
+    {
+        return new ArrayRule(visitExample(properties));
+    }
+
 
     private List<Rule> getStringRules(List<String> enumValues)
     {

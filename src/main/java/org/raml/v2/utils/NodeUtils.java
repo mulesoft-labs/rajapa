@@ -15,6 +15,7 @@
  */
 package org.raml.v2.utils;
 
+import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.nodes.Node;
 
 import javax.annotation.Nullable;
@@ -39,5 +40,21 @@ public class NodeUtils
             i++;
         }
         return parent;
+    }
+
+    public static Node traverseToRoot(Node node)
+    {
+        if (node == null || node instanceof RamlDocumentNode)
+        {
+            return node;
+        }
+        else if (node.getParent() == null)
+        {
+            return node;
+        }
+        else
+        {
+            return traverseToRoot(node.getParent());
+        }
     }
 }

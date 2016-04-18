@@ -22,12 +22,16 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.raml.v2.impl.commons.model.StringType;
 import org.raml.v2.impl.commons.nodes.PropertyNode;
 import org.raml.v2.nodes.AbstractRamlNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
+import org.raml.v2.nodes.StringNode;
+import org.raml.v2.nodes.snakeyaml.SYStringNode;
+import org.raml.v2.utils.NodeUtils;
 
 public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {
@@ -54,6 +58,31 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
         else if (this.get("properties") != null)
         {
             properties = this.get("properties").getChildren();
+        }
+        else if (this.get("type") != null &&
+                 this.get("type") instanceof StringNode)
+        {
+            Node tree = NodeUtils.traverseToRoot(this);
+            Node typesRoot = tree.get("types");
+            String typeName;
+            if ("array".equals(((StringNode) this.get("type")).getValue()) &&
+                this.get("items") != null &&
+                this.get("items") instanceof StringNode)
+            {
+                typeName = ((StringNode) this.get("items")).getValue();
+            }
+            else
+            {
+                typeName = ((StringNode) this.get("type")).getValue();
+            }
+            if (typesRoot != null)
+            {
+                Node type = typesRoot.get(typeName);
+                if (type != null)
+                {
+                    return ((ObjectTypeNode) type).getProperties();
+                }
+            }
         }
         for (Node property : properties)
         {
@@ -94,5 +123,10 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
     public <T> T visit(TypeNodeVisitor<T> visitor)
     {
         return visitor.visitObject(this);
+    }
+
+    public boolean isArray()
+    {
+        return this.get("type") != null && this.get("type") instanceof SYStringNode && "array".equals(((SYStringNode) this.get("type")).getValue());
     }
 }
