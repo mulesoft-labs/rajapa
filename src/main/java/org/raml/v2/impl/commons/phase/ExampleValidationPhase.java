@@ -133,8 +133,26 @@ public class ExampleValidationPhase implements Phase
             }
             else
             {
-                rule = example.visit(new TypeToRuleVisitor());
-                transform = rule.apply(example.getSource());
+                if (example instanceof MultipleExampleTypeNode)
+                {
+                    for (Node childExample : example.getChildren())
+                    {
+                        Node exampleValue = null;
+                        if (childExample instanceof KeyValueNode)
+                        {
+                            exampleValue = ((KeyValueNodeImpl) childExample).getValue();
+                        }
+                        rule = example.visit(new TypeToRuleVisitor());
+                        transform = rule.apply(exampleValue);
+                        exampleValue.replaceWith(transform);
+                        transform = null;
+                    }
+                }
+                else
+                {
+                    rule = example.visit(new TypeToRuleVisitor());
+                    transform = rule.apply(example.getSource());
+                }
             }
             if (transform != null)
             {
