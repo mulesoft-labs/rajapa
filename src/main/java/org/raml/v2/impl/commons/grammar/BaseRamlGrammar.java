@@ -58,7 +58,8 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     public static final String RESOURCE_TYPES_KEY_NAME = "resourceTypes";
     public static final String TRAITS_KEY_NAME = "traits";
     public static final String SECURITY_SCHEMES_KEY_NAME = "securitySchemes";
-    public static final String MIME_TYPE_REGEX = "[A-z-_]+\\/[A-z-_]+";
+    public static final String MIME_TYPE_REGEX =
+            "([\\w\\d\\.\\-\\_\\+]+|\\*)\\/([\\w\\d\\.\\-\\_\\+]+|\\*);?([\\w\\d\\.\\-\\_\\+]+=[\\w\\d\\.\\-\\_\\+]+)?(\\s+[\\w\\d\\.\\-\\_\\+]+=[\\w\\d\\.\\-\\_\\+]+)*";
 
     public ObjectRule raml()
     {
