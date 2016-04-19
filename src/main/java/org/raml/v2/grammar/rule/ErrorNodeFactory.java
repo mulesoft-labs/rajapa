@@ -17,6 +17,7 @@ package org.raml.v2.grammar.rule;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.v2.nodes.ErrorNode;
@@ -141,6 +142,11 @@ public class ErrorNodeFactory
     public static Node createInvalidValue(Node node, String expected)
     {
         return new ErrorNode("Invalid value '" + node + "'. Expected " + expected);
+    }
+
+    public static Node createInvalidSiblingsValue(Node node, Set<String> siblings)
+    {
+        return new ErrorNode("Invalid node '" + node + "'. Node not expected when one of " + siblings + " is present.");
     }
 
     public static Node createInvalidJsonExampleNode(String error)

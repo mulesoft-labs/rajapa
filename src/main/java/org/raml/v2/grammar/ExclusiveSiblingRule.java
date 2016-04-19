@@ -13,37 +13,41 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.grammar.rule;
+package org.raml.v2.grammar;
 
-import java.util.Collections;
+import com.google.common.collect.Lists;
+
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.StringUtils;
+import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.grammar.rule.Rule;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.StringNode;
-import org.raml.v2.suggester.DefaultSuggestion;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.Suggestion;
 
-public class StringValueRule extends Rule
+public class ExclusiveSiblingRule extends Rule
 {
 
-    private String value;
-    private String description;
 
-    public StringValueRule(String value)
+    private String value;
+    private Set<String> notAllowedSiblings;
+
+    public ExclusiveSiblingRule(String value, Set<String> notAllowedSiblings)
     {
         this.value = value;
+        this.notAllowedSiblings = notAllowedSiblings;
     }
 
     @Nonnull
     @Override
     public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
     {
-        return Collections.<Suggestion> singletonList(new DefaultSuggestion(value, description, StringUtils.capitalize(value)));
+        return Lists.newArrayList();
     }
 
 
@@ -51,12 +55,6 @@ public class StringValueRule extends Rule
     public boolean matches(@Nonnull Node node)
     {
         return node instanceof StringNode && ((StringNode) node).getValue().equals(value);
-    }
-
-    public StringValueRule description(String description)
-    {
-        this.description = description;
-        return this;
     }
 
     @Nonnull
@@ -71,8 +69,28 @@ public class StringValueRule extends Rule
         {
             return ErrorNodeFactory.createInvalidValue(node, value);
         }
+        if (matchesSiblings(node))
+        {
+            return ErrorNodeFactory.createInvalidSiblingsValue(node, notAllowedSiblings);
+        }
         return createNodeUsingFactory(node, ((StringNode) node).getValue());
+    }
 
+    private boolean matchesSiblings(Node node)
+    {
+        if (node.getParent() == null || node.getParent().getParent() == null)
+        {
+            return false;
+        }
+        Node grandParent = node.getParent().getParent();
+        for (String sibling : notAllowedSiblings)
+        {
+            if (grandParent.get(sibling) != null)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -87,8 +105,4 @@ public class StringValueRule extends Rule
         return "\"" + value + "\"";
     }
 
-    public String getValue()
-    {
-        return value;
-    }
 }

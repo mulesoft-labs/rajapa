@@ -17,10 +17,13 @@ package org.raml.v2.impl.commons.grammar;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
+import com.google.common.collect.Sets;
 
 import java.util.List;
+import java.util.Set;
 
 import org.raml.v2.grammar.BaseGrammar;
+import org.raml.v2.grammar.ExclusiveSiblingRule;
 import org.raml.v2.grammar.rule.AnyOfRule;
 import org.raml.v2.grammar.rule.KeyValueRule;
 import org.raml.v2.grammar.rule.NodeFactory;
@@ -323,12 +326,12 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule exampleFieldRule()
     {
-        return field(string("example"), any().then(ExampleTypeNode.class));
+        return field(stringExcluding("example", "examples"), any().then(ExampleTypeNode.class));
     }
 
     protected KeyValueRule multipleExampleFieldRule()
     {
-        return field(string("examples"), any().then(MultipleExampleTypeNode.class));
+        return field(stringExcluding("examples", "example"), any().then(MultipleExampleTypeNode.class));
     }
 
     protected Rule parameters()
@@ -341,6 +344,10 @@ public abstract class BaseRamlGrammar extends BaseGrammar
      */
     protected abstract Rule parameter();
 
+    protected ExclusiveSiblingRule stringExcluding(String key, String... notAllowedSiblings)
+    {
+        return new ExclusiveSiblingRule(key, Sets.newHashSet(notAllowedSiblings));
+    }
 
     protected KeyValueRule securitySchemesField()
     {
@@ -351,7 +358,6 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     {
         return string(SECURITY_SCHEMES_KEY_NAME).description("Declarations of security schemes for use within this API.");
     }
-
 
     protected KeyValueRule schemasField()
     {
