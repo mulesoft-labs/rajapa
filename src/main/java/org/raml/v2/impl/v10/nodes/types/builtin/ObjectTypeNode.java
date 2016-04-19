@@ -149,4 +149,17 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
         }
         return null;
     }
+
+    public boolean isAllowAdditionalProperties()
+    {
+        Node additionalProperties = this.get("additionalProperties");
+        if (additionalProperties == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

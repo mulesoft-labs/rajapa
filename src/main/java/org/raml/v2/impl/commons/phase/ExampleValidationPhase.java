@@ -89,7 +89,7 @@ public class ExampleValidationPhase implements Phase
                     }
                     else
                     {
-                        rule = example.visitProperties(new TypeToRuleVisitor(), type.getProperties());
+                        rule = example.visitProperties(new TypeToRuleVisitor(), type.getProperties(), type.isAllowAdditionalProperties());
                     }
                     if (example instanceof MultipleExampleTypeNode || example.isArrayExample())
                     {
@@ -182,7 +182,7 @@ public class ExampleValidationPhase implements Phase
         List<Rule> rules = Lists.newArrayList();
         for (InheritedPropertiesInjectedNode inheritedProperties : type.getInheritedProperties())
         {
-            rules.add(example.visitProperties(new TypeToRuleVisitor(), inheritedProperties.getProperties()));
+            rules.add(example.visitProperties(new TypeToRuleVisitor(), inheritedProperties.getProperties(), type.isAllowAdditionalProperties()));
         }
         return rules;
     }

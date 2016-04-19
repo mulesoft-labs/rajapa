@@ -28,6 +28,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
@@ -42,6 +44,7 @@ public class ObjectRule extends Rule
     private ConditionalRules conditionalRules;
 
     private boolean strict = false;
+    private boolean allowsAdditionalProperties = true;
 
     public ObjectRule()
     {
@@ -146,15 +149,18 @@ public class ObjectRule extends Rule
                 }
                 else
                 {
-                    final Collection<String> options = Collections2.transform(allFieldRules, new Function<KeyValueRule, String>()
+                    if (!allowsAdditionalProperties || !(node instanceof ExampleTypeNode))
                     {
-                        @Override
-                        public String apply(KeyValueRule rule)
+                        final Collection<String> options = Collections2.transform(allFieldRules, new Function<KeyValueRule, String>()
                         {
-                            return rule.getKeyRule().getDescription();
-                        }
-                    });
-                    child.replaceWith(ErrorNodeFactory.createUnexpectedKey(((KeyValueNode) child).getKey(), new TreeSet<>(options)));
+                            @Override
+                            public String apply(KeyValueRule rule)
+                            {
+                                return rule.getKeyRule().getDescription();
+                            }
+                        });
+                        child.replaceWith(ErrorNodeFactory.createUnexpectedKey(((KeyValueNode) child).getKey(), new TreeSet<>(options)));
+                    }
                 }
             }
 
@@ -248,14 +254,14 @@ public class ObjectRule extends Rule
         return "Mapping";
     }
 
-    public boolean isStrict()
-    {
-        return strict;
-    }
-
     public void setStrict(boolean strict)
     {
         this.strict = strict;
+    }
+
+    public void setAllowsAdditionalProperties(boolean allowsAdditionalProperties)
+    {
+        this.allowsAdditionalProperties = allowsAdditionalProperties;
     }
 
     public ObjectRule with(ConditionalRules conditional)

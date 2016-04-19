@@ -152,10 +152,11 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
     }
 
     @Override
-    public Rule visitExample(List<PropertyNode> properties)
+    public Rule visitExample(List<PropertyNode> properties, boolean allowsAdditionalProperties)
     {
         ObjectRule propertiesRules = getPropertiesRules(properties);
         propertiesRules.setStrict(true);
+        propertiesRules.setAllowsAdditionalProperties(allowsAdditionalProperties);
         return propertiesRules;
     }
 

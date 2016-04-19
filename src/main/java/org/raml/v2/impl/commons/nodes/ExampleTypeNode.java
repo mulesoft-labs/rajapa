@@ -66,9 +66,9 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
         return (T) new AnyValueRule();
     }
 
-    public <T> T visitProperties(TypeNodeVisitor<T> visitor, List<PropertyNode> properties)
+    public <T> T visitProperties(TypeNodeVisitor<T> visitor, List<PropertyNode> properties, boolean allowsAdditionalProperties)
     {
-        return visitor.visitExample(properties);
+        return visitor.visitExample(properties, allowsAdditionalProperties);
     }
 
     public String getTypeName()
