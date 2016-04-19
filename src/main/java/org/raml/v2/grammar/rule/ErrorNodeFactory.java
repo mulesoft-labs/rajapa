@@ -163,4 +163,9 @@ public class ErrorNodeFactory
     {
         return new ErrorNode("Inexistent type definition for " + typeName);
     }
+
+    public static ErrorNode createInvalidNumberOfProperties(String comparator, Integer expected, Integer actual)
+    {
+        return new ErrorNode("expected " + comparator + " number of properties to be: " + expected + " but was: " + actual);
+    }
 }

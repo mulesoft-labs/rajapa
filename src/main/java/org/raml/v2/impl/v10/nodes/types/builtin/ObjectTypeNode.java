@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import org.raml.v2.impl.commons.model.StringType;
 import org.raml.v2.impl.commons.nodes.PropertyNode;
 import org.raml.v2.nodes.AbstractRamlNode;
+import org.raml.v2.nodes.IntegerNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.ObjectNode;
@@ -128,5 +129,24 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
     public boolean isArray()
     {
         return this.get("type") != null && this.get("type") instanceof SYStringNode && "array".equals(((SYStringNode) this.get("type")).getValue());
+    }
+
+    public Integer getMinProperties()
+    {
+        return getIntFacet("minProperties");
+    }
+
+    public Integer getMaxProperties()
+    {
+        return getIntFacet("maxProperties");
+    }
+
+    private Integer getIntFacet(String facetName)
+    {
+        if (this.get(facetName) != null && this.get(facetName) instanceof IntegerNode)
+        {
+            return ((IntegerNode) this.get(facetName)).getValue();
+        }
+        return null;
     }
 }

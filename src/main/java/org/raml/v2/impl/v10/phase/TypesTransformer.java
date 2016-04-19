@@ -61,7 +61,44 @@ public class TypesTransformer implements Transformer
         {
             transformObjectTypeProperties(node, typesRoot);
         }
+        validateGeneratedProperties(node);
         return node;
+    }
+
+    private void validateGeneratedProperties(Node node)
+    {
+        if (node instanceof ObjectTypeNode)
+        {
+            ObjectTypeNode objectNode = (ObjectTypeNode) node;
+            Integer totalNumberOfProperties = getNumberOfProperties(node);
+            if (objectNode.getMinProperties() != null)
+            {
+                if (objectNode.getMinProperties().compareTo(totalNumberOfProperties) > 0)
+                {
+                    node.replaceWith(ErrorNodeFactory.createInvalidNumberOfProperties("minimum", objectNode.getMinProperties(), totalNumberOfProperties));
+                }
+            }
+            if (objectNode.getMaxProperties() != null)
+            {
+                if (objectNode.getMaxProperties().compareTo(totalNumberOfProperties) < 0)
+                {
+                    node.replaceWith(ErrorNodeFactory.createInvalidNumberOfProperties("maximum", objectNode.getMaxProperties(), totalNumberOfProperties));
+                }
+            }
+        }
+    }
+
+    private Integer getNumberOfProperties(Node node)
+    {
+        Node properties = node.get("properties");
+        if (properties == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return properties.getChildren().size();
+        }
     }
 
     private void transformObjectTypeProperties(Node node, SYObjectNode typesRoot)

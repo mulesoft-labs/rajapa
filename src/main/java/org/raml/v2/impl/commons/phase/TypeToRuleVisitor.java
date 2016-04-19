@@ -159,13 +159,6 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
         return propertiesRules;
     }
 
-    @Override
-    public Rule visitExampleList(List<PropertyNode> properties)
-    {
-        return new ArrayRule(visitExample(properties));
-    }
-
-
     private List<Rule> getStringRules(List<String> enumValues)
     {
         List<Rule> rules = Lists.newArrayList();

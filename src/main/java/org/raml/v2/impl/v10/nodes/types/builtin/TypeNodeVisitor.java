@@ -34,5 +34,4 @@ public interface TypeNodeVisitor<T>
 
     T visitExample(List<PropertyNode> properties);
 
-    T visitExampleList(List<PropertyNode> properties);
 }
