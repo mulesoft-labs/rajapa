@@ -13,6 +13,14 @@ documentation:
            multi
            line
 
+types:
+    User:
+        type: object
+        properties:
+            firstname: string
+            lastname: string
+            age: number
+
 traits:
     one:
         displayName: uno
@@ -29,3 +37,24 @@ resourceTypes:
     type: first
     get:
         description: get something
+    post:
+        description: post something
+        body: &bodyPost
+            application/json:
+                type: User
+                example: |
+                    {
+                        "firstname": "tato",
+                        "lastname": "bores",
+                        "age": 66
+                    }
+            application/xml:
+                type: User
+        responses:
+            200:
+                body: *bodyPost
+            400:
+
+
+    /child:
+        description: child description

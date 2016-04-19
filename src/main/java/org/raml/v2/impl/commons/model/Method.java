@@ -19,15 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.raml.v2.impl.commons.nodes.MethodNode;
-import org.raml.v2.impl.commons.nodes.ResourceNode;
+import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
+import org.raml.v2.utils.NodeSelector;
 
-public class Resource extends CommonAttributes
+public class Method extends CommonAttributes
 {
 
-    private ResourceNode node;
+    private MethodNode node;
 
-    public Resource(ResourceNode node)
+    public Method(MethodNode node)
     {
         this.node = node;
     }
@@ -38,40 +39,36 @@ public class Resource extends CommonAttributes
         return node.getValue();
     }
 
-    public StringType relativeUri()
+    public String method()
     {
-        return new StringType(node.getRelativeUri());
+        return node.getName();
     }
 
-    public String resourcePath()
+    public List<TypeDeclaration> body()
     {
-        return node.getResourcePath();
-    }
-
-    public List<Resource> resources()
-    {
-        ArrayList<Resource> resultList = new ArrayList<>();
-        for (Node item : node.getValue().getChildren())
+        ArrayList<TypeDeclaration> result = new ArrayList<>();
+        Node body = NodeSelector.selectFrom("body", node.getValue());
+        if (body != null)
         {
-            if (item instanceof ResourceNode)
+            for (Node child : body.getChildren())
             {
-                resultList.add(new Resource((ResourceNode) item));
+                result.add(new TypeDeclaration((KeyValueNode) child));
             }
         }
-        return resultList;
+        return result;
     }
 
-    public List<Method> methods()
+    public List<Response> responses()
     {
-        ArrayList<Method> resultList = new ArrayList<>();
-        for (Node item : node.getValue().getChildren())
+        ArrayList<Response> result = new ArrayList<>();
+        Node responses = NodeSelector.selectFrom("responses", node.getValue());
+        if (responses != null)
         {
-            if (item instanceof MethodNode)
+            for (Node child : responses.getChildren())
             {
-                resultList.add(new Method((MethodNode) item));
+                result.add(new Response((KeyValueNode) child));
             }
         }
-        return resultList;
+        return result;
     }
-
 }

@@ -29,6 +29,9 @@ import org.raml.v2.impl.commons.model.builder.ModelBuilder;
 import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.model.v10.api.Api;
 import org.raml.v2.model.v10.api.DocumentationItem;
+import org.raml.v2.model.v10.bodies.Response;
+import org.raml.v2.model.v10.datamodel.TypeDeclaration;
+import org.raml.v2.model.v10.methods.Method;
 import org.raml.v2.model.v10.methods.Trait;
 import org.raml.v2.model.v10.resources.Resource;
 import org.raml.v2.model.v10.resources.ResourceType;
@@ -53,7 +56,7 @@ public class SpecInterfacesTestCase
         assertDocumentation(api.documentation());
         assertTraits(api.traits());
         assertResourceTypes(api.resourceTypes());
-        assertResource(api.resources());
+        assertResources(api.resources());
     }
 
     private void assertApi(Api api)
@@ -90,12 +93,49 @@ public class SpecInterfacesTestCase
         assertThat(resourceTypes.get(0).usage(), is("first usage"));
     }
 
-    private void assertResource(List<Resource> resources)
+    private void assertResources(List<Resource> resources)
     {
         assertThat(resources.size(), is(1));
         Resource top = resources.get(0);
         assertThat(top.relativeUri().value(), is("/top"));
+        assertThat(top.resourcePath(), is("/top"));
         assertThat(top.description().value(), is("top description"));
         assertThat(top.displayName(), is("/top"));
+        assertMethods(top.methods());
+
+        List<Resource> children = top.resources();
+        assertThat(children.size(), is(1));
+        Resource child = children.get(0);
+        assertThat(child.relativeUri().value(), is("/child"));
+        assertThat(child.resourcePath(), is("/top/child"));
+    }
+
+    private void assertMethods(List<Method> methods)
+    {
+        assertThat(methods.size(), is(2));
+        Method get = methods.get(0);
+        assertThat(get.description().value(), is("get something"));
+        assertThat(get.displayName(), is("get"));
+        assertThat(get.method(), is("get"));
+
+        Method post = methods.get(1);
+        assertThat(post.method(), is("post"));
+        assertBody(post.body());
+        assertResponses(post.responses());
+    }
+
+    private void assertResponses(List<Response> responses)
+    {
+        assertThat(responses.size(), is(2));
+        Response response200 = responses.get(0);
+        assertThat(response200.code().value(), is("200"));
+        assertBody(response200.body());
+    }
+
+    private void assertBody(List<TypeDeclaration> body)
+    {
+        assertThat(body.size(), is(2));
+        TypeDeclaration appJson = body.get(0);
+        assertThat(appJson.name(), is("application/json"));
     }
 }
