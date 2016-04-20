@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.raml.v2.impl.commons.nodes.MethodNode;
+import org.raml.v2.impl.commons.nodes.ResourceNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.utils.NodeSelector;
@@ -70,5 +71,18 @@ public class Method extends CommonAttributes
             }
         }
         return result;
+    }
+
+    public Resource resource()
+    {
+        Node parent = node.getParent();
+        if (parent != null)
+        {
+            if (parent.getParent() instanceof ResourceNode)
+            {
+                return new Resource((ResourceNode) parent.getParent());
+            }
+        }
+        return null;
     }
 }

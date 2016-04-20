@@ -117,6 +117,7 @@ public class SpecInterfacesTestCase
         assertThat(get.description().value(), is("get something"));
         assertThat(get.displayName(), is("get"));
         assertThat(get.method(), is("get"));
+        assertThat(get.resource().relativeUri().value(), is("/top"));
 
         Method post = methods.get(1);
         assertThat(post.method(), is("post"));
