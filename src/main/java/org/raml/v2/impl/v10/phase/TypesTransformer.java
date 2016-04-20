@@ -31,6 +31,7 @@ import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.v2.nodes.*;
 import org.raml.v2.nodes.snakeyaml.SYArrayNode;
+import org.raml.v2.nodes.snakeyaml.SYNullNode;
 import org.raml.v2.nodes.snakeyaml.SYObjectNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
 import org.raml.v2.phase.Transformer;
@@ -148,16 +149,16 @@ public class TypesTransformer implements Transformer
         final Node properties = node.get("properties");
         if (properties != null)
         {
+            Node unionProperties;
             if (typeNode != null)
             {
                 for (final String type : typeNode.getValue().split("\\|"))
                 {
                     final String trimmedType = StringUtils.trim(type);
-                    final ObjectTypeNode parentTypeNode = (ObjectTypeNode) getType(typesRoot, trimmedType);
-                    if (parentTypeNode != null)
+                    unionProperties = processType(typesRoot, properties.copy(), trimmedType);
+                    if (unionProperties != null && !(unionProperties instanceof SYNullNode))
                     {
-                        List<PropertyNode> unionProperties = getTypeProperties(parentTypeNode);
-                        addProperties(properties, unionProperties);
+                        injectProperties((ObjectTypeNode) node, new StringNodeImpl(trimmedType), (SYObjectNode) unionProperties);
                     }
                 }
             }
