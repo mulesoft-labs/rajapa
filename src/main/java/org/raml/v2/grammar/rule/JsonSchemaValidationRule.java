@@ -45,15 +45,22 @@ public class JsonSchemaValidationRule extends Rule
 
     private JsonSchema schema;
 
-    public JsonSchemaValidationRule(String schema)
+    public JsonSchemaValidationRule(String schema, String type)
     {
         try
         {
             JsonNode jsonSchema = JsonLoader.fromString(schema);
             JsonSchemaFactory factory = JsonSchemaFactory.newBuilder().freeze();
-            this.schema = factory.getJsonSchema(jsonSchema);
+            if (type != null)
+            {
+                this.schema = factory.getJsonSchema(jsonSchema, "/definitions/" + type);
+            }
+            else
+            {
+                this.schema = factory.getJsonSchema(jsonSchema);
+            }
         }
-        catch (IOException | ProcessingException e)
+        catch (Exception e)
         {
             this.schema = null;
         }

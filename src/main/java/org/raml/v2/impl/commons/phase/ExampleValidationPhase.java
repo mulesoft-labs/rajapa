@@ -76,7 +76,7 @@ public class ExampleValidationPhase implements Phase
                         String value = ((StringNode) schemaType).getValue();
                         if (value.startsWith("{"))
                         {
-                            rule = new JsonSchemaValidationRule(value);
+                            rule = new JsonSchemaValidationRule(value, getIncludedType(schemaType));
                         }
                         else if (value.startsWith("<"))
                         {

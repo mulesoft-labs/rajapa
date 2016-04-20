@@ -1,40 +1,55 @@
-RamlDocumentNode (Start: 11 , End: 155, Source: SYObjectNode)
+RamlDocumentNode (Start: 11 , End: 260, Source: SYObjectNode)
     KeyValueNodeImpl (Start: 11 , End: 35)
         SYStringNode: "title" (Start: 11 , End: 16)
         SYStringNode: "API with Examples" (Start: 18 , End: 35)
-    KeyValueNodeImpl (Start: 36 , End: 155)
+    KeyValueNodeImpl (Start: 36 , End: 260)
         SYStringNode: "types" (Start: 36 , End: 41)
-        SYObjectNode (Start: 45 , End: 155)
-            KeyValueNodeImpl (Start: 45 , End: 155)
+        SYObjectNode (Start: 45 , End: 260)
+            KeyValueNodeImpl (Start: 45 , End: 260)
                 SYStringNode: "User" (Start: 45 , End: 49)
-                UnionTypeNode (Start: 55 , End: 155, Source: SYObjectNode)
-                    KeyValueNodeImpl (Start: 55 , End: 79)
+                UnionTypeNode (Start: 55 , End: 260, Source: SYObjectNode)
+                    KeyValueNodeImpl (Start: 55 , End: 84)
                         SYStringNode: "type" (Start: 55 , End: 59)
                         StringNodeImpl: "{
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://jsonschema.net",
-  "type": "object",
-  "properties": {
-    "name": {
-      "id": "http://jsonschema.net/name",
-      "type": "string"
-    },
-    "age": {
-      "id": "http://jsonschema.net/age",
-      "type": "integer"
+  "definitions": {
+    "User" : {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "User",
+      "type": "object",
+      "properties": {
+        "name": {
+          "id": "http://jsonschema.net/name",
+          "type": "string"
+        },
+        "age": {
+          "id": "http://jsonschema.net/age",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "age"
+      ]
     }
-  },
-  "required": [
-    "name",
-    "age"
-  ]
-}" (Start: 61 , End: 79, Source: SYIncludeNode)
-                    KeyValueNodeImpl (Start: 84 , End: 155)
-                        SYStringNode: "example" (Start: 84 , End: 91)
-                        ErrorNode: "Error validating JSON. Error: {
+  }
+}
+" (Start: 61 , End: 84, Source: SYIncludeNode)
+                    KeyValueNodeImpl (Start: 89 , End: 260)
+                        SYStringNode: "examples" (Start: 89 , End: 97)
+                        MultipleExampleTypeNode (Start: 105 , End: 260, Source: SYObjectNode)
+                            KeyValueNodeImpl (Start: 105 , End: 179)
+                                SYStringNode: "good" (Start: 105 , End: 109)
+                                SYStringNode: "{
+  "name": "John",
+  "age": 18
+}
+" (Start: 111 , End: 179)
+                            KeyValueNodeImpl (Start: 185 , End: 260)
+                                SYStringNode: "bad" (Start: 185 , End: 188)
+                                ErrorNode: "Error validating JSON. Error: {
 instance type (string) does not match any allowed primitive type (allowed: ["integer"]),
 instance type (integer) does not match any allowed primitive type (allowed: ["string"])
-}" (Start: 93 , End: 155, Source: ExampleTypeNode)
+}" (Start: 190 , End: 260, Source: SYStringNode)
                     KeyValueNodeImpl (Start: -1 , End: -1)
                         StringNodeImpl: "displayName" (Start: -1 , End: -1)
                         SYStringNode: "User" (Start: 45 , End: 49, Source: SYStringNode)

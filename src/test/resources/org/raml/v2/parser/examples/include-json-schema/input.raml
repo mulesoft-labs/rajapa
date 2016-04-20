@@ -2,9 +2,15 @@
 title: API with Examples
 types:
   User:
-    type: !include user.json
-    example: |
-      {
-        "name": 15,
-        "age": "Marley"
-      }
+    type: !include user.json#User
+    examples:
+      good: |
+        {
+          "name": "John",
+          "age": 18
+        }
+      bad: |
+        {
+          "name": 15,
+          "age": "Marley"
+        }
