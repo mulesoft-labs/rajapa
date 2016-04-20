@@ -1,25 +1,31 @@
- #%RAML 1.0
-
-title: Raml example
-version: 1.0
-protocols: [ HTTP, HTTPS ]
-
-baseUri: https://eleonora.com
-mediaType: [application/json,  application/xml]
-
+#%RAML 1.0
+title: My API With Types
 types:
-  Person:
-    type: object
-    properties:
-      firstname: string
-      lastname:  string
-      title?:    string
-  Admin:
-    type: Person
-    properties:
-      clearanceLevel:
-        enum: [low, high]
-    example:
-      firstname: eleo
-      lastname:  ortega
-      clearanceLevel: medium
+ Phone:
+   type: object
+   properties:
+     manufacturer:
+       type: string
+     numberOfSIMCards:
+       type: number
+ Notebook:
+   type: object
+   properties:
+     manufacturer:
+       type: string
+     numberOfUSBPorts:
+       type: number
+ Device:
+   type: Phone | Notebook
+   properties:
+     weight: 
+       type: number
+   examples:
+     phone:
+       manufacturer: Sony
+       numberOfSIMCards: 2
+       weight: 200
+     notebook:
+       manufacturer: Apple
+       numberOfUSBPorts: 4
+       weight: 150
