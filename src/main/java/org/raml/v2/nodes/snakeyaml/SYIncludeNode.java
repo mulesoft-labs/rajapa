@@ -64,6 +64,18 @@ public class SYIncludeNode extends SYStringNode
         return getValue();
     }
 
+    public String getIncludedType()
+    {
+        String parts[];
+        parts = this.getValue().split("#");
+        if (parts.length == 2)
+        {
+            return parts[1];
+        }
+        else
+            return null;
+    }
+
     @Nonnull
     @Override
     public Node copy()

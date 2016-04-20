@@ -41,14 +41,16 @@ public class XmlSchemaValidationRule extends Rule
 {
 
     private Schema schema;
+    private String type;
 
-    public XmlSchemaValidationRule(String schema, ResourceLoader resourceLoader, String actualPath)
+    public XmlSchemaValidationRule(String schema, ResourceLoader resourceLoader, String actualPath, String type)
     {
         try
         {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             factory.setResourceResolver(new XsdResourceResolver(resourceLoader, actualPath));
             this.schema = factory.newSchema(new StreamSource(new StringReader(schema)));
+            this.type = type;
         }
         catch (SAXException e)
         {
@@ -80,7 +82,11 @@ public class XmlSchemaValidationRule extends Rule
         Node source = node.getSource();
         if (source == null)
         {
-            if (!(node instanceof ObjectNode))
+            if (node instanceof StringNode)
+            {
+                source = node;
+            }
+            else if (!(node instanceof ObjectNode))
             {
                 return ErrorNodeFactory.createInvalidXmlExampleNode("Source was null");
             }
@@ -106,7 +112,14 @@ public class XmlSchemaValidationRule extends Rule
         String value = source.getValue();
         try
         {
-            schema.newValidator().validate(new StreamSource(new StringReader(value)));
+            if (this.type != null && !value.startsWith("<" + this.type))
+            {
+                node.replaceWith(ErrorNodeFactory.createInvalidXmlExampleNode("provided object is not of type " + this.type));
+            }
+            else
+            {
+                schema.newValidator().validate(new StreamSource(new StringReader(value)));
+            }
         }
         catch (SAXException | IOException e)
         {

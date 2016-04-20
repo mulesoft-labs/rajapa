@@ -109,6 +109,10 @@ public class IncludeResolver implements Transformer
                 result = resourceLocation.substring(0, lastSlash + 1) + includePath;
             }
         }
+        if (result.contains("#"))
+        {
+            return result.split("#")[0];
+        }
         return result;
     }
 

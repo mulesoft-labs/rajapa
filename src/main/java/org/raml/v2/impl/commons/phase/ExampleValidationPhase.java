@@ -35,6 +35,7 @@ import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
+import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
 import org.raml.v2.phase.Phase;
 import org.raml.v2.utils.NodeUtils;
@@ -79,7 +80,7 @@ public class ExampleValidationPhase implements Phase
                         }
                         else if (value.startsWith("<"))
                         {
-                            rule = new XmlSchemaValidationRule(value, resourceLoader, actualPath);
+                            rule = new XmlSchemaValidationRule(value, resourceLoader, actualPath, getIncludedType(schemaType));
                         }
                     }
                     else if (!type.getInheritedProperties().isEmpty())
@@ -160,6 +161,15 @@ public class ExampleValidationPhase implements Phase
             }
         }
         return tree;
+    }
+
+    private String getIncludedType(Node schemaType)
+    {
+        if (schemaType.getSource() != null && schemaType.getSource() instanceof SYIncludeNode)
+        {
+            return ((SYIncludeNode) schemaType.getSource()).getIncludedType();
+        }
+        return null;
     }
 
     private boolean isBuiltInTypeAlias(String typeName, Node tree)
