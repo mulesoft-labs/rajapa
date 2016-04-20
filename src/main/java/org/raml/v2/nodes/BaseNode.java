@@ -17,7 +17,9 @@ package org.raml.v2.nodes;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,6 +40,7 @@ public abstract class BaseNode implements Node
     public BaseNode(BaseNode node)
     {
         this.source = node;
+        checkSourceLoop();
         for (Node child : node.children)
         {
             addChild(child.copy());
@@ -153,6 +156,22 @@ public abstract class BaseNode implements Node
     public void setSource(Node source)
     {
         this.source = source;
+        checkSourceLoop();
+    }
+
+    private void checkSourceLoop()
+    {
+        Map<Node, Node> visited = new IdentityHashMap<>();
+        Node source = this;
+        while (source.getSource() != null)
+        {
+            if (visited.containsKey(source))
+            {
+                throw new RuntimeException("loop detected");
+            }
+            visited.put(source, source);
+            source = source.getSource();
+        }
     }
 
     @Override

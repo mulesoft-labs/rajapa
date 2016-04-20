@@ -20,5 +20,5 @@ import java.util.Map;
 public interface ParametrizedReferenceNode extends ReferenceNode, ObjectNode
 {
 
-    Map<String, String> getParameters();
+    Map<String, SimpleTypeNode> getParameters();
 }

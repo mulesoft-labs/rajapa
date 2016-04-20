@@ -5,7 +5,8 @@
         "secured": {
             "headers": {
                 "<<header>>": {
-                    "type": "string"
+                    "type": "string",
+                    "required": "<<req>>"
                 }
             }
         }
@@ -18,14 +19,16 @@
                 {
                     "method": "get",
                     "is": [{
-                            "secured": {
-                                "header": "head"
-                            }
-                        }],
+                        "secured": {
+                            "header": "head",
+                            "req": true
+                        }
+                    }],
                     "displayName": "get",
                     "headers": {
                         "head": {
                             "type": "string",
+                            "required": true,
                             "displayName": "head"
                         }
                     }

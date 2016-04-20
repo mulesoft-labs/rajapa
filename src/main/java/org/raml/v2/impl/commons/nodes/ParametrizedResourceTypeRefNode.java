@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ParametrizedReferenceNode;
+import org.raml.v2.nodes.SimpleTypeNode;
 
 public class ParametrizedResourceTypeRefNode extends BaseResourceTypeRefNode implements ParametrizedReferenceNode
 {
@@ -44,7 +45,7 @@ public class ParametrizedResourceTypeRefNode extends BaseResourceTypeRefNode imp
     }
 
     @Override
-    public Map<String, String> getParameters()
+    public Map<String, SimpleTypeNode> getParameters()
     {
         return getParameters(this);
     }

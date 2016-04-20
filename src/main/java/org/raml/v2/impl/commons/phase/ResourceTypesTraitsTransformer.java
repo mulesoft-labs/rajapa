@@ -40,6 +40,8 @@ import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ParametrizedReferenceNode;
 import org.raml.v2.nodes.ReferenceNode;
+import org.raml.v2.nodes.SimpleTypeNode;
+import org.raml.v2.nodes.StringNodeImpl;
 import org.raml.v2.nodes.snakeyaml.SYBaseRamlNode;
 import org.raml.v2.nodes.snakeyaml.SYNullNode;
 import org.raml.v2.nodes.snakeyaml.SYObjectNode;
@@ -114,7 +116,7 @@ public class ResourceTypesTraitsTransformer implements Transformer
         templateNode.setParent(refNode.getParent());
 
         // resolve parameters
-        Map<String, String> parameters = getBuiltinResourceTypeParameters(baseResourceNode);
+        Map<String, SimpleTypeNode> parameters = getBuiltinResourceTypeParameters(baseResourceNode);
         if (resourceTypeReference instanceof ParametrizedReferenceNode)
         {
             parameters.putAll(((ParametrizedReferenceNode) resourceTypeReference).getParameters());
@@ -138,18 +140,18 @@ public class ResourceTypesTraitsTransformer implements Transformer
         merge(targetNode.getValue(), templateNode.getValue());
     }
 
-    private Map<String, String> getBuiltinResourceTypeParameters(ResourceNode resourceNode)
+    private Map<String, SimpleTypeNode> getBuiltinResourceTypeParameters(ResourceNode resourceNode)
     {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("resourcePathName", resourceNode.getResourcePathName());
-        parameters.put("resourcePath", resourceNode.getResourcePath());
+        Map<String, SimpleTypeNode> parameters = new HashMap<>();
+        parameters.put("resourcePathName", new StringNodeImpl(resourceNode.getResourcePathName()));
+        parameters.put("resourcePath", new StringNodeImpl(resourceNode.getResourcePath()));
         return parameters;
     }
 
-    private Map<String, String> getBuiltinTraitParameters(MethodNode methodNode, ResourceNode resourceNode)
+    private Map<String, SimpleTypeNode> getBuiltinTraitParameters(MethodNode methodNode, ResourceNode resourceNode)
     {
-        Map<String, String> parameters = getBuiltinResourceTypeParameters(resourceNode);
-        parameters.put("methodName", methodNode.getName());
+        Map<String, SimpleTypeNode> parameters = getBuiltinResourceTypeParameters(resourceNode);
+        parameters.put("methodName", new StringNodeImpl(methodNode.getName()));
         return parameters;
     }
 
@@ -164,7 +166,7 @@ public class ResourceTypesTraitsTransformer implements Transformer
         TraitNode copy = refNode.copy();
 
         // resolve parameters
-        Map<String, String> parameters = getBuiltinTraitParameters(methodNode, baseResourceNode);
+        Map<String, SimpleTypeNode> parameters = getBuiltinTraitParameters(methodNode, baseResourceNode);
         if (traitReference instanceof ParametrizedReferenceNode)
         {
             parameters.putAll(((ParametrizedReferenceNode) traitReference).getParameters());
@@ -175,7 +177,7 @@ public class ResourceTypesTraitsTransformer implements Transformer
         merge(methodNode.getValue(), copy.getValue());
     }
 
-    private void resolveParameters(Node parameterizedNode, Map<String, String> parameters)
+    private void resolveParameters(Node parameterizedNode, Map<String, SimpleTypeNode> parameters)
     {
         ExecutionContext context = new ExecutionContext(parameters);
         List<StringTemplateNode> templateNodes = parameterizedNode.findDescendantsWith(StringTemplateNode.class);

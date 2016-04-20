@@ -62,6 +62,10 @@ public class StringTemplateNode extends StringNodeImpl implements ExecutableNode
                 {
                     return result;
                 }
+                else if (children.size() == 1)
+                {
+                    return result;
+                }
                 else
                 {
                     content.append(((StringNode) result).getValue());

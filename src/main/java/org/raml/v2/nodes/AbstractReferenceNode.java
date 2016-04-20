@@ -52,14 +52,14 @@ public abstract class AbstractReferenceNode extends AbstractRamlNode implements 
         return NodeType.Reference;
     }
 
-    public static Map<String, String> getParameters(ParametrizedReferenceNode refNode)
+    public static Map<String, SimpleTypeNode> getParameters(ParametrizedReferenceNode refNode)
     {
-        Map<String, String> params = new HashMap<>();
+        Map<String, SimpleTypeNode> params = new HashMap<>();
 
         for (Node node : getParamNodes(refNode))
         {
             KeyValueNode keyValueNode = (KeyValueNode) node;
-            params.put(keyValueNode.getKey().toString(), keyValueNode.getValue().toString());
+            params.put(keyValueNode.getKey().toString(), (SimpleTypeNode) keyValueNode.getValue());
         }
         return params;
     }

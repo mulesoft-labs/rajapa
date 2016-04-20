@@ -19,6 +19,7 @@ import org.raml.v2.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.nodes.ExecutableNode;
 import org.raml.v2.nodes.ExecutionContext;
 import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.SimpleTypeNode;
 import org.raml.v2.nodes.StringNodeImpl;
 import org.raml.v2.utils.Inflector;
 
@@ -49,19 +50,28 @@ public class TemplateExpressionNode extends StringNodeImpl implements Executable
     public Node execute(ExecutionContext context)
     {
         final StringTokenizer expressionTokens = getExpressionTokens();
-        String result = null;
+        SimpleTypeNode resultNode;
         if (expressionTokens.hasMoreTokens())
         {
             final String token = expressionTokens.nextToken().trim();
             if (context.containsVariable(token))
             {
-                result = context.getVariable(token);
+                resultNode = context.getVariable(token);
             }
             else
             {
                 return ErrorNodeFactory.createInvalidTemplateParameterExpression(this, token);
             }
         }
+        else
+        {
+            return ErrorNodeFactory.createInvalidTemplateParameterExpression(this, getValue());
+        }
+        if (!expressionTokens.hasMoreElements())
+        {
+            return resultNode;
+        }
+        String result = resultNode.getLiteralValue();
         while (expressionTokens.hasMoreTokens())
         {
             final String token = expressionTokens.nextToken().trim();
