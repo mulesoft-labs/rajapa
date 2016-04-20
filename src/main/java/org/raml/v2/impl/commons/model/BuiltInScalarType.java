@@ -15,22 +15,22 @@
  */
 package org.raml.v2.impl.commons.model;
 
-public enum BuiltInType
+public enum BuiltInScalarType
 {
     STRING("string"), NUMBER("number"), INTEGER("integer"), BOOLEAN("boolean"), DATE("date"), FILE("file");
 
     private final String type;
 
-    BuiltInType(String type)
+    BuiltInScalarType(String type)
     {
         this.type = type;
     }
 
-    public static boolean isBuiltInType(String type)
+    public static boolean isBuiltInScalarType(String type)
     {
-        for (BuiltInType builtInType : values())
+        for (BuiltInScalarType builtInScalarType : values())
         {
-            if (builtInType.type.equals(type))
+            if (builtInScalarType.type.equals(type))
             {
                 return true;
             }

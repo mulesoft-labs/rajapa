@@ -23,17 +23,13 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.impl.commons.model.BuiltInScalarType;
 import org.raml.v2.impl.commons.nodes.PropertyNode;
 import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
-import org.raml.v2.nodes.ErrorNode;
-import org.raml.v2.nodes.KeyValueNode;
-import org.raml.v2.nodes.KeyValueNodeImpl;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.StringNode;
-import org.raml.v2.nodes.StringNodeImpl;
+import org.raml.v2.nodes.*;
 import org.raml.v2.nodes.snakeyaml.SYArrayNode;
 import org.raml.v2.nodes.snakeyaml.SYObjectNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
@@ -52,7 +48,7 @@ public class TypesTransformer implements Transformer
     @Override
     public Node transform(Node node)
     {
-        SYObjectNode typesRoot = getTypesRoot(node);
+        final ObjectNode typesRoot = NodeUtils.getTypesRoot(node);
         if (node instanceof UnionTypeNode)
         {
             transformUnionTypeProperties(node, typesRoot);
@@ -101,7 +97,7 @@ public class TypesTransformer implements Transformer
         }
     }
 
-    private void transformObjectTypeProperties(Node node, SYObjectNode typesRoot)
+    private void transformObjectTypeProperties(Node node, ObjectNode typesRoot)
     {
         Node properties = node.get("properties");
         final SYArrayNode typesNode = (SYArrayNode) node.get("type");
@@ -120,7 +116,7 @@ public class TypesTransformer implements Transformer
         }
     }
 
-    private Node processType(SYObjectNode typesRoot, Node originalProperties, String objectType)
+    private Node processType(ObjectNode typesRoot, Node originalProperties, String objectType)
     {
         TypeNode typeNode = getType(typesRoot, objectType);
 
@@ -143,27 +139,22 @@ public class TypesTransformer implements Transformer
         return originalProperties;
     }
 
-    private void transformUnionTypeProperties(Node node, SYObjectNode typesRoot)
+    private void transformUnionTypeProperties(Node node, ObjectNode typesRoot)
     {
-        Node properties = node.get("properties");
+
+        final StringNode typeNode = (StringNode) node.get("type");
+        validateInheritedTypes(typesRoot, typeNode);
+
+        final Node properties = node.get("properties");
         if (properties != null)
         {
-            final SYStringNode typeNode = (SYStringNode) node.get("type");
             if (typeNode != null)
             {
-                for (String type : typeNode.getValue().split("\\|"))
+                for (final String type : typeNode.getValue().split("\\|"))
                 {
-                    String trimmedType = StringUtils.trim(type);
-                    ObjectTypeNode parentTypeNode = (ObjectTypeNode) getType(typesRoot, trimmedType);
-                    if (parentTypeNode == null)
-                    {
-                        Node errorNode = ErrorNodeFactory.createInexistentType(trimmedType);
-                        errorNode.setSource(typeNode);
-                        typeNode.replaceWith(errorNode);
-                        // TODO - might be improved adding a multiple error for every type that's non existent - migueloliva - Apr 5, 2016
-                        return; // let's quit after the first error
-                    }
-                    else
+                    final String trimmedType = StringUtils.trim(type);
+                    final ObjectTypeNode parentTypeNode = (ObjectTypeNode) getType(typesRoot, trimmedType);
+                    if (parentTypeNode != null)
                     {
                         List<PropertyNode> unionProperties = getTypeProperties(parentTypeNode);
                         addProperties(properties, unionProperties);
@@ -173,14 +164,44 @@ public class TypesTransformer implements Transformer
         }
         else if (node.get("type") != null && node.get("type") instanceof StringNode)
         {
-            ObjectTypeNode parentTypeNode = (ObjectTypeNode) getType(typesRoot, StringUtils.trim(((StringNode) node.get("type")).getValue()));
-            if (parentTypeNode != null && parentTypeNode.get("properties") != null)
+            final String trimmedType = StringUtils.trim(((StringNode) node.get("type")).getValue());
+            final TypeNode parentTypeNodeGeneral = getType(typesRoot, trimmedType);
+            if (parentTypeNodeGeneral instanceof ObjectTypeNode)
             {
-                node.addChild(parentTypeNode.get("properties").getParent());
+                final ObjectTypeNode parentTypeNode = (ObjectTypeNode) parentTypeNodeGeneral;
+                if (parentTypeNode != null && parentTypeNode.get("properties") != null)
+                {
+                    node.addChild(parentTypeNode.get("properties").getParent());
+                }
             }
         }
     }
 
+    private void validateInheritedTypes(final ObjectNode typesRoot, final StringNode typeNode)
+    {
+        if (typeNode != null)
+        {
+            if (isCustomRamlType(typeNode))
+            {
+                for (final String type : typeNode.getValue().split("\\|"))
+                {
+                    final String trimmedType = StringUtils.trim(type);
+                    final TypeNode parentTypeNode = getType(typesRoot, trimmedType);
+                    if (parentTypeNode == null)
+                    {
+                        final Node errorNode = ErrorNodeFactory.createInexistentType(trimmedType);
+                        typeNode.replaceWith(errorNode);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isCustomRamlType(StringNode typeNode)
+    {
+        final String typeNodeValue = typeNode.getValue();
+        return !BuiltInScalarType.isBuiltInScalarType(typeNodeValue) && !typeNodeValue.equals("array") && !typeNodeValue.equals("object") && !NodeUtils.isSchemaType(typeNode);
+    }
 
     private void addProperties(Node properties, List<PropertyNode> unionProperties)
     {
@@ -191,8 +212,8 @@ public class TypesTransformer implements Transformer
                 Node existingProperty = properties.get(property.getName());
                 if (existingProperty != null)
                 {
-                    Node errorNode = new ErrorNode("property definition {" + property + "} overrides existing property: {" + existingProperty.getParent() + "}");
-                    errorNode.setSource(property);
+                    Node errorNode = new ErrorNode("property definition {" + existingProperty.getParent() + "} overrides existing property: {" + property + "}");
+                    errorNode.setSource(existingProperty);
                     properties.addChild(errorNode);
                 }
                 else
@@ -203,7 +224,7 @@ public class TypesTransformer implements Transformer
         }
     }
 
-    private Set<List<String>> validateAndGetPossibleTypes(SYArrayNode typesNode, SYObjectNode typesRoot)
+    private Set<List<String>> validateAndGetPossibleTypes(SYArrayNode typesNode, ObjectNode typesRoot)
     {
         List<Set<String>> types = Lists.newArrayList();
         for (Node typeNode : typesNode.getChildren())
@@ -233,22 +254,12 @@ public class TypesTransformer implements Transformer
         return Sets.cartesianProduct(types);
     }
 
-    private SYObjectNode getTypesRoot(Node node)
-    {
-        final KeyValueNode keyValueNode = (KeyValueNode) NodeUtils.getAncestor(node, 3);
-        if (keyValueNode.getKey() instanceof SYStringNode && "items".equals(((SYStringNode) keyValueNode.getKey()).getValue()))
-        {
-            return (SYObjectNode) NodeUtils.getAncestor(keyValueNode, 3);
-        }
-        return keyValueNode != null ? (SYObjectNode) keyValueNode.getValue() : null;
-    }
-
     private List<PropertyNode> getTypeProperties(ObjectTypeNode node)
     {
         return node.getProperties();
     }
 
-    private TypeNode getType(SYObjectNode node, String typeName)
+    private TypeNode getType(ObjectNode node, String typeName)
     {
         return (TypeNode) node.get(typeName);
     }

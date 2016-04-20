@@ -17,6 +17,8 @@ package org.raml.v2.utils;
 
 import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.StringNode;
 
 import javax.annotation.Nullable;
 
@@ -24,7 +26,7 @@ public class NodeUtils
 {
 
     @Nullable
-    public static Node getGranParent(Node node)
+    public static Node getGrandParent(Node node)
     {
         return getAncestor(node, 2);
     }
@@ -57,4 +59,22 @@ public class NodeUtils
             return traverseToRoot(node.getParent());
         }
     }
+
+    public static ObjectNode getTypesRoot(final Node node)
+    {
+        final Node typesRoot = traverseToRoot(node).get("types");
+        return typesRoot instanceof ObjectNode ? (ObjectNode) typesRoot : null;
+    }
+
+    public static boolean isSchemaType(final Node node)
+    {
+        if (node != null && node instanceof StringNode)
+        {
+            final String value = ((StringNode) node).getValue();
+            return value.startsWith("{") || value.startsWith("<");
+        }
+
+        return false;
+    }
+
 }

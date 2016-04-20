@@ -20,7 +20,6 @@ import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 
 import java.util.List;
-import java.util.Set;
 
 import org.raml.v2.grammar.BaseGrammar;
 import org.raml.v2.grammar.ExclusiveSiblingRule;
@@ -34,7 +33,7 @@ import org.raml.v2.grammar.rule.ParametrizedNodeReferenceRule;
 import org.raml.v2.grammar.rule.RegexValueRule;
 import org.raml.v2.grammar.rule.Rule;
 import org.raml.v2.grammar.rule.StringValueRule;
-import org.raml.v2.impl.commons.model.BuiltInType;
+import org.raml.v2.impl.commons.model.BuiltInScalarType;
 import org.raml.v2.impl.commons.nodes.BodyNode;
 import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.MethodNode;
@@ -579,9 +578,9 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     protected AnyOfRule anyBuiltinType()
     {
         List<Rule> builtInTypes = Lists.newArrayList();
-        for (BuiltInType builtInType : BuiltInType.values())
+        for (BuiltInScalarType builtInScalarType : BuiltInScalarType.values())
         {
-            builtInTypes.add(string(builtInType.getType()));
+            builtInTypes.add(string(builtInScalarType.getType()));
         }
         return anyOf(builtInTypes);
     }

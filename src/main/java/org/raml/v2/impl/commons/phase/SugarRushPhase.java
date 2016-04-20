@@ -17,7 +17,7 @@ package org.raml.v2.impl.commons.phase;
 
 import java.util.List;
 
-import org.raml.v2.impl.commons.model.BuiltInType;
+import org.raml.v2.impl.commons.model.BuiltInScalarType;
 import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
@@ -51,7 +51,7 @@ public class SugarRushPhase implements Phase
 
         for (StringNode sugarNode : basicSugar)
         {
-            if (BuiltInType.isBuiltInType(sugarNode.getValue()) && !isTypePresentBasic(sugarNode))
+            if (BuiltInScalarType.isBuiltInScalarType(sugarNode.getValue()) && !isTypePresentBasic(sugarNode))
             {
                 handleBuiltInType(sugarNode);
             }
@@ -287,15 +287,15 @@ public class SugarRushPhase implements Phase
 
     private Node getSugarNode(String typeNode)
     {
-        if (BuiltInType.STRING.getType().equals(typeNode))
+        if (BuiltInScalarType.STRING.getType().equals(typeNode))
         {
             return new StringTypeNode();
         }
-        else if (BuiltInType.NUMBER.getType().equals(typeNode) || BuiltInType.INTEGER.getType().equals(typeNode))
+        else if (BuiltInScalarType.NUMBER.getType().equals(typeNode) || BuiltInScalarType.INTEGER.getType().equals(typeNode))
         {
             return new NumericTypeNode();
         }
-        else if (BuiltInType.BOOLEAN.getType().equals(typeNode))
+        else if (BuiltInScalarType.BOOLEAN.getType().equals(typeNode))
         {
             return new BooleanTypeNode();
         }
