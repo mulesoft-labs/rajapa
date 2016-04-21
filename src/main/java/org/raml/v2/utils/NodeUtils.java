@@ -16,6 +16,7 @@
 package org.raml.v2.utils;
 
 import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.StringNode;
@@ -91,4 +92,8 @@ public class NodeUtils
         return node.getValue().startsWith(prefix);
     }
 
+    public static boolean isErrorResult(Node node)
+    {
+        return node != null && (node instanceof ErrorNode || node.findDescendantsWith(ErrorNode.class).size() > 0);
+    }
 }

@@ -48,6 +48,10 @@ public class RamlBuilder
 
     private int maxPhaseNumber;
 
+    private ResourceLoader resourceLoader = null;
+
+    private String actualPath = null;
+
     public RamlBuilder()
     {
         maxPhaseNumber = Integer.MAX_VALUE;
@@ -63,6 +67,8 @@ public class RamlBuilder
         final ResourceLoader resourceLoader = new CompositeResourceLoader(
                 new DefaultResourceLoader(),
                 new FileResourceLoader(ramlFile.getParent()));
+        this.resourceLoader = resourceLoader;
+        this.actualPath = ramlFile.getPath();
         try (FileReader reader = new FileReader(ramlFile))
         {
             return build(reader, resourceLoader, ramlFile.getName());
@@ -120,6 +126,16 @@ public class RamlBuilder
         {
             IOUtils.closeQuietly(content);
         }
+    }
+
+    public ResourceLoader getResourceLoader()
+    {
+        return this.resourceLoader;
+    }
+
+    public String getActualPath()
+    {
+        return actualPath;
     }
 
 

@@ -36,7 +36,6 @@ import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.SYObjectNode;
-import org.raml.v2.nodes.snakeyaml.SYStringNode;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.Suggestion;
 

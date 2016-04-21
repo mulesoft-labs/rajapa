@@ -29,7 +29,7 @@ public abstract class BaseNode implements Node
 
     private Node source;
     private Node parent;
-    private List<Node> children = new ArrayList<>();
+    protected List<Node> children = new ArrayList<>();
 
     public BaseNode()
     {
