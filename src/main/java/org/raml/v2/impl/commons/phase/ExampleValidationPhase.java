@@ -108,10 +108,7 @@ public class ExampleValidationPhase implements Phase
                 }
             }
         }
-        if (transform != null)
-        {
-            example.replaceWith(transform);
-        }
+        replaceWithError(example, transform);
     }
 
     private void validateScalar(ExampleTypeNode example)
@@ -125,7 +122,12 @@ public class ExampleValidationPhase implements Phase
         {
             transform = validateSingleExampleNode(example);
         }
-        if (transform != null)
+        replaceWithError(example, transform);
+    }
+
+    private void replaceWithError(ExampleTypeNode example, Node transform)
+    {
+        if (transform != null && example != transform)
         {
             example.replaceWith(transform);
         }
