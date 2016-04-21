@@ -72,6 +72,18 @@ public class ModelBuilder
                 {
                     return null;
                 }
+                // interface expects single element or list depending on version
+                // e.g.:
+                // List<MimeType> mediaType(); //v10
+                // MimeType mediaType(); //v08
+                if (result instanceof List)
+                {
+                    if (((List) result).isEmpty())
+                    {
+                        return null;
+                    }
+                    result = ((List) result).get(0);
+                }
                 return Proxy.newProxyInstance(returnType.getClassLoader(), new Class[] {returnType}, new SimpleProxy(result));
             }
 

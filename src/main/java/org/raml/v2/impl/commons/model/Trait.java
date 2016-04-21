@@ -37,4 +37,9 @@ public class Trait extends CommonAttributes
     {
         return node.getValue();
     }
+
+    public String name()
+    {
+        return node.getName();
+    }
 }

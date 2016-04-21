@@ -38,14 +38,14 @@ import org.raml.v2.model.v10.resources.ResourceType;
 import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.Node;
 
-public class SpecInterfacesTestCase
+public class SpecInterfacesV10TestCase
 {
 
     @Test
     public void full() throws IOException
     {
         final RamlBuilder builder = new RamlBuilder();
-        File input = new File("src/test/resources/org/raml/v2/interfaces/input.raml");
+        File input = new File("src/test/resources/org/raml/v2/interfaces/inputV10.raml");
         assertTrue(input.isFile());
         final Node raml = builder.build(input);
         List<ErrorNode> errors = raml.findDescendantsWith(ErrorNode.class);
