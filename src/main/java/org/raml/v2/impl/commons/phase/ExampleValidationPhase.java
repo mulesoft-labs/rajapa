@@ -136,25 +136,7 @@ public class ExampleValidationPhase implements Phase
 
     private boolean containsErrorNode(Node node)
     {
-        if (node == null)
-        {
-            return false;
-        }
-        if (node instanceof ErrorNode)
-        {
-            return true;
-        }
-        else
-        {
-            for (Node child : node.getChildren())
-            {
-                if (containsErrorNode(child))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return node != null && (node instanceof ErrorNode || node.findDescendantsWith(ErrorNode.class).size() > 0);
     }
 
     private Rule getVisitRule(ExampleTypeNode example, ObjectTypeNode type, Node schemaType)
