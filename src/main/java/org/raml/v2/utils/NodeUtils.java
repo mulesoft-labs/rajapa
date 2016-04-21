@@ -68,13 +68,27 @@ public class NodeUtils
 
     public static boolean isSchemaType(final Node node)
     {
-        if (node != null && node instanceof StringNode)
-        {
-            final String value = ((StringNode) node).getValue();
-            return value.startsWith("{") || value.startsWith("<");
-        }
+        return isJsonSchemaNode(node) || isXmlSchemaNode(node);
+    }
 
-        return false;
+    public static boolean isStringNode(Node node)
+    {
+        return node != null && node instanceof StringNode;
+    }
+
+    public static boolean isJsonSchemaNode(Node node)
+    {
+        return isStringNode(node) && nodeStartsWith((StringNode) node, "{");
+    }
+
+    public static boolean isXmlSchemaNode(Node node)
+    {
+        return isStringNode(node) && nodeStartsWith((StringNode) node, "<");
+    }
+
+    private static boolean nodeStartsWith(StringNode node, String prefix)
+    {
+        return node.getValue().startsWith(prefix);
     }
 
 }

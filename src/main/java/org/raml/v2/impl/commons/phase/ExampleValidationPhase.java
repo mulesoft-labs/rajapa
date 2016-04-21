@@ -57,110 +57,173 @@ public class ExampleValidationPhase implements Phase
     public Node apply(Node tree)
     {
         final List<ExampleTypeNode> examples = tree.findDescendantsWith(ExampleTypeNode.class);
-        Node types = tree.get("types");
-        Node transform;
-        ObjectTypeNode type;
+        Node types = NodeUtils.getTypesRoot(tree);
         for (ExampleTypeNode example : examples)
         {
-            Rule rule = null;
-            transform = null;
-            String typeName = example.getTypeName();
-            if (types != null && !BuiltInScalarType.isBuiltInScalarType(typeName) && !isBuiltInTypeAlias(typeName, tree))
+            validateExample(tree, types, example);
+        }
+        return tree;
+    }
+
+    private void validateExample(Node tree, Node types, ExampleTypeNode example)
+    {
+        String typeName = example.getTypeName();
+        if (types != null && !BuiltInScalarType.isBuiltInScalarType(typeName) && !isBuiltInTypeAlias(typeName, tree))
+        {
+            validateType(types, example, typeName);
+        }
+        else
+        {
+            validateScalar(example);
+        }
+    }
+
+    private void validateType(Node types, ExampleTypeNode example, String typeName)
+    {
+        ObjectTypeNode type;
+        Rule rule;
+        type = (ObjectTypeNode) types.get(typeName);
+        Node transform = null;
+        if (type != null)
+        {
+            Node schemaType = type.get("type");
+            rule = getVisitRule(example, type, schemaType);
+            if (example instanceof MultipleExampleTypeNode || example.isArrayExample())
             {
-                type = (ObjectTypeNode) types.get(typeName);
-                if (type != null)
-                {
-                    Node schemaType = type.get("type");
-                    if (NodeUtils.isSchemaType(schemaType))
-                    {
-                        String value = ((StringNode) schemaType).getValue();
-                        if (value.startsWith("{"))
-                        {
-                            rule = new JsonSchemaValidationRule(value, getIncludedType(schemaType));
-                        }
-                        else if (value.startsWith("<"))
-                        {
-                            rule = new XmlSchemaValidationRule(value, resourceLoader, actualPath, getIncludedType(schemaType));
-                        }
-                    }
-                    else if (!type.getInheritedProperties().isEmpty())
-                    {
-                        List<Rule> inheritanceRules = getInheritanceRules(example, type);
-                        rule = new AnyOfRule(inheritanceRules);
-                    }
-                    else
-                    {
-                        rule = example.visitProperties(new TypeToRuleVisitor(), type.getProperties(), type.isAllowAdditionalProperties());
-                    }
-                    if (example instanceof MultipleExampleTypeNode || example.isArrayExample())
-                    {
-                        for (Node childExample : example.getChildren())
-                        {
-                            Node exampleValue;
-                            if (childExample instanceof KeyValueNode)
-                            {
-                                exampleValue = ((KeyValueNodeImpl) childExample).getValue();
-                            }
-                            else if (childExample instanceof ObjectNode)
-                            {
-                                exampleValue = childExample;
-                            }
-                            else if (childExample instanceof StringNode)
-                            {
-                                exampleValue = childExample;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                            transform = rule.apply(exampleValue);
-                            exampleValue.replaceWith(transform);
-                            transform = null;
-                        }
-                    }
-                    else
-                    {
-                        if (example.getSource() instanceof StringNode && !(rule instanceof JsonSchemaValidationRule || rule instanceof XmlSchemaValidationRule))
-                        {
-                            Node transformed = RamlNodeParser.parse(((SYStringNode) example.getSource()).getValue());
-                            transform = rule.apply(transformed);
-                        }
-                        else
-                        {
-                            transform = rule.apply(example);
-                        }
-                    }
-                }
+                visitChildrenWithRule(example, rule);
             }
             else
             {
-                if (example instanceof MultipleExampleTypeNode)
+                if (NodeUtils.isStringNode(example.getSource()) && !(rule instanceof JsonSchemaValidationRule || rule instanceof XmlSchemaValidationRule))
                 {
-                    for (Node childExample : example.getChildren())
+                    Node transformed = RamlNodeParser.parse(((SYStringNode) example.getSource()).getValue());
+                    if (transformed != null)
                     {
-                        Node exampleValue = null;
-                        if (childExample instanceof KeyValueNode)
-                        {
-                            exampleValue = ((KeyValueNodeImpl) childExample).getValue();
-                        }
-                        rule = example.visit(new TypeToRuleVisitor());
-                        transform = rule.apply(exampleValue);
-                        exampleValue.replaceWith(transform);
-                        transform = null;
+                        transform = rule.apply(transformed);
                     }
                 }
                 else
                 {
-                    rule = example.visit(new TypeToRuleVisitor());
-                    transform = rule.apply(example.getSource());
+                    transform = rule.apply(example);
                 }
             }
-            if (transform != null)
+        }
+        if (transform != null)
+        {
+            example.replaceWith(transform);
+        }
+    }
+
+    private void validateScalar(ExampleTypeNode example)
+    {
+        Node transform = null;
+        if (example instanceof MultipleExampleTypeNode)
+        {
+            validateMultipleExampleNode(example);
+        }
+        else
+        {
+            transform = validateSingleExampleNode(example);
+        }
+        if (transform != null)
+        {
+            example.replaceWith(transform);
+        }
+    }
+
+    private Rule getVisitRule(ExampleTypeNode example, ObjectTypeNode type, Node schemaType)
+    {
+        Rule rule = null;
+        if (NodeUtils.isSchemaType(schemaType))
+        {
+            String value = ((StringNode) schemaType).getValue();
+            if (NodeUtils.isJsonSchemaNode(schemaType))
             {
-                example.replaceWith(transform);
+                rule = new JsonSchemaValidationRule(value, getIncludedType(schemaType));
+            }
+            else if (NodeUtils.isXmlSchemaNode(schemaType))
+            {
+                rule = new XmlSchemaValidationRule(value, resourceLoader, actualPath, getIncludedType(schemaType));
             }
         }
-        return tree;
+        else if (!type.getInheritedProperties().isEmpty())
+        {
+            List<Rule> inheritanceRules = getInheritanceRules(example, type);
+            rule = new AnyOfRule(inheritanceRules);
+        }
+        else
+        {
+            rule = example.visitProperties(new TypeToRuleVisitor(), type.getProperties(), type.isAllowAdditionalProperties());
+        }
+        return rule;
+    }
+
+    private void visitChildrenWithRule(ExampleTypeNode example, Rule rule)
+    {
+        Node transform;
+        for (Node childExample : example.getChildren())
+        {
+            Node exampleValue;
+            if (childExample instanceof KeyValueNode)
+            {
+                exampleValue = ((KeyValueNodeImpl) childExample).getValue();
+            }
+            else if (childExample instanceof ObjectNode)
+            {
+                exampleValue = childExample;
+            }
+            else if (childExample instanceof StringNode)
+            {
+                exampleValue = childExample;
+            }
+            else
+            {
+                break;
+            }
+            transform = rule.apply(exampleValue);
+            exampleValue.replaceWith(transform);
+        }
+    }
+
+    private Node validateSingleExampleNode(ExampleTypeNode example)
+    {
+        Rule rule;
+        Node transform = null;
+        rule = example.visit(new TypeToRuleVisitor());
+        if (example.getSource() != null)
+        {
+            transform = rule.apply(example.getSource());
+        }
+        return transform;
+    }
+
+    private void validateMultipleExampleNode(ExampleTypeNode example)
+    {
+        Rule rule;
+        Node transform;
+        for (Node childExample : example.getChildren())
+        {
+            Node exampleValue;
+            if (childExample instanceof KeyValueNode)
+            {
+                exampleValue = ((KeyValueNodeImpl) childExample).getValue();
+            }
+            else if (childExample instanceof ObjectNode)
+            {
+                exampleValue = childExample;
+            }
+            else if (childExample instanceof StringNode)
+            {
+                exampleValue = childExample;
+            }
+            else
+            {
+                break;
+            }
+            rule = example.visit(new TypeToRuleVisitor());
+            transform = rule.apply(exampleValue);
+            exampleValue.replaceWith(transform);
+        }
     }
 
     private String getIncludedType(Node schemaType)

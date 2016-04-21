@@ -34,9 +34,13 @@ import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
+import org.raml.v2.utils.NodeUtils;
 
 public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {
+
+    private String typeName;
+
 
     public ExampleTypeNode()
     {
@@ -45,6 +49,12 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
     protected ExampleTypeNode(AbstractRamlNode node)
     {
         super(node);
+    }
+
+    public ExampleTypeNode(AbstractRamlNode node, String typeName)
+    {
+        this(node);
+        this.typeName = typeName;
     }
 
     @Override
@@ -73,11 +83,16 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
 
     public String getTypeName()
     {
+        if (this.typeName != null)
+        {
+            return typeName;
+        }
+
         Node type = this.getParent().getParent().get("type");
         if (type != null && type instanceof StringNode && !"object".equals(((StringNode) type).getValue()))
         {
             String value = ((StringNode) type).getValue();
-            if (value.startsWith("{") || value.startsWith("<"))
+            if (NodeUtils.isSchemaType(type))
             {
                 return ((SYStringNode) ((KeyValueNode) this.getParent().getParent().getParent()).getKey()).getValue();
             }
