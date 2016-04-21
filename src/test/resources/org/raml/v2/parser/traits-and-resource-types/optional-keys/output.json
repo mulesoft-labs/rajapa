@@ -5,16 +5,16 @@
         "optional": {
             "headers": {
                 "fixed": {
-                    "example": "yes",
-                    "type": "string"
+                    "type": "string",
+                    "example": "yes"
                 },
                 "present?": {
-                    "example": "yes",
-                    "type": "string"
+                    "type": "string",
+                    "example": "yes"
                 },
                 "absent?": {
-                    "example": "no",
-                    "type": "string"
+                    "type": "string",
+                    "example": "no"
                 }
             }
         }
@@ -31,11 +31,13 @@
                         "present": {
                             "type": "string",
                             "displayName": "present",
-                            "example": "yes"
+                            "example": {
+                            }
                         },
                         "fixed": {
                             "type": "string",
-                            "example": "yes",
+                            "example": {
+                            },
                             "displayName": "fixed"
                         }
                     },

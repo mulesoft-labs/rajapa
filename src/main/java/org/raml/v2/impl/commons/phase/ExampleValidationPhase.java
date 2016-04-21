@@ -29,6 +29,7 @@ import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
@@ -127,10 +128,33 @@ public class ExampleValidationPhase implements Phase
 
     private void replaceWithError(ExampleTypeNode example, Node transform)
     {
-        if (transform != null && example != transform)
+        if (containsErrorNode(transform))
         {
             example.replaceWith(transform);
         }
+    }
+
+    private boolean containsErrorNode(Node node)
+    {
+        if (node == null)
+        {
+            return false;
+        }
+        if (node instanceof ErrorNode)
+        {
+            return true;
+        }
+        else
+        {
+            for (Node child : node.getChildren())
+            {
+                if (containsErrorNode(child))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private Rule getVisitRule(ExampleTypeNode example, ObjectTypeNode type, Node schemaType)

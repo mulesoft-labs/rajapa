@@ -40,7 +40,8 @@
                     "displayName": "put",
                     "body": {
                         "text/plain": {
-                            "example": "soul",
+                            "example": {
+                            },
                             "displayName": "text/plain"
                         }
                     }
@@ -50,7 +51,8 @@
                     "headers": {
                         "lat": {
                             "type": "integer",
-                            "example": 575,
+                            "example": {
+                            },
                             "displayName": "lat"
                         }
                     },
