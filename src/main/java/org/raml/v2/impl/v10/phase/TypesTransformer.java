@@ -165,7 +165,12 @@ public class TypesTransformer implements Transformer
         }
         else if (node.get("type") != null && node.get("type") instanceof StringNode)
         {
-            final String trimmedType = StringUtils.trim(((StringNode) node.get("type")).getValue());
+            String trimmedType = StringUtils.trim(((StringNode) node.get("type")).getValue());
+            if ("array".equals(trimmedType))
+            {
+                return;
+            }
+
             final TypeNode parentTypeNodeGeneral = getType(typesRoot, trimmedType);
             if (parentTypeNodeGeneral instanceof ObjectTypeNode)
             {

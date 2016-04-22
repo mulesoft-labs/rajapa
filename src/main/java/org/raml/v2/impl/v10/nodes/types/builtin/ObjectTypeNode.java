@@ -128,7 +128,7 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
 
     public boolean isArray()
     {
-        return this.get("type") != null && this.get("type") instanceof SYStringNode && "array".equals(((SYStringNode) this.get("type")).getValue());
+        return this.get("type") != null && this.get("type") instanceof StringNode && "array".equals(((StringNode) this.get("type")).getValue());
     }
 
     public Integer getMinProperties()
