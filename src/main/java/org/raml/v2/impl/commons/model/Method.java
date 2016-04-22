@@ -59,6 +59,20 @@ public class Method extends CommonAttributes
         return result;
     }
 
+    public List<BodyLike> bodyV08()
+    {
+        ArrayList<BodyLike> result = new ArrayList<>();
+        Node body = NodeSelector.selectFrom("body", node.getValue());
+        if (body != null)
+        {
+            for (Node child : body.getChildren())
+            {
+                result.add(new BodyLike((KeyValueNode) child));
+            }
+        }
+        return result;
+    }
+
     public List<Response> responses()
     {
         ArrayList<Response> result = new ArrayList<>();

@@ -30,8 +30,10 @@ public class Raml08Grammar extends BaseRamlGrammar
     @Override
     protected ObjectRule mimeType()
     {
-        return super.mimeType()
-                    .with(field(string("formParameters"), formParameters()));
+        return objectType()
+                           .with(field(string("schema"), scalarType()))
+                           .with(field(string("formParameters"), formParameters()))
+                           .with(field(string("example"), scalarType()));
     }
 
     protected Rule formParameters()

@@ -111,12 +111,25 @@ public class ModelBuilder
         {
             try
             {
-                return delegate.getClass().getMethod(method.getName(), method.getParameterTypes());
+                return delegate.getClass().getMethod(getActualMethodName(method), method.getParameterTypes());
             }
             catch (NoSuchMethodException e)
             {
                 throw new RuntimeException("Method not found: " + delegate.getClass().getName() + "." + method.getName());
             }
+        }
+
+        /**
+         *  resolves collisions when methods only differ on return types
+         */
+        private String getActualMethodName(Method method)
+        {
+            if (method.toGenericString().contains("List<org.raml.v2.model.v08.bodies.BodyLike> org.raml.v2.model.v08.methods.MethodBase.body()") ||
+                method.toGenericString().contains("List<org.raml.v2.model.v08.bodies.BodyLike> org.raml.v2.model.v08.bodies.Response.body()"))
+            {
+                return "bodyV08";
+            }
+            return method.getName();
         }
     }
 

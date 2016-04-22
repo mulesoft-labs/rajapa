@@ -15,7 +15,6 @@
  */
 package org.raml.v2.impl.v10.grammar;
 
-import org.raml.v2.grammar.rule.AllOfRule;
 import org.raml.v2.grammar.rule.AnyOfRule;
 import org.raml.v2.grammar.rule.KeyValueRule;
 import org.raml.v2.grammar.rule.NodeReferenceFactory;
@@ -28,7 +27,9 @@ import org.raml.v2.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.v2.impl.commons.nodes.AnnotationNode;
 import org.raml.v2.impl.commons.nodes.AnnotationReferenceNode;
 import org.raml.v2.impl.commons.nodes.AnnotationTypeNode;
+import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.ExtendsNode;
+import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.PropertyNode;
 import org.raml.v2.impl.v10.nodes.types.factories.TypeNodeFactory;
 import org.raml.v2.nodes.StringNodeImpl;
@@ -249,7 +250,19 @@ public class Raml10Grammar extends BaseRamlGrammar
     @Override
     protected ObjectRule mimeType()
     {
-        return super.mimeType().merge((ObjectRule) type());
+        return objectType()
+                           .with(field(string("schema"), scalarType())) // TODO schema should behave like type
+                           .merge((ObjectRule) type());
+    }
+
+    protected KeyValueRule exampleFieldRule()
+    {
+        return field(stringExcluding("example", "examples"), any().then(ExampleTypeNode.class));
+    }
+
+    protected KeyValueRule multipleExampleFieldRule()
+    {
+        return field(stringExcluding("examples", "example"), any().then(MultipleExampleTypeNode.class));
     }
 
     protected StringValueRule fileTypeLiteral()

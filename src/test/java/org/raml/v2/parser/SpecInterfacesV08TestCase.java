@@ -15,6 +15,7 @@
  */
 package org.raml.v2.parser;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -133,8 +134,16 @@ public class SpecInterfacesV08TestCase
 
     private void assertBody(List<BodyLike> body)
     {
-        assertThat(body.size(), is(2));
+        assertThat(body.size(), is(3));
+
         BodyLike appJson = body.get(0);
         assertThat(appJson.name(), is("application/json"));
+        assertThat(appJson.example().value(), containsString("\"firstname\": \"tato\""));
+        assertThat(appJson.schema().value(), is("UserJson"));
+
+        BodyLike multipart = body.get(2);
+        assertThat(multipart.formParameters().size(), is(2));
+        assertThat(multipart.formParameters().get(0).name(), is("description"));
+
     }
 }

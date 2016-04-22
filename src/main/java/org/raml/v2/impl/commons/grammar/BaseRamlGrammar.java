@@ -35,9 +35,7 @@ import org.raml.v2.grammar.rule.Rule;
 import org.raml.v2.grammar.rule.StringValueRule;
 import org.raml.v2.impl.commons.model.BuiltInScalarType;
 import org.raml.v2.impl.commons.nodes.BodyNode;
-import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.MethodNode;
-import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.ParametrizedResourceTypeRefNode;
 import org.raml.v2.impl.commons.nodes.ParametrizedTraitRefNode;
 import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
@@ -167,7 +165,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
         return objectType()
                            .with(descriptionField())
                            .with(field(
-                                   typeKey(),
+                                   securitySchemeTypeKey(),
                                    anyOf(
                                            string("OAuth 1.0").description("The API's authentication uses OAuth 1.0 as described in RFC5849 [RFC5849]"),
                                            string("OAuth 2.0").description("The API's authentication uses OAuth 2.0 as described in RFC6749 [RFC6749]"),
@@ -316,23 +314,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
         return regex(MIME_TYPE_REGEX);
     }
 
-    protected ObjectRule mimeType()
-    {
-        return objectType()
-                           .with(field(string("schema"), scalarType()))
-                           .with(exampleFieldRule())
-                           .with(multipleExampleFieldRule());
-    }
-
-    protected KeyValueRule exampleFieldRule()
-    {
-        return field(stringExcluding("example", "examples"), any().then(ExampleTypeNode.class));
-    }
-
-    protected KeyValueRule multipleExampleFieldRule()
-    {
-        return field(stringExcluding("examples", "example"), any().then(MultipleExampleTypeNode.class));
-    }
+    protected abstract ObjectRule mimeType();
 
     protected Rule parameters()
     {
@@ -456,7 +438,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule resourceTypeReferenceField()
     {
-        return field(typeKey(), anyTypeReference(RESOURCE_TYPES_KEY_NAME, ResourceTypeRefNode.class, ParametrizedResourceTypeRefNode.class));
+        return field(resourceTypeRefKey(), anyTypeReference(RESOURCE_TYPES_KEY_NAME, ResourceTypeRefNode.class, ParametrizedResourceTypeRefNode.class));
     }
 
     protected Rule anyTypeReference(String referenceKey, Class<? extends Node> simpleClass, Class<? extends Node> parametrisedClass)
@@ -504,6 +486,18 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     }
 
     protected StringValueRule typeKey()
+    {
+        return string("type")
+                             .description("The resource type which this resource inherits.");
+    }
+
+    protected StringValueRule securitySchemeTypeKey()
+    {
+        return string("type")
+                             .description("Specify the security mechanism.");
+    }
+
+    protected StringValueRule resourceTypeRefKey()
     {
         return string("type")
                              .description("The resource type which this resource inherits.");

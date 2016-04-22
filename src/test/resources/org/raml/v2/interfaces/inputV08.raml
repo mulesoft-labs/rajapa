@@ -15,12 +15,17 @@ documentation:
 
 schemas:
     UserJson: |
-        # TODO provide proper json schema
-        type: object
-        properties:
-            firstname: string
-            lastname: string
-            age: number
+          {
+             "$schema": "http://json-schema.org/draft-04/schema",
+             "type": "object",
+             "properties": {
+               "firstname":  { "type": "string" },
+               "lastname":  { "type": "string" },
+               "age":  { "type": "integer" }
+             },
+             "required": [ "firstname", "lastname" ]
+          }
+
     UserXml: |
         # TODO provide proper xml schema
 
@@ -52,6 +57,12 @@ resourceTypes:
                     }
             application/xml:
                 schema: UserXml
+            multipart/form-data:
+                formParameters:
+                    description:
+                        type: string
+                    image:
+                        type: file
         responses:
             200:
                 body: *bodyPost
