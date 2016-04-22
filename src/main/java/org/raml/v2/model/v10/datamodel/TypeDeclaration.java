@@ -72,9 +72,15 @@ public interface TypeDeclaration extends Annotable
 
 
     /**
-     * An example of this type instance represented as string. This can be used, e.g., by documentation generators to generate sample values for an object of this type. Cannot be present if the examples property is present.
+     * An example of this type instance represented as string or yaml map&#47;sequence. This can be used, e.g., by documentation generators to generate sample values for an object of this type. Cannot be present if the examples property is present.
      **/
-    List<ExampleSpec> example();
+    ExampleSpec example();
+
+
+    /**
+     * An example of this type instance represented as string. This can be used, e.g., by documentation generators to generate sample values for an object of this type. Cannot be present if the example property is present.
+     **/
+    List<ExampleSpec> examples();
 
 
     /**

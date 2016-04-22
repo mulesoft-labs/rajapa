@@ -21,10 +21,14 @@ import org.raml.v2.model.v10.common.Annotable;
 public interface ExampleSpec extends Annotable
 {
 
+    /*
+     * --def-system-bug-- raml-java-parser-interfaces/issues/3
+     */
     /**
      * String representation of example
      **/
-    Object value();
+    // Object value();
+    String value();
 
 
     /**

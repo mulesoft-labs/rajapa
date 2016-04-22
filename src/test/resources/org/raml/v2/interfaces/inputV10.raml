@@ -49,7 +49,12 @@ resourceTypes:
                         "age": 66
                     }
             application/xml:
-                type: User
+                schema: "some xsd schema"
+                examples:
+                    first: |
+                        <first/>
+                    second: |
+                        <second/>
         responses:
             200:
                 body: *bodyPost
