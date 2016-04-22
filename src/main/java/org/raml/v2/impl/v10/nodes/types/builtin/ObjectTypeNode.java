@@ -63,8 +63,6 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
         else if (this.get("type") != null &&
                  this.get("type") instanceof StringNode)
         {
-            Node tree = NodeUtils.traverseToRoot(this);
-            Node typesRoot = tree.get("types");
             String typeName;
             if ("array".equals(((StringNode) this.get("type")).getValue()) &&
                 this.get("items") != null &&
@@ -76,14 +74,12 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
             {
                 typeName = ((StringNode) this.get("type")).getValue();
             }
-            if (typesRoot != null)
+            Node type = NodeUtils.getType(typeName, this);
+            if (type != null)
             {
-                Node type = typesRoot.get(typeName);
-                if (type != null)
-                {
-                    return ((ObjectTypeNode) type).getProperties();
-                }
+                return ((ObjectTypeNode) type).getProperties();
             }
+
         }
         for (Node property : properties)
         {

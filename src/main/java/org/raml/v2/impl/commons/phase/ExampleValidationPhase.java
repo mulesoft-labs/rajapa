@@ -41,11 +41,10 @@ public class ExampleValidationPhase implements Phase
     public Node apply(Node tree)
     {
         final List<ExampleTypeNode> examples = tree.findDescendantsWith(ExampleTypeNode.class);
-        Node types = NodeUtils.getTypesRoot(tree);
         NodeValidator validator = new NodeValidator(this.resourceLoader, this.actualPath);
         for (ExampleTypeNode example : examples)
         {
-            validator.validateExample(types, example);
+            validator.validateExample(tree, example);
         }
         return tree;
     }

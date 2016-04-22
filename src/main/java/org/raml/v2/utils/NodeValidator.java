@@ -67,12 +67,12 @@ public class NodeValidator
         }
     }
 
-    public void validateExample(Node types, ExampleTypeNode example)
+    public void validateExample(Node tree, ExampleTypeNode example)
     {
         String typeName = example.getTypeName();
-        if (types != null && !BuiltInScalarType.isBuiltInScalarType(typeName) && !isBuiltInTypeAlias(typeName, types))
+        if (tree != null && !BuiltInScalarType.isBuiltInScalarType(typeName) && !isBuiltInTypeAlias(typeName, tree))
         {
-            validateType(types, example, typeName);
+            validateType(tree, example, typeName);
         }
         else
         {
@@ -80,11 +80,11 @@ public class NodeValidator
         }
     }
 
-    private void validateType(Node types, ExampleTypeNode example, String typeName)
+    private void validateType(Node tree, ExampleTypeNode example, String typeName)
     {
         ObjectTypeNode type;
         Rule rule;
-        type = (ObjectTypeNode) types.get(typeName);
+        type = (ObjectTypeNode) NodeUtils.getType(typeName, tree);
         Node transform = null;
         if (type != null)
         {
@@ -260,11 +260,11 @@ public class NodeValidator
         return null;
     }
 
-    private boolean isBuiltInTypeAlias(String typeName, Node types)
+    private boolean isBuiltInTypeAlias(String typeName, Node tree)
     {
-        if (types != null)
+        if (tree != null)
         {
-            Node type = types.get(typeName);
+            Node type = NodeUtils.getType(typeName, tree);
             if (type != null && type.get("type") != null && type.get("type") instanceof StringNode)
             {
                 String objectType = ((StringNode) type.get("type")).getValue();

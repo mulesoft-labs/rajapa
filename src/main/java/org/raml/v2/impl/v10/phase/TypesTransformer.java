@@ -49,14 +49,13 @@ public class TypesTransformer implements Transformer
     @Override
     public Node transform(Node node)
     {
-        final ObjectNode typesRoot = NodeUtils.getTypesRoot(node);
         if (node instanceof UnionTypeNode)
         {
-            transformUnionTypeProperties(node, typesRoot);
+            transformUnionTypeProperties(node);
         }
         else if (node instanceof ObjectTypeNode && node.get("type") instanceof SYArrayNode)
         {
-            transformObjectTypeProperties(node, typesRoot);
+            transformObjectTypeProperties(node);
         }
         validateGeneratedProperties(node);
         return node;
@@ -98,28 +97,28 @@ public class TypesTransformer implements Transformer
         }
     }
 
-    private void transformObjectTypeProperties(Node node, ObjectNode typesRoot)
+    private void transformObjectTypeProperties(Node node)
     {
         Node properties = node.get("properties");
         final SYArrayNode typesNode = (SYArrayNode) node.get("type");
         if (typesNode != null)
         {
-            Set<List<String>> typeCombinations = validateAndGetPossibleTypes(typesNode, typesRoot);
+            Set<List<String>> typeCombinations = validateAndGetPossibleTypes(typesNode);
             for (List<String> combination : typeCombinations)
             {
                 Node originalProperties = properties != null ? properties.copy() : null;
-                for (String objectType : combination)
+                for (String objectTypeName : combination)
                 {
-                    originalProperties = processType(typesRoot, originalProperties, objectType);
+                    originalProperties = processType(originalProperties, node, objectTypeName);
                 }
                 injectProperties((ObjectTypeNode) node, new StringNodeImpl(combination.toString()), (SYObjectNode) originalProperties);
             }
         }
     }
 
-    private Node processType(ObjectNode typesRoot, Node originalProperties, String objectType)
+    private Node processType(Node originalProperties, Node context, String objectType)
     {
-        TypeNode typeNode = getType(typesRoot, objectType);
+        TypeNode typeNode = NodeUtils.getType(objectType, context);
 
         if (typeNode instanceof ObjectTypeNode)
         {
@@ -140,11 +139,11 @@ public class TypesTransformer implements Transformer
         return originalProperties;
     }
 
-    private void transformUnionTypeProperties(Node node, ObjectNode typesRoot)
+    private void transformUnionTypeProperties(Node node)
     {
 
         final StringNode typeNode = (StringNode) node.get("type");
-        validateInheritedTypes(typesRoot, typeNode);
+        validateInheritedTypes(typeNode);
 
         final Node properties = node.get("properties");
         if (properties != null)
@@ -155,7 +154,7 @@ public class TypesTransformer implements Transformer
                 for (final String type : typeNode.getValue().split("\\|"))
                 {
                     final String trimmedType = StringUtils.trim(type);
-                    unionProperties = processType(typesRoot, properties.copy(), trimmedType);
+                    unionProperties = processType(properties.copy(), node, trimmedType);
                     if (unionProperties != null && !(unionProperties instanceof SYNullNode))
                     {
                         injectProperties((ObjectTypeNode) node, new StringNodeImpl(trimmedType), (SYObjectNode) unionProperties);
@@ -171,7 +170,7 @@ public class TypesTransformer implements Transformer
                 return;
             }
 
-            final TypeNode parentTypeNodeGeneral = getType(typesRoot, trimmedType);
+            final TypeNode parentTypeNodeGeneral = NodeUtils.getType(trimmedType, typeNode);
             if (parentTypeNodeGeneral instanceof ObjectTypeNode)
             {
                 final ObjectTypeNode parentTypeNode = (ObjectTypeNode) parentTypeNodeGeneral;
@@ -183,7 +182,7 @@ public class TypesTransformer implements Transformer
         }
     }
 
-    private void validateInheritedTypes(final ObjectNode typesRoot, final StringNode typeNode)
+    private void validateInheritedTypes(final StringNode typeNode)
     {
         if (typeNode != null)
         {
@@ -192,7 +191,7 @@ public class TypesTransformer implements Transformer
                 for (final String type : typeNode.getValue().split("\\|"))
                 {
                     final String trimmedType = StringUtils.trim(type);
-                    final TypeNode parentTypeNode = getType(typesRoot, trimmedType);
+                    final TypeNode parentTypeNode = NodeUtils.getType(trimmedType, typeNode);
                     if (parentTypeNode == null)
                     {
                         final Node errorNode = ErrorNodeFactory.createInexistentType(trimmedType);
@@ -230,7 +229,7 @@ public class TypesTransformer implements Transformer
         }
     }
 
-    private Set<List<String>> validateAndGetPossibleTypes(SYArrayNode typesNode, ObjectNode typesRoot)
+    private Set<List<String>> validateAndGetPossibleTypes(SYArrayNode typesNode)
     {
         List<Set<String>> types = Lists.newArrayList();
         for (Node typeNode : typesNode.getChildren())
@@ -243,7 +242,7 @@ public class TypesTransformer implements Transformer
                 {
                     final String objectType = StringUtils.trim(type);
 
-                    final TypeNode typeDefinition = getType(typesRoot, objectType);
+                    final TypeNode typeDefinition = NodeUtils.getType(objectType, typeNode);
                     if (typeDefinition == null)
                     {
                         Node error = ErrorNodeFactory.createInexistentType(objectType);
@@ -263,11 +262,6 @@ public class TypesTransformer implements Transformer
     private List<PropertyNode> getTypeProperties(ObjectTypeNode node)
     {
         return node.getProperties();
-    }
-
-    private TypeNode getType(ObjectNode node, String typeName)
-    {
-        return (TypeNode) node.get(typeName);
     }
 
     private void injectProperties(ObjectTypeNode node, StringNodeImpl key, SYObjectNode properties)

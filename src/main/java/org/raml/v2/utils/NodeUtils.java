@@ -16,10 +16,13 @@
 package org.raml.v2.utils;
 
 import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.StringNode;
+import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
 
 import javax.annotation.Nullable;
 
@@ -45,7 +48,7 @@ public class NodeUtils
         return parent;
     }
 
-    public static Node traverseToRoot(Node node)
+    private static Node traverseToRoot(Node node)
     {
         if (node == null || node instanceof RamlDocumentNode)
         {
@@ -95,5 +98,77 @@ public class NodeUtils
     public static boolean isErrorResult(Node node)
     {
         return node != null && (node instanceof ErrorNode || node.findDescendantsWith(ErrorNode.class).size() > 0);
+    }
+
+    public static TypeNode getType(String typeName, Node node)
+    {
+        Node definitionContext = getNodeContext(node);
+        if (definitionContext == null)
+        {
+            return null;
+        }
+        else if (typeName != null && typeName.contains("."))
+        {
+            return getTypeFromContext(typeName, definitionContext);
+        }
+        else if (definitionContext.get("types") != null)
+        {
+            Node type = definitionContext.get("types").get(typeName);
+            return type instanceof TypeNode ? (TypeNode) type : null;
+        }
+        return null;
+    }
+
+    private static TypeNode getTypeFromContext(String typeName, Node definitionContext)
+    {
+        Node localContext = definitionContext.get("uses");
+        if (localContext == null)
+        {
+            return null;
+        }
+        else
+        {
+            Node resolution = localContext;
+            String objectName = typeName.substring(typeName.lastIndexOf(".") + 1);
+            String navigationPath = typeName.substring(0, typeName.lastIndexOf("."));
+            if (!navigationPath.contains("."))
+            {
+                return resolution != null && resolution.get(navigationPath) != null && resolution.get(navigationPath).get("types") != null &&
+                       resolution.get(navigationPath).get("types").get(objectName) instanceof TypeNode ? (TypeNode) resolution.get(navigationPath).get("types").get(objectName) : null;
+            }
+            for (String path : navigationPath.split("."))
+            {
+                if (resolution == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    resolution = resolution.get(path);
+                }
+            }
+            return resolution != null && resolution.get("types") != null && resolution.get("types").get(objectName) instanceof TypeNode ? (TypeNode) resolution.get("types").get(objectName) : null;
+        }
+
+    }
+
+    private static Node getNodeContext(Node node)
+    {
+        if (node == null || node instanceof RamlDocumentNode)
+        {
+            return node;
+        }
+        else if (node.getSource() != null && node.getSource() instanceof SYIncludeNode)
+        {
+            return node;
+        }
+        else if (node.getParent() == null)
+        {
+            return node;
+        }
+        else
+        {
+            return getNodeContext(node.getParent());
+        }
     }
 }
