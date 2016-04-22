@@ -16,6 +16,7 @@
 package org.raml.v2.impl.commons.nodes;
 
 import org.raml.v2.nodes.KeyValueNodeImpl;
+import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.StringNodeImpl;
 import org.raml.v2.utils.NodeUtils;
 
@@ -27,12 +28,12 @@ public class PayloadValidationResultNode extends KeyValueNodeImpl
         payload.setParent(this);
     }
 
-    public PayloadNode getValue()
+    public Node getValue()
     {
-        return (PayloadNode) super.getValue();
+        return super.getValue();
     }
 
-    public boolean validationSucced()
+    public boolean validationSucceeded()
     {
         return !NodeUtils.isErrorResult(this);
     }

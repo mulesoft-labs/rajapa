@@ -63,7 +63,10 @@ public class NodeValidator
 
     private void validatePayload(Node types, PayloadValidationResultNode payload)
     {
-        this.validateExample(types, payload.getValue());
+        if (payload.getValue() instanceof PayloadNode)
+        {
+            this.validateExample(types, (PayloadNode) payload.getValue());
+        }
     }
 
     public void validateExample(Node types, ExampleTypeNode example)
@@ -97,7 +100,7 @@ public class NodeValidator
             {
                 if (NodeUtils.isStringNode(example.getSource()) && !(rule instanceof JsonSchemaValidationRule || rule instanceof XmlSchemaValidationRule))
                 {
-                    Node transformed = RamlNodeParser.parse(((SYStringNode) example.getSource()).getValue());
+                    Node transformed = RamlNodeParser.parse(((StringNode) example.getSource()).getValue());
                     if (transformed != null)
                     {
                         transform = rule.apply(transformed);
