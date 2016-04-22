@@ -32,7 +32,6 @@ import org.raml.v2.impl.commons.phase.TypeToRuleVisitor;
 import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.loader.ResourceLoader;
-import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
@@ -40,7 +39,6 @@ import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
 import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
-import org.raml.v2.nodes.snakeyaml.SYStringNode;
 
 public class NodeValidator
 {
@@ -92,27 +90,34 @@ public class NodeValidator
         {
             Node schemaType = type.get("type");
             rule = getVisitRule(example, type, schemaType);
-            if (example instanceof MultipleExampleTypeNode || example.isArrayExample())
+            transform = validateWithRule(example, rule);
+        }
+        replaceWithError(example, transform);
+    }
+
+    private Node validateWithRule(ExampleTypeNode example, Rule rule)
+    {
+        Node transform = null;
+        if (example instanceof MultipleExampleTypeNode || example.isArrayExample())
+        {
+            visitChildrenWithRule(example, rule);
+        }
+        else
+        {
+            if (NodeUtils.isStringNode(example.getSource()) && !(rule instanceof JsonSchemaValidationRule || rule instanceof XmlSchemaValidationRule))
             {
-                visitChildrenWithRule(example, rule);
+                Node transformed = RamlNodeParser.parse(((StringNode) example.getSource()).getValue());
+                if (transformed != null)
+                {
+                    transform = rule.apply(transformed);
+                }
             }
             else
             {
-                if (NodeUtils.isStringNode(example.getSource()) && !(rule instanceof JsonSchemaValidationRule || rule instanceof XmlSchemaValidationRule))
-                {
-                    Node transformed = RamlNodeParser.parse(((StringNode) example.getSource()).getValue());
-                    if (transformed != null)
-                    {
-                        transform = rule.apply(transformed);
-                    }
-                }
-                else
-                {
-                    transform = rule.apply(example);
-                }
+                transform = rule.apply(example);
             }
         }
-        replaceWithError(example, transform);
+        return transform;
     }
 
     private void validateScalar(ExampleTypeNode example)
@@ -142,17 +147,17 @@ public class NodeValidator
         Rule rule = null;
         if (NodeUtils.isSchemaType(schemaType))
         {
-            String value = ((StringNode) schemaType).getValue();
-            if (NodeUtils.isJsonSchemaNode(schemaType))
-            {
-                rule = new JsonSchemaValidationRule(value, getIncludedType(schemaType));
-            }
-            else if (NodeUtils.isXmlSchemaNode(schemaType))
-            {
-                rule = new XmlSchemaValidationRule(value, resourceLoader, actualPath, getIncludedType(schemaType));
-            }
+            rule = getRuleForSchema(schemaType, rule);
         }
-        else if (!type.getInheritedProperties().isEmpty())
+        else
+            rule = getRuleForType(example, type);
+        return rule;
+    }
+
+    private Rule getRuleForType(ExampleTypeNode example, ObjectTypeNode type)
+    {
+        Rule rule;
+        if (!type.getInheritedProperties().isEmpty())
         {
             List<Rule> inheritanceRules = getInheritanceRules(example, type);
             rule = new AnyOfRule(inheritanceRules);
@@ -160,6 +165,20 @@ public class NodeValidator
         else
         {
             rule = example.visitProperties(new TypeToRuleVisitor(), type.getProperties(), type.isAllowAdditionalProperties());
+        }
+        return rule;
+    }
+
+    private Rule getRuleForSchema(Node schemaType, Rule rule)
+    {
+        String value = ((StringNode) schemaType).getValue();
+        if (NodeUtils.isJsonSchemaNode(schemaType))
+        {
+            rule = new JsonSchemaValidationRule(value, getIncludedType(schemaType));
+        }
+        else if (NodeUtils.isXmlSchemaNode(schemaType))
+        {
+            rule = new XmlSchemaValidationRule(value, resourceLoader, actualPath, getIncludedType(schemaType));
         }
         return rule;
     }
