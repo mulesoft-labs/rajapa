@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 
 import org.raml.v2.grammar.rule.AnyValueRule;
 import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
@@ -63,6 +64,10 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
         else if (grandParent instanceof BooleanTypeNode)
         {
             return visitor.visitBoolean((BooleanTypeNode) grandParent);
+        }
+        else if (grandParent instanceof DateTypeNode)
+        {
+            return visitor.visitDate((DateTypeNode) grandParent);
         }
         return (T) new AnyValueRule();
     }

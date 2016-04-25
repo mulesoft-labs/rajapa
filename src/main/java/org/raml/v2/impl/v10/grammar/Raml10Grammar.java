@@ -198,6 +198,8 @@ public class Raml10Grammar extends BaseRamlGrammar
                                                                         .add(field(string("minLength"), integerType()))
                                                                         .add(field(string("maxLength"), integerType()))
                                                                         .add(field(string("enum"), array(scalarType()))),
+                                                 is(dateTypeLiteral())
+                                                                      .add(field(string("format"), stringType())),
                                                  is(arrayTypeLiteral())
                                                                        .add(field(string("uniqueItems"), booleanType()))
                                                                        .add(field(string("items"), any())) // todo review this don't get what it is
@@ -295,9 +297,9 @@ public class Raml10Grammar extends BaseRamlGrammar
         return string("string");
     }
 
-    protected StringValueRule dateTypeLiteral()
+    protected AnyOfRule dateTypeLiteral()
     {
-        return string("date");
+        return new AnyOfRule(string("date-only"), string("time-only"), string("datetime-only"), string("datetime"));
     }
 
     protected AnyOfRule arrayTypeLiteral()

@@ -26,6 +26,7 @@ import org.raml.v2.grammar.rule.AllOfRule;
 import org.raml.v2.grammar.rule.AnyOfRule;
 import org.raml.v2.grammar.rule.ArrayRule;
 import org.raml.v2.grammar.rule.BooleanTypeRule;
+import org.raml.v2.grammar.rule.DateValueRule;
 import org.raml.v2.grammar.rule.DivisorValueRule;
 import org.raml.v2.grammar.rule.IntegerTypeRule;
 import org.raml.v2.grammar.rule.IntegerValueRule;
@@ -43,6 +44,7 @@ import org.raml.v2.grammar.rule.StringTypeRule;
 import org.raml.v2.grammar.rule.StringValueRule;
 import org.raml.v2.impl.commons.nodes.PropertyNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
@@ -149,6 +151,12 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
             typeRule.and(new DivisorValueRule(numericTypeNode.getMultiple()));
         }
         return typeRule;
+    }
+
+    @Override
+    public Rule visitDate(DateTypeNode dateTypeNode)
+    {
+        return new DateValueRule(dateTypeNode.getDateType(), dateTypeNode.getRFC());
     }
 
     @Override

@@ -16,6 +16,7 @@
 package org.raml.v2.impl.v10.nodes.types.factories;
 
 import org.raml.v2.grammar.rule.NodeFactory;
+import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.SYArrayNode;
@@ -60,6 +61,11 @@ public class TypeNodeFactory implements NodeFactory
                 return new FileTypeNode();
             case "object":
                 return new ObjectTypeNode();
+            case "date-only":
+            case "time-only":
+            case "datetime-only":
+            case "datetime":
+                return new DateTypeNode();
             default:
                 return new UnionTypeNode();
             }

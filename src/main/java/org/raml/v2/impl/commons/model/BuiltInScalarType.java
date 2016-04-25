@@ -17,7 +17,7 @@ package org.raml.v2.impl.commons.model;
 
 public enum BuiltInScalarType
 {
-    STRING("string"), NUMBER("number"), INTEGER("integer"), BOOLEAN("boolean"), DATE("date"), FILE("file");
+    STRING("string"), NUMBER("number"), INTEGER("integer"), BOOLEAN("boolean"), DATE_ONLY("date-only"), TIME_ONLY("time-only"), DATE_TIME_ONLY("datetime-only"), DATE_TIME("datetime"), FILE("file");
 
     private final String type;
 

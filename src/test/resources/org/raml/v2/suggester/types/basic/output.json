@@ -9,9 +9,19 @@
   "value" : "boolean",
   "prefix" : ""
 }, {
-  "label" : "Date",
+  "label" : "Date-only",
   "description" : null,
-  "value" : "date",
+  "value" : "date-only",
+  "prefix" : ""
+}, {
+  "label" : "Datetime",
+  "description" : null,
+  "value" : "datetime",
+  "prefix" : ""
+}, {
+  "label" : "Datetime-only",
+  "description" : null,
+  "value" : "datetime-only",
   "prefix" : ""
 }, {
   "label" : "File",
@@ -37,5 +47,10 @@
   "label" : "String",
   "description" : null,
   "value" : "string",
+  "prefix" : ""
+}, {
+  "label" : "Time-only",
+  "description" : null,
+  "value" : "time-only",
   "prefix" : ""
 } ]

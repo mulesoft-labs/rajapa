@@ -168,4 +168,9 @@ public class ErrorNodeFactory
     {
         return new ErrorNode("expected " + comparator + " number of properties to be: " + expected + " but was: " + actual);
     }
+
+    public static ErrorNode createInvalidDateValue(String dateValue, String dateFormat, String rfc)
+    {
+        return new ErrorNode("provided value " + dateValue + " is not compliant with the format " + dateFormat + " provided in " + rfc);
+    }
 }

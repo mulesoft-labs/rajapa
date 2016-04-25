@@ -49,6 +49,7 @@ import org.raml.v2.grammar.rule.ReferenceRule;
 import org.raml.v2.grammar.rule.RegexValueRule;
 import org.raml.v2.grammar.rule.Rule;
 import org.raml.v2.grammar.rule.ScalarTypeRule;
+import org.raml.v2.grammar.rule.StringTypeRule;
 import org.raml.v2.grammar.rule.StringValueRule;
 
 public class BaseGrammar
@@ -141,6 +142,11 @@ public class BaseGrammar
     public ScalarTypeRule scalarType()
     {
         return new ScalarTypeRule();
+    }
+
+    public StringTypeRule stringType()
+    {
+        return new StringTypeRule();
     }
 
     public BooleanTypeRule booleanType()

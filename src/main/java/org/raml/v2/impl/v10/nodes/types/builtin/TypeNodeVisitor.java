@@ -32,6 +32,8 @@ public interface TypeNodeVisitor<T>
 
     T visitNumber(NumericTypeNode numericTypeNode);
 
+    T visitDate(DateTypeNode dateTypeNode);
+
     T visitExample(List<PropertyNode> properties, boolean allowsAdditionalProperties);
 
 }
