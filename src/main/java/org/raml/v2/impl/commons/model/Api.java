@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.impl.commons.nodes.ResourceNode;
+import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.utils.NodeSelector;
 
@@ -91,6 +92,48 @@ public class Api extends LibraryBase
     public List<SecuritySchemeRef> securedBy()
     {
         return getList("securedBy", SecuritySchemeRef.class);
+    }
+
+    public List<TypeDeclaration> types()
+    {
+        List<TypeDeclaration> result = new ArrayList<>();
+        Node typesNode = NodeSelector.selectFrom("types", node);
+        if (typesNode != null)
+        {
+            for (Node child : typesNode.getChildren())
+            {
+                result.add(new TypeDeclaration((KeyValueNode) child));
+            }
+        }
+        return result;
+    }
+
+    public List<TypeDeclaration> schemas()
+    {
+        List<TypeDeclaration> result = new ArrayList<>();
+        Node typesNode = NodeSelector.selectFrom("schemas", node);
+        if (typesNode != null)
+        {
+            for (Node child : typesNode.getChildren())
+            {
+                result.add(new TypeDeclaration((KeyValueNode) child));
+            }
+        }
+        return result;
+    }
+
+    public List<GlobalSchema> schemasV08()
+    {
+        List<GlobalSchema> result = new ArrayList<>();
+        Node typesNode = NodeSelector.selectFrom("schemas", node);
+        if (typesNode != null)
+        {
+            for (Node child : typesNode.getChildren())
+            {
+                result.add(new GlobalSchema((KeyValueNode) child));
+            }
+        }
+        return result;
     }
 
 }

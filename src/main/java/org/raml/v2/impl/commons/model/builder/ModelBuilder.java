@@ -129,6 +129,10 @@ public class ModelBuilder
             {
                 return "bodyV08";
             }
+            if (method.toGenericString().contains("List<org.raml.v2.model.v08.api.GlobalSchema> org.raml.v2.model.v08.api.Api.schemas()"))
+            {
+                return "schemasV08";
+            }
             return method.getName();
         }
     }

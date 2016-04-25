@@ -69,6 +69,11 @@ public class SpecInterfacesV08TestCase
         assertThat(api.protocols().size(), is(2));
         assertThat(api.protocols().get(0), is("HTTP"));
         assertThat(api.protocols().get(1), is("HTTPS"));
+
+        assertThat(api.schemas().size(), is(2));
+        assertThat(api.schemas().get(0).key(), is("UserJson"));
+        assertThat(api.schemas().get(0).value().value(), containsString("\"firstname\":  { \"type\": \"string\" }"));
+        assertThat(api.schemas().get(1).key(), is("UserXml"));
     }
 
     private void assertDocumentation(List<DocumentationItem> documentation)

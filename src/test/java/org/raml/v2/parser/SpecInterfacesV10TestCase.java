@@ -70,6 +70,9 @@ public class SpecInterfacesV10TestCase
         assertThat(api.protocols().size(), is(2));
         assertThat(api.protocols().get(0), is("HTTP"));
         assertThat(api.protocols().get(1), is("HTTPS"));
+        assertThat(api.types().size(), is(1));
+        assertThat(api.types().get(0).name(), is("User"));
+        assertThat(api.schemas().size(), is(0));
     }
 
     private void assertDocumentation(List<DocumentationItem> documentation)
