@@ -169,10 +169,10 @@ public abstract class BaseRamlGrammar extends BaseGrammar
                                    anyOf(
                                            string("OAuth 1.0").description("The API's authentication uses OAuth 1.0 as described in RFC5849 [RFC5849]"),
                                            string("OAuth 2.0").description("The API's authentication uses OAuth 2.0 as described in RFC6749 [RFC6749]"),
-                                           string("BasicSecurityScheme Authentication").description(
-                                                   "The API's authentication uses BasicSecurityScheme Access Authentication as described in RFC2617 [RFC2617]"),
-                                           string("DigestSecurityScheme Authentication").description(
-                                                   "The API's authentication uses DigestSecurityScheme Access Authentication as described in RFC2617 [RFC2617]"),
+                                           string("Basic Authentication").description(
+                                                   "The API's authentication uses Basic Authentication as described in RFC2617 [RFC2617]"),
+                                           string("Digest Authentication").description(
+                                                   "The API's authentication uses Digest Authentication as described in RFC2617 [RFC2617]"),
                                            string("Pass Through").description("Headers or Query Parameters are passed through to the API based on a defined object."),
                                            regex("x-.+").description("The API's authentication uses an authentication method not listed above.")
                                    )))
