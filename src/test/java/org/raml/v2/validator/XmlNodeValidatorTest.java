@@ -23,6 +23,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.raml.v2.RamlBuilder;
 import org.raml.v2.impl.commons.nodes.PayloadValidationResultNode;
+import org.raml.v2.impl.commons.nodes.ResourceNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.utils.NodeValidator;
 
@@ -30,6 +32,8 @@ public class XmlNodeValidatorTest
 {
     private NodeValidator nodeValidator;
     private Node tree;
+    private Node type;
+
 
     @Before
     public void setUp() throws IOException
@@ -37,27 +41,30 @@ public class XmlNodeValidatorTest
         RamlBuilder builder = new RamlBuilder();
         tree = builder.build(new File(this.getClass().getClassLoader().getResource("org/raml/v2/parser/examples/include-xsd-schema-nested/input.raml").getPath()));
         this.nodeValidator = new NodeValidator(builder.getResourceLoader(), builder.getActualPath());
+        this.type = tree.findDescendantsWith(ResourceNode.class).get(0).findDescendantsWith(UnionTypeNode.class).get(0);
     }
 
     @Test
     public void testParsingFailure()
     {
-        PayloadValidationResultNode validationNode = this.nodeValidator.validatePayload(tree.get("types"), "User", "<Person>\n" +
-                                                                                                                   "    <firstName>Bob</firstName>\n" +
-                                                                                                                   "    <lastName>Marley</lastName>\n" +
-                                                                                                                   "    <age>one hundreed</age>\n" +
-                                                                                                                   "</Person>");
+
+
+        PayloadValidationResultNode validationNode = this.nodeValidator.validatePayload(type, "<Person>\n" +
+                                                                                              "    <firstName>Bob</firstName>\n" +
+                                                                                              "    <lastName>Marley</lastName>\n" +
+                                                                                              "    <age>one hundreed</age>\n" +
+                                                                                              "</Person>");
         Assert.assertFalse(validationNode.validationSucceeded());
     }
 
     @Test
     public void testParsingOk()
     {
-        PayloadValidationResultNode validationNode = this.nodeValidator.validatePayload(tree.get("types"), "User", "<Person>\n" +
-                                                                                                                   "    <firstName>Donald</firstName>\n" +
-                                                                                                                   "    <lastName>Trump</lastName>\n" +
-                                                                                                                   "    <age>1000</age>\n" +
-                                                                                                                   "</Person>");
+        PayloadValidationResultNode validationNode = this.nodeValidator.validatePayload(type, "<Person>\n" +
+                                                                                              "    <firstName>Donald</firstName>\n" +
+                                                                                              "    <lastName>Trump</lastName>\n" +
+                                                                                              "    <age>1000</age>\n" +
+                                                                                              "</Person>");
         Assert.assertTrue(validationNode.validationSucceeded());
     }
 }

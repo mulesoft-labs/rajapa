@@ -48,27 +48,32 @@ public class TypeNodeFactory implements NodeFactory
         else
         {
             String value = type.getValue();
-            switch (value)
-            {
-            case "string":
-                return new StringTypeNode();
-            case "number":
-            case "integer":
-                return new NumericTypeNode();
-            case "boolean":
-                return new BooleanTypeNode();
-            case "file":
-                return new FileTypeNode();
-            case "object":
-                return new ObjectTypeNode();
-            case "date-only":
-            case "time-only":
-            case "datetime-only":
-            case "datetime":
-                return new DateTypeNode();
-            default:
-                return new UnionTypeNode();
-            }
+            return createNodeFromType(value);
+        }
+    }
+
+    public static Node createNodeFromType(String value)
+    {
+        switch (value)
+        {
+        case "string":
+            return new StringTypeNode();
+        case "number":
+        case "integer":
+            return new NumericTypeNode();
+        case "boolean":
+            return new BooleanTypeNode();
+        case "file":
+            return new FileTypeNode();
+        case "object":
+            return new ObjectTypeNode();
+        case "date-only":
+        case "time-only":
+        case "datetime-only":
+        case "datetime":
+            return new DateTypeNode();
+        default:
+            return new UnionTypeNode();
         }
     }
 }

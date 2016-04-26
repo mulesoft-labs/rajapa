@@ -220,6 +220,13 @@ public class ObjectRule extends Rule
         return this;
     }
 
+    @Override
+    public ObjectRule then(NodeFactory factory)
+    {
+        super.then(factory);
+        return this;
+    }
+
     public ObjectRule with(KeyValueRule field)
     {
         this.fields.add(field);

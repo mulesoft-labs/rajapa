@@ -23,6 +23,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.raml.v2.RamlBuilder;
 import org.raml.v2.impl.commons.nodes.PayloadValidationResultNode;
+import org.raml.v2.impl.commons.nodes.ResourceNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.utils.NodeValidator;
 
@@ -30,6 +32,7 @@ public class JsonNodeValidatorTest
 {
     private NodeValidator nodeValidator;
     private Node tree;
+    private Node type;
 
     @Before
     public void setUp() throws IOException
@@ -37,19 +40,20 @@ public class JsonNodeValidatorTest
         RamlBuilder builder = new RamlBuilder();
         tree = builder.build(new File(this.getClass().getClassLoader().getResource("org/raml/v2/parser/examples/include-json-schema/input.raml").getPath()));
         this.nodeValidator = new NodeValidator(builder.getResourceLoader(), builder.getActualPath());
+        this.type = tree.findDescendantsWith(ResourceNode.class).get(0).findDescendantsWith(UnionTypeNode.class).get(0);
     }
 
     @Test
     public void testParsingFailure()
     {
-        PayloadValidationResultNode validationNode = this.nodeValidator.validatePayload(tree.get("types"), "User", "{\"name\":\"Federico\", \"age\": \"MyAge\"}");
+        PayloadValidationResultNode validationNode = this.nodeValidator.validatePayload(type, "{\"name\":\"Federico\", \"age\": \"MyAge\"}");
         Assert.assertFalse(validationNode.validationSucceeded());
     }
 
     @Test
     public void testParsingOk()
     {
-        PayloadValidationResultNode validationNode = this.nodeValidator.validatePayload(tree.get("types"), "User", "{\"name\":\"Federico\", \"age\": 10}");
+        PayloadValidationResultNode validationNode = this.nodeValidator.validatePayload(type, "{\"name\":\"Federico\", \"age\": 10}");
         Assert.assertTrue(validationNode.validationSucceeded());
     }
 }

@@ -174,9 +174,19 @@ public class TypesTransformer implements Transformer
             if (parentTypeNodeGeneral instanceof ObjectTypeNode)
             {
                 final ObjectTypeNode parentTypeNode = (ObjectTypeNode) parentTypeNodeGeneral;
-                if (parentTypeNode != null && parentTypeNode.get("properties") != null)
+
+                if (parentTypeNode.get("properties") != null)
                 {
-                    node.addChild(parentTypeNode.get("properties").getParent());
+                    injectProperties((ObjectTypeNode) node, new StringNodeImpl(trimmedType), (SYObjectNode) parentTypeNode.get("properties"));
+                }
+                if (!parentTypeNode.getInheritedProperties().isEmpty())
+                {
+                    ((ObjectTypeNode) node).setInheritedProperties(parentTypeNode.getInheritedProperties());
+                }
+                else if (NodeUtils.isSchemaType(parentTypeNode.get("type")))
+                {
+                    SchemaNodeImpl schemaNode = new SchemaNodeImpl((StringNodeImpl) parentTypeNode.get("type"));
+                    node.get("type").replaceWith(schemaNode);
                 }
             }
         }
@@ -270,6 +280,7 @@ public class TypesTransformer implements Transformer
         KeyValueNode keyValue = new KeyValueNodeImpl(key, properties);
         setKeyPosition(key, properties, injected, keyValue);
         // node.addChild(injected);
+        injected.setParent(node);
         node.addInheritedProperties(injected);
     }
 

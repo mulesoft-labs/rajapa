@@ -13,39 +13,24 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.nodes;
+package org.raml.v2.grammar.rule;
 
+import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
+import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.StringNodeImpl;
 
-public class PayloadNode extends ExampleTypeNode
+public class TypesFactory implements NodeFactory
 {
-
-    private Node type;
-
-    private boolean isArray = false;
-
-
-    public PayloadNode(Node type, String value)
+    @Override
+    public Node create(Object... args)
     {
-        this.type = type;
-        this.setSource(new StringNodeImpl(value));
-    }
-
-    public PayloadNode(Node type, String value, boolean isArray)
-    {
-        this(type, value);
-        this.isArray = isArray;
-    }
-
-
-    public boolean isArrayExample()
-    {
-        return isArray;
-    }
-
-    public Node getTypeNode()
-    {
-        return type;
+        String type = (String) args[0];
+        Node newNode = org.raml.v2.impl.v10.nodes.types.factories.TypeNodeFactory.createNodeFromType(type);
+        if (newNode instanceof UnionTypeNode)
+        {
+            newNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl(type)));
+        }
+        return newNode;
     }
 }

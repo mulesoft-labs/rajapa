@@ -13,39 +13,31 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.nodes;
+package org.raml.v2.nodes;
 
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.StringNodeImpl;
+import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
 
-public class PayloadNode extends ExampleTypeNode
+public class SchemaNodeImpl extends StringNodeImpl
 {
 
-    private Node type;
+    private String typeReference;
 
-    private boolean isArray = false;
-
-
-    public PayloadNode(Node type, String value)
+    public SchemaNodeImpl(String value)
     {
-        this.type = type;
-        this.setSource(new StringNodeImpl(value));
+        super(value);
     }
 
-    public PayloadNode(Node type, String value, boolean isArray)
+    public SchemaNodeImpl(StringNodeImpl node)
     {
-        this(type, value);
-        this.isArray = isArray;
+        super(node);
+        if (node.getSource() instanceof SYIncludeNode)
+        {
+            this.typeReference = ((SYIncludeNode) node.getSource()).getIncludedType();
+        }
     }
 
-
-    public boolean isArrayExample()
+    public String getTypeReference()
     {
-        return isArray;
-    }
-
-    public Node getTypeNode()
-    {
-        return type;
+        return this.typeReference;
     }
 }

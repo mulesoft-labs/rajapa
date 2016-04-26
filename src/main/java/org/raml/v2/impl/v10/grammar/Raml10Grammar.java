@@ -17,12 +17,14 @@ package org.raml.v2.impl.v10.grammar;
 
 import org.raml.v2.grammar.rule.AnyOfRule;
 import org.raml.v2.grammar.rule.KeyValueRule;
+import org.raml.v2.grammar.rule.NodeFactory;
 import org.raml.v2.grammar.rule.NodeReferenceFactory;
 import org.raml.v2.grammar.rule.ObjectRule;
 import org.raml.v2.grammar.rule.RegexValueRule;
 import org.raml.v2.grammar.rule.Rule;
 import org.raml.v2.grammar.rule.StringValueRule;
 import org.raml.v2.grammar.rule.TypeNodeReferenceRule;
+import org.raml.v2.grammar.rule.TypesFactory;
 import org.raml.v2.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.v2.impl.commons.nodes.AnnotationNode;
 import org.raml.v2.impl.commons.nodes.AnnotationReferenceNode;
@@ -31,7 +33,10 @@ import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.ExtendsNode;
 import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.PropertyNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.v2.impl.v10.nodes.types.factories.TypeNodeFactory;
+import org.raml.v2.nodes.KeyValueNodeImpl;
+import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.StringNodeImpl;
 
 public class Raml10Grammar extends BaseRamlGrammar
@@ -182,53 +187,54 @@ public class Raml10Grammar extends BaseRamlGrammar
     {
         // TODO schema example examples missing
         // TODO missing descriptions
-        return objectType("type")
-                                 .with(field(typeKey(), typeReference()))
-                                 .with(displayNameField())
-                                 .with(descriptionField())
-                                 .with(annotationField())
-                                 .with(defaultField())
-                                 .with(field(string("required"), booleanType()))
-                                 .with(exampleFieldRule())
-                                 .with(multipleExampleFieldRule())
-                                 .with(
-                                         when("type", // todo what to do with inherited does not match object
-                                                 is(stringTypeLiteral())
-                                                                        .add(field(string("pattern"), scalarType()))
-                                                                        .add(field(string("minLength"), integerType()))
-                                                                        .add(field(string("maxLength"), integerType()))
-                                                                        .add(field(string("enum"), array(scalarType()))),
-                                                 is(dateTypeLiteral())
-                                                                      .add(field(string("format"), stringType())),
-                                                 is(arrayTypeLiteral())
-                                                                       .add(field(string("uniqueItems"), booleanType()))
-                                                                       .add(field(string("items"), any())) // todo review this don't get what it is
-                                                                       .add(field(string("minItems"), integerType()))
-                                                                       .add(field(string("maxItems"), integerType())),
-                                                 is(numericTypeLiteral())
-                                                                         .add(field(string("minimum"), integerType()))
-                                                                         .add(field(string("maximum"), integerType()))
-                                                                         .add(field(string("format"), scalarType()))
-                                                                         .add(field(string("multipleOf"), integerType()))
-                                                                         .add(field(string("enum"), array(integerType()))),
-                                                 is(fileTypeLiteral())
-                                                                      .add(field(string("fileTypes"), any())) // todo finish
-                                                                      .add(field(string("minLength"), integerType()))
-                                                                      .add(field(string("maxLength"), integerType())),
-                                                 is(objectTypeLiteral())
-                                                                        .add(field(string("properties"), properties()))
-                                                                        .add(field(string("minProperties"), integerType()))
-                                                                        .add(field(string("maxProperties"), integerType()))
-                                                                        .add(field(string("additionalProperties"), anyOf(scalarType(), ref("type"))))
-                                                                        .add(field(string("patternProperties"), properties()))
-                                                                        .add(field(string("discriminator"), anyOf(scalarType(), booleanType())))
-                                                                        .add(field(string("discriminatorValue"), scalarType()))
+
+        return anyOf("type", stringType().then(new TypesFactory()), objectType()
+                                                                                .with(field(anyOf(typeKey(), string("schema")), typeReference()))
+                                                                                .with(displayNameField())
+                                                                                .with(descriptionField())
+                                                                                .with(annotationField())
+                                                                                .with(defaultField())
+                                                                                .with(field(string("required"), booleanType()))
+                                                                                .with(exampleFieldRule())
+                                                                                .with(multipleExampleFieldRule())
+                                                                                .with(
+                                                                                        when("type", // todo what to do with inherited does not match object
+                                                                                                is(stringTypeLiteral())
+                                                                                                                       .add(field(string("pattern"), scalarType()))
+                                                                                                                       .add(field(string("minLength"), integerType()))
+                                                                                                                       .add(field(string("maxLength"), integerType()))
+                                                                                                                       .add(field(string("enum"), array(scalarType()))),
+                                                                                                is(dateTypeLiteral())
+                                                                                                                     .add(field(string("format"), stringType())),
+                                                                                                is(arrayTypeLiteral())
+                                                                                                                      .add(field(string("uniqueItems"), booleanType()))
+                                                                                                                      .add(field(string("items"), ref("type"))) // todo review this don't get what it is
+                                                                                                                      .add(field(string("minItems"), integerType()))
+                                                                                                                      .add(field(string("maxItems"), integerType())),
+                                                                                                is(numericTypeLiteral())
+                                                                                                                        .add(field(string("minimum"), integerType()))
+                                                                                                                        .add(field(string("maximum"), integerType()))
+                                                                                                                        .add(field(string("format"), scalarType()))
+                                                                                                                        .add(field(string("multipleOf"), integerType()))
+                                                                                                                        .add(field(string("enum"), array(integerType()))),
+                                                                                                is(fileTypeLiteral())
+                                                                                                                     .add(field(string("fileTypes"), any())) // todo finish
+                                                                                                                     .add(field(string("minLength"), integerType()))
+                                                                                                                     .add(field(string("maxLength"), integerType())),
+                                                                                                is(objectTypeLiteral())
+                                                                                                                       .add(field(string("properties"), properties()))
+                                                                                                                       .add(field(string("minProperties"), integerType()))
+                                                                                                                       .add(field(string("maxProperties"), integerType()))
+                                                                                                                       .add(field(string("additionalProperties"), anyOf(scalarType(), ref("type"))))
+                                                                                                                       .add(field(string("patternProperties"), properties()))
+                                                                                                                       .add(field(string("discriminator"), anyOf(scalarType(), booleanType())))
+                                                                                                                       .add(field(string("discriminatorValue"), scalarType()))
 
 
-                                         ).defaultValue(new StringNodeImpl("string"))
-                                 ).then(new TypeNodeFactory())
+                                                                                        ).defaultValue(new StringNodeImpl("string"))
+                                                                                ).then(new TypeNodeFactory())
 
-        ;
+        );
     }
 
     private KeyValueRule defaultField()
@@ -250,11 +256,9 @@ public class Raml10Grammar extends BaseRamlGrammar
     }
 
     @Override
-    protected ObjectRule mimeType()
+    protected Rule mimeType()
     {
-        return objectType()
-                           .with(field(string("schema"), scalarType())) // TODO schema should behave like type
-                           .merge((ObjectRule) type());
+        return type();
     }
 
     protected KeyValueRule exampleFieldRule()

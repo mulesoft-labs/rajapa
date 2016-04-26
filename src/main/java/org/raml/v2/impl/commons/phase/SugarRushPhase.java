@@ -40,7 +40,7 @@ public class SugarRushPhase implements Phase
     {
         sweetenBuiltInTypes(tree);
         sweetenObjects(tree);
-        sweetenTypeSystemObjects(tree);
+        // sweetenTypeSystemObjects(tree);
         sweetenAnnotations(tree);
         return tree;
     }

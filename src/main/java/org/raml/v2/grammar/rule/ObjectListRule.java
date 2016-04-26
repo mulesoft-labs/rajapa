@@ -27,9 +27,9 @@ import org.raml.v2.suggester.Suggestion;
 public class ObjectListRule extends Rule
 {
 
-    private ObjectRule rule;
+    private Rule rule;
 
-    public ObjectListRule(ObjectRule rule)
+    public ObjectListRule(Rule rule)
     {
         this.rule = rule;
     }

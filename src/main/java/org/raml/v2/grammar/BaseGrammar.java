@@ -169,6 +169,13 @@ public class BaseGrammar
         return new AnyOfRule(Arrays.asList(rules));
     }
 
+    public AnyOfRule anyOf(String name, Rule... rules)
+    {
+        AnyOfRule rule = new AnyOfRule(Arrays.asList(rules));
+        context.registerRule(name, rule);
+        return rule;
+    }
+
     public AnyOfRule anyOf(List<Rule> rules)
     {
         return new AnyOfRule(rules);

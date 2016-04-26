@@ -78,8 +78,4 @@ public class PropertyNode extends KeyValueNodeImpl
         return this.getName() + ":" + this.getValue().get("type");
     }
 
-    public boolean isArray()
-    {
-        return true;
-    }
 }

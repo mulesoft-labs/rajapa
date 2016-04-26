@@ -314,7 +314,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
         return regex(MIME_TYPE_REGEX);
     }
 
-    protected abstract ObjectRule mimeType();
+    protected abstract Rule mimeType();
 
     protected Rule parameters()
     {

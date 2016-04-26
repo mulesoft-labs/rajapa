@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.raml.v2.grammar.rule.AllOfRule;
 import org.raml.v2.grammar.rule.AnyOfRule;
-import org.raml.v2.grammar.rule.ArrayRule;
 import org.raml.v2.grammar.rule.BooleanTypeRule;
 import org.raml.v2.grammar.rule.DateValueRule;
 import org.raml.v2.grammar.rule.DivisorValueRule;
@@ -43,6 +42,7 @@ import org.raml.v2.grammar.rule.Rule;
 import org.raml.v2.grammar.rule.StringTypeRule;
 import org.raml.v2.grammar.rule.StringValueRule;
 import org.raml.v2.impl.commons.nodes.PropertyNode;
+import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
@@ -50,6 +50,7 @@ import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.TypeNodeVisitor;
+import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
 
 
 public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
@@ -89,12 +90,36 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
     {
         if (objectTypeNode.isArray())
         {
-            return new ObjectListRule(getPropertiesRules(objectTypeNode.getProperties()));
+            return new ObjectListRule(getInheritanceRules(objectTypeNode));
         }
         else
         {
-            return getPropertiesRules(objectTypeNode.getProperties());
+            return getInheritanceRules(objectTypeNode);
         }
+    }
+
+    public Rule getInheritanceRules(ObjectTypeNode objectTypeNode)
+    {
+        List<Rule> rules = Lists.newArrayList();
+        if (!objectTypeNode.getInheritedProperties().isEmpty())
+        {
+            for (InheritedPropertiesInjectedNode inheritedProperties : objectTypeNode.getInheritedProperties())
+            {
+                rules.add(getPropertiesRules(inheritedProperties.getProperties()));
+            }
+        }
+        else if (objectTypeNode.get("items") instanceof UnionTypeNode && !((UnionTypeNode) objectTypeNode.get("items")).getInheritedProperties().isEmpty())
+        {
+            for (InheritedPropertiesInjectedNode inheritedProperties : ((UnionTypeNode) objectTypeNode.get("items")).getInheritedProperties())
+            {
+                rules.add(getPropertiesRules(inheritedProperties.getProperties()));
+            }
+        }
+        if (!rules.isEmpty())
+        {
+            return new AnyOfRule(rules);
+        }
+        return getPropertiesRules(objectTypeNode.getProperties());
     }
 
     private ObjectRule getPropertiesRules(List<PropertyNode> properties)

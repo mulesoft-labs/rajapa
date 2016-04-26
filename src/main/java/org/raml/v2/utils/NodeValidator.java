@@ -23,7 +23,6 @@ import org.raml.v2.grammar.rule.AnyOfRule;
 import org.raml.v2.grammar.rule.JsonSchemaValidationRule;
 import org.raml.v2.grammar.rule.Rule;
 import org.raml.v2.grammar.rule.XmlSchemaValidationRule;
-import org.raml.v2.impl.commons.model.BuiltInScalarType;
 import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.PayloadNode;
@@ -36,6 +35,7 @@ import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.SchemaNodeImpl;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
 import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
@@ -52,27 +52,26 @@ public class NodeValidator
         this.actualPath = actualPath;
     }
 
-    public PayloadValidationResultNode validatePayload(Node types, String type, String payload)
+    public PayloadValidationResultNode validatePayload(Node type, String payload)
     {
         PayloadValidationResultNode payloadValidationResultNode = new PayloadValidationResultNode(new PayloadNode(type, payload));
-        this.validatePayload(types, payloadValidationResultNode);
+        this.validatePayload(payloadValidationResultNode);
         return payloadValidationResultNode;
     }
 
-    private void validatePayload(Node types, PayloadValidationResultNode payload)
+    private void validatePayload(PayloadValidationResultNode payload)
     {
         if (payload.getValue() instanceof PayloadNode)
         {
-            this.validateExample(types, (PayloadNode) payload.getValue());
+            this.validateExample((PayloadNode) payload.getValue());
         }
     }
 
-    public void validateExample(Node tree, ExampleTypeNode example)
+    public void validateExample(ExampleTypeNode example)
     {
-        String typeName = example.getTypeName();
-        if (tree != null && !BuiltInScalarType.isBuiltInScalarType(typeName) && !isBuiltInTypeAlias(typeName, tree))
+        if (example.getTypeNode() instanceof ObjectTypeNode)
         {
-            validateType(tree, example, typeName);
+            validateType(example);
         }
         else
         {
@@ -80,19 +79,16 @@ public class NodeValidator
         }
     }
 
-    private void validateType(Node tree, ExampleTypeNode example, String typeName)
+    private void validateType(ExampleTypeNode example)
     {
-        ObjectTypeNode type;
-        Rule rule;
-        type = (ObjectTypeNode) NodeUtils.getType(typeName, tree);
-        Node transform = null;
+
+        ObjectTypeNode type = (ObjectTypeNode) example.getTypeNode();
         if (type != null)
         {
             Node schemaType = type.get("type");
-            rule = getVisitRule(example, type, schemaType);
-            transform = validateWithRule(example, rule);
+            Rule rule = getVisitRule(example, type, schemaType);
+            replaceWithError(example, validateWithRule(example, rule));
         }
-        replaceWithError(example, transform);
     }
 
     private Node validateWithRule(ExampleTypeNode example, Rule rule)
@@ -197,10 +193,6 @@ public class NodeValidator
             {
                 exampleValue = childExample;
             }
-            else if (childExample instanceof StringNode)
-            {
-                exampleValue = childExample;
-            }
             else
             {
                 break;
@@ -233,14 +225,6 @@ public class NodeValidator
             {
                 exampleValue = ((KeyValueNodeImpl) childExample).getValue();
             }
-            else if (childExample instanceof ObjectNode)
-            {
-                exampleValue = childExample;
-            }
-            else if (childExample instanceof StringNode)
-            {
-                exampleValue = childExample;
-            }
             else
             {
                 break;
@@ -257,21 +241,11 @@ public class NodeValidator
         {
             return ((SYIncludeNode) schemaType.getSource()).getIncludedType();
         }
-        return null;
-    }
-
-    private boolean isBuiltInTypeAlias(String typeName, Node tree)
-    {
-        if (tree != null)
+        else if (schemaType instanceof SchemaNodeImpl)
         {
-            Node type = NodeUtils.getType(typeName, tree);
-            if (type != null && type.get("type") != null && type.get("type") instanceof StringNode)
-            {
-                String objectType = ((StringNode) type.get("type")).getValue();
-                return BuiltInScalarType.isBuiltInScalarType(objectType);
-            }
+            return ((SchemaNodeImpl) schemaType).getTypeReference();
         }
-        return false;
+        return null;
     }
 
     private List<Rule> getInheritanceRules(ExampleTypeNode example, ObjectTypeNode type)

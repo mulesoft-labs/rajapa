@@ -44,7 +44,7 @@ public class ExampleValidationPhase implements Phase
         NodeValidator validator = new NodeValidator(this.resourceLoader, this.actualPath);
         for (ExampleTypeNode example : examples)
         {
-            validator.validateExample(tree, example);
+            validator.validateExample(example);
         }
         return tree;
     }
