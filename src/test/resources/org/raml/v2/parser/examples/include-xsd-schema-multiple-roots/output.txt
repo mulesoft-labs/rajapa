@@ -10,7 +10,7 @@ RamlDocumentNode (Start: 11 , End: 327, Source: SYObjectNode)
                 UnionTypeNode (Start: 55 , End: 327, Source: SYObjectNode)
                     KeyValueNodeImpl (Start: 55 , End: 85)
                         SYStringNode: "type" (Start: 55 , End: 59)
-                        StringNodeImpl: "<?xml version="1.0"?>
+                        SchemaNodeImpl: "<?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
     <xs:element name="User" type="UserType"/>
     <xs:element name="Animal" type="AnimalType"/>
@@ -26,7 +26,7 @@ RamlDocumentNode (Start: 11 , End: 327, Source: SYObjectNode)
             <xs:element type="xs:string" name="specie"/>
         </xs:sequence>
     </xs:complexType>
-</xs:schema>" (Start: 61 , End: 85, Source: SYIncludeNode)
+</xs:schema>" (Start: 61 , End: 85, Source: StringNodeImpl)
                     KeyValueNodeImpl (Start: 90 , End: 327)
                         SYStringNode: "examples" (Start: 90 , End: 98)
                         MultipleExampleTypeNode (Start: 106 , End: 327, Source: SYObjectNode)

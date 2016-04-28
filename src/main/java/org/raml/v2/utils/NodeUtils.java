@@ -70,29 +70,9 @@ public class NodeUtils
         return typesRoot instanceof ObjectNode ? (ObjectNode) typesRoot : null;
     }
 
-    public static boolean isSchemaType(final Node node)
-    {
-        return isJsonSchemaNode(node) || isXmlSchemaNode(node);
-    }
-
     public static boolean isStringNode(Node node)
     {
         return node != null && node instanceof StringNode;
-    }
-
-    public static boolean isJsonSchemaNode(Node node)
-    {
-        return isStringNode(node) && nodeStartsWith((StringNode) node, "{");
-    }
-
-    public static boolean isXmlSchemaNode(Node node)
-    {
-        return isStringNode(node) && nodeStartsWith((StringNode) node, "<");
-    }
-
-    private static boolean nodeStartsWith(StringNode node, String prefix)
-    {
-        return node.getValue().startsWith(prefix);
     }
 
     public static boolean isErrorResult(Node node)

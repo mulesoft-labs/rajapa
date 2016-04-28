@@ -22,18 +22,31 @@ public class SchemaNodeImpl extends StringNodeImpl
 
     private String typeReference;
 
-    public SchemaNodeImpl(String value)
+    private String schemaPath;
+
+    public SchemaNodeImpl(String value, String schemaPath)
     {
         super(value);
+        this.schemaPath = schemaPath;
     }
 
-    public SchemaNodeImpl(StringNodeImpl node)
+    public SchemaNodeImpl(StringNodeImpl node, String schemaPath)
     {
         super(node);
         if (node.getSource() instanceof SYIncludeNode)
         {
             this.typeReference = ((SYIncludeNode) node.getSource()).getIncludedType();
         }
+        else if (node instanceof SchemaNodeImpl)
+        {
+            this.typeReference = ((SchemaNodeImpl) node).getTypeReference();
+        }
+        this.schemaPath = schemaPath;
+    }
+
+    public String getSchemaPath()
+    {
+        return schemaPath;
     }
 
     public String getTypeReference()

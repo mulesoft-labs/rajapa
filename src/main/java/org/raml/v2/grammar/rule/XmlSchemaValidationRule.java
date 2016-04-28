@@ -32,9 +32,11 @@ import org.raml.v2.loader.ResourceLoader;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.SchemaNodeImpl;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.utils.SchemaGenerator;
 import org.xml.sax.SAXException;
 
 public class XmlSchemaValidationRule extends Rule
@@ -43,14 +45,12 @@ public class XmlSchemaValidationRule extends Rule
     private Schema schema;
     private String type;
 
-    public XmlSchemaValidationRule(String schema, ResourceLoader resourceLoader, String actualPath, String type)
+    public XmlSchemaValidationRule(Node schemaNode, ResourceLoader resourceLoader)
     {
         try
         {
-            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            factory.setResourceResolver(new XsdResourceResolver(resourceLoader, actualPath));
-            this.schema = factory.newSchema(new StreamSource(new StringReader(schema)));
-            this.type = type;
+            this.schema = new SchemaGenerator(resourceLoader).generateXmlSchema(schemaNode);
+            this.type = ((SchemaNodeImpl) schemaNode).getTypeReference();
         }
         catch (SAXException e)
         {

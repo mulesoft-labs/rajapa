@@ -15,6 +15,8 @@
  */
 package org.raml.v2.impl.v10.phase;
 
+import static org.raml.v2.utils.SchemaGenerator.*;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -36,9 +38,22 @@ import org.raml.v2.nodes.snakeyaml.SYObjectNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
 import org.raml.v2.phase.Transformer;
 import org.raml.v2.utils.NodeUtils;
+import org.raml.v2.utils.SchemaGenerator;
 
 public class TypesTransformer implements Transformer
 {
+
+    private String actualPath;
+
+    public TypesTransformer(String actualPath)
+    {
+        this.actualPath = actualPath;
+    }
+
+    public TypesTransformer()
+    {
+    }
+
 
     @Override
     public boolean matches(Node node)
@@ -49,7 +64,11 @@ public class TypesTransformer implements Transformer
     @Override
     public Node transform(Node node)
     {
-        if (node instanceof UnionTypeNode)
+        if (node instanceof StringNode && SchemaGenerator.isSchemaNode(node))
+        {
+            SchemaGenerator.wrapNode(node, actualPath);
+        }
+        else if (node instanceof UnionTypeNode)
         {
             transformUnionTypeProperties(node);
         }
@@ -57,6 +76,7 @@ public class TypesTransformer implements Transformer
         {
             transformObjectTypeProperties(node);
         }
+
         validateGeneratedProperties(node);
         return node;
     }
@@ -143,6 +163,11 @@ public class TypesTransformer implements Transformer
     {
 
         final StringNode typeNode = (StringNode) node.get("type");
+        if (SchemaGenerator.isSchemaNode(node))
+        {
+            SchemaGenerator.wrapNode(node, actualPath);
+            return;
+        }
         validateInheritedTypes(typeNode);
 
         final Node properties = node.get("properties");
@@ -169,6 +194,11 @@ public class TypesTransformer implements Transformer
             {
                 return;
             }
+            if (isSchemaNode(node.get("type")))
+            {
+                SchemaGenerator.wrapNode(node.get("type"), actualPath);
+                return;
+            }
 
             final TypeNode parentTypeNodeGeneral = NodeUtils.getType(trimmedType, typeNode);
             if (parentTypeNodeGeneral instanceof ObjectTypeNode)
@@ -183,10 +213,11 @@ public class TypesTransformer implements Transformer
                 {
                     ((ObjectTypeNode) node).setInheritedProperties(parentTypeNode.getInheritedProperties());
                 }
-                else if (NodeUtils.isSchemaType(parentTypeNode.get("type")))
+                else if (isSchemaNode(parentTypeNode.get("type")))
                 {
-                    SchemaNodeImpl schemaNode = new SchemaNodeImpl((StringNodeImpl) parentTypeNode.get("type"));
+                    SchemaNodeImpl schemaNode = new SchemaNodeImpl((StringNodeImpl) parentTypeNode.get("type"), actualPath);
                     node.get("type").replaceWith(schemaNode);
+                    return;
                 }
             }
         }
@@ -196,7 +227,7 @@ public class TypesTransformer implements Transformer
     {
         if (typeNode != null)
         {
-            if (isCustomRamlType(typeNode))
+            if (isCustomRamlType(typeNode) && !SchemaGenerator.isSchemaNode(typeNode))
             {
                 for (final String type : typeNode.getValue().split("\\|"))
                 {
@@ -215,7 +246,7 @@ public class TypesTransformer implements Transformer
     private boolean isCustomRamlType(StringNode typeNode)
     {
         final String typeNodeValue = typeNode.getValue();
-        return !BuiltInScalarType.isBuiltInScalarType(typeNodeValue) && !typeNodeValue.equals("array") && !typeNodeValue.equals("object") && !NodeUtils.isSchemaType(typeNode);
+        return !BuiltInScalarType.isBuiltInScalarType(typeNodeValue) && !typeNodeValue.equals("array") && !typeNodeValue.equals("object") && !isSchemaNode(typeNode);
     }
 
     private void addProperties(Node properties, List<PropertyNode> unionProperties)

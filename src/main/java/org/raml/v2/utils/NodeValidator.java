@@ -141,7 +141,7 @@ public class NodeValidator
     private Rule getVisitRule(ExampleTypeNode example, ObjectTypeNode type, Node schemaType)
     {
         Rule rule = null;
-        if (NodeUtils.isSchemaType(schemaType))
+        if (SchemaGenerator.isSchemaNode(schemaType))
         {
             rule = getRuleForSchema(schemaType, rule);
         }
@@ -167,14 +167,13 @@ public class NodeValidator
 
     private Rule getRuleForSchema(Node schemaType, Rule rule)
     {
-        String value = ((StringNode) schemaType).getValue();
-        if (NodeUtils.isJsonSchemaNode(schemaType))
+        if (SchemaGenerator.isJsonSchemaNode(schemaType))
         {
-            rule = new JsonSchemaValidationRule(value, getIncludedType(schemaType));
+            rule = new JsonSchemaValidationRule(schemaType);
         }
-        else if (NodeUtils.isXmlSchemaNode(schemaType))
+        else if (SchemaGenerator.isXmlSchemaNode(schemaType))
         {
-            rule = new XmlSchemaValidationRule(value, resourceLoader, actualPath, getIncludedType(schemaType));
+            rule = new XmlSchemaValidationRule(schemaType, resourceLoader);
         }
         return rule;
     }
@@ -233,19 +232,6 @@ public class NodeValidator
             transform = rule.apply(exampleValue);
             exampleValue.replaceWith(transform);
         }
-    }
-
-    private String getIncludedType(Node schemaType)
-    {
-        if (schemaType.getSource() != null && schemaType.getSource() instanceof SYIncludeNode)
-        {
-            return ((SYIncludeNode) schemaType.getSource()).getIncludedType();
-        }
-        else if (schemaType instanceof SchemaNodeImpl)
-        {
-            return ((SchemaNodeImpl) schemaType).getTypeReference();
-        }
-        return null;
     }
 
     private List<Rule> getInheritanceRules(ExampleTypeNode example, ObjectTypeNode type)

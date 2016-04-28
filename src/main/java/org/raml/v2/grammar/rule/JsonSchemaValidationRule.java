@@ -34,30 +34,23 @@ import javax.annotation.Nonnull;
 import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.SchemaNodeImpl;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.SYObjectNode;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.utils.SchemaGenerator;
 
 public class JsonSchemaValidationRule extends Rule
 {
 
     private JsonSchema schema;
 
-    public JsonSchemaValidationRule(String schema, String type)
+    public JsonSchemaValidationRule(Node schemaNode)
     {
         try
         {
-            JsonNode jsonSchema = JsonLoader.fromString(schema);
-            JsonSchemaFactory factory = JsonSchemaFactory.newBuilder().freeze();
-            if (type != null)
-            {
-                this.schema = factory.getJsonSchema(jsonSchema, "/definitions/" + type);
-            }
-            else
-            {
-                this.schema = factory.getJsonSchema(jsonSchema);
-            }
+            this.schema = new SchemaGenerator().generateJsonSchema(schemaNode);
         }
         catch (Exception e)
         {

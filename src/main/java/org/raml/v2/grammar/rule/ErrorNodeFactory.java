@@ -159,6 +159,11 @@ public class ErrorNodeFactory
         return new ErrorNode("Error validating XML. Error: " + error);
     }
 
+    public static Node createInvalidSchemaNode(String error)
+    {
+        return new ErrorNode("Error validating Schema. Error: " + error);
+    }
+
     public static ErrorNode createInexistentType(String typeName)
     {
         return new ErrorNode("Inexistent type definition for " + typeName);

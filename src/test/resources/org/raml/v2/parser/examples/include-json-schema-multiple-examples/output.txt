@@ -10,7 +10,7 @@ RamlDocumentNode (Start: 11 , End: 255, Source: SYObjectNode)
                 UnionTypeNode (Start: 55 , End: 255, Source: SYObjectNode)
                     KeyValueNodeImpl (Start: 55 , End: 79)
                         SYStringNode: "type" (Start: 55 , End: 59)
-                        StringNodeImpl: "{
+                        SchemaNodeImpl: "{
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://jsonschema.net",
   "type": "object",
@@ -28,7 +28,7 @@ RamlDocumentNode (Start: 11 , End: 255, Source: SYObjectNode)
     "name",
     "age"
   ]
-}" (Start: 61 , End: 79, Source: SYIncludeNode)
+}" (Start: 61 , End: 79, Source: StringNodeImpl)
                     KeyValueNodeImpl (Start: 84 , End: 255)
                         SYStringNode: "examples" (Start: 84 , End: 92)
                         MultipleExampleTypeNode (Start: 100 , End: 255, Source: SYObjectNode)
