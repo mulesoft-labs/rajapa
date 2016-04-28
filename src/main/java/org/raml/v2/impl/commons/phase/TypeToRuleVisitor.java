@@ -110,14 +110,14 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
         }
         else if (objectTypeNode.get("items") instanceof ObjectTypeNode)
         {
-            if(!((ObjectTypeNode) objectTypeNode.get("items")).getInheritedProperties().isEmpty())
+            if (!((ObjectTypeNode) objectTypeNode.get("items")).getInheritedProperties().isEmpty())
             {
                 for (InheritedPropertiesInjectedNode inheritedProperties : ((ObjectTypeNode) objectTypeNode.get("items")).getInheritedProperties())
                 {
                     rules.add(getPropertiesRules(inheritedProperties.getProperties()));
                 }
             }
-            else if(!((ObjectTypeNode) objectTypeNode.get("items")).getProperties().isEmpty())
+            else if (!((ObjectTypeNode) objectTypeNode.get("items")).getProperties().isEmpty())
             {
                 rules.add(getPropertiesRules(((ObjectTypeNode) objectTypeNode.get("items")).getProperties()));
             }
