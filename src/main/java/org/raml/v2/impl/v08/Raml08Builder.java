@@ -19,6 +19,7 @@ import org.raml.v2.impl.commons.phase.IncludeResolver;
 import org.raml.v2.impl.commons.phase.ResourceTypesTraitsTransformer;
 import org.raml.v2.impl.commons.phase.StringTemplateExpressionTransformer;
 import org.raml.v2.impl.v10.phase.TypesTransformer;
+import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.phase.GrammarPhase;
 import org.raml.v2.impl.v08.grammar.Raml08Grammar;
 import org.raml.v2.loader.ResourceLoader;
@@ -44,6 +45,11 @@ public class Raml08Builder
             {
                 Phase phase = phases.get(i);
                 rootNode = phase.apply(rootNode);
+                List<ErrorNode> errorNodes = rootNode.findDescendantsWith(ErrorNode.class);
+                if (!errorNodes.isEmpty())
+                {
+                    return rootNode;
+                }
             }
         }
         return rootNode;
@@ -58,13 +64,14 @@ public class Raml08Builder
         // Overlays and extensions.
 
         // Runs Schema. Applies the Raml rules and changes each node for a more specific. Annotations Library TypeSystem
-        final GrammarPhase second = new GrammarPhase(new Raml08Grammar().raml());
+        Raml08Grammar raml08Grammar = new Raml08Grammar();
+        final GrammarPhase second = new GrammarPhase(raml08Grammar.raml());
         // Detect invalid references. Library resourceTypes and Traits. This point the nodes are good enough for Editors.
 
         // Normalize resources and detects duplicated ones and more than one use of url parameters. ???
 
         // Applies resourceTypes and Traits Library
-        final TransformationPhase third = new TransformationPhase(new ResourceTypesTraitsTransformer());
+        final TransformationPhase third = new TransformationPhase(new ResourceTypesTraitsTransformer(raml08Grammar));
 
         // Schema Types example validation
         return Arrays.asList(first, second, third);

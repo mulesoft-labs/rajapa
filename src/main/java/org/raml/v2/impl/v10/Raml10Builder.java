@@ -126,7 +126,8 @@ public class Raml10Builder
         final TransformationPhase first = new TransformationPhase(new IncludeResolver(resourceLoader, resourceLocation), new StringTemplateExpressionTransformer());
 
         // Runs Schema. Applies the Raml rules and changes each node for a more specific. Annotations Library TypeSystem
-        final GrammarPhase second = new GrammarPhase(fragment.getRule(new Raml10Grammar()));
+        Raml10Grammar raml10Grammar = new Raml10Grammar();
+        final GrammarPhase second = new GrammarPhase(fragment.getRule(raml10Grammar));
         // Detect invalid references. Library resourceTypes and Traits. This point the nodes are good enough for Editors.
 
         // sugar
@@ -134,7 +135,7 @@ public class Raml10Builder
         // Normalize resources and detects duplicated ones and more than one use of url parameters. ???
 
         // Applies resourceTypes and Traits Library
-        final TransformationPhase third = new TransformationPhase(new ResourceTypesTraitsTransformer(), new TypesTransformer());
+        final TransformationPhase third = new TransformationPhase(new ResourceTypesTraitsTransformer(raml10Grammar), new TypesTransformer());
 
         // Run grammar again to re-validate tree
         final Phase thirdAndAHalf = second;

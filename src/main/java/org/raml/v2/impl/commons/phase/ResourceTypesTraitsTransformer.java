@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.raml.v2.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.v2.impl.commons.nodes.BaseResourceTypeRefNode;
 import org.raml.v2.impl.commons.nodes.BaseTraitRefNode;
 import org.raml.v2.impl.commons.nodes.MethodNode;
@@ -34,7 +35,6 @@ import org.raml.v2.impl.commons.nodes.ResourceNode;
 import org.raml.v2.impl.commons.nodes.ResourceTypeNode;
 import org.raml.v2.impl.commons.nodes.StringTemplateNode;
 import org.raml.v2.impl.commons.nodes.TraitNode;
-import org.raml.v2.impl.v10.grammar.Raml10Grammar;
 import org.raml.v2.nodes.ExecutionContext;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
@@ -54,6 +54,12 @@ public class ResourceTypesTraitsTransformer implements Transformer
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private Set<ResourceNode> mergedResources = new HashSet<>();
+    private BaseRamlGrammar ramlGrammar;
+
+    public ResourceTypesTraitsTransformer(BaseRamlGrammar ramlGrammar)
+    {
+        this.ramlGrammar = ramlGrammar;
+    }
 
     @Override
     public boolean matches(Node node)
@@ -122,7 +128,7 @@ public class ResourceTypesTraitsTransformer implements Transformer
         resolveParameters(templateNode, parameters);
 
         // apply grammar phase to generate method nodes
-        GrammarPhase validatePhase = new GrammarPhase(new Raml10Grammar().resourceTypeParamsResolved());
+        GrammarPhase validatePhase = new GrammarPhase(ramlGrammar.resourceTypeParamsResolved());
         validatePhase.apply(templateNode.getValue());
 
         // apply traits
