@@ -32,6 +32,7 @@ import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.utils.JSonDumper;
+import org.raml.v2.utils.NodeUtils;
 
 public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {
@@ -101,7 +102,7 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
 
     public boolean isArrayExample()
     {
-        Node type = this.getParent().getParent().get("type");
+        Node type = NodeUtils.getType(this.getParent().getParent());
         return type instanceof StringNode && "array".equals(((StringNode) type).getValue());
     }
 

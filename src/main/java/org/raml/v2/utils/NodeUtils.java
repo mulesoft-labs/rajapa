@@ -75,6 +75,11 @@ public class NodeUtils
         return node != null && node instanceof StringNode;
     }
 
+    public static Node getType(Node node)
+    {
+        return node.get("type") != null ? node.get("type") : node.get("schema");
+    }
+
     public static boolean isErrorResult(Node node)
     {
         return node != null && (node instanceof ErrorNode || node.findDescendantsWith(ErrorNode.class).size() > 0);

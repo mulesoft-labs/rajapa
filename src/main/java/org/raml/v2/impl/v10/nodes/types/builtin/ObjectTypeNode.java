@@ -34,6 +34,8 @@ import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
 import org.raml.v2.utils.NodeUtils;
 
+import static org.raml.v2.utils.NodeUtils.getType;
+
 public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {
 
@@ -60,11 +62,10 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
         {
             properties = this.get("properties").getChildren();
         }
-        else if (this.get("type") != null &&
-                 this.get("type") instanceof StringNode)
+        else if (NodeUtils.getType(this) instanceof StringNode)
         {
             String typeName;
-            if ("array".equals(((StringNode) this.get("type")).getValue()) &&
+            if ("array".equals(((StringNode) NodeUtils.getType(this)).getValue()) &&
                 this.get("items") != null &&
                 this.get("items") instanceof UnionTypeNode)
             {
@@ -72,7 +73,7 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
             }
             else
             {
-                typeName = ((StringNode) this.get("type")).getValue();
+                typeName = ((StringNode) NodeUtils.getType(this)).getValue();
             }
             Node type = NodeUtils.getType(typeName, this);
             if (type != null)
@@ -124,7 +125,7 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
 
     public boolean isArray()
     {
-        return this.get("type") != null && this.get("type") instanceof StringNode && "array".equals(((StringNode) this.get("type")).getValue());
+        return NodeUtils.getType(this) instanceof StringNode && "array".equals(((StringNode) NodeUtils.getType(this)).getValue());
     }
 
     public Integer getMinProperties()

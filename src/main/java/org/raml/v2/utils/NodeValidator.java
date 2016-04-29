@@ -85,7 +85,7 @@ public class NodeValidator
         ObjectTypeNode type = (ObjectTypeNode) example.getTypeNode();
         if (type != null)
         {
-            Node schemaType = type.get("type");
+            Node schemaType = NodeUtils.getType(type);
             Rule rule = getVisitRule(example, type, schemaType);
             replaceWithError(example, validateWithRule(example, rule));
         }

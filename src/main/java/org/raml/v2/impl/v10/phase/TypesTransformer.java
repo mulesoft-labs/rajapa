@@ -15,6 +15,7 @@
  */
 package org.raml.v2.impl.v10.phase;
 
+import static org.raml.v2.utils.NodeUtils.*;
 import static org.raml.v2.utils.SchemaGenerator.*;
 
 import com.google.common.collect.Lists;
@@ -72,7 +73,7 @@ public class TypesTransformer implements Transformer
         {
             transformUnionTypeProperties(node);
         }
-        else if (node instanceof ObjectTypeNode && node.get("type") instanceof SYArrayNode)
+        else if (node instanceof ObjectTypeNode && getType(node) instanceof SYArrayNode)
         {
             transformObjectTypeProperties(node);
         }
@@ -120,7 +121,7 @@ public class TypesTransformer implements Transformer
     private void transformObjectTypeProperties(Node node)
     {
         Node properties = node.get("properties");
-        final SYArrayNode typesNode = (SYArrayNode) node.get("type");
+        final SYArrayNode typesNode = (SYArrayNode) getType(node);
         if (typesNode != null)
         {
             Set<List<String>> typeCombinations = validateAndGetPossibleTypes(typesNode);
@@ -138,7 +139,7 @@ public class TypesTransformer implements Transformer
 
     private Node processType(Node originalProperties, Node context, String objectType)
     {
-        TypeNode typeNode = NodeUtils.getType(objectType, context);
+        TypeNode typeNode = getType(objectType, context);
 
         if (typeNode instanceof ObjectTypeNode)
         {
@@ -162,7 +163,7 @@ public class TypesTransformer implements Transformer
     private void transformUnionTypeProperties(Node node)
     {
 
-        final StringNode typeNode = (StringNode) node.get("type");
+        final StringNode typeNode = (StringNode) getType(node);
         if (SchemaGenerator.isSchemaNode(node))
         {
             SchemaGenerator.wrapNode(node, actualPath);
@@ -187,20 +188,20 @@ public class TypesTransformer implements Transformer
                 }
             }
         }
-        else if (node.get("type") != null && node.get("type") instanceof StringNode)
+        else if (getType(node) instanceof StringNode)
         {
-            String trimmedType = StringUtils.trim(((StringNode) node.get("type")).getValue());
+            String trimmedType = StringUtils.trim(((StringNode) getType(node)).getValue());
             if ("array".equals(trimmedType))
             {
                 return;
             }
-            if (isSchemaNode(node.get("type")))
+            if (isSchemaNode(getType(node)))
             {
-                SchemaGenerator.wrapNode(node.get("type"), actualPath);
+                SchemaGenerator.wrapNode(getType(node), actualPath);
                 return;
             }
 
-            final TypeNode parentTypeNodeGeneral = NodeUtils.getType(trimmedType, typeNode);
+            final TypeNode parentTypeNodeGeneral = getType(trimmedType, typeNode);
             if (parentTypeNodeGeneral instanceof ObjectTypeNode)
             {
                 final ObjectTypeNode parentTypeNode = (ObjectTypeNode) parentTypeNodeGeneral;
@@ -213,10 +214,10 @@ public class TypesTransformer implements Transformer
                 {
                     ((ObjectTypeNode) node).setInheritedProperties(parentTypeNode.getInheritedProperties());
                 }
-                else if (isSchemaNode(parentTypeNode.get("type")))
+                else if (isSchemaNode(getType(parentTypeNode)))
                 {
-                    SchemaNodeImpl schemaNode = new SchemaNodeImpl((StringNodeImpl) parentTypeNode.get("type"), actualPath);
-                    node.get("type").replaceWith(schemaNode);
+                    SchemaNodeImpl schemaNode = new SchemaNodeImpl((StringNodeImpl) getType(parentTypeNode), actualPath);
+                    getType(node).replaceWith(schemaNode);
                     return;
                 }
             }
@@ -232,7 +233,7 @@ public class TypesTransformer implements Transformer
                 for (final String type : typeNode.getValue().split("\\|"))
                 {
                     final String trimmedType = StringUtils.trim(type);
-                    final TypeNode parentTypeNode = NodeUtils.getType(trimmedType, typeNode);
+                    final TypeNode parentTypeNode = getType(trimmedType, typeNode);
                     if (parentTypeNode == null)
                     {
                         final Node errorNode = ErrorNodeFactory.createInexistentType(trimmedType);
@@ -283,7 +284,7 @@ public class TypesTransformer implements Transformer
                 {
                     final String objectType = StringUtils.trim(type);
 
-                    final TypeNode typeDefinition = NodeUtils.getType(objectType, typeNode);
+                    final TypeNode typeDefinition = getType(objectType, typeNode);
                     if (typeDefinition == null)
                     {
                         Node error = ErrorNodeFactory.createInexistentType(objectType);

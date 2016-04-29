@@ -32,6 +32,8 @@ import org.raml.v2.nodes.snakeyaml.SYNullNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
 import org.raml.v2.phase.Phase;
 
+import static org.raml.v2.utils.NodeUtils.getType;
+
 public class SugarRushPhase implements Phase
 {
 
@@ -202,7 +204,7 @@ public class SugarRushPhase implements Phase
 
     private boolean isTypeMissingInAnnotation(Node annotation)
     {
-        return (isKeyValueNode(annotation)) && (((KeyValueNode) annotation).getValue().get("type") == null);
+        return (isKeyValueNode(annotation) && getType(((KeyValueNode) annotation).getValue()) == null);
     }
 
     private boolean isValidTypeSystemObject(Node tree, StringNode sugarNode)
@@ -249,7 +251,7 @@ public class SugarRushPhase implements Phase
             if (isKeyValueNode(sugarNode.getParent()))
             {
                 KeyValueNode parentNode = ((KeyValueNode) sugarNode.getParent());
-                if (parentNode.getValue() instanceof StringNode && ((StringNode) parentNode.getValue()).getValue().equals(sugarNode.getValue()) && type.get("type") != null)
+                if (parentNode.getValue() instanceof StringNode && ((StringNode) parentNode.getValue()).getValue().equals(sugarNode.getValue()) && getType(type) != null)
                 {
                     return true;
                 }
@@ -282,7 +284,7 @@ public class SugarRushPhase implements Phase
 
     private boolean isTypePresentObject(Node sugarNode)
     {
-        return sugarNode.getParent().getParent().get("type") != null;
+        return getType(sugarNode.getParent().getParent()) != null;
     }
 
     private Node getSugarNode(String typeNode)

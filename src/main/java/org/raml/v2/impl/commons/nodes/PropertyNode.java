@@ -22,6 +22,7 @@ import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ReferenceNode;
 import org.raml.v2.nodes.StringNode;
+import org.raml.v2.utils.NodeUtils;
 
 public class PropertyNode extends KeyValueNodeImpl
 {
@@ -75,7 +76,7 @@ public class PropertyNode extends KeyValueNodeImpl
     @Override
     public String toString()
     {
-        return this.getName() + ":" + this.getValue().get("type");
+        return this.getName() + ":" + NodeUtils.getType(this.getValue());
     }
 
 }
