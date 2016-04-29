@@ -111,7 +111,7 @@ public class SchemaGenerator
 
     public static void wrapNode(Node node, String actualPath)
     {
-        SchemaNodeImpl schemaNode = new SchemaNodeImpl((StringNodeImpl) node, actualPath);
+        SchemaNodeImpl schemaNode = new SchemaNodeImpl((StringNode) node, actualPath);
         node.replaceWith(schemaNode);
     }
 }
