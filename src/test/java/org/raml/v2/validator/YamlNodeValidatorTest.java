@@ -23,31 +23,27 @@ import org.junit.Before;
 import org.junit.Test;
 import org.raml.v2.RamlBuilder;
 import org.raml.v2.impl.commons.nodes.PayloadValidationResultNode;
-import org.raml.v2.impl.commons.nodes.ResourceNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.utils.NodeValidator;
 
 public class YamlNodeValidatorTest
 {
+
     private NodeValidator nodeValidator;
-    private Node tree;
-    private Node type;
 
     @Before
     public void setUp() throws IOException
     {
         RamlBuilder builder = new RamlBuilder();
-        tree = builder.build(new File(this.getClass().getClassLoader().getResource("org/raml/v2/parser/examples/madness/input.raml").getPath()));
-        this.nodeValidator = new NodeValidator(builder.getResourceLoader());
-        this.type = tree.findDescendantsWith(ResourceNode.class).get(0).findDescendantsWith(UnionTypeNode.class).get(0);
+        RamlDocumentNode tree = (RamlDocumentNode) builder.build(new File(this.getClass().getClassLoader().getResource("org/raml/v2/parser/examples/madness/input.raml").getPath()));
+        this.nodeValidator = new NodeValidator(builder.getResourceLoader(), tree);
     }
 
     @Test
     public void testParsingFailure()
     {
         PayloadValidationResultNode validationNode =
-                this.nodeValidator.validatePayload(type, "{\"discriminator\":\"HasHome Parrot\", \"livesInside\": \"sometimes\", \"feathers\": \"colorful\"}");
+                this.nodeValidator.validatePayload("/send:post:body:application/json", "{\"discriminator\":\"HasHome Parrot\", \"livesInside\": \"sometimes\", \"feathers\": \"colorful\"}");
         Assert.assertFalse(validationNode.validationSucceeded());
     }
 
@@ -55,7 +51,7 @@ public class YamlNodeValidatorTest
     public void testParsingOk()
     {
         PayloadValidationResultNode validationNode =
-                this.nodeValidator.validatePayload(type, "{\"discriminator\":\"HasHome Parrot\", \"livesInside\": true, \"feathers\": \"blue\"}");
+                this.nodeValidator.validatePayload("/send:post:body:application/json", "{\"discriminator\":\"HasHome Parrot\", \"livesInside\": true, \"feathers\": \"blue\"}");
         Assert.assertTrue(validationNode.validationSucceeded());
     }
 }
