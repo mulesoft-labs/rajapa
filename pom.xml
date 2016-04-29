@@ -323,9 +323,9 @@
     </dependencies>
 
     <scm>
-        <connection>scm:git:git://github.com:raml-org/raml-java-parser-2.git</connection>
-        <developerConnection>scm:git:git@github.com:raml-org/raml-java-parser-2.git</developerConnection>
-        <url>http://github.com/raml-org/raml-java-parser-2</url>
+        <connection>scm:git:git://github.com:mulesoft-labs/rajapa.git</connection>
+        <developerConnection>scm:git:git@github.com:mulesoft-labs/rajapa.git</developerConnection>
+        <url>http://github.com/mulesoft-labs/rajapa</url>
         <tag>HEAD</tag>
     </scm>
 
