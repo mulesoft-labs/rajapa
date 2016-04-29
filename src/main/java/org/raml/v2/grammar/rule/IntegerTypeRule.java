@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import org.raml.v2.nodes.IntegerNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
+import org.raml.v2.nodes.StringNode;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.Suggestion;
 
@@ -67,10 +68,19 @@ public class IntegerTypeRule extends AbstractTypeRule
                 return true;
             }
         }
-        else
+        else if (node instanceof StringNode)
         {
-            return false;
+            try
+            {
+                Integer value = Integer.parseInt(((StringNode) node).getValue());
+                return range.contains(value);
+            }
+            catch (NumberFormatException ex)
+            {
+                return false;
+            }
         }
+        return false;
     }
 
     @Override
