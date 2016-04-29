@@ -26,6 +26,7 @@ import java.io.StringReader;
 import org.apache.commons.io.IOUtils;
 import org.raml.v2.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.impl.commons.RamlHeader;
+import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.impl.v08.Raml08Builder;
 import org.raml.v2.impl.v10.Raml10Builder;
 import org.raml.v2.loader.CompositeResourceLoader;
@@ -96,11 +97,20 @@ public class RamlBuilder
         {
             final String stringContent = IOUtils.toString(content);
             RamlHeader ramlHeader = RamlHeader.parse(stringContent);
+            Node result;
             if (RAML_10 == ramlHeader.getVersion())
             {
-                return new Raml10Builder().build(stringContent, ramlHeader.getFragment(), resourceLoader, resourceLocation, maxPhaseNumber);
+                result = new Raml10Builder().build(stringContent, ramlHeader.getFragment(), resourceLoader, resourceLocation, maxPhaseNumber);
             }
-            return new Raml08Builder().build(stringContent, resourceLoader, resourceLocation, maxPhaseNumber);
+            else
+            {
+                result = new Raml08Builder().build(stringContent, resourceLoader, resourceLocation, maxPhaseNumber);
+            }
+            if (result instanceof RamlDocumentNode)
+            {
+                ((RamlDocumentNode) result).setVersion(ramlHeader.getVersion());
+            }
+            return result;
         }
         catch (IOException ioe)
         {

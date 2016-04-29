@@ -17,6 +17,7 @@ package org.raml.v2.impl.commons.nodes;
 
 import javax.annotation.Nonnull;
 
+import org.raml.v2.impl.commons.RamlVersion;
 import org.raml.v2.nodes.AbstractRamlNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
@@ -24,6 +25,8 @@ import org.raml.v2.nodes.ObjectNode;
 
 public class RamlDocumentNode extends AbstractRamlNode implements ObjectNode
 {
+
+    private RamlVersion version;
 
     public RamlDocumentNode()
     {
@@ -45,5 +48,15 @@ public class RamlDocumentNode extends AbstractRamlNode implements ObjectNode
     public NodeType getType()
     {
         return NodeType.Object;
+    }
+
+    public void setVersion(RamlVersion version)
+    {
+        this.version = version;
+    }
+
+    public RamlVersion getVersion()
+    {
+        return version;
     }
 }
