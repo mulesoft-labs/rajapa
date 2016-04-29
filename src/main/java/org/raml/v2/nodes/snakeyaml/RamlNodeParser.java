@@ -28,6 +28,7 @@ import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.Node;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.Mark;
+import org.yaml.snakeyaml.parser.ParserException;
 import org.yaml.snakeyaml.scanner.ScannerException;
 
 public class RamlNodeParser
@@ -76,6 +77,14 @@ public class RamlNodeParser
             }
         }
         catch (final ScannerException e)
+        {
+            ErrorNode errorNode = new ErrorNode(e.getMessage());
+            Mark problemMark = e.getProblemMark();
+            errorNode.setStartPosition(new DefaultPosition(problemMark.getIndex(), problemMark.getLine(), 0, ""));
+            errorNode.setEndPosition(new DefaultPosition(problemMark.getIndex() + 1, problemMark.getLine(), problemMark.getColumn(), ""));
+            return errorNode;
+        }
+        catch (final ParserException e)
         {
             ErrorNode errorNode = new ErrorNode(e.getMessage());
             Mark problemMark = e.getProblemMark();
