@@ -19,11 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
+import org.raml.v2.impl.commons.nodes.PayloadValidationResultNode;
+import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.SimpleTypeNode;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.utils.NodeUtils;
+import org.raml.v2.utils.NodeValidator;
 
 public class TypeDeclaration extends BaseModelElement
 {
@@ -81,4 +85,17 @@ public class TypeDeclaration extends BaseModelElement
         }
         return result;
     }
+
+    public List<ValidationResult> validate(String payload)
+    {
+        NodeValidator validator = new NodeValidator(NodeUtils.getResourceLoader(node), null); // TODO actualPath should be calculated from the type node
+        PayloadValidationResultNode payloadValidationResultNode = validator.validatePayload(node.getValue(), payload);
+        List<ValidationResult> results = new ArrayList<>();
+        for (ErrorNode errorNode : payloadValidationResultNode.findDescendantsWith(ErrorNode.class))
+        {
+            results.add(new ValidationResult(errorNode.getErrorMessage()));
+        }
+        return results;
+    }
+
 }

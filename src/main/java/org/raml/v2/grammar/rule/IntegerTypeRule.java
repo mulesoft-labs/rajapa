@@ -59,21 +59,14 @@ public class IntegerTypeRule extends AbstractTypeRule
     {
         if (node instanceof IntegerNode)
         {
-            if (range != null)
-            {
-                return range.contains(((IntegerNode) node).getValue());
-            }
-            else
-            {
-                return true;
-            }
+            return range == null || range.contains(((IntegerNode) node).getValue());
         }
         else if (node instanceof StringNode)
         {
             try
             {
                 Integer value = Integer.parseInt(((StringNode) node).getValue());
-                return range.contains(value);
+                return range == null || range.contains(value);
             }
             catch (NumberFormatException ex)
             {

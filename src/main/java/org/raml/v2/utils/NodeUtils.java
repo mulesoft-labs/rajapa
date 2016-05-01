@@ -15,16 +15,17 @@
  */
 package org.raml.v2.utils;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.v2.loader.ResourceLoader;
 import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
-
-import javax.annotation.Nullable;
 
 public class NodeUtils
 {
@@ -155,5 +156,19 @@ public class NodeUtils
         {
             return getNodeContext(node.getParent());
         }
+    }
+
+    @Nonnull
+    public static ResourceLoader getResourceLoader(Node node)
+    {
+        while (node != null)
+        {
+            if (node instanceof RamlDocumentNode)
+            {
+                return ((RamlDocumentNode) node).getResourceLoader();
+            }
+            node = node.getParent();
+        }
+        throw new IllegalArgumentException("node does not belong to a raml document");
     }
 }

@@ -32,6 +32,7 @@ import org.raml.v2.model.v10.api.Api;
 import org.raml.v2.model.v10.api.DocumentationItem;
 import org.raml.v2.model.v10.bodies.Response;
 import org.raml.v2.model.v10.datamodel.TypeDeclaration;
+import org.raml.v2.model.common.ValidationResult;
 import org.raml.v2.model.v10.methods.Method;
 import org.raml.v2.model.v10.methods.Trait;
 import org.raml.v2.model.v10.resources.Resource;
@@ -143,9 +144,12 @@ public class SpecInterfacesV10TestCase
 
         TypeDeclaration appJson = body.get(0);
         assertThat(appJson.name(), is("application/json"));
-        assertThat(appJson.example().value(), containsString("\"firstname\": \"tato\""));
+        String jsonExample = appJson.example().value();
+        assertThat(jsonExample, containsString("\"firstname\": \"tato\""));
         assertThat(appJson.type().size(), is(1));
         assertThat(appJson.type().get(0), is("User"));
+        List<ValidationResult> validationResults = appJson.validate(jsonExample);
+        assertThat(validationResults.size(), is(0));
 
         TypeDeclaration appXml = body.get(1);
         assertThat(appXml.name(), is("application/xml"));
