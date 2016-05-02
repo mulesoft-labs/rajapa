@@ -1,0 +1,6 @@
+[ {
+  "label" : "RAML 1.0 Header",
+  "description" : "RAML 1.0 root file header",
+  "value" : "#%RAML 1.0",
+  "prefix" : ""
+} ]

@@ -19,6 +19,7 @@ package org.raml.v2;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -198,6 +199,12 @@ public class RamlSuggester
 
     private List<Suggestion> getSuggestionByColumn(RamlParsingContext context, String document, int offset, int location)
     {
+        if (document.isEmpty() && offset == -1)
+        {
+            final Suggestion ramlHeaderSuggestion = new DefaultSuggestion("#%RAML 1.0", "RAML 1.0 root file header", "RAML 1.0 Header");
+            return Arrays.asList(ramlHeaderSuggestion);
+        }
+
         // // I don't care column number unless is an empty new line
         int columnNumber = getColumnNumber(document, offset);
         final Node root = getRootNode(document, offset, location);
