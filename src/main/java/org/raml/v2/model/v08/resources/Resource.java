@@ -16,6 +16,9 @@
 package org.raml.v2.model.v08.resources;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
+
 import org.raml.v2.model.v08.common.RAMLLanguageElement;
 import org.raml.v2.model.v08.methods.Method;
 import org.raml.v2.model.v08.methods.TraitRef;
@@ -86,5 +89,8 @@ public interface Resource extends RAMLLanguageElement
      */
 
     String resourcePath();
+
+    @Nullable
+    Resource parentResource();
 
 }

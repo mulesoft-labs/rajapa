@@ -57,7 +57,7 @@ public class ResourceNode extends KeyValueNodeImpl
         return path;
     }
 
-    private ResourceNode getParentResourceNode()
+    public ResourceNode getParentResourceNode()
     {
         Node parent = getParent();
         if (parent != null && parent.getParent() instanceof ResourceNode)

@@ -93,4 +93,10 @@ public class Resource extends CommonAttributes
     // TODO
     // public List<Parameter> uriParametersV08();
 
+    public Resource parentResource()
+    {
+        ResourceNode parent = node.getParentResourceNode();
+        return parent != null ? new Resource(parent) : null;
+    }
+
 }

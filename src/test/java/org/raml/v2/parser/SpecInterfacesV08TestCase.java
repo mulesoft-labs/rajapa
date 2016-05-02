@@ -113,6 +113,7 @@ public class SpecInterfacesV08TestCase
         Resource child = children.get(0);
         assertThat(child.relativeUri().value(), is("/child"));
         assertThat(child.resourcePath(), is("/top/child"));
+        assertThat(child.parentResource().resourcePath(), is("/top"));
     }
 
     private void assertMethods(List<Method> methods)

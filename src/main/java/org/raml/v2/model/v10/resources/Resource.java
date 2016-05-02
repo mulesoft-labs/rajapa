@@ -16,6 +16,9 @@
 package org.raml.v2.model.v10.resources;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
+
 import org.raml.v2.model.v10.system.types.RelativeUriString;
 
 
@@ -45,4 +48,7 @@ public interface Resource extends ResourceBase
      */
 
     String resourcePath();
+
+    @Nullable
+    Resource parentResource();
 }
