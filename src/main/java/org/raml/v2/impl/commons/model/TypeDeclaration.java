@@ -88,7 +88,7 @@ public class TypeDeclaration extends BaseModelElement
 
     public List<ValidationResult> validate(String payload)
     {
-        NodeValidator validator = new NodeValidator(NodeUtils.getResourceLoader(node), null); // TODO actualPath should be calculated from the type node
+        NodeValidator validator = new NodeValidator(NodeUtils.getResourceLoader(node));
         PayloadValidationResultNode payloadValidationResultNode = validator.validatePayload(node.getValue(), payload);
         List<ValidationResult> results = new ArrayList<>();
         for (ErrorNode errorNode : payloadValidationResultNode.findDescendantsWith(ErrorNode.class))

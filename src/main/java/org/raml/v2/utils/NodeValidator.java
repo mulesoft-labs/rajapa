@@ -35,21 +35,17 @@ import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
-import org.raml.v2.nodes.SchemaNodeImpl;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
-import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
 
 public class NodeValidator
 {
 
     private ResourceLoader resourceLoader;
-    private final String actualPath;
 
-    public NodeValidator(ResourceLoader resourceLoader, String actualPath)
+    public NodeValidator(ResourceLoader resourceLoader)
     {
         this.resourceLoader = resourceLoader;
-        this.actualPath = actualPath;
     }
 
     public PayloadValidationResultNode validatePayload(Node type, String payload)
@@ -196,6 +192,16 @@ public class NodeValidator
             {
                 break;
             }
+            if (!(rule instanceof XmlSchemaValidationRule || rule instanceof JsonSchemaValidationRule) && exampleValue instanceof StringNode)
+            {
+                Node parsedExample = RamlNodeParser.parse(((StringNode) exampleValue).getValue());
+                Node exampleParent = exampleValue.getParent();
+                exampleParent.removeChild(exampleValue);
+                exampleParent.addChild(parsedExample);
+                parsedExample.setSource(exampleValue);
+                exampleValue = parsedExample;
+            }
+
             transform = rule.apply(exampleValue);
             exampleValue.replaceWith(transform);
         }

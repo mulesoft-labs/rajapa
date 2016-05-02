@@ -21,7 +21,6 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import com.github.fge.jsonschema.core.report.ProcessingMessage;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchema;
-import com.github.fge.jsonschema.main.JsonSchemaFactory;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
@@ -34,7 +33,6 @@ import javax.annotation.Nonnull;
 import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
-import org.raml.v2.nodes.SchemaNodeImpl;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.SYObjectNode;
 import org.raml.v2.suggester.RamlParsingContext;

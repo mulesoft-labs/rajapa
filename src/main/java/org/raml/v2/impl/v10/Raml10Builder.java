@@ -149,7 +149,7 @@ public class Raml10Builder
 
         final SchemaValidationPhase sixth = new SchemaValidationPhase(resourceLoader);
 
-        final ExampleValidationPhase seventh = new ExampleValidationPhase(resourceLoader, resourceLocation);
+        final ExampleValidationPhase seventh = new ExampleValidationPhase(resourceLoader);
 
         return Arrays.asList(first, sugar, second, third, thirdAndAHalf, fourth, fifth, sixth, seventh);
 

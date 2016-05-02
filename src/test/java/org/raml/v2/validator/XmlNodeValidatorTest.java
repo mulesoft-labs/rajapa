@@ -40,7 +40,7 @@ public class XmlNodeValidatorTest
     {
         RamlBuilder builder = new RamlBuilder();
         tree = builder.build(new File(this.getClass().getClassLoader().getResource("org/raml/v2/parser/examples/include-xsd-schema-nested/input.raml").getPath()));
-        this.nodeValidator = new NodeValidator(builder.getResourceLoader(), builder.getActualPath());
+        this.nodeValidator = new NodeValidator(builder.getResourceLoader());
         this.type = tree.findDescendantsWith(ResourceNode.class).get(0).findDescendantsWith(UnionTypeNode.class).get(0);
     }
 

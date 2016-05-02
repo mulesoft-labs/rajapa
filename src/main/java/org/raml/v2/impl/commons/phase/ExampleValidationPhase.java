@@ -28,20 +28,18 @@ public class ExampleValidationPhase implements Phase
 {
 
     private ResourceLoader resourceLoader;
-    private final String actualPath;
 
 
-    public ExampleValidationPhase(ResourceLoader resourceLoader, String actualPath)
+    public ExampleValidationPhase(ResourceLoader resourceLoader)
     {
         this.resourceLoader = resourceLoader;
-        this.actualPath = actualPath;
     }
 
     @Override
     public Node apply(Node tree)
     {
         final List<ExampleTypeNode> examples = tree.findDescendantsWith(ExampleTypeNode.class);
-        NodeValidator validator = new NodeValidator(this.resourceLoader, this.actualPath);
+        NodeValidator validator = new NodeValidator(this.resourceLoader);
         for (ExampleTypeNode example : examples)
         {
             validator.validateExample(example);
