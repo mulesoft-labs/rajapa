@@ -119,12 +119,8 @@ public class LeaguesV10TestCase
     {
         assertThat(uriParameters.size(), is(1));
         TypeDeclaration id = uriParameters.get(0);
-        List<ValidationResult> results = id.validate("acceptable");
-        assertThat(results.size(), is(0));
-
-        // TODO scalar validation not working
-        // results = id.validate("longer than twenty characters");
-        // assertThat(results.size(), is(1));
+        List<ValidationResult> results = id.validate("longer than twenty characters");
+        assertThat(results.size(), is(1));
 
     }
 
