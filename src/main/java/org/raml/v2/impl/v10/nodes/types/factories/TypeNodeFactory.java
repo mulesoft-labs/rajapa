@@ -27,6 +27,7 @@ import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.utils.NodeUtils;
 
 public class TypeNodeFactory implements NodeFactory
 {
@@ -35,7 +36,7 @@ public class TypeNodeFactory implements NodeFactory
     public Node create(Object... args)
     {
 
-        Node typeNode = NodeSelector.selectFrom("type", (Node) args[0]);
+        Node typeNode = NodeUtils.getType((Node) args[0]);
         if (typeNode instanceof SYArrayNode)
         {
             return new ObjectTypeNode();

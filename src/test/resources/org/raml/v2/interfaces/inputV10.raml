@@ -49,7 +49,12 @@ resourceTypes:
                         "age": 66
                     }
             application/xml:
-                schema: "some xsd schema"
+                schema: |
+                  <?xml version="1.0" encoding="utf-16"?>
+                  <xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                    <xsd:element name="first" type="xsd:string" />
+                    <xsd:element name="second" type="xsd:string" />
+                  </xsd:schema>
                 examples:
                     first: |
                         <first/>

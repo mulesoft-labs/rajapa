@@ -183,8 +183,19 @@ public class LeaguesV10TestCase
         TypeDeclaration appXml = body.get(1);
         assertThat(appXml.name(), is("text/xml"));
 
-        // TODO schema is not inlining the type & validation is broken
-        // assertThat(appXml.schema(), is("league-xml"));
+        assertThat(appXml.schema(), is("<?xml version=\"1.0\" encoding=\"UTF-16\" ?>\n" +
+                                       "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"\n" +
+                                       " elementFormDefault=\"qualified\" xmlns=\"http://mulesoft.com/schemas/soccer\"\n" +
+                                       " targetNamespace=\"http://mulesoft.com/schemas/soccer\">\n" +
+                                       "<xs:element name=\"league\">\n" +
+                                       "  <xs:complexType>\n" +
+                                       "    <xs:sequence>\n" +
+                                       "      <xs:element name=\"name\" type=\"xs:string\"/>\n" +
+                                       "      <xs:element name=\"description\" type=\"xs:string\" minOccurs=\"0\"/>\n" +
+                                       "    </xs:sequence>\n" +
+                                       "  </xs:complexType>\n" +
+                                       "</xs:element>\n" +
+                                       "</xs:schema>\n"));
 
         validationResults = appXml.validate("<leaguee xmlns=\"http://mulesoft.com/schemas/soccer\"><name>MLS</name></leaguee>");
         assertThat(validationResults.size(), is(1));

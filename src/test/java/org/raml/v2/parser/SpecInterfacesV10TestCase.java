@@ -155,6 +155,10 @@ public class SpecInterfacesV10TestCase
         assertThat(appXml.name(), is("application/xml"));
         assertThat(appXml.examples().size(), is(2));
         assertThat(appXml.examples().get(0).value(), is("<first/>\n"));
-        assertThat(appXml.schema(), is("some xsd schema"));
+        assertThat(appXml.schema(), is("<?xml version=\"1.0\" encoding=\"utf-16\"?>\n" +
+                                       "<xsd:schema attributeFormDefault=\"unqualified\" elementFormDefault=\"qualified\" version=\"1.0\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n" +
+                                       "  <xsd:element name=\"first\" type=\"xsd:string\" />\n" +
+                                       "  <xsd:element name=\"second\" type=\"xsd:string\" />\n" +
+                                       "</xsd:schema>\n"));
     }
 }

@@ -65,11 +65,7 @@ public class TypesTransformer implements Transformer
     @Override
     public Node transform(Node node)
     {
-        if (node instanceof StringNode && SchemaGenerator.isSchemaNode(node))
-        {
-            SchemaGenerator.wrapNode(node, actualPath);
-        }
-        else if (node instanceof UnionTypeNode)
+        if (node instanceof UnionTypeNode)
         {
             transformUnionTypeProperties(node);
         }
