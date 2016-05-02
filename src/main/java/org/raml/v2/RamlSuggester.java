@@ -26,6 +26,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.raml.v2.grammar.rule.Rule;
 import org.raml.v2.impl.commons.RamlHeader;
 import org.raml.v2.impl.commons.RamlVersion;
@@ -161,7 +162,7 @@ public class RamlSuggester
         Node node = searchNodeAt(root, location);
         if (node != null)
         {
-            // If is the key of a key value pair
+            // If it is the key of a key value pair
             if (node.getParent() instanceof KeyValueNode && node.getParent().getChildren().indexOf(node) == 0)
             {
                 node = node.getParent().getParent();
@@ -199,7 +200,7 @@ public class RamlSuggester
 
     private List<Suggestion> getSuggestionByColumn(RamlParsingContext context, String document, int offset, int location)
     {
-        if (document.isEmpty() && offset == -1)
+        if (StringUtils.isBlank(document) && offset == -1)
         {
             final Suggestion ramlHeaderSuggestion = new DefaultSuggestion("#%RAML 1.0", "RAML 1.0 root file header", "RAML 1.0 Header");
             return Arrays.asList(ramlHeaderSuggestion);
