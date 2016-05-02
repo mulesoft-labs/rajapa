@@ -20,7 +20,9 @@ import java.util.List;
 
 import org.raml.v2.impl.commons.nodes.MethodNode;
 import org.raml.v2.impl.commons.nodes.ResourceNode;
+import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
+import org.raml.v2.utils.NodeSelector;
 
 public class Resource extends CommonAttributes
 {
@@ -73,5 +75,22 @@ public class Resource extends CommonAttributes
         }
         return resultList;
     }
+
+    public List<TypeDeclaration> uriParameters()
+    {
+        ArrayList<TypeDeclaration> result = new ArrayList<>();
+        Node uriParamsNode = NodeSelector.selectFrom("uriParameters", node.getValue());
+        if (uriParamsNode != null)
+        {
+            for (Node child : uriParamsNode.getChildren())
+            {
+                result.add(new TypeDeclaration((KeyValueNode) child));
+            }
+        }
+        return result;
+    }
+
+    // TODO
+    // public List<Parameter> uriParametersV08();
 
 }

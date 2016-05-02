@@ -42,4 +42,9 @@ public class ResourceType extends CommonAttributes
     {
         return getStringValue("usage");
     }
+
+    public String name()
+    {
+        return node.getName();
+    }
 }
