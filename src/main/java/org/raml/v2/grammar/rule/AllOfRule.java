@@ -128,7 +128,7 @@ public class AllOfRule extends Rule
             final Rule innerRule = getMatchingRule(peek);
             if (innerRule != null)
             {
-                final List<Suggestion> suggestions = innerRule.getSuggestions(pathToRoot, context);
+                final List<Suggestion> suggestions = innerRule.getSuggestions(pathToRoot.subList(1, pathToRoot.size()), context);
                 if (suggestions.isEmpty())
                 {
                     return getSuggestions(peek, context);
