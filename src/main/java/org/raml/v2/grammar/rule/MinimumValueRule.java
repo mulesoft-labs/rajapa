@@ -25,6 +25,7 @@ import org.raml.v2.nodes.FloatingNode;
 import org.raml.v2.nodes.IntegerNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.SimpleTypeNode;
+import org.raml.v2.nodes.StringNode;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.Suggestion;
 
@@ -48,11 +49,20 @@ public class MinimumValueRule extends Rule
     @Override
     public boolean matches(@Nonnull Node node)
     {
-        if (node instanceof IntegerNode)
+        BigDecimal value = null;
+        if (node instanceof StringNode)
         {
-            return ((IntegerNode) node).getValue().compareTo(minimumValue.intValue()) >= 0;
+            value = new BigDecimal(((StringNode) node).getValue());
         }
-        return node instanceof FloatingNode && ((FloatingNode) node).getValue().compareTo(new BigDecimal(minimumValue.floatValue())) >= 0;
+        else if (node instanceof IntegerNode)
+        {
+            value = BigDecimal.valueOf(((IntegerNode) node).getValue());
+        }
+        else if (node instanceof FloatingNode)
+        {
+            value = ((FloatingNode) node).getValue();
+        }
+        return value != null && value.compareTo(new BigDecimal(minimumValue.floatValue())) >= 0;
     }
 
     @Override

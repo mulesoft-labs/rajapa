@@ -18,6 +18,7 @@ package org.raml.v2.impl.commons.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.raml.v2.impl.commons.model.builder.ModelUtils;
 import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.PayloadValidationResultNode;
 import org.raml.v2.nodes.ErrorNode;
@@ -29,7 +30,7 @@ import org.raml.v2.utils.NodeSelector;
 import org.raml.v2.utils.NodeUtils;
 import org.raml.v2.utils.NodeValidator;
 
-public class TypeDeclaration extends BaseModelElement
+public class TypeDeclaration extends CommonAttributes
 {
 
     private KeyValueNode node;
@@ -98,4 +99,15 @@ public class TypeDeclaration extends BaseModelElement
         return results;
     }
 
+    public Boolean required()
+    {
+        Boolean required = ModelUtils.getSimpleValue("required", getNode());
+        return required == null ? false : required;
+    }
+
+    public String defaultValue()
+    {
+        Object defaultValue = ModelUtils.getSimpleValue("default", getNode());
+        return defaultValue.toString();
+    }
 }

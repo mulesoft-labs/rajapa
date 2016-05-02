@@ -99,4 +99,36 @@ public class Method extends CommonAttributes
         }
         return null;
     }
+
+    public List<TypeDeclaration> queryParameters()
+    {
+        ArrayList<TypeDeclaration> result = new ArrayList<>();
+        Node queryParamsNode = NodeSelector.selectFrom("queryParameters", node.getValue());
+        if (queryParamsNode != null)
+        {
+            for (Node child : queryParamsNode.getChildren())
+            {
+                result.add(new TypeDeclaration((KeyValueNode) child));
+            }
+        }
+        return result;
+    }
+
+    public List<TypeDeclaration> headers()
+    {
+        ArrayList<TypeDeclaration> result = new ArrayList<>();
+        Node headersNode = NodeSelector.selectFrom("headers", node.getValue());
+        if (headersNode != null)
+        {
+            for (Node child : headersNode.getChildren())
+            {
+                result.add(new TypeDeclaration((KeyValueNode) child));
+            }
+        }
+        return result;
+    }
+
+    // TODO
+    // public List<Parameter> queryParametersV08();
+    // public List<Parameter> headersV08();
 }

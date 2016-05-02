@@ -15,6 +15,8 @@
  */
 package org.raml.v2.impl.commons.model.builder;
 
+import static org.raml.v2.impl.commons.model.builder.ModelUtils.isPrimitiveOrWrapperOrString;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -58,8 +60,7 @@ public class ModelBuilder
             Type genericReturnType = method.getGenericReturnType();
             Method delegateMethod = findMatchingMethod(method);
 
-            // primitive or string
-            if (returnType.isPrimitive() || String.class.isAssignableFrom(returnType))
+            if (isPrimitiveOrWrapperOrString(returnType))
             {
                 return delegateMethod.invoke(delegate, args);
             }
@@ -93,7 +94,7 @@ public class ModelBuilder
                 List<Object> returnList = new ArrayList<>();
                 List<?> result = (List<?>) delegateMethod.invoke(delegate, args);
                 Class<?> itemClass = (Class<?>) ((ParameterizedType) genericReturnType).getActualTypeArguments()[0];
-                if (itemClass.isPrimitive() || String.class.isAssignableFrom(itemClass))
+                if (isPrimitiveOrWrapperOrString(itemClass))
                 {
                     return result;
                 }

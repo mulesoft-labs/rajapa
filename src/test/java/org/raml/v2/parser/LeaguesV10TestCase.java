@@ -113,15 +113,41 @@ public class LeaguesV10TestCase
         assertThat(leagueId.resourcePath(), is("/leagues/{leagueId}"));
         assertUriParameters(leagueId.uriParameters());
 
+        Resource teams = leagueId.resources().get(1);
+        assertThat(teams.relativeUri().value(), is("/teams"));
+        Method getTeams = teams.methods().get(0);
+        assertQueryParameters(getTeams.queryParameters());
+        assertHeaders(getTeams.headers());
+    }
+
+    private void assertHeaders(List<TypeDeclaration> headers)
+    {
+        assertThat(headers.size(), is(1));
+        TypeDeclaration preferred = headers.get(0);
+        assertThat(preferred.displayName(), is("Preferred"));
+        assertThat(preferred.required(), is(false));
+        assertThat(preferred.defaultValue(), is("BCN"));
+    }
+
+    private void assertQueryParameters(List<TypeDeclaration> queryParameters)
+    {
+        assertThat(queryParameters.size(), is(2));
+        TypeDeclaration offset = queryParameters.get(0);
+        assertThat(offset.displayName(), is("Offset"));
+        assertThat(offset.required(), is(false));
+        assertThat(offset.defaultValue(), is("0"));
+        List<ValidationResult> results = offset.validate("3");
+        assertThat(results.size(), is(0));
     }
 
     private void assertUriParameters(List<TypeDeclaration> uriParameters)
     {
         assertThat(uriParameters.size(), is(1));
         TypeDeclaration id = uriParameters.get(0);
-        List<ValidationResult> results = id.validate("longer than twenty characters");
+        List<ValidationResult> results = id.validate("acceptable");
+        assertThat(results.size(), is(0));
+        results = id.validate("longer than twenty characters");
         assertThat(results.size(), is(1));
-
     }
 
     private void assertMethods(List<Method> methods)

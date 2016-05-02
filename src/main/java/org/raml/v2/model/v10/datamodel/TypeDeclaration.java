@@ -70,7 +70,9 @@ public interface TypeDeclaration extends Annotable
     /**
      * Provides default value for a property
      **/
-    Object defaultValue();
+    // TODO --def-system-bug--
+    // Object defaultValue();
+    String defaultValue();
 
 
     /**
