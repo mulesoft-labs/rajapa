@@ -15,6 +15,8 @@
  */
 package org.raml.v2.impl.commons.phase;
 
+import static org.raml.v2.utils.NodeUtils.getType;
+
 import java.util.List;
 
 import org.raml.v2.impl.commons.model.BuiltInScalarType;
@@ -25,14 +27,13 @@ import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.NullNode;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.StringNodeImpl;
 import org.raml.v2.nodes.snakeyaml.SYNullNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
 import org.raml.v2.phase.Phase;
-
-import static org.raml.v2.utils.NodeUtils.getType;
+import org.raml.v2.utils.NodeUtils;
 
 public class SugarRushPhase implements Phase
 {
@@ -64,7 +65,21 @@ public class SugarRushPhase implements Phase
             {
                 handleObjectArray(sugarNode);
             }
+            else if (isStringSugar(sugarNode))
+            {
+                setTypeString(sugarNode.getParent());
+            }
         }
+    }
+
+    private boolean isStringSugar(StringNode sugarNode)
+    {
+        Node ancestor = NodeUtils.getAncestor(sugarNode, 3);
+        Node parent = sugarNode.getParent();
+        return parent instanceof KeyValueNode && ((KeyValueNode) parent).getValue() instanceof NullNode &&
+               ancestor instanceof KeyValueNode && ((KeyValueNode) ancestor).getKey() instanceof StringNode &&
+               ("types".equals(((StringNode) (((KeyValueNode) ancestor).getKey())).getValue()) ||
+               "properties".equals(((StringNode) (((KeyValueNode) ancestor).getKey())).getValue()));
     }
 
     private void sweetenObjects(Node tree)
