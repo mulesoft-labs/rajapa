@@ -21,6 +21,8 @@ import com.google.common.collect.Sets;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.raml.v2.grammar.BaseGrammar;
 import org.raml.v2.grammar.ExclusiveSiblingRule;
 import org.raml.v2.grammar.rule.AnyOfRule;
@@ -202,10 +204,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     }
 
     // Traits
-    protected Rule traits()
-    {
-        return anyOf(array(trait()), trait());
-    }
+    protected abstract Rule traitsValue();
 
     public Rule trait()
     {
@@ -333,8 +332,10 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule securitySchemesField()
     {
-        return field(securitySchemesKey(), anyOf(array(securitySchemes()), securitySchemes()));
+        return field(securitySchemesKey(), securitySchemesValue());
     }
+
+    protected abstract Rule securitySchemesValue();
 
     protected StringValueRule securitySchemesKey()
     {
@@ -343,21 +344,28 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule schemasField()
     {
-        return field(schemasKey(), anyOf(array(schemas()), schemas()));
+        return field(schemasKey(), schemasValue());
     }
+
+    protected abstract Rule schemasValue();
 
     protected StringValueRule schemasKey()
     {
         return string("schemas")
-                                .description("Alias for the equivalent \"types\" property, for compatibility " +
-                                             "with RAML 0.8. Deprecated - API definitions should use the \"types\" property, " +
-                                             "as the \"schemas\" alias for that property name may be removed in a future RAML version. " +
-                                             "The \"types\" property allows for XML and JSON schemas.");
+                                .description(schemasDescription());
     }
+
+    @Nonnull
+    protected abstract String schemasDescription();
 
     protected KeyValueRule resourceTypesField()
     {
-        return field(resourceTypesKey(), anyOf(array(resourceTypes()), resourceTypes()));
+        return field(resourceTypesKey(), resourceTypesValue());
+    }
+
+    protected Rule resourceTypesValue()
+    {
+        return anyOf(array(resourceTypes()), resourceTypes());
     }
 
     protected StringValueRule resourceTypesKey()
@@ -367,7 +375,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule traitsField()
     {
-        return field(traitsKey(), traits());
+        return field(traitsKey(), traitsValue());
     }
 
     protected StringValueRule traitsKey()

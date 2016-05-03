@@ -3,7 +3,7 @@ title: Example API
 version: v1
 mediaType: application/json
 resourceTypes:
-  - collection:
+    collection:
       get:
         responses:
           200:
@@ -14,14 +14,14 @@ resourceTypes:
           200:
             body:
               type: <<resourcePathName | !singularize>>  # e.g. User
-  - member:
+    member:
       get:
         responses:
           200:
             body:
               type: <<resourcePathName>> # e.g. User
 traits:
-  - secured:
+    secured:
       description: Some requests require authentication
       queryParameters:
         <<methodName>>: # e.g. get:

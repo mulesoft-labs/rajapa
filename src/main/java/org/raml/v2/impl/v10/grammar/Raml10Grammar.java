@@ -15,9 +15,10 @@
  */
 package org.raml.v2.impl.v10.grammar;
 
+import javax.annotation.Nonnull;
+
 import org.raml.v2.grammar.rule.AnyOfRule;
 import org.raml.v2.grammar.rule.KeyValueRule;
-import org.raml.v2.grammar.rule.NodeFactory;
 import org.raml.v2.grammar.rule.NodeReferenceFactory;
 import org.raml.v2.grammar.rule.ObjectRule;
 import org.raml.v2.grammar.rule.RegexValueRule;
@@ -33,10 +34,7 @@ import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.ExtendsNode;
 import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.PropertyNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.v2.impl.v10.nodes.types.factories.TypeNodeFactory;
-import org.raml.v2.nodes.KeyValueNodeImpl;
-import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.StringNodeImpl;
 
 public class Raml10Grammar extends BaseRamlGrammar
@@ -325,6 +323,35 @@ public class Raml10Grammar extends BaseRamlGrammar
     protected KeyValueRule mediaTypeField()
     {
         return field(mediaTypeKey(), anyOf(scalarType(), array(scalarType())));
+    }
+
+    protected Rule schemasValue()
+    {
+        return schemas();
+    }
+
+    @Nonnull
+    protected String schemasDescription()
+    {
+        return "Alias for the equivalent \"types\" property, for compatibility " +
+               "with RAML 0.8. Deprecated - API definitions should use the \"types\" property, " +
+               "as the \"schemas\" alias for that property name may be removed in a future RAML version. " +
+               "The \"types\" property allows for XML and JSON schemas.";
+    }
+
+    protected Rule traitsValue()
+    {
+        return trait();
+    }
+
+    protected Rule resourceTypesValue()
+    {
+        return resourceTypes();
+    }
+
+    protected Rule securitySchemesValue()
+    {
+        return securitySchemes();
     }
 
 }

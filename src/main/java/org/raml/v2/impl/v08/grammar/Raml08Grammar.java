@@ -15,6 +15,8 @@
  */
 package org.raml.v2.impl.v08.grammar;
 
+import javax.annotation.Nonnull;
+
 import org.raml.v2.grammar.rule.AnyOfRule;
 import org.raml.v2.grammar.rule.KeyValueRule;
 import org.raml.v2.grammar.rule.ObjectRule;
@@ -185,4 +187,32 @@ public class Raml08Grammar extends BaseRamlGrammar
     {
         return string("string");
     }
+
+    protected Rule schemasValue()
+    {
+        return anyOf(array(schemas()), schemas());
+    }
+
+    @Nonnull
+    protected String schemasDescription()
+    {
+        return "Collections of schemas that could be used anywhere in the API definition. " +
+               "The \"schemas\" property allows for XML and JSON schemas.";
+    }
+
+    protected Rule traitsValue()
+    {
+        return anyOf(array(trait()), trait());
+    }
+
+    protected Rule resourceTypesValue()
+    {
+        return anyOf(array(resourceTypes()), resourceTypes());
+    }
+
+    protected Rule securitySchemesValue()
+    {
+        return anyOf(array(securitySchemes()), securitySchemes());
+    }
+
 }

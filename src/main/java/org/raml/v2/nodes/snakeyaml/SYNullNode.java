@@ -45,4 +45,10 @@ public class SYNullNode extends SYBaseRamlNode implements NullNode
     {
         return NodeType.Null;
     }
+
+    @Override
+    public String toString()
+    {
+        return "SyNullNode";
+    }
 }
