@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.v2.impl.commons.nodes.AnnotationNode;
+import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.MethodNode;
 import org.raml.v2.impl.commons.nodes.ResourceNode;
 import org.raml.v2.nodes.ArrayNode;
@@ -201,7 +202,14 @@ public class TckEmitter
         dump.append(addNewline(dump)).append(indent(depth + 1)).append(keyText).append(COLON_SEP);
 
         // value
-        dumpNode(node.getValue(), dump, depth + 1);
+        if (node.getValue() instanceof ExampleTypeNode && node.getValue().getChildren().isEmpty())
+        {
+            dumpNode(node.getValue().getSource(), dump, depth + 1);
+        }
+        else
+        {
+            dumpNode(node.getValue(), dump, depth + 1);
+        }
     }
 
     private Node copy(Node node)

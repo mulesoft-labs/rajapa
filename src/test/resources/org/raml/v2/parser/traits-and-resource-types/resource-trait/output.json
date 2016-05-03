@@ -28,8 +28,7 @@
                         "access_token": {
                             "type": "string",
                             "description": "Access Token",
-                            "example": {
-                            },
+                            "example": "5757gh76",
                             "required": true,
                             "displayName": "access_token"
                         }

@@ -31,13 +31,11 @@
                         "present": {
                             "type": "string",
                             "displayName": "present",
-                            "example": {
-                            }
+                            "example": "yes"
                         },
                         "fixed": {
                             "type": "string",
-                            "example": {
-                            },
+                            "example": "yes",
                             "displayName": "fixed"
                         }
                     },
