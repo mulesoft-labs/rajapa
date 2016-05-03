@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.raml.v2.impl.v10.RamlFragment;
+import org.raml.v2.nodes.EmptyErrorNode;
 import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
@@ -74,9 +76,9 @@ public class ErrorNodeFactory
         return new ErrorNode("Invalid fragment name '" + fragmentText + "'");
     }
 
-    public static Node createEmptyDocument()
+    public static EmptyErrorNode createEmptyDocument()
     {
-        return new ErrorNode("Empty document.");
+        return new EmptyErrorNode();
     }
 
     public static Node createUnsupportedVersion(String version)

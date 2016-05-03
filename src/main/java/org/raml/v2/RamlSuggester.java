@@ -184,6 +184,11 @@ public class RamlSuggester
             {
                 return rootNode;
             }
+            else if (rootNode instanceof EmptyErrorNode)
+            {
+                // File is not corrupted but just empty, we should suggest initial keys for the current file
+                return ramlBuilder.build(document + "\n\nstub: stub"); // we add an invalid key so as to force the creation of the root node
+            }
             else
             {
                 // We remove some current keywords to see if it parses
@@ -217,6 +222,7 @@ public class RamlSuggester
         int columnNumber = getColumnNumber(document, offset);
         final Node root = getRootNode(document, offset, location);
         Node node = searchNodeAt(root, location);
+
         if (node != null)
         {
             node = getValueNodeAtColumn(columnNumber, node);
