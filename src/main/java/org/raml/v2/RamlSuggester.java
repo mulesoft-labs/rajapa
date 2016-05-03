@@ -180,7 +180,12 @@ public class RamlSuggester
         {
             // We try the with the original document
             final Node rootNode = ramlBuilder.build(document);
-            if (!(rootNode instanceof ErrorNode))
+            if (rootNode instanceof StringNode)
+            {
+                // File still doesn't have any mapping and will not generate any suggestions so we'll force the parsing to make it a mapping
+                return ramlBuilder.build(stripLastChanges(document, offset, location) + "\n\nstub: stub"); // we add an invalid key so as to force the creation of the root node
+            }
+            else if (!(rootNode instanceof ErrorNode))
             {
                 return rootNode;
             }
