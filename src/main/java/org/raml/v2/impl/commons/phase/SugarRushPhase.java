@@ -42,7 +42,6 @@ public class SugarRushPhase implements Phase
     {
         sweetenBuiltInTypes(tree);
         sweetenObjects(tree);
-        // sweetenTypeSystemObjects(tree);
         sweetenAnnotations(tree);
         return tree;
     }
@@ -79,24 +78,6 @@ public class SugarRushPhase implements Phase
                 {
                     Node grandParent = sugarNode.getParent().getParent();
                     grandParent.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl("object")));
-                }
-            }
-        }
-    }
-
-    private void sweetenTypeSystemObjects(Node tree)
-    {
-        final List<StringNode> basicSugar = tree.findDescendantsWith(StringNode.class);
-        for (StringNode sugarNode : basicSugar)
-        {
-            if (isTypeSystemObjectProperty(sugarNode))
-            {
-                if (sugarNode.getChildren().isEmpty() && isValidTypeSystemObject(tree, sugarNode))
-                {
-                    Node newNode = new ObjectTypeNode();
-                    newNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl(sugarNode.getValue())));
-                    // handleExample(sugarNode, newNode);
-                    sugarNode.replaceWith(newNode);
                 }
             }
         }
@@ -176,7 +157,6 @@ public class SugarRushPhase implements Phase
             if (newNode != null)
             {
                 newNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl(sugarNode.getValue())));
-                handleExample(sugarNode, newNode);
                 sugarNode.replaceWith(newNode);
             }
         }
@@ -205,70 +185,6 @@ public class SugarRushPhase implements Phase
     private boolean isTypeMissingInAnnotation(Node annotation)
     {
         return (isKeyValueNode(annotation) && getType(((KeyValueNode) annotation).getValue()) == null);
-    }
-
-    private boolean isValidTypeSystemObject(Node tree, StringNode sugarNode)
-    {
-        Node types = tree.get("types");
-        // handling special union types, this will be resolved in the types transformation phase.
-        String value = sugarNode.getValue();
-        if (isUnion(sugarNode) || value.endsWith("[]"))
-        {
-            return true;
-        }
-        if (types != null)
-        {
-            Node object = types.get(value);
-            return object != null && object instanceof ObjectNode;
-        }
-        return false;
-    }
-
-    private boolean isUnion(StringNode sugarNode)
-    {
-        String value = sugarNode.getValue();
-        if (isKeyValueNode(sugarNode.getParent()))
-        {
-            KeyValueNode parent = (KeyValueNode) sugarNode.getParent();
-            String key = ((StringNode) parent.getKey()).getValue();
-            return value.contains("|") && !("type".equals(key) || "pattern".equals(key));
-        }
-        return false;
-    }
-
-
-    private boolean isTypeSystemObjectProperty(StringNode sugarNode)
-    {
-        // union type node, will be resolved in type transformation phase.
-        if (isUnion(sugarNode))
-        {
-            return true;
-        }
-        Node properties = sugarNode.getParent().getParent().getParent();
-        if (properties != null)
-        {
-            Node type = properties.getParent();
-            if (isKeyValueNode(sugarNode.getParent()))
-            {
-                KeyValueNode parentNode = ((KeyValueNode) sugarNode.getParent());
-                if (parentNode.getValue() instanceof StringNode && ((StringNode) parentNode.getValue()).getValue().equals(sugarNode.getValue()) && getType(type) != null)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private void handleExample(Node sugarNode, Node newNode)
-    {
-        Node example = sugarNode.getParent().getParent().get("example");
-        if (example != null)
-        {
-            Node exampleRoot = example.getParent();
-            exampleRoot.getParent().removeChild(exampleRoot);
-            newNode.addChild(exampleRoot);
-        }
     }
 
     private boolean isTypePresentBasic(Node sugarNode)
