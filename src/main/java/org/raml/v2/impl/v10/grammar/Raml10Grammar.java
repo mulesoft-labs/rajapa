@@ -188,6 +188,7 @@ public class Raml10Grammar extends BaseRamlGrammar
 
         return anyOf("type", stringType().then(new TypesFactory()), objectType()
                                                                                 .with(field(anyOf(typeKey(), string("schema")), typeReference()))
+                                                                                .with(xmlFacetField())
                                                                                 .with(displayNameField())
                                                                                 .with(descriptionField())
                                                                                 .with(annotationField())
@@ -233,6 +234,11 @@ public class Raml10Grammar extends BaseRamlGrammar
                                                                                 ).then(new TypeNodeFactory())
 
         );
+    }
+
+    private KeyValueRule xmlFacetField()
+    {
+        return field(string("xml"), any());
     }
 
     private KeyValueRule defaultField()
