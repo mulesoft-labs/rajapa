@@ -15,15 +15,20 @@
  */
 package org.raml.v2.utils;
 
+import static org.raml.v2.impl.commons.grammar.BaseRamlGrammar.MIME_TYPE_REGEX;
+
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
+import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.impl.commons.nodes.ResourceNode;
 import org.raml.v2.nodes.ArrayNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
@@ -37,6 +42,7 @@ public class NodeSelector
     public static final String PARENT_EXPR = "..";
     public static final String WILDCARD_SELECTOR = "*";
     public static final String ENCODED_SLASH = "\\\\/";
+    private final static Pattern mimeTypePattern = Pattern.compile(MIME_TYPE_REGEX);
 
     /**
      * Resolves a path in the specified node. The path uses a very simple expression system like xpath where each element is separated by /.
@@ -154,6 +160,10 @@ public class NodeSelector
                 final int index = Integer.parseInt(token);
                 currentNode = findElementAtIndex(currentNode, index);
             }
+            else if (currentNode instanceof ResourceNode)
+            {
+                currentNode = findValueWithName(currentNode.getChildren().get(1), token);
+            }
             else
             {
                 currentNode = null;
@@ -202,4 +212,90 @@ public class NodeSelector
     {
         return path.replaceAll("/", ENCODED_SLASH);
     }
+
+
+    public static Node getNodeFromPath(String path, RamlDocumentNode tree)
+    {
+        String[] parts = path.split(":");
+        if (parts.length < 2)
+        {
+            return ErrorNodeFactory.createInvalidNode(null);
+        }
+        else
+        {
+            if ("baseUriParameters".equals(parts[0]))
+            {
+                return selectBaseUriParameters(tree, parts);
+            }
+            else
+            {
+                return selectResourceBody(tree, parts);
+            }
+        }
+    }
+
+    private static Node selectResourceBody(RamlDocumentNode tree, String[] parts)
+    {
+        List<ResourceNode> resources = tree.findDescendantsWith(ResourceNode.class);
+        if (resources.isEmpty())
+        {
+            return ErrorNodeFactory.createInvalidNode(null);
+        }
+        else
+        {
+            for (ResourceNode resource : resources)
+            {
+                if (parts[0].equals(resource.getResourcePath()))
+                {
+                    Node children = resource.get(parts[1]);
+                    boolean missingChildren = children == null;
+                    for (int i = 2; i <= parts.length - 1 && !missingChildren; i++)
+                    {
+                        if (i == parts.length - 1 && mimeTypePattern.matcher(parts[i]).matches())
+                        {
+                            children = children.get(encodePath(parts[i]));
+                        }
+                        else
+                        {
+                            children = children.get(parts[i]);
+                        }
+                        if (children == null)
+                        {
+                            missingChildren = true;
+                        }
+                    }
+                    if (children != null)
+                    {
+                        return children;
+                    }
+                    else
+                    {
+                        return ErrorNodeFactory.createInvalidNode(null);
+                    }
+                }
+            }
+            return ErrorNodeFactory.createInvalidNode(null);
+        }
+    }
+
+    private static Node selectBaseUriParameters(RamlDocumentNode tree, String[] parts)
+    {
+        if (parts.length != 2)
+        {
+            return ErrorNodeFactory.createInvalidNode(null);
+        }
+        else
+        {
+            Node baseUriParameters = tree.get("baseUriParameters");
+            if (baseUriParameters != null)
+            {
+                return baseUriParameters.get(parts[1]) != null ? baseUriParameters.get(parts[1]) : ErrorNodeFactory.createInvalidNode(null);
+            }
+            else
+            {
+                return ErrorNodeFactory.createInvalidNode(null);
+            }
+        }
+    }
+
 }

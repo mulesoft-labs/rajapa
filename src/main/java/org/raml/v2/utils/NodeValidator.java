@@ -27,6 +27,7 @@ import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.PayloadNode;
 import org.raml.v2.impl.commons.nodes.PayloadValidationResultNode;
+import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.impl.commons.phase.TypeToRuleVisitor;
 import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
@@ -35,6 +36,7 @@ import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.nodes.SchemaNodeImpl;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
 
@@ -42,10 +44,22 @@ public class NodeValidator
 {
 
     private ResourceLoader resourceLoader;
+    private RamlDocumentNode tree;
 
     public NodeValidator(ResourceLoader resourceLoader)
     {
         this.resourceLoader = resourceLoader;
+    }
+
+    public NodeValidator(ResourceLoader resourceLoader, RamlDocumentNode tree)
+    {
+        this(resourceLoader);
+        this.tree = tree;
+    }
+
+    public PayloadValidationResultNode validatePayload(String path, String payload)
+    {
+        return this.validatePayload(NodeSelector.getNodeFromPath(path, tree), payload);
     }
 
     public PayloadValidationResultNode validatePayload(Node type, String payload)
@@ -54,6 +68,7 @@ public class NodeValidator
         this.validatePayload(payloadValidationResultNode);
         return payloadValidationResultNode;
     }
+
 
     private void validatePayload(PayloadValidationResultNode payload)
     {
@@ -65,7 +80,7 @@ public class NodeValidator
 
     public void validateExample(ExampleTypeNode example)
     {
-        if (example.getTypeNode() instanceof ObjectTypeNode)
+        if (example.getTypeNode() instanceof ObjectTypeNode || example.getTypeNode() instanceof SchemaNodeImpl)
         {
             validateType(example);
         }
@@ -142,7 +157,9 @@ public class NodeValidator
             rule = getRuleForSchema(schemaType, rule);
         }
         else
+        {
             rule = getRuleForType(example, type);
+        }
         return rule;
     }
 
