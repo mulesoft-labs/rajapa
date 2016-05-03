@@ -32,10 +32,7 @@ import org.raml.v2.impl.commons.RamlHeader;
 import org.raml.v2.impl.commons.RamlVersion;
 import org.raml.v2.impl.v08.grammar.Raml08Grammar;
 import org.raml.v2.impl.v10.grammar.Raml10Grammar;
-import org.raml.v2.nodes.KeyValueNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.ObjectNode;
-import org.raml.v2.nodes.StringNode;
+import org.raml.v2.nodes.*;
 import org.raml.v2.suggester.DefaultSuggestion;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.RamlParsingContextType;
@@ -186,16 +183,31 @@ public class RamlSuggester
         try
         {
             // We try the with the original document
-            return ramlBuilder.build(document);
+            final Node rootNode = ramlBuilder.build(document);
+            if (!(rootNode instanceof ErrorNode))
+            {
+                return rootNode;
+            }
+            else
+            {
+                // We remove some current keywords to see if it parses
+                return ramlBuilder.build(stripLastChanges(document, offset, location));
+            }
         }
-        catch (Exception e)
+        catch (final Exception e)
         {
             // We remove some current keywords to see if it parses
-            final String header = document.substring(0, location + 1);
-            final String footer = getFooter(document, offset);
-            final String realDocument = header + footer;
-            return ramlBuilder.build(realDocument);
+            return ramlBuilder.build(stripLastChanges(document, offset, location));
         }
+    }
+
+    private String stripLastChanges(String document, int offset, int location)
+    {
+        final String header = document.substring(0, location + 1);
+        final String footer = getFooter(document, offset);
+        final String realDocument = header + footer;
+
+        return realDocument;
     }
 
     private List<Suggestion> getSuggestionByColumn(RamlParsingContext context, String document, int offset, int location)
@@ -349,9 +361,13 @@ public class RamlSuggester
     {
         int loc = offset;
         char current = document.charAt(loc);
-        while (loc < document.length() - 1 && current != '\n' && current != '}' && current != ']' && current != ',')
+        while (loc < document.length() && current != '\n' && current != '}' && current != ']' && current != ',')
         {
             loc++;
+            if (loc == document.length())
+            {
+                break;
+            }
             current = document.charAt(loc);
         }
 
