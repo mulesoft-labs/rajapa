@@ -18,6 +18,8 @@ package org.raml.v2.suggester;
 public class DefaultSuggestion implements Suggestion, Comparable<Suggestion>
 {
 
+    public static final String RAML_1_0_HEADER = "RAML 1.0 Header";
+
     private String label;
     private String description;
     private String value;
@@ -90,6 +92,16 @@ public class DefaultSuggestion implements Suggestion, Comparable<Suggestion>
     @Override
     public int compareTo(Suggestion other)
     {
+        if (RAML_1_0_HEADER.equals(label))
+        {
+            return -1;
+        }
+
+        if (RAML_1_0_HEADER.equals(other.getLabel()))
+        {
+            return 1;
+        }
+
         return this.getLabel().compareTo(other.getLabel());
     }
 }

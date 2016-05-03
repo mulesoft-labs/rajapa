@@ -33,11 +33,7 @@ import org.raml.v2.impl.commons.RamlVersion;
 import org.raml.v2.impl.v08.grammar.Raml08Grammar;
 import org.raml.v2.impl.v10.grammar.Raml10Grammar;
 import org.raml.v2.nodes.*;
-import org.raml.v2.suggester.DefaultSuggestion;
-import org.raml.v2.suggester.RamlParsingContext;
-import org.raml.v2.suggester.RamlParsingContextType;
-import org.raml.v2.suggester.Suggestion;
-import org.raml.v2.suggester.Suggestions;
+import org.raml.v2.suggester.*;
 import org.raml.v2.utils.Inflector;
 
 public class RamlSuggester
@@ -214,8 +210,7 @@ public class RamlSuggester
     {
         if (StringUtils.isBlank(document) && offset == -1)
         {
-            final Suggestion ramlHeaderSuggestion = new DefaultSuggestion("#%RAML 1.0", "RAML 1.0 root file header", "RAML 1.0 Header");
-            return Arrays.asList(ramlHeaderSuggestion);
+            return getHeaderSuggestions();
         }
 
         // // I don't care column number unless is an empty new line
@@ -236,6 +231,24 @@ public class RamlSuggester
         {
             return Collections.emptyList();
         }
+    }
+
+    private List<Suggestion> getHeaderSuggestions()
+    {
+        return Arrays.asList(
+                (Suggestion) new DefaultSuggestion("#%RAML 1.0", "RAML 1.0 root file header", DefaultSuggestion.RAML_1_0_HEADER),
+                new DefaultSuggestion("#%RAML 1.0 DocumentationItem", "An item in the collection of items that is the value of the root-level documentation property",
+                        "RAML 1.0 Documentation Item fragment"),
+                new DefaultSuggestion("#%RAML 1.0 DataType", "A data type declaration where the type property may be used", "RAML 1.0 Data Type fragment"),
+                new DefaultSuggestion("#%RAML 1.0 NamedExample", "A property of the examples property, whose key is a name of an example and whose value describes the example",
+                        "RAML 1.0 Named Example fragment"),
+                new DefaultSuggestion("#%RAML 1.0 ResourceType", "A single resource type declaration", "RAML 1.0 Resource Type fragment"),
+                new DefaultSuggestion("#%RAML 1.0 Trait", "A single trait declaration", "RAML 1.0 Trait fragment"),
+                new DefaultSuggestion("#%RAML 1.0 AnnotationTypeDeclaration", "A single annotation type declaration", "RAML 1.0 Annotation Type Declaration fragment"),
+                new DefaultSuggestion("#%RAML 1.0 Library", "A RAML library", "RAML 1.0 Library fragment"),
+                new DefaultSuggestion("#%RAML 1.0 Overlay", "An overlay file", "RAML 1.0 Overlay fragment"),
+                new DefaultSuggestion("#%RAML 1.0 Extension", "An extension file", "RAML 1.0 Extension fragment"),
+                new DefaultSuggestion("#%RAML 1.0 SecurityScheme", "A definition of a security scheme", "RAML 1.0 Security Scheme fragment"));
     }
 
     @Nonnull
