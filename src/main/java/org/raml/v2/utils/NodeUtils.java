@@ -67,7 +67,7 @@ public class NodeUtils
 
     public static ObjectNode getTypesRoot(final Node node)
     {
-        final Node typesRoot = traverseToRoot(node).get("types");
+        final Node typesRoot = getTypes(traverseToRoot(node));
         return typesRoot instanceof ObjectNode ? (ObjectNode) typesRoot : null;
     }
 
@@ -79,6 +79,11 @@ public class NodeUtils
     public static Node getType(Node node)
     {
         return node.get("type") != null ? node.get("type") : node.get("schema");
+    }
+
+    public static Node getTypes(Node node)
+    {
+        return node.get("types") != null ? node.get("types") : node.get("schemas");
     }
 
     public static boolean isErrorResult(Node node)
@@ -97,9 +102,9 @@ public class NodeUtils
         {
             return getTypeFromContext(typeName, definitionContext);
         }
-        else if (definitionContext.get("types") != null)
+        else if (getTypes(definitionContext) != null)
         {
-            Node type = definitionContext.get("types").get(typeName);
+            Node type = getTypes(definitionContext).get(typeName);
             return type instanceof TypeNode ? (TypeNode) type : null;
         }
         return null;
@@ -119,8 +124,8 @@ public class NodeUtils
             String navigationPath = typeName.substring(0, typeName.lastIndexOf("."));
             if (!navigationPath.contains("."))
             {
-                return resolution != null && resolution.get(navigationPath) != null && resolution.get(navigationPath).get("types") != null &&
-                       resolution.get(navigationPath).get("types").get(objectName) instanceof TypeNode ? (TypeNode) resolution.get(navigationPath).get("types").get(objectName) : null;
+                return resolution != null && resolution.get(navigationPath) != null && getTypes(resolution.get(navigationPath)) != null &&
+                       getTypes(resolution.get(navigationPath)).get(objectName) instanceof TypeNode ? (TypeNode) getTypes(resolution.get(navigationPath)).get(objectName) : null;
             }
             for (String path : navigationPath.split("."))
             {
@@ -133,7 +138,7 @@ public class NodeUtils
                     resolution = resolution.get(path);
                 }
             }
-            return resolution != null && resolution.get("types") != null && resolution.get("types").get(objectName) instanceof TypeNode ? (TypeNode) resolution.get("types").get(objectName) : null;
+            return resolution != null && getTypes(resolution) != null && getTypes(resolution).get(objectName) instanceof TypeNode ? (TypeNode) getTypes(resolution).get(objectName) : null;
         }
 
     }

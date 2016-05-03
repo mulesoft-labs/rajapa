@@ -346,7 +346,7 @@ public class Raml10Grammar extends BaseRamlGrammar
 
     protected Rule schemasValue()
     {
-        return schemas();
+        return types();
     }
 
     @Nonnull

@@ -79,6 +79,7 @@ public class SugarRushPhase implements Phase
         return parent instanceof KeyValueNode && ((KeyValueNode) parent).getValue() instanceof NullNode &&
                ancestor instanceof KeyValueNode && ((KeyValueNode) ancestor).getKey() instanceof StringNode &&
                ("types".equals(((StringNode) (((KeyValueNode) ancestor).getKey())).getValue()) ||
+                "schemas".equals(((StringNode) (((KeyValueNode) ancestor).getKey())).getValue()) ||
                "properties".equals(((StringNode) (((KeyValueNode) ancestor).getKey())).getValue()));
     }
 

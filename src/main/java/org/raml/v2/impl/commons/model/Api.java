@@ -96,22 +96,18 @@ public class Api extends LibraryBase
 
     public List<TypeDeclaration> types()
     {
-        List<TypeDeclaration> result = new ArrayList<>();
-        Node typesNode = NodeSelector.selectFrom("types", node);
-        if (typesNode != null)
-        {
-            for (Node child : typesNode.getChildren())
-            {
-                result.add(new TypeDeclaration((KeyValueNode) child));
-            }
-        }
-        return result;
+        return getTypeDeclarations("types");
     }
 
     public List<TypeDeclaration> schemas()
     {
+        return getTypeDeclarations("schemas");
+    }
+
+    private List<TypeDeclaration> getTypeDeclarations(String rootTypesName)
+    {
         List<TypeDeclaration> result = new ArrayList<>();
-        Node typesNode = NodeSelector.selectFrom("schemas", node);
+        Node typesNode = NodeSelector.selectFrom(rootTypesName, node);
         if (typesNode != null)
         {
             for (Node child : typesNode.getChildren())
