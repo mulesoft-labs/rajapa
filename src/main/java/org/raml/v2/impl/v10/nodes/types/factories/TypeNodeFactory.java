@@ -16,17 +16,16 @@
 package org.raml.v2.impl.v10.nodes.types.factories;
 
 import org.raml.v2.grammar.rule.NodeFactory;
-import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.StringNode;
-import org.raml.v2.nodes.snakeyaml.SYArrayNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.FileTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.nodes.Node;
+import org.raml.v2.nodes.StringNode;
+import org.raml.v2.nodes.snakeyaml.SYArrayNode;
 import org.raml.v2.utils.NodeUtils;
 
 public class TypeNodeFactory implements NodeFactory
@@ -41,7 +40,7 @@ public class TypeNodeFactory implements NodeFactory
         {
             return new ObjectTypeNode();
         }
-        StringNode type = (StringNode) typeNode;
+        StringNode type = typeNode instanceof StringNode ? (StringNode) typeNode : null;
         if (type == null)
         {
             return new StringTypeNode();

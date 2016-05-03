@@ -191,6 +191,7 @@ public class Raml10Grammar extends BaseRamlGrammar
                                                                                 .with(xmlFacetField())
                                                                                 .with(displayNameField())
                                                                                 .with(descriptionField())
+                                                                                .with(usageField())
                                                                                 .with(annotationField())
                                                                                 .with(defaultField())
                                                                                 .with(field(string("required"), booleanType()))
