@@ -118,6 +118,7 @@ public class Raml10Grammar extends BaseRamlGrammar
     {
         return untitledRaml()
                              .with(requiredField(extendsKey(), scalarType()).then(ExtendsNode.class))
+                             .with(usageField())
                              .with(optionalTitleField());
     }
 

@@ -19,6 +19,7 @@
 package org.raml.v2.impl.commons.phase;
 
 import org.raml.v2.impl.commons.nodes.ExtendsNode;
+import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.nodes.ArrayNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
@@ -100,7 +101,18 @@ public class ExtensionsMerger
         {
             return true;
         }
+        if (isUsageNode(node))
+        {
+            return true;
+        }
         return false;
+    }
+
+    private static boolean isUsageNode(Node node)
+    {
+        Node keyNode = ((KeyValueNode) node).getKey();
+        String key = keyNode.toString();
+        return "usage".equals(key) && (node.getParent() instanceof RamlDocumentNode);
     }
 
 }
