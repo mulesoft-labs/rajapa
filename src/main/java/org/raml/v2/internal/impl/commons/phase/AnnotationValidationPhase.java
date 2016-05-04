@@ -13,17 +13,17 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.phase;
+package org.raml.v2.internal.impl.commons.phase;
 
 
 import java.util.List;
 
 import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.internal.framework.grammar.rule.Rule;
-import org.raml.v2.impl.commons.nodes.AnnotationNode;
-import org.raml.v2.impl.commons.nodes.AnnotationTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.impl.commons.nodes.AnnotationNode;
+import org.raml.v2.internal.impl.commons.nodes.AnnotationTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.phase.Phase;
 
 public class AnnotationValidationPhase implements Phase

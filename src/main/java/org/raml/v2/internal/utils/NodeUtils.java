@@ -19,14 +19,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.v2.api.loader.ResourceLoader;
-import org.raml.v2.nodes.ErrorNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.ObjectNode;
-import org.raml.v2.nodes.StringNode;
-import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
+import org.raml.v2.internal.framework.nodes.ErrorNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.ObjectNode;
+import org.raml.v2.internal.framework.nodes.StringNode;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYIncludeNode;
 
 public class NodeUtils
 {

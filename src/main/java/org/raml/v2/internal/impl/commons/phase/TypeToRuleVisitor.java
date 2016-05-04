@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.phase;
+package org.raml.v2.internal.impl.commons.phase;
 
 import com.google.common.collect.Lists;
 
@@ -42,17 +42,17 @@ import org.raml.v2.internal.framework.grammar.rule.RegexValueRule;
 import org.raml.v2.internal.framework.grammar.rule.Rule;
 import org.raml.v2.internal.framework.grammar.rule.StringTypeRule;
 import org.raml.v2.internal.framework.grammar.rule.StringValueRule;
-import org.raml.v2.impl.commons.nodes.PropertyNode;
-import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.FloatTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.IntegerTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.TypeNodeVisitor;
+import org.raml.v2.internal.impl.commons.nodes.PropertyNode;
+import org.raml.v2.internal.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.BooleanTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.DateTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.FloatTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.IntegerTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.NumericTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.StringTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNodeVisitor;
 
 
 public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>

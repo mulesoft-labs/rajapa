@@ -13,10 +13,10 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.v10.nodes.types.builtin;
+package org.raml.v2.internal.impl.v10.nodes.types.builtin;
 
 
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.framework.nodes.Node;
 
 public interface TypeNode extends Node
 {

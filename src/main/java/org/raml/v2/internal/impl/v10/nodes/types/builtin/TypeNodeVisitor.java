@@ -13,12 +13,12 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.v10.nodes.types.builtin;
+package org.raml.v2.internal.impl.v10.nodes.types.builtin;
 
 
 import java.util.List;
 
-import org.raml.v2.impl.commons.nodes.PropertyNode;
+import org.raml.v2.internal.impl.commons.nodes.PropertyNode;
 
 public interface TypeNodeVisitor<T>
 {

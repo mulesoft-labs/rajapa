@@ -13,26 +13,26 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.phase;
+package org.raml.v2.internal.impl.commons.phase;
 
 import static org.raml.v2.internal.utils.NodeUtils.getType;
 
 import java.util.List;
 
-import org.raml.v2.impl.commons.model.BuiltInScalarType;
-import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.FloatTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.IntegerTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
-import org.raml.v2.nodes.KeyValueNode;
-import org.raml.v2.nodes.KeyValueNodeImpl;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.NullNode;
-import org.raml.v2.nodes.StringNode;
-import org.raml.v2.nodes.StringNodeImpl;
-import org.raml.v2.nodes.snakeyaml.SYNullNode;
-import org.raml.v2.nodes.snakeyaml.SYStringNode;
+import org.raml.v2.internal.impl.commons.model.BuiltInScalarType;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.BooleanTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.FloatTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.IntegerTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.StringTypeNode;
+import org.raml.v2.internal.framework.nodes.KeyValueNode;
+import org.raml.v2.internal.framework.nodes.KeyValueNodeImpl;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.NullNode;
+import org.raml.v2.internal.framework.nodes.StringNode;
+import org.raml.v2.internal.framework.nodes.StringNodeImpl;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYNullNode;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYStringNode;
 import org.raml.v2.internal.framework.phase.Phase;
 import org.raml.v2.internal.utils.NodeUtils;
 

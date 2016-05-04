@@ -13,19 +13,19 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.phase;
+package org.raml.v2.internal.impl.commons.phase;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.raml.v2.impl.commons.RamlHeader;
+import org.raml.v2.internal.impl.commons.RamlHeader;
 import org.raml.v2.api.loader.ResourceLoader;
-import org.raml.v2.nodes.IncludeErrorNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.StringNodeImpl;
-import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
-import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
+import org.raml.v2.internal.framework.nodes.IncludeErrorNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.StringNodeImpl;
+import org.raml.v2.internal.framework.nodes.snakeyaml.RamlNodeParser;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYIncludeNode;
 import org.raml.v2.internal.framework.phase.Transformer;
 import org.raml.v2.internal.utils.StreamUtils;
 

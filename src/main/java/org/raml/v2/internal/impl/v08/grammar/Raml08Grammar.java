@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.v08.grammar;
+package org.raml.v2.internal.impl.v08.grammar;
 
 import javax.annotation.Nonnull;
 
@@ -22,9 +22,9 @@ import org.raml.v2.internal.framework.grammar.rule.KeyValueRule;
 import org.raml.v2.internal.framework.grammar.rule.ObjectRule;
 import org.raml.v2.internal.framework.grammar.rule.Rule;
 import org.raml.v2.internal.framework.grammar.rule.StringValueRule;
-import org.raml.v2.impl.commons.grammar.BaseRamlGrammar;
-import org.raml.v2.impl.v10.nodes.types.factories.TypeNodeFactory;
-import org.raml.v2.nodes.StringNodeImpl;
+import org.raml.v2.internal.impl.commons.grammar.BaseRamlGrammar;
+import org.raml.v2.internal.impl.v10.nodes.types.factories.TypeNodeFactory;
+import org.raml.v2.internal.framework.nodes.StringNodeImpl;
 
 public class Raml08Grammar extends BaseRamlGrammar
 {

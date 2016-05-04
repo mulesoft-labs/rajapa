@@ -21,13 +21,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
-import org.raml.v2.nodes.BooleanNode;
-import org.raml.v2.nodes.ErrorNode;
-import org.raml.v2.nodes.IntegerNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.ReferenceNode;
-import org.raml.v2.nodes.StringNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.internal.framework.nodes.BooleanNode;
+import org.raml.v2.internal.framework.nodes.ErrorNode;
+import org.raml.v2.internal.framework.nodes.IntegerNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.ReferenceNode;
+import org.raml.v2.internal.framework.nodes.StringNode;
 
 
 public class TreeDumper

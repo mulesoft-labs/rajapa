@@ -33,9 +33,9 @@ import javax.xml.validation.SchemaFactory;
 
 import org.raml.v2.internal.framework.grammar.rule.xml.XsdResourceResolver;
 import org.raml.v2.api.loader.ResourceLoader;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.SchemaNodeImpl;
-import org.raml.v2.nodes.StringNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.SchemaNodeImpl;
+import org.raml.v2.internal.framework.nodes.StringNode;
 import org.xml.sax.SAXException;
 
 public class SchemaGenerator

@@ -15,7 +15,7 @@
  */
 package org.raml.v2.internal.framework.phase;
 
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.framework.nodes.Node;
 
 /**
  * A phase applies a given logic into a node recursively.

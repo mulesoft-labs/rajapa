@@ -13,17 +13,17 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.v10.nodes.types.builtin;
+package org.raml.v2.internal.impl.v10.nodes.types.builtin;
 
-import static org.raml.v2.impl.commons.model.builder.ModelUtils.*;
+import static org.raml.v2.internal.impl.commons.model.builder.ModelUtils.*;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.nodes.AbstractRamlNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.NodeType;
-import org.raml.v2.nodes.ObjectNode;
-import org.raml.v2.nodes.StringNode;
+import org.raml.v2.internal.framework.nodes.AbstractRamlNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.NodeType;
+import org.raml.v2.internal.framework.nodes.ObjectNode;
+import org.raml.v2.internal.framework.nodes.StringNode;
 
 public class DateTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {

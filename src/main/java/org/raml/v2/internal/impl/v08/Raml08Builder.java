@@ -13,18 +13,18 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.v08;
+package org.raml.v2.internal.impl.v08;
 
-import org.raml.v2.impl.commons.phase.IncludeResolver;
-import org.raml.v2.impl.commons.phase.ResourceTypesTraitsTransformer;
-import org.raml.v2.impl.commons.phase.StringTemplateExpressionTransformer;
-import org.raml.v2.impl.v10.phase.TypesTransformer;
-import org.raml.v2.nodes.ErrorNode;
+import org.raml.v2.internal.impl.commons.phase.IncludeResolver;
+import org.raml.v2.internal.impl.commons.phase.ResourceTypesTraitsTransformer;
+import org.raml.v2.internal.impl.commons.phase.StringTemplateExpressionTransformer;
+import org.raml.v2.internal.impl.v10.phase.TypesTransformer;
+import org.raml.v2.internal.framework.nodes.ErrorNode;
 import org.raml.v2.internal.framework.phase.GrammarPhase;
-import org.raml.v2.impl.v08.grammar.Raml08Grammar;
+import org.raml.v2.internal.impl.v08.grammar.Raml08Grammar;
 import org.raml.v2.api.loader.ResourceLoader;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.snakeyaml.RamlNodeParser;
 import org.raml.v2.internal.framework.phase.Phase;
 import org.raml.v2.internal.framework.phase.TransformationPhase;
 

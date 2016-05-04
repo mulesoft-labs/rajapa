@@ -17,8 +17,8 @@ package org.raml.v2.internal.framework.phase;
 
 import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.internal.framework.grammar.rule.Rule;
-import org.raml.v2.nodes.ErrorNode;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.framework.nodes.ErrorNode;
+import org.raml.v2.internal.framework.nodes.Node;
 
 public class GrammarPhase implements Phase
 {

@@ -13,20 +13,20 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.v10.nodes.types.factories;
+package org.raml.v2.internal.impl.v10.nodes.types.factories;
 
 import org.raml.v2.internal.framework.grammar.rule.NodeFactory;
-import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.FileTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.FloatTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.IntegerTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.StringNode;
-import org.raml.v2.nodes.snakeyaml.SYArrayNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.BooleanTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.DateTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.FileTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.FloatTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.IntegerTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.StringTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.UnionTypeNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.StringNode;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYArrayNode;
 import org.raml.v2.internal.utils.NodeUtils;
 
 public class TypeNodeFactory implements NodeFactory

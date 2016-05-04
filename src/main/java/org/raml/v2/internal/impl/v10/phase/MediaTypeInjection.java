@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.v10.phase;
+package org.raml.v2.internal.impl.v10.phase;
 
 
 import java.util.ArrayList;
@@ -21,17 +21,17 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.impl.commons.nodes.BodyNode;
-import org.raml.v2.impl.v10.grammar.Raml10Grammar;
-import org.raml.v2.nodes.BaseNode;
-import org.raml.v2.nodes.DefaultPosition;
-import org.raml.v2.nodes.KeyValueNode;
-import org.raml.v2.nodes.KeyValueNodeImpl;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.NodeType;
-import org.raml.v2.nodes.ObjectNode;
-import org.raml.v2.nodes.Position;
-import org.raml.v2.nodes.StringNode;
+import org.raml.v2.internal.impl.commons.nodes.BodyNode;
+import org.raml.v2.internal.impl.v10.grammar.Raml10Grammar;
+import org.raml.v2.internal.framework.nodes.BaseNode;
+import org.raml.v2.internal.framework.nodes.DefaultPosition;
+import org.raml.v2.internal.framework.nodes.KeyValueNode;
+import org.raml.v2.internal.framework.nodes.KeyValueNodeImpl;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.NodeType;
+import org.raml.v2.internal.framework.nodes.ObjectNode;
+import org.raml.v2.internal.framework.nodes.Position;
+import org.raml.v2.internal.framework.nodes.StringNode;
 import org.raml.v2.internal.framework.phase.Phase;
 import org.raml.v2.internal.utils.NodeSelector;
 

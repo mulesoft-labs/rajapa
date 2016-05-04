@@ -26,7 +26,7 @@ public class TypesFactory implements NodeFactory
     public Node create(Object... args)
     {
         String type = (String) args[0];
-        Node newNode = org.raml.v2.impl.v10.nodes.types.factories.TypeNodeFactory.createNodeFromType(type);
+        Node newNode = org.raml.v2.internal.impl.v10.nodes.types.factories.TypeNodeFactory.createNodeFromType(type);
         if (newNode instanceof UnionTypeNode)
         {
             newNode.addChild(new KeyValueNodeImpl(new StringNodeImpl("type"), new StringNodeImpl(type)));

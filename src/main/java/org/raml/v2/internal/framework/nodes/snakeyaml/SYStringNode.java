@@ -13,13 +13,13 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.nodes.snakeyaml;
+package org.raml.v2.internal.framework.nodes.snakeyaml;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.NodeType;
-import org.raml.v2.nodes.StringNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.NodeType;
+import org.raml.v2.internal.framework.nodes.StringNode;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 
 public class SYStringNode extends SYBaseRamlNode implements StringNode

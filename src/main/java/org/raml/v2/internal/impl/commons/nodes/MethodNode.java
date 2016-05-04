@@ -13,13 +13,13 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.nodes;
+package org.raml.v2.internal.impl.commons.nodes;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.StringNode;
-import org.raml.v2.nodes.KeyValueNodeImpl;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.StringNode;
+import org.raml.v2.internal.framework.nodes.KeyValueNodeImpl;
 
 public class MethodNode extends KeyValueNodeImpl
 {

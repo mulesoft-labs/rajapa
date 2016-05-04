@@ -13,15 +13,15 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.model.builder;
+package org.raml.v2.internal.impl.commons.model.builder;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.raml.v2.impl.commons.model.StringType;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.impl.commons.model.StringType;
+import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.utils.NodeSelector;
 
 public class ModelUtils

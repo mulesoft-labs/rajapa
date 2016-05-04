@@ -13,14 +13,14 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.nodes.snakeyaml;
+package org.raml.v2.internal.framework.nodes.snakeyaml;
 
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.NodeType;
-import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.NodeType;
+import org.raml.v2.internal.framework.nodes.ObjectNode;
 import org.yaml.snakeyaml.nodes.MappingNode;
 
 public class SYObjectNode extends SYBaseRamlNode implements ObjectNode

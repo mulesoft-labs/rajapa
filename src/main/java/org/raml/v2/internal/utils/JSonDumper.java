@@ -20,10 +20,10 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.v2.nodes.KeyValueNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.ObjectNode;
-import org.raml.v2.nodes.StringNode;
+import org.raml.v2.internal.framework.nodes.KeyValueNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.ObjectNode;
+import org.raml.v2.internal.framework.nodes.StringNode;
 
 public class JSonDumper
 {

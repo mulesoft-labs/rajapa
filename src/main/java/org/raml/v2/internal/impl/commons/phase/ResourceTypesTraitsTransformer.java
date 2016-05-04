@@ -16,9 +16,9 @@
 /*
  *
  */
-package org.raml.v2.impl.commons.phase;
+package org.raml.v2.internal.impl.commons.phase;
 
-import static org.raml.v2.impl.commons.phase.ResourceTypesTraitsMerger.merge;
+import static org.raml.v2.internal.impl.commons.phase.ResourceTypesTraitsMerger.merge;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,22 +27,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.raml.v2.impl.commons.grammar.BaseRamlGrammar;
-import org.raml.v2.impl.commons.nodes.BaseResourceTypeRefNode;
-import org.raml.v2.impl.commons.nodes.BaseTraitRefNode;
-import org.raml.v2.impl.commons.nodes.MethodNode;
-import org.raml.v2.impl.commons.nodes.ResourceNode;
-import org.raml.v2.impl.commons.nodes.ResourceTypeNode;
-import org.raml.v2.impl.commons.nodes.StringTemplateNode;
-import org.raml.v2.impl.commons.nodes.TraitNode;
-import org.raml.v2.nodes.ExecutionContext;
-import org.raml.v2.nodes.KeyValueNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.ParametrizedReferenceNode;
-import org.raml.v2.nodes.ReferenceNode;
-import org.raml.v2.nodes.snakeyaml.SYBaseRamlNode;
-import org.raml.v2.nodes.snakeyaml.SYNullNode;
-import org.raml.v2.nodes.snakeyaml.SYObjectNode;
+import org.raml.v2.internal.impl.commons.grammar.BaseRamlGrammar;
+import org.raml.v2.internal.impl.commons.nodes.BaseResourceTypeRefNode;
+import org.raml.v2.internal.impl.commons.nodes.BaseTraitRefNode;
+import org.raml.v2.internal.impl.commons.nodes.MethodNode;
+import org.raml.v2.internal.impl.commons.nodes.ResourceNode;
+import org.raml.v2.internal.impl.commons.nodes.ResourceTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.StringTemplateNode;
+import org.raml.v2.internal.impl.commons.nodes.TraitNode;
+import org.raml.v2.internal.framework.nodes.ExecutionContext;
+import org.raml.v2.internal.framework.nodes.KeyValueNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.ParametrizedReferenceNode;
+import org.raml.v2.internal.framework.nodes.ReferenceNode;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYBaseRamlNode;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYNullNode;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYObjectNode;
 import org.raml.v2.internal.framework.phase.GrammarPhase;
 import org.raml.v2.internal.framework.phase.Transformer;
 import org.raml.v2.internal.utils.NodeSelector;

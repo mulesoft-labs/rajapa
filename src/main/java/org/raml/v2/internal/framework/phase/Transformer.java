@@ -15,7 +15,7 @@
  */
 package org.raml.v2.internal.framework.phase;
 
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.framework.nodes.Node;
 
 /**
  * Applies a transformation to a specific node and returns the new node.

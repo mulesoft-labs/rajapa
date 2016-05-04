@@ -13,14 +13,14 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.phase;
+package org.raml.v2.internal.impl.commons.phase;
 
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.Position;
-import org.raml.v2.nodes.StringNode;
-import org.raml.v2.nodes.StringNodeImpl;
-import org.raml.v2.impl.commons.nodes.TemplateExpressionNode;
-import org.raml.v2.impl.commons.nodes.StringTemplateNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.Position;
+import org.raml.v2.internal.framework.nodes.StringNode;
+import org.raml.v2.internal.framework.nodes.StringNodeImpl;
+import org.raml.v2.internal.impl.commons.nodes.TemplateExpressionNode;
+import org.raml.v2.internal.impl.commons.nodes.StringTemplateNode;
 import org.raml.v2.internal.framework.phase.Transformer;
 
 import java.util.regex.Matcher;

@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.v10.phase;
+package org.raml.v2.internal.impl.v10.phase;
 
 import static org.raml.v2.internal.utils.NodeUtils.*;
 import static org.raml.v2.internal.utils.SchemaGenerator.*;
@@ -26,17 +26,17 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
-import org.raml.v2.impl.commons.model.BuiltInScalarType;
-import org.raml.v2.impl.commons.nodes.PropertyNode;
-import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
-import org.raml.v2.nodes.*;
-import org.raml.v2.nodes.snakeyaml.SYArrayNode;
-import org.raml.v2.nodes.snakeyaml.SYNullNode;
-import org.raml.v2.nodes.snakeyaml.SYObjectNode;
-import org.raml.v2.nodes.snakeyaml.SYStringNode;
+import org.raml.v2.internal.impl.commons.model.BuiltInScalarType;
+import org.raml.v2.internal.impl.commons.nodes.PropertyNode;
+import org.raml.v2.internal.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.UnionTypeNode;
+import org.raml.v2.internal.framework.nodes.*;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYArrayNode;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYNullNode;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYObjectNode;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYStringNode;
 import org.raml.v2.internal.framework.phase.Transformer;
 import org.raml.v2.internal.utils.SchemaGenerator;
 

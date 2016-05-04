@@ -25,7 +25,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.raml.v2.internal.impl.RamlBuilder;
 import org.raml.v2.internal.impl.emitter.tck.TckEmitter;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.framework.nodes.Node;
 
 public class AbsoluteIncludeTestCase
 {

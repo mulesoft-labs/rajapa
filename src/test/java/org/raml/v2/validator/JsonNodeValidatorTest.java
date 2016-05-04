@@ -22,10 +22,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.raml.v2.internal.impl.RamlBuilder;
-import org.raml.v2.impl.commons.nodes.PayloadValidationResultNode;
-import org.raml.v2.impl.commons.nodes.ResourceNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.impl.commons.nodes.PayloadValidationResultNode;
+import org.raml.v2.internal.impl.commons.nodes.ResourceNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.UnionTypeNode;
+import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.utils.NodeValidator;
 
 public class JsonNodeValidatorTest

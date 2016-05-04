@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.v10.grammar;
+package org.raml.v2.internal.impl.v10.grammar;
 
 import javax.annotation.Nonnull;
 
@@ -26,16 +26,16 @@ import org.raml.v2.internal.framework.grammar.rule.Rule;
 import org.raml.v2.internal.framework.grammar.rule.StringValueRule;
 import org.raml.v2.internal.framework.grammar.rule.TypeNodeReferenceRule;
 import org.raml.v2.internal.framework.grammar.rule.TypesFactory;
-import org.raml.v2.impl.commons.grammar.BaseRamlGrammar;
-import org.raml.v2.impl.commons.nodes.AnnotationNode;
-import org.raml.v2.impl.commons.nodes.AnnotationReferenceNode;
-import org.raml.v2.impl.commons.nodes.AnnotationTypeNode;
-import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
-import org.raml.v2.impl.commons.nodes.ExtendsNode;
-import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
-import org.raml.v2.impl.commons.nodes.PropertyNode;
-import org.raml.v2.impl.v10.nodes.types.factories.TypeNodeFactory;
-import org.raml.v2.nodes.StringNodeImpl;
+import org.raml.v2.internal.impl.commons.grammar.BaseRamlGrammar;
+import org.raml.v2.internal.impl.commons.nodes.AnnotationNode;
+import org.raml.v2.internal.impl.commons.nodes.AnnotationReferenceNode;
+import org.raml.v2.internal.impl.commons.nodes.AnnotationTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.ExampleTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.ExtendsNode;
+import org.raml.v2.internal.impl.commons.nodes.MultipleExampleTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.PropertyNode;
+import org.raml.v2.internal.impl.v10.nodes.types.factories.TypeNodeFactory;
+import org.raml.v2.internal.framework.nodes.StringNodeImpl;
 
 public class Raml10Grammar extends BaseRamlGrammar
 {

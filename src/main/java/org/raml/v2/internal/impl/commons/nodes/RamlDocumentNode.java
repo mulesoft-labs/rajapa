@@ -13,16 +13,16 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.nodes;
+package org.raml.v2.internal.impl.commons.nodes;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.impl.commons.RamlVersion;
+import org.raml.v2.internal.impl.commons.RamlVersion;
 import org.raml.v2.api.loader.ResourceLoader;
-import org.raml.v2.nodes.AbstractRamlNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.NodeType;
-import org.raml.v2.nodes.ObjectNode;
+import org.raml.v2.internal.framework.nodes.AbstractRamlNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.NodeType;
+import org.raml.v2.internal.framework.nodes.ObjectNode;
 
 public class RamlDocumentNode extends AbstractRamlNode implements ObjectNode
 {

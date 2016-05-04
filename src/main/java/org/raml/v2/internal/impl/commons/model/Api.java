@@ -13,15 +13,15 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.model;
+package org.raml.v2.internal.impl.commons.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
-import org.raml.v2.impl.commons.nodes.ResourceNode;
-import org.raml.v2.nodes.KeyValueNode;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.internal.impl.commons.nodes.ResourceNode;
+import org.raml.v2.internal.framework.nodes.KeyValueNode;
+import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.utils.NodeSelector;
 
 public class Api extends LibraryBase

@@ -23,20 +23,20 @@ import org.raml.v2.internal.framework.grammar.rule.AnyOfRule;
 import org.raml.v2.internal.framework.grammar.rule.JsonSchemaValidationRule;
 import org.raml.v2.internal.framework.grammar.rule.Rule;
 import org.raml.v2.internal.framework.grammar.rule.XmlSchemaValidationRule;
-import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
-import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
-import org.raml.v2.impl.commons.nodes.PayloadNode;
-import org.raml.v2.impl.commons.nodes.PayloadValidationResultNode;
-import org.raml.v2.impl.commons.phase.TypeToRuleVisitor;
-import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.ExampleTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.MultipleExampleTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.PayloadNode;
+import org.raml.v2.internal.impl.commons.nodes.PayloadValidationResultNode;
+import org.raml.v2.internal.impl.commons.phase.TypeToRuleVisitor;
+import org.raml.v2.internal.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.api.loader.ResourceLoader;
-import org.raml.v2.nodes.KeyValueNode;
-import org.raml.v2.nodes.KeyValueNodeImpl;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.ObjectNode;
-import org.raml.v2.nodes.StringNode;
-import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
+import org.raml.v2.internal.framework.nodes.KeyValueNode;
+import org.raml.v2.internal.framework.nodes.KeyValueNodeImpl;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.ObjectNode;
+import org.raml.v2.internal.framework.nodes.StringNode;
+import org.raml.v2.internal.framework.nodes.snakeyaml.RamlNodeParser;
 
 public class NodeValidator
 {

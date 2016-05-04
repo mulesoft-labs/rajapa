@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.raml.v2.internal.impl.RamlBuilder;
 import org.raml.v2.dataprovider.TestDataProvider;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.utils.TreeDumper;
 
 @RunWith(Parameterized.class)

@@ -13,9 +13,9 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.nodes.snakeyaml;
+package org.raml.v2.internal.framework.nodes.snakeyaml;
 
-import org.raml.v2.nodes.AbstractPosition;
+import org.raml.v2.internal.framework.nodes.AbstractPosition;
 import org.yaml.snakeyaml.error.Mark;
 
 public class SYPosition extends AbstractPosition

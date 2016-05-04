@@ -35,7 +35,7 @@ public class SYNullNode extends SYBaseRamlNode implements NullNode
 
     @Nonnull
     @Override
-    public org.raml.v2.nodes.Node copy()
+    public org.raml.v2.internal.framework.nodes.Node copy()
     {
         return new SYNullNode(this);
     }

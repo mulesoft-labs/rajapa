@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.v10.nodes.types.builtin;
+package org.raml.v2.internal.impl.v10.nodes.types.builtin;
 
 import com.google.common.collect.Lists;
 
@@ -21,12 +21,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.nodes.AbstractRamlNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.NodeType;
-import org.raml.v2.nodes.ObjectNode;
-import org.raml.v2.nodes.SimpleTypeNode;
-import org.raml.v2.nodes.snakeyaml.SYArrayNode;
+import org.raml.v2.internal.framework.nodes.AbstractRamlNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.NodeType;
+import org.raml.v2.internal.framework.nodes.ObjectNode;
+import org.raml.v2.internal.framework.nodes.SimpleTypeNode;
+import org.raml.v2.internal.framework.nodes.snakeyaml.SYArrayNode;
 import org.raml.v2.internal.utils.NodeSelector;
 
 public abstract class NumericTypeNode<T> extends AbstractRamlNode implements TypeNode, ObjectNode

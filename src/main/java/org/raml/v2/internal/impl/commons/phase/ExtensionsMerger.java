@@ -16,15 +16,15 @@
 /*
  *
  */
-package org.raml.v2.impl.commons.phase;
+package org.raml.v2.internal.impl.commons.phase;
 
-import org.raml.v2.impl.commons.nodes.ExtendsNode;
-import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
-import org.raml.v2.nodes.ArrayNode;
-import org.raml.v2.nodes.KeyValueNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.ObjectNode;
-import org.raml.v2.nodes.SimpleTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.ExtendsNode;
+import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.internal.framework.nodes.ArrayNode;
+import org.raml.v2.internal.framework.nodes.KeyValueNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.ObjectNode;
+import org.raml.v2.internal.framework.nodes.SimpleTypeNode;
 import org.raml.v2.internal.utils.NodeSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

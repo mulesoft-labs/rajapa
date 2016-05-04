@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.impl.commons.grammar;
+package org.raml.v2.internal.impl.commons.grammar;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
@@ -35,20 +35,20 @@ import org.raml.v2.internal.framework.grammar.rule.ParametrizedNodeReferenceRule
 import org.raml.v2.internal.framework.grammar.rule.RegexValueRule;
 import org.raml.v2.internal.framework.grammar.rule.Rule;
 import org.raml.v2.internal.framework.grammar.rule.StringValueRule;
-import org.raml.v2.impl.commons.model.BuiltInScalarType;
-import org.raml.v2.impl.commons.nodes.BodyNode;
-import org.raml.v2.impl.commons.nodes.MethodNode;
-import org.raml.v2.impl.commons.nodes.ParametrizedResourceTypeRefNode;
-import org.raml.v2.impl.commons.nodes.ParametrizedTraitRefNode;
-import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
-import org.raml.v2.impl.commons.nodes.ResourceNode;
-import org.raml.v2.impl.commons.nodes.ResourceTypeNode;
-import org.raml.v2.impl.commons.nodes.ResourceTypeRefNode;
-import org.raml.v2.impl.commons.nodes.SecuritySchemeNode;
-import org.raml.v2.impl.commons.nodes.SecuritySchemeRefNode;
-import org.raml.v2.impl.commons.nodes.TraitNode;
-import org.raml.v2.impl.commons.nodes.TraitRefNode;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.impl.commons.model.BuiltInScalarType;
+import org.raml.v2.internal.impl.commons.nodes.BodyNode;
+import org.raml.v2.internal.impl.commons.nodes.MethodNode;
+import org.raml.v2.internal.impl.commons.nodes.ParametrizedResourceTypeRefNode;
+import org.raml.v2.internal.impl.commons.nodes.ParametrizedTraitRefNode;
+import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.internal.impl.commons.nodes.ResourceNode;
+import org.raml.v2.internal.impl.commons.nodes.ResourceTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.ResourceTypeRefNode;
+import org.raml.v2.internal.impl.commons.nodes.SecuritySchemeNode;
+import org.raml.v2.internal.impl.commons.nodes.SecuritySchemeRefNode;
+import org.raml.v2.internal.impl.commons.nodes.TraitNode;
+import org.raml.v2.internal.impl.commons.nodes.TraitRefNode;
+import org.raml.v2.internal.framework.nodes.Node;
 
 public abstract class BaseRamlGrammar extends BaseGrammar
 {

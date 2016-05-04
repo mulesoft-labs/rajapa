@@ -26,8 +26,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.raml.v2.internal.impl.RamlBuilder;
-import org.raml.v2.impl.commons.model.builder.ModelBuilder;
-import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.internal.impl.commons.model.builder.ModelBuilder;
+import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.api.model.common.ValidationResult;
 import org.raml.v2.api.model.v10.api.Api;
 import org.raml.v2.api.model.v10.api.DocumentationItem;
@@ -37,8 +37,8 @@ import org.raml.v2.api.model.v10.methods.Method;
 import org.raml.v2.api.model.v10.methods.Trait;
 import org.raml.v2.api.model.v10.resources.Resource;
 import org.raml.v2.api.model.v10.resources.ResourceType;
-import org.raml.v2.nodes.ErrorNode;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.framework.nodes.ErrorNode;
+import org.raml.v2.internal.framework.nodes.Node;
 
 public class LeaguesV10TestCase
 {

@@ -26,8 +26,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.raml.v2.internal.impl.RamlBuilder;
-import org.raml.v2.impl.commons.model.builder.ModelBuilder;
-import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.internal.impl.commons.model.builder.ModelBuilder;
+import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.api.model.v08.api.Api;
 import org.raml.v2.api.model.v08.api.DocumentationItem;
 import org.raml.v2.api.model.v08.bodies.BodyLike;
@@ -36,8 +36,8 @@ import org.raml.v2.api.model.v08.methods.Method;
 import org.raml.v2.api.model.v08.methods.Trait;
 import org.raml.v2.api.model.v08.resources.Resource;
 import org.raml.v2.api.model.v08.resources.ResourceType;
-import org.raml.v2.nodes.ErrorNode;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.framework.nodes.ErrorNode;
+import org.raml.v2.internal.framework.nodes.Node;
 
 public class SpecInterfacesV08TestCase
 {
