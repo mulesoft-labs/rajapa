@@ -17,6 +17,7 @@ package org.raml.v2.internal.impl.v10.nodes.types;
 
 import com.google.common.collect.Lists;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -47,7 +48,20 @@ public class InheritedPropertiesInjectedNode extends BaseNode implements ObjectN
         List<PropertyNode> properties = Lists.newArrayList();
         for (Node propertyNode : ((KeyValueNode) this.getChildren().get(0)).getValue().getChildren())
         {
-            properties.add((PropertyNode) propertyNode);
+            if (propertyNode instanceof PropertyNode)
+            {
+                properties.add((PropertyNode) propertyNode);
+            }
+            else if (propertyNode instanceof KeyValueNode)
+            {
+                for (Node property : (((KeyValueNode) propertyNode).getValue()).getChildren())
+                {
+                    if (property instanceof PropertyNode)
+                    {
+                        properties.add((PropertyNode) property);
+                    }
+                }
+            }
         }
         return properties;
     }

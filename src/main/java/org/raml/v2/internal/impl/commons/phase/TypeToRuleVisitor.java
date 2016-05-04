@@ -134,6 +134,7 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
     private ObjectRule getPropertiesRules(List<PropertyNode> properties)
     {
         ObjectRule objectRule = new ObjectRule();
+        objectRule.setStrict(true);
 
         for (PropertyNode property : properties)
         {

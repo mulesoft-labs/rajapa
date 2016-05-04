@@ -188,7 +188,11 @@ public class TypesTransformer implements Transformer
             String trimmedType = StringUtils.trim(((StringNode) getType(node)).getValue());
             if ("array".equals(trimmedType))
             {
-                return;
+                trimmedType = StringUtils.trim(((StringNode) getType(node.get("items"))).getValue());
+                if (StringUtils.isEmpty(trimmedType))
+                {
+                    return;
+                }
             }
             if (isSchemaNode(getType(node)))
             {
@@ -196,32 +200,44 @@ public class TypesTransformer implements Transformer
                 return;
             }
 
-            final TypeNode parentTypeNodeGeneral = getType(trimmedType, typeNode);
-            if (parentTypeNodeGeneral instanceof ObjectTypeNode)
+            for (String type : getSplitTypes(trimmedType))
             {
-                final ObjectTypeNode parentTypeNode = (ObjectTypeNode) parentTypeNodeGeneral;
+                final TypeNode parentTypeNodeGeneral = getType(type, typeNode);
+                if (parentTypeNodeGeneral instanceof ObjectTypeNode)
+                {
+                    final ObjectTypeNode parentTypeNode = (ObjectTypeNode) parentTypeNodeGeneral;
 
-                if (parentTypeNode.get("properties") != null)
-                {
-                    injectProperties((ObjectTypeNode) node, new StringNodeImpl(trimmedType), (SYObjectNode) parentTypeNode.get("properties"));
+                    if (!parentTypeNode.getInheritedProperties().isEmpty())
+                    {
+                        for (InheritedPropertiesInjectedNode inheritedProperties : parentTypeNode.getInheritedProperties())
+                        {
+                            injectProperties((ObjectTypeNode) node, new StringNodeImpl(type), inheritedProperties);
+                        }
+                    }
+                    else if (parentTypeNode.get("properties") != null)
+                    {
+                        injectProperties((ObjectTypeNode) node, new StringNodeImpl(type), (SYObjectNode) parentTypeNode.get("properties"));
+                    }
+                    else if (isSchemaNode(getType(parentTypeNode)))
+                    {
+                        SchemaNodeImpl schemaNode = new SchemaNodeImpl((StringNodeImpl) getType(parentTypeNode), actualPath);
+                        getType(node).replaceWith(schemaNode);
+                        return;
+                    }
                 }
-                if (!parentTypeNode.getInheritedProperties().isEmpty())
-                {
-                    ((ObjectTypeNode) node).setInheritedProperties(parentTypeNode.getInheritedProperties());
-                }
-                else if (isSchemaNode(getType(parentTypeNode)))
-                {
-                    SchemaNodeImpl schemaNode = new SchemaNodeImpl((StringNodeImpl) getType(parentTypeNode), actualPath);
-                    getType(node).replaceWith(schemaNode);
-                    return;
-                }
+
             }
         }
     }
 
     private String[] getSplitTypes(String types)
     {
-        return StringUtils.replaceEach(types, new String[] {"(", ")"}, new String[] {"", ""}).split("\\|");
+        String[] split = StringUtils.replaceEach(types, new String[] {"(", ")"}, new String[] {"", ""}).split("\\|");
+        for (int i = 0; i < split.length; i++)
+        {
+            split[i] = StringUtils.trim(split[i]);
+        }
+        return split;
     }
 
     private void validateInheritedTypes(final StringNode typeNode)
@@ -306,7 +322,7 @@ public class TypesTransformer implements Transformer
         return node.getProperties();
     }
 
-    private void injectProperties(ObjectTypeNode node, StringNodeImpl key, SYObjectNode properties)
+    private void injectProperties(ObjectTypeNode node, StringNodeImpl key, ObjectNode properties)
     {
         InheritedPropertiesInjectedNode injected = new InheritedPropertiesInjectedNode();
         KeyValueNode keyValue = new KeyValueNodeImpl(key, properties);
@@ -316,7 +332,7 @@ public class TypesTransformer implements Transformer
         node.addInheritedProperties(injected);
     }
 
-    private void setKeyPosition(StringNodeImpl key, SYObjectNode properties, Node injected, KeyValueNode keyValue)
+    private void setKeyPosition(StringNodeImpl key, ObjectNode properties, Node injected, KeyValueNode keyValue)
     {
         key.setEndPosition(properties.getStartPosition());
         key.setStartPosition(properties.getStartPosition().leftShift(key.getValue().length()));
