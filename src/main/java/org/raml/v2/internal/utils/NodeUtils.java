@@ -28,6 +28,8 @@ import org.raml.v2.internal.framework.nodes.ObjectNode;
 import org.raml.v2.internal.framework.nodes.StringNode;
 import org.raml.v2.internal.framework.nodes.snakeyaml.SYIncludeNode;
 
+import java.util.List;
+
 public class NodeUtils
 {
 
@@ -52,7 +54,8 @@ public class NodeUtils
         return parent;
     }
 
-    private static Node traverseToRoot(Node node)
+    @Nullable
+    public static Node traverseToRoot(Node node)
     {
         if (node == null || node instanceof RamlDocumentNode)
         {
@@ -183,6 +186,57 @@ public class NodeUtils
     public static String computeColumnForChild(Node node)
     {
         return StringUtils.repeat(" ", node.getStartPosition().getColumn() + DEFAULT_COLUMN_STEP);
+    }
+
+    @Nullable
+    public static Node searchNodeAt(Node root, int location)
+    {
+        if (root.getEndPosition().getIndex() != location || !root.getChildren().isEmpty())
+        {
+            final List<Node> children = root.getChildren();
+            for (Node child : children)
+            {
+                if (child.getEndPosition().getIndex() == location)
+                {
+                    if (child.getChildren().isEmpty())
+                    {
+                        return child;
+                    }
+                    else
+                    {
+                        return searchNodeAt(child, location);
+                    }
+                }
+                else if (child.getEndPosition().getIndex() > location || isLastNode(child))
+                {
+                    if (child.getChildren().isEmpty())
+                    {
+                        return child;
+                    }
+                    else
+                    {
+                        return searchNodeAt(child, location);
+                    }
+                }
+            }
+            return null;
+        }
+        else
+        {
+            return root;
+        }
+    }
+
+    private static boolean isLastNode(Node node)
+    {
+        final Node parent = node.getParent();
+        if (parent == null)
+        {
+            return false;
+        }
+        List<Node> children = parent.getChildren();
+        Node lastChild = children.get(children.size() - 1);
+        return node.equals(lastChild);
     }
 
 }

@@ -27,11 +27,8 @@ import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.raml.v2.internal.framework.nodes.*;
 import org.raml.v2.internal.impl.commons.nodes.ExampleTypeNode;
-import org.raml.v2.internal.framework.nodes.KeyValueNode;
-import org.raml.v2.internal.framework.nodes.Node;
-import org.raml.v2.internal.framework.nodes.NodeType;
-import org.raml.v2.internal.framework.nodes.ObjectNode;
 import org.raml.v2.internal.framework.suggester.RamlParsingContext;
 import org.raml.v2.internal.framework.suggester.RamlParsingContextType;
 import org.raml.v2.internal.framework.suggester.Suggestion;
@@ -70,7 +67,8 @@ public class ObjectRule extends Rule
                 if (context.getContextType() == RamlParsingContextType.VALUE)
                 {
                     final List<Suggestion> keySuggestions = rule.getKeySuggestions(node, context);
-                    final String prefix = "\n" + NodeUtils.computeColumnForChild(node);
+                    final Node editing = NodeUtils.searchNodeAt(NodeUtils.traverseToRoot(node), context.getLocation());
+                    final String prefix = "\n" + NodeUtils.computeColumnForChild(editing instanceof NullNode ? editing.getParent() : editing);
                     for (Suggestion keySuggestion : keySuggestions)
                     {
                         result.add(keySuggestion.withPrefix(prefix));

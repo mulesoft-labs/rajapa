@@ -37,6 +37,7 @@ import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.internal.framework.nodes.*;
 import org.raml.v2.internal.framework.suggester.*;
 import org.raml.v2.internal.utils.Inflector;
+import org.raml.v2.internal.utils.NodeUtils;
 
 public class RamlSuggester
 {
@@ -108,7 +109,7 @@ public class RamlSuggester
     private List<Suggestion> getTemplateParameterSuggestions(String document, int offset, int location)
     {
         final Node rootNode = getRootNode(document, offset, location);
-        Node node = searchNodeAt(rootNode, location);
+        Node node = NodeUtils.searchNodeAt(rootNode, location);
         boolean inTrait = false;
         while (node != null)
         {
@@ -166,7 +167,7 @@ public class RamlSuggester
     private List<Suggestion> getSuggestionsAt(RamlParsingContext context, String document, int offset, int location)
     {
         final Node root = getRootNode(document, offset, location);
-        Node node = searchNodeAt(root, location);
+        Node node = NodeUtils.searchNodeAt(root, location);
         if (node != null)
         {
             // If it is the key of a key value pair
@@ -240,7 +241,7 @@ public class RamlSuggester
         // // I don't care column number unless is an empty new line
         int columnNumber = getColumnNumber(document, offset);
         final Node root = getRootNode(document, offset, location);
-        Node node = searchNodeAt(root, location);
+        Node node = NodeUtils.searchNodeAt(root, location);
 
         if (node != null)
         {
@@ -446,58 +447,6 @@ public class RamlSuggester
         }
         return contextLine.reverse();
     }
-
-    @Nullable
-    private Node searchNodeAt(Node root, int location)
-    {
-        if (root.getEndPosition().getIndex() != location || !root.getChildren().isEmpty())
-        {
-            final List<Node> children = root.getChildren();
-            for (Node child : children)
-            {
-                if (child.getEndPosition().getIndex() == location)
-                {
-                    if (child.getChildren().isEmpty())
-                    {
-                        return child;
-                    }
-                    else
-                    {
-                        return searchNodeAt(child, location);
-                    }
-                }
-                else if (child.getEndPosition().getIndex() > location || isLastNode(child))
-                {
-                    if (child.getChildren().isEmpty())
-                    {
-                        return child;
-                    }
-                    else
-                    {
-                        return searchNodeAt(child, location);
-                    }
-                }
-            }
-            return null;
-        }
-        else
-        {
-            return root;
-        }
-    }
-
-    private boolean isLastNode(Node node)
-    {
-        final Node parent = node.getParent();
-        if (parent == null)
-        {
-            return false;
-        }
-        List<Node> children = parent.getChildren();
-        Node lastChild = children.get(children.size() - 1);
-        return node.equals(lastChild);
-    }
-
 
     @Nullable
     public Rule getRuleFor(String stringContent)
