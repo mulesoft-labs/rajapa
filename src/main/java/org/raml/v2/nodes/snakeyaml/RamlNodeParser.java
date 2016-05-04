@@ -28,6 +28,7 @@ import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.Node;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.Mark;
+import org.yaml.snakeyaml.error.MarkedYAMLException;
 import org.yaml.snakeyaml.parser.ParserException;
 import org.yaml.snakeyaml.scanner.ScannerException;
 
@@ -76,22 +77,18 @@ public class RamlNodeParser
                 return new SYModelWrapper(supportLibraries).wrap(composedNode);
             }
         }
-        catch (final ScannerException e)
+        catch (final MarkedYAMLException e)
         {
-            ErrorNode errorNode = new ErrorNode(e.getMessage());
-            Mark problemMark = e.getProblemMark();
-            errorNode.setStartPosition(new DefaultPosition(problemMark.getIndex(), problemMark.getLine(), 0, ""));
-            errorNode.setEndPosition(new DefaultPosition(problemMark.getIndex() + 1, problemMark.getLine(), problemMark.getColumn(), ""));
-            return errorNode;
+            return buildYamlErrorNode(e);
         }
-        catch (final ParserException e)
-        {
-            ErrorNode errorNode = new ErrorNode(e.getMessage());
-            Mark problemMark = e.getProblemMark();
-            errorNode.setStartPosition(new DefaultPosition(problemMark.getIndex(), problemMark.getLine(), 0, ""));
-            errorNode.setEndPosition(new DefaultPosition(problemMark.getIndex() + 1, problemMark.getLine(), problemMark.getColumn(), ""));
-            return errorNode;
-        }
+    }
+
+    private static Node buildYamlErrorNode(MarkedYAMLException e) {
+        final ErrorNode errorNode = new ErrorNode("Underlying error while parsing YAML syntax: '" + e.getMessage() + "'");
+        final Mark problemMark = e.getProblemMark();
+        errorNode.setStartPosition(new DefaultPosition(problemMark.getIndex(), problemMark.getLine(), 0, ""));
+        errorNode.setEndPosition(new DefaultPosition(problemMark.getIndex() + 1, problemMark.getLine(), problemMark.getColumn(), ""));
+        return errorNode;
     }
 
     @Nullable
