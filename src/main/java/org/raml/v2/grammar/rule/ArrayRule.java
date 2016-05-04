@@ -19,7 +19,9 @@ import org.raml.v2.nodes.ArrayNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
 import org.raml.v2.suggester.RamlParsingContext;
+import org.raml.v2.suggester.RamlParsingContextType;
 import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.utils.NodeUtils;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -47,6 +49,11 @@ public class ArrayRule extends Rule
             if (node instanceof ArrayNode && !((ArrayNode) node).isJsonStyle())
             {
                 result.add(suggestion);
+            }
+            else if (context.getContextType() == RamlParsingContextType.VALUE)
+            {
+                final String prefix = "\n" + NodeUtils.computeColumnForChild(node.getParent());
+                result.add(suggestion.withValue("- " + suggestion.getValue()).withPrefix(prefix));
             }
             else
             {

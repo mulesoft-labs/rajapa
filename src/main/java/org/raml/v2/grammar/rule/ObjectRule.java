@@ -36,6 +36,7 @@ import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.RamlParsingContextType;
 import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.utils.NodeUtils;
 
 public class ObjectRule extends Rule
 {
@@ -70,7 +71,7 @@ public class ObjectRule extends Rule
                 if (context.getContextType() == RamlParsingContextType.VALUE)
                 {
                     final List<Suggestion> keySuggestions = rule.getKeySuggestions(node, context);
-                    String prefix = "\n" + StringUtils.repeat(" ", node.getStartPosition().getColumn() + 2);
+                    final String prefix = "\n" + NodeUtils.computeColumnForChild(node);
                     for (Suggestion keySuggestion : keySuggestions)
                     {
                         result.add(keySuggestion.withPrefix(prefix));

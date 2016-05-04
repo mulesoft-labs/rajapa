@@ -18,6 +18,7 @@ package org.raml.v2.utils;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.v2.loader.ResourceLoader;
@@ -29,6 +30,8 @@ import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
 
 public class NodeUtils
 {
+
+    public static final int DEFAULT_COLUMN_STEP = 2;
 
     @Nullable
     public static Node getGrandParent(Node node)
@@ -176,4 +179,10 @@ public class NodeUtils
         }
         throw new IllegalArgumentException("node does not belong to a raml document");
     }
+
+    public static String computeColumnForChild(Node node)
+    {
+        return StringUtils.repeat(" ", node.getStartPosition().getColumn() + DEFAULT_COLUMN_STEP);
+    }
+
 }
