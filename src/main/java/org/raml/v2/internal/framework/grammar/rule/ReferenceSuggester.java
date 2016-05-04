@@ -20,8 +20,8 @@ import org.raml.v2.internal.framework.nodes.ArrayNode;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.nodes.ObjectNode;
 import org.raml.v2.internal.framework.nodes.StringNode;
-import org.raml.v2.suggester.DefaultSuggestion;
-import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.internal.framework.suggester.DefaultSuggestion;
+import org.raml.v2.internal.framework.suggester.Suggestion;
 import org.raml.v2.internal.utils.NodeSelector;
 
 import javax.annotation.Nonnull;

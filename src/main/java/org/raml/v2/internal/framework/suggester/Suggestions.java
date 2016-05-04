@@ -13,30 +13,35 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.suggester;
+package org.raml.v2.internal.framework.suggester;
 
-public class RamlParsingContext
+import java.util.List;
+
+/**
+ * Represent a set of suggestions.
+ */
+public class Suggestions
 {
-
-    private RamlParsingContextType contextType;
-    private String content;
     private int location;
+    private String replaceWord;
+    private List<Suggestion> suggestions;
 
-    public RamlParsingContext(RamlParsingContextType contextType, String content, int location)
+
+    public Suggestions(List<Suggestion> suggestions, String replaceWord, int location)
     {
-        this.contextType = contextType;
-        this.content = content;
+        this.suggestions = suggestions;
+        this.replaceWord = replaceWord;
         this.location = location;
     }
 
-    public String getContent()
+    public List<Suggestion> getSuggestions()
     {
-        return content;
+        return suggestions;
     }
 
-    public RamlParsingContextType getContextType()
+    public String getReplaceWord()
     {
-        return contextType;
+        return replaceWord;
     }
 
     public int getLocation()

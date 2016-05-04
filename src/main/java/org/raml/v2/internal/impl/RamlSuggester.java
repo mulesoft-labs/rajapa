@@ -35,7 +35,7 @@ import org.raml.v2.internal.impl.v10.grammar.Raml10Grammar;
 import org.raml.v2.api.loader.DefaultResourceLoader;
 import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.internal.framework.nodes.*;
-import org.raml.v2.suggester.*;
+import org.raml.v2.internal.framework.suggester.*;
 import org.raml.v2.internal.utils.Inflector;
 
 public class RamlSuggester

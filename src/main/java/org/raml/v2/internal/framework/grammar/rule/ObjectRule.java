@@ -32,9 +32,9 @@ import org.raml.v2.internal.framework.nodes.KeyValueNode;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.nodes.NodeType;
 import org.raml.v2.internal.framework.nodes.ObjectNode;
-import org.raml.v2.suggester.RamlParsingContext;
-import org.raml.v2.suggester.RamlParsingContextType;
-import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.internal.framework.suggester.RamlParsingContext;
+import org.raml.v2.internal.framework.suggester.RamlParsingContextType;
+import org.raml.v2.internal.framework.suggester.Suggestion;
 import org.raml.v2.internal.utils.NodeUtils;
 
 public class ObjectRule extends Rule

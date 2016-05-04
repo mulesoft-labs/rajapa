@@ -13,9 +13,10 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.suggester;
+package org.raml.v2.internal.framework.suggester;
 
-public enum RamlParsingContextType
+public interface DocumentContentAccessor
 {
-    FUNCTION_CALL, LIBRARY_CALL, VALUE, ITEM, STRING_TEMPLATE, ANY
+
+    String getCharacter(int offset);
 }

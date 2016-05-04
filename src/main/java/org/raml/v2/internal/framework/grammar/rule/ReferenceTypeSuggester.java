@@ -23,8 +23,8 @@ import javax.annotation.Nonnull;
 import org.raml.v2.internal.framework.nodes.KeyValueNode;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.nodes.snakeyaml.SYStringNode;
-import org.raml.v2.suggester.DefaultSuggestion;
-import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.internal.framework.suggester.DefaultSuggestion;
+import org.raml.v2.internal.framework.suggester.Suggestion;
 
 public class ReferenceTypeSuggester extends ReferenceSuggester
 {

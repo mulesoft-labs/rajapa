@@ -25,8 +25,8 @@ import org.raml.v2.internal.framework.nodes.NodeType;
 import org.raml.v2.internal.framework.nodes.SimpleTypeNode;
 import org.raml.v2.internal.framework.nodes.StringNode;
 import org.raml.v2.internal.framework.nodes.StringNodeImpl;
-import org.raml.v2.suggester.RamlParsingContext;
-import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.internal.framework.suggester.RamlParsingContext;
+import org.raml.v2.internal.framework.suggester.Suggestion;
 
 public class ScalarTypeRule extends AbstractTypeRule
 {

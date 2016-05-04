@@ -23,8 +23,8 @@ import javax.annotation.Nonnull;
 
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.nodes.StringNode;
-import org.raml.v2.suggester.RamlParsingContext;
-import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.internal.framework.suggester.RamlParsingContext;
+import org.raml.v2.internal.framework.suggester.Suggestion;
 
 public class MaxLengthRule extends Rule
 {

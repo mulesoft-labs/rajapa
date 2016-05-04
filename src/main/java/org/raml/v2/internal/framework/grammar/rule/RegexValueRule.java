@@ -19,9 +19,9 @@ package org.raml.v2.internal.framework.grammar.rule;
 import org.apache.commons.lang.StringUtils;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.nodes.StringNode;
-import org.raml.v2.suggester.DefaultSuggestion;
-import org.raml.v2.suggester.RamlParsingContext;
-import org.raml.v2.suggester.Suggestion;
+import org.raml.v2.internal.framework.suggester.DefaultSuggestion;
+import org.raml.v2.internal.framework.suggester.RamlParsingContext;
+import org.raml.v2.internal.framework.suggester.Suggestion;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
