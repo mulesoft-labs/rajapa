@@ -125,12 +125,12 @@ public class ModelBuilder
          */
         private String getActualMethodName(Method method)
         {
-            if (method.toGenericString().contains("List<org.raml.v2.model.v08.bodies.BodyLike> org.raml.v2.model.v08.methods.MethodBase.body()") ||
-                method.toGenericString().contains("List<org.raml.v2.model.v08.bodies.BodyLike> org.raml.v2.model.v08.bodies.Response.body()"))
+            if (method.toGenericString().contains("List<org.raml.v2.api.model.v08.bodies.BodyLike> org.raml.v2.api.model.v08.methods.MethodBase.body()") ||
+                method.toGenericString().contains("List<org.raml.v2.api.model.v08.bodies.BodyLike> org.raml.v2.api.model.v08.bodies.Response.body()"))
             {
                 return "bodyV08";
             }
-            if (method.toGenericString().contains("List<org.raml.v2.model.v08.api.GlobalSchema> org.raml.v2.model.v08.api.Api.schemas()"))
+            if (method.toGenericString().contains("List<org.raml.v2.api.model.v08.api.GlobalSchema> org.raml.v2.api.model.v08.api.Api.schemas()"))
             {
                 return "schemasV08";
             }
