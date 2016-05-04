@@ -15,7 +15,7 @@
  */
 package org.raml.v2.grammar.rule;
 
-import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.StringNodeImpl;

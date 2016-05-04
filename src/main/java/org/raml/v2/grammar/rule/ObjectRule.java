@@ -28,7 +28,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;

@@ -30,7 +30,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.StringNode;

@@ -15,7 +15,7 @@
  */
 package org.raml.v2;
 
-import static org.raml.v2.impl.commons.RamlVersion.RAML_10;
+import static org.raml.v2.internal.impl.commons.RamlVersion.RAML_10;
 
 import java.io.File;
 import java.io.FileReader;
@@ -25,10 +25,10 @@ import java.io.StringReader;
 
 import org.apache.commons.io.IOUtils;
 import org.raml.v2.grammar.rule.ErrorNodeFactory;
-import org.raml.v2.impl.commons.RamlHeader;
-import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
-import org.raml.v2.impl.v08.Raml08Builder;
-import org.raml.v2.impl.v10.Raml10Builder;
+import org.raml.v2.internal.impl.commons.RamlHeader;
+import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.internal.impl.v08.Raml08Builder;
+import org.raml.v2.internal.impl.v10.Raml10Builder;
 import org.raml.v2.loader.CompositeResourceLoader;
 import org.raml.v2.loader.DefaultResourceLoader;
 import org.raml.v2.loader.FileResourceLoader;

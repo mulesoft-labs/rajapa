@@ -28,10 +28,10 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.v2.grammar.rule.Rule;
-import org.raml.v2.impl.commons.RamlHeader;
-import org.raml.v2.impl.commons.RamlVersion;
-import org.raml.v2.impl.v08.grammar.Raml08Grammar;
-import org.raml.v2.impl.v10.grammar.Raml10Grammar;
+import org.raml.v2.internal.impl.commons.RamlHeader;
+import org.raml.v2.internal.impl.commons.RamlVersion;
+import org.raml.v2.internal.impl.v08.grammar.Raml08Grammar;
+import org.raml.v2.internal.impl.v10.grammar.Raml10Grammar;
 import org.raml.v2.loader.DefaultResourceLoader;
 import org.raml.v2.loader.ResourceLoader;
 import org.raml.v2.nodes.*;

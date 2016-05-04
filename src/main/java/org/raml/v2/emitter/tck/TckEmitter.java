@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.v2.impl.commons.nodes.AnnotationNode;
-import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
-import org.raml.v2.impl.commons.nodes.MethodNode;
-import org.raml.v2.impl.commons.nodes.ResourceNode;
+import org.raml.v2.internal.impl.commons.nodes.AnnotationNode;
+import org.raml.v2.internal.impl.commons.nodes.ExampleTypeNode;
+import org.raml.v2.internal.impl.commons.nodes.MethodNode;
+import org.raml.v2.internal.impl.commons.nodes.ResourceNode;
 import org.raml.v2.nodes.ArrayNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.KeyValueNodeImpl;

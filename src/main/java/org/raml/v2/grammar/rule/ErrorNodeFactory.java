@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.v2.impl.v10.RamlFragment;
+import org.raml.v2.internal.impl.v10.RamlFragment;
 import org.raml.v2.nodes.EmptyErrorNode;
 import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.Node;

@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.impl.commons.nodes.AnnotationNode;
+import org.raml.v2.internal.impl.commons.nodes.AnnotationNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.StringNode;
