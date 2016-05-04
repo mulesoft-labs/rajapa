@@ -83,7 +83,8 @@ public class RamlNodeParser
         }
     }
 
-    private static Node buildYamlErrorNode(MarkedYAMLException e) {
+    private static Node buildYamlErrorNode(MarkedYAMLException e)
+    {
         final ErrorNode errorNode = new ErrorNode("Underlying error while parsing YAML syntax: '" + e.getMessage() + "'");
         final Mark problemMark = e.getProblemMark();
         errorNode.setStartPosition(new DefaultPosition(problemMark.getIndex(), problemMark.getLine(), 0, ""));

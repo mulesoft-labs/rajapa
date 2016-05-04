@@ -32,12 +32,26 @@ import org.raml.v2.impl.commons.RamlHeader;
 import org.raml.v2.impl.commons.RamlVersion;
 import org.raml.v2.impl.v08.grammar.Raml08Grammar;
 import org.raml.v2.impl.v10.grammar.Raml10Grammar;
+import org.raml.v2.loader.DefaultResourceLoader;
+import org.raml.v2.loader.ResourceLoader;
 import org.raml.v2.nodes.*;
 import org.raml.v2.suggester.*;
 import org.raml.v2.utils.Inflector;
 
 public class RamlSuggester
 {
+
+    private ResourceLoader resourceLoader;
+
+    public RamlSuggester(ResourceLoader resourceLoader)
+    {
+        this.resourceLoader = resourceLoader;
+    }
+
+    public RamlSuggester()
+    {
+        this(new DefaultResourceLoader());
+    }
 
     /**
      * Returns the suggestions for the specified document at the given position.
@@ -179,11 +193,11 @@ public class RamlSuggester
         try
         {
             // We try the with the original document
-            final Node rootNode = ramlBuilder.build(document);
+            final Node rootNode = ramlBuilder.build(document, resourceLoader, "");
             if (rootNode instanceof StringNode)
             {
                 // File still doesn't have any mapping and will not generate any suggestions so we'll force the parsing to make it a mapping
-                return ramlBuilder.build(stripLastChanges(document, offset, location) + "\n\nstub: stub"); // we add an invalid key so as to force the creation of the root node
+                return ramlBuilder.build(stripLastChanges(document, offset, location) + "\n\nstub: stub", resourceLoader, ""); // we add an invalid key so as to force the creation of the root node
             }
             else if (!(rootNode instanceof ErrorNode))
             {
@@ -192,18 +206,18 @@ public class RamlSuggester
             else if (rootNode instanceof EmptyErrorNode)
             {
                 // File is not corrupted but just empty, we should suggest initial keys for the current file
-                return ramlBuilder.build(document + "\n\nstub: stub"); // we add an invalid key so as to force the creation of the root node
+                return ramlBuilder.build(document + "\n\nstub: stub", resourceLoader, ""); // we add an invalid key so as to force the creation of the root node
             }
             else
             {
                 // We remove some current keywords to see if it parses
-                return ramlBuilder.build(stripLastChanges(document, offset, location));
+                return ramlBuilder.build(stripLastChanges(document, offset, location), resourceLoader, "");
             }
         }
         catch (final Exception e)
         {
             // We remove some current keywords to see if it parses
-            return ramlBuilder.build(stripLastChanges(document, offset, location));
+            return ramlBuilder.build(stripLastChanges(document, offset, location), resourceLoader, "");
         }
     }
 
