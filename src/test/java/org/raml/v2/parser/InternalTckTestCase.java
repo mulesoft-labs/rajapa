@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.raml.v2.RamlBuilder;
 import org.raml.v2.dataprovider.TestDataProvider;
-import org.raml.v2.emitter.tck.TckEmitter;
+import org.raml.v2.internal.impl.emitter.tck.TckEmitter;
 import org.raml.v2.nodes.Node;
 
 @RunWith(Parameterized.class)
