@@ -13,21 +13,30 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.loader;
+package org.raml.v2.api.loader;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
-public class ClassPathResourceLoader implements ResourceLoader
+public class UrlResourceLoader implements ResourceLoader
 {
 
     @Override
     public InputStream fetchResource(String resourceName)
     {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName);
-        if (inputStream == null)
+        InputStream inputStream = null;
+        try
         {
-            inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
+            URL url = new URL(resourceName);
+            inputStream = new BufferedInputStream(url.openStream());
+        }
+        catch (IOException e)
+        {
+            // ignore on resource not found
         }
         return inputStream;
+
     }
 }

@@ -13,30 +13,23 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.loader;
+package org.raml.v2.api.loader;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
-public class UrlResourceLoader implements ResourceLoader
+import javax.annotation.Nullable;
+
+public interface ResourceLoader
 {
 
-    @Override
-    public InputStream fetchResource(String resourceName)
-    {
-        InputStream inputStream = null;
-        try
-        {
-            URL url = new URL(resourceName);
-            inputStream = new BufferedInputStream(url.openStream());
-        }
-        catch (IOException e)
-        {
-            // ignore on resource not found
-        }
-        return inputStream;
+    /**
+     * Returns an input stream for reading the specified resource.
+     *
+     * @param resourceName the resource to try to fetch
+     * @return An input stream for reading the resource, or <tt>null</tt>
+     *         if the resource could not be found
+     */
+    @Nullable
+    InputStream fetchResource(String resourceName);
 
-    }
 }

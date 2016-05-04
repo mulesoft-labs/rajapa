@@ -13,23 +13,27 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.loader;
+package org.raml.v2.api.loader;
 
 import java.io.InputStream;
 
-import javax.annotation.Nullable;
-
-public interface ResourceLoader
+public class DefaultResourceLoader implements ResourceLoader
 {
 
-    /**
-     * Returns an input stream for reading the specified resource.
-     *
-     * @param resourceName the resource to try to fetch
-     * @return An input stream for reading the resource, or <tt>null</tt>
-     *         if the resource could not be found
-     */
-    @Nullable
-    InputStream fetchResource(String resourceName);
+    private ResourceLoader resourceLoader;
 
+    public DefaultResourceLoader()
+    {
+        resourceLoader = new CompositeResourceLoader(
+                new UrlResourceLoader(),
+                new RamlUrlResourceLoader(),
+                new ClassPathResourceLoader(),
+                new FileResourceLoader("."));
+    }
+
+    @Override
+    public InputStream fetchResource(String resourceName)
+    {
+        return resourceLoader.fetchResource(resourceName);
+    }
 }

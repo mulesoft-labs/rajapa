@@ -18,7 +18,7 @@ package org.raml.v2.impl.commons.nodes;
 import javax.annotation.Nonnull;
 
 import org.raml.v2.impl.commons.RamlVersion;
-import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.nodes.AbstractRamlNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;

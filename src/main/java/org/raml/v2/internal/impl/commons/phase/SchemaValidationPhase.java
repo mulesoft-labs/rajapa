@@ -20,7 +20,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import java.util.List;
 
 import org.raml.v2.grammar.rule.ErrorNodeFactory;
-import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.SchemaNodeImpl;
 import org.raml.v2.phase.Phase;

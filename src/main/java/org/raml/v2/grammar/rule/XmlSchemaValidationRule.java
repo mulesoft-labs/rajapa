@@ -22,13 +22,10 @@ import java.io.StringReader;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 
-import org.raml.v2.grammar.rule.xml.XsdResourceResolver;
-import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;

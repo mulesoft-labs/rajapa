@@ -34,7 +34,7 @@ import org.raml.v2.impl.commons.phase.SugarRushPhase;
 import org.raml.v2.impl.v10.grammar.Raml10Grammar;
 import org.raml.v2.impl.v10.phase.MediaTypeInjection;
 import org.raml.v2.impl.v10.phase.TypesTransformer;
-import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.StringNode;

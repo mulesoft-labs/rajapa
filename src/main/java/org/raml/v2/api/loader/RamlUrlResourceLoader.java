@@ -13,32 +13,35 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.loader;
+package org.raml.v2.api.loader;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
-public class CompositeResourceLoader implements ResourceLoader
+public class RamlUrlResourceLoader implements ResourceLoader
 {
-
-    private ResourceLoader[] resourceLoaders;
-
-    public CompositeResourceLoader(ResourceLoader... resourceLoaders)
-    {
-        this.resourceLoaders = resourceLoaders;
-    }
+    public static final String APPLICATION_RAML = "application/raml+yaml";
 
     @Override
     public InputStream fetchResource(String resourceName)
     {
         InputStream inputStream = null;
-        for (ResourceLoader loader : resourceLoaders)
+        try
         {
-            inputStream = loader.fetchResource(resourceName);
-            if (inputStream != null)
-            {
-                break;
-            }
+            URL url = new URL(resourceName);
+            URLConnection connection = url.openConnection();
+            connection.setRequestProperty("Accept", APPLICATION_RAML + ", */*");
+            inputStream = new BufferedInputStream(connection.getInputStream());
+        }
+        catch (IOException e)
+        {
+            // ignore on resource not found
         }
         return inputStream;
+
     }
+
 }

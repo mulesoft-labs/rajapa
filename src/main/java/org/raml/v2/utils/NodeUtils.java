@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
-import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ObjectNode;

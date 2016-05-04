@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.raml.v2.impl.commons.RamlHeader;
-import org.raml.v2.loader.ResourceLoader;
+import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.nodes.IncludeErrorNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.StringNodeImpl;

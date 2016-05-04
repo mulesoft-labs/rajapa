@@ -13,27 +13,11 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.loader;
+package org.raml.v2.api.loader;
 
-import java.io.InputStream;
-
-public class DefaultResourceLoader implements ResourceLoader
+public interface ResourceLoaderAware
 {
 
-    private ResourceLoader resourceLoader;
+    void setResourceLoader(ResourceLoader resourceLoader);
 
-    public DefaultResourceLoader()
-    {
-        resourceLoader = new CompositeResourceLoader(
-                new UrlResourceLoader(),
-                new RamlUrlResourceLoader(),
-                new ClassPathResourceLoader(),
-                new FileResourceLoader("."));
-    }
-
-    @Override
-    public InputStream fetchResource(String resourceName)
-    {
-        return resourceLoader.fetchResource(resourceName);
-    }
 }

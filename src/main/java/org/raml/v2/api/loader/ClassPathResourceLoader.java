@@ -13,11 +13,21 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.loader;
+package org.raml.v2.api.loader;
 
-public interface ResourceLoaderAware
+import java.io.InputStream;
+
+public class ClassPathResourceLoader implements ResourceLoader
 {
 
-    void setResourceLoader(ResourceLoader resourceLoader);
-
+    @Override
+    public InputStream fetchResource(String resourceName)
+    {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName);
+        if (inputStream == null)
+        {
+            inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
+        }
+        return inputStream;
+    }
 }
