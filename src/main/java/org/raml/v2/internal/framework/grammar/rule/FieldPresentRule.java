@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.Suggestion;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 
 
 public class FieldPresentRule extends Rule

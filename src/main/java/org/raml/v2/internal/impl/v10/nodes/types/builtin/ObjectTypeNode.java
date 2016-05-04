@@ -22,7 +22,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.impl.commons.model.StringType;
 import org.raml.v2.impl.commons.nodes.PropertyNode;
 import org.raml.v2.nodes.AbstractRamlNode;
 import org.raml.v2.nodes.IntegerNode;
@@ -31,10 +30,9 @@ import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.v2.nodes.StringNode;
-import org.raml.v2.nodes.snakeyaml.SYStringNode;
-import org.raml.v2.utils.NodeUtils;
+import org.raml.v2.internal.utils.NodeUtils;
 
-import static org.raml.v2.utils.NodeUtils.getType;
+import static org.raml.v2.internal.utils.NodeUtils.getType;
 
 public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {

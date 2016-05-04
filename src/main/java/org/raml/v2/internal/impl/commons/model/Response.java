@@ -21,7 +21,7 @@ import java.util.List;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.SimpleTypeNode;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 
 public class Response
 {

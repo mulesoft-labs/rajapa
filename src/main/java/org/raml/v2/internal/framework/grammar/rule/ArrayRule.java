@@ -21,7 +21,7 @@ import org.raml.v2.internal.framework.nodes.NodeType;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.RamlParsingContextType;
 import org.raml.v2.suggester.Suggestion;
-import org.raml.v2.utils.NodeUtils;
+import org.raml.v2.internal.utils.NodeUtils;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

@@ -22,7 +22,7 @@ import java.util.Set;
 
 import org.raml.v2.impl.commons.model.StringType;
 import org.raml.v2.nodes.Node;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 
 public class ModelUtils
 {

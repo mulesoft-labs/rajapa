@@ -33,7 +33,7 @@ import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.Position;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.internal.framework.phase.Phase;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 
 public class MediaTypeInjection implements Phase
 {

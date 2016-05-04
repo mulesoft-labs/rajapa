@@ -27,7 +27,7 @@ import org.raml.v2.nodes.StringNodeImpl;
 import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
 import org.raml.v2.nodes.snakeyaml.SYIncludeNode;
 import org.raml.v2.internal.framework.phase.Transformer;
-import org.raml.v2.utils.StreamUtils;
+import org.raml.v2.internal.utils.StreamUtils;
 
 
 public class IncludeResolver implements Transformer

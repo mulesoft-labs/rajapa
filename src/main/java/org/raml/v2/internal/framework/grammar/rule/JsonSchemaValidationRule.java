@@ -37,7 +37,7 @@ import org.raml.v2.internal.framework.nodes.StringNode;
 import org.raml.v2.internal.framework.nodes.snakeyaml.SYObjectNode;
 import org.raml.v2.suggester.RamlParsingContext;
 import org.raml.v2.suggester.Suggestion;
-import org.raml.v2.utils.SchemaGenerator;
+import org.raml.v2.internal.utils.SchemaGenerator;
 
 public class JsonSchemaValidationRule extends Rule
 {

@@ -23,7 +23,7 @@ import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.AbstractRamlNode;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 
 public class FileTypeNode extends AbstractRamlNode implements ObjectNode
 {

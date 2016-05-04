@@ -20,7 +20,7 @@ import org.raml.v2.nodes.ExecutableNode;
 import org.raml.v2.nodes.ExecutionContext;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.StringNodeImpl;
-import org.raml.v2.utils.Inflector;
+import org.raml.v2.internal.utils.Inflector;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

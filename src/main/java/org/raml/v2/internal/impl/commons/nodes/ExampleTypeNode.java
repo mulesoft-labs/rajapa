@@ -32,8 +32,8 @@ import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.StringNode;
-import org.raml.v2.utils.JSonDumper;
-import org.raml.v2.utils.NodeUtils;
+import org.raml.v2.internal.utils.JSonDumper;
+import org.raml.v2.internal.utils.NodeUtils;
 
 public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {

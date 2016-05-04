@@ -18,7 +18,7 @@ package org.raml.v2.impl.v10.nodes;
 import org.raml.v2.impl.v10.grammar.Raml10Grammar;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.AbstractReferenceNode;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

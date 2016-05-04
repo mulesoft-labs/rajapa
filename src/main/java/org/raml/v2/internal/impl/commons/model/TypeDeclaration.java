@@ -26,9 +26,9 @@ import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.SimpleTypeNode;
 import org.raml.v2.nodes.StringNode;
-import org.raml.v2.utils.NodeSelector;
-import org.raml.v2.utils.NodeUtils;
-import org.raml.v2.utils.NodeValidator;
+import org.raml.v2.internal.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeUtils;
+import org.raml.v2.internal.utils.NodeValidator;
 
 public class TypeDeclaration extends CommonAttributes
 {

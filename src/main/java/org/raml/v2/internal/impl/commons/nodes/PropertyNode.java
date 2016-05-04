@@ -22,7 +22,7 @@ import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.ReferenceNode;
 import org.raml.v2.nodes.StringNode;
-import org.raml.v2.utils.NodeUtils;
+import org.raml.v2.internal.utils.NodeUtils;
 
 public class PropertyNode extends KeyValueNodeImpl
 {

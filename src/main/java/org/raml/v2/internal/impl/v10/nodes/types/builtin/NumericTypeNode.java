@@ -27,7 +27,7 @@ import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.SimpleTypeNode;
 import org.raml.v2.nodes.snakeyaml.SYArrayNode;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 
 public abstract class NumericTypeNode<T> extends AbstractRamlNode implements TypeNode, ObjectNode
 {

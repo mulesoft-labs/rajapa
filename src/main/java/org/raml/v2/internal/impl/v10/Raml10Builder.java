@@ -42,7 +42,7 @@ import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
 import org.raml.v2.internal.framework.phase.GrammarPhase;
 import org.raml.v2.internal.framework.phase.Phase;
 import org.raml.v2.internal.framework.phase.TransformationPhase;
-import org.raml.v2.utils.StreamUtils;
+import org.raml.v2.internal.utils.StreamUtils;
 
 public class Raml10Builder
 {

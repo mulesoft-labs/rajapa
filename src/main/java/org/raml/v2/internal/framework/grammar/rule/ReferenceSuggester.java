@@ -22,7 +22,7 @@ import org.raml.v2.internal.framework.nodes.ObjectNode;
 import org.raml.v2.internal.framework.nodes.StringNode;
 import org.raml.v2.suggester.DefaultSuggestion;
 import org.raml.v2.suggester.Suggestion;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

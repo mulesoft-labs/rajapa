@@ -16,7 +16,7 @@
 package org.raml.v2.internal.framework.grammar.rule;
 
 import org.raml.v2.internal.framework.nodes.Node;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;

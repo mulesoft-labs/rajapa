@@ -15,7 +15,7 @@
  */
 package org.raml.v2.impl.commons.phase;
 
-import static org.raml.v2.utils.NodeUtils.getType;
+import static org.raml.v2.internal.utils.NodeUtils.getType;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ import org.raml.v2.nodes.StringNodeImpl;
 import org.raml.v2.nodes.snakeyaml.SYNullNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
 import org.raml.v2.internal.framework.phase.Phase;
-import org.raml.v2.utils.NodeUtils;
+import org.raml.v2.internal.utils.NodeUtils;
 
 public class SugarRushPhase implements Phase
 {

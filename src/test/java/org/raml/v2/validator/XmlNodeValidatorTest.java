@@ -26,7 +26,7 @@ import org.raml.v2.impl.commons.nodes.PayloadValidationResultNode;
 import org.raml.v2.impl.commons.nodes.ResourceNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
 import org.raml.v2.nodes.Node;
-import org.raml.v2.utils.NodeValidator;
+import org.raml.v2.internal.utils.NodeValidator;
 
 public class XmlNodeValidatorTest
 {

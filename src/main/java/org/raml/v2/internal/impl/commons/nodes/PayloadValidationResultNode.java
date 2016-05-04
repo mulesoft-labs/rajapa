@@ -18,7 +18,7 @@ package org.raml.v2.impl.commons.nodes;
 import org.raml.v2.nodes.KeyValueNodeImpl;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.StringNodeImpl;
-import org.raml.v2.utils.NodeUtils;
+import org.raml.v2.internal.utils.NodeUtils;
 
 public class PayloadValidationResultNode extends KeyValueNodeImpl
 {

@@ -19,13 +19,11 @@ import static org.raml.v2.impl.commons.model.builder.ModelUtils.*;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.impl.commons.model.builder.ModelUtils;
 import org.raml.v2.nodes.AbstractRamlNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.StringNode;
-import org.raml.v2.utils.NodeUtils;
 
 public class DateTypeNode extends AbstractRamlNode implements ObjectNode, TypeNode
 {

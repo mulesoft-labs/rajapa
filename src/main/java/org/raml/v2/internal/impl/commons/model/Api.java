@@ -22,7 +22,7 @@ import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.impl.commons.nodes.ResourceNode;
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 
 public class Api extends LibraryBase
 {

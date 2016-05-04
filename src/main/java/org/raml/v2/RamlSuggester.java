@@ -36,7 +36,7 @@ import org.raml.v2.api.loader.DefaultResourceLoader;
 import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.internal.framework.nodes.*;
 import org.raml.v2.suggester.*;
-import org.raml.v2.utils.Inflector;
+import org.raml.v2.internal.utils.Inflector;
 
 public class RamlSuggester
 {

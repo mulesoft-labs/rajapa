@@ -28,7 +28,7 @@ import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NullNode;
 import org.raml.v2.nodes.ObjectNode;
 import org.raml.v2.nodes.SimpleTypeNode;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

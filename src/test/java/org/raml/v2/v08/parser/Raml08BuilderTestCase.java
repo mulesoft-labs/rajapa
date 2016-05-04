@@ -27,7 +27,7 @@ import org.junit.runners.Parameterized;
 import org.raml.v2.RamlBuilder;
 import org.raml.v2.dataprovider.TestDataProvider;
 import org.raml.v2.nodes.Node;
-import org.raml.v2.utils.TreeDumper;
+import org.raml.v2.internal.utils.TreeDumper;
 
 import java.io.File;
 import java.io.FileInputStream;

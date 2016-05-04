@@ -15,8 +15,8 @@
  */
 package org.raml.v2.impl.v10.phase;
 
-import static org.raml.v2.utils.NodeUtils.*;
-import static org.raml.v2.utils.SchemaGenerator.*;
+import static org.raml.v2.internal.utils.NodeUtils.*;
+import static org.raml.v2.internal.utils.SchemaGenerator.*;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -38,7 +38,7 @@ import org.raml.v2.nodes.snakeyaml.SYNullNode;
 import org.raml.v2.nodes.snakeyaml.SYObjectNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
 import org.raml.v2.internal.framework.phase.Transformer;
-import org.raml.v2.utils.SchemaGenerator;
+import org.raml.v2.internal.utils.SchemaGenerator;
 
 public class TypesTransformer implements Transformer
 {

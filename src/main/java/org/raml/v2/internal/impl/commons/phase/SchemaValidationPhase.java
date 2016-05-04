@@ -24,7 +24,7 @@ import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.SchemaNodeImpl;
 import org.raml.v2.internal.framework.phase.Phase;
-import org.raml.v2.utils.SchemaGenerator;
+import org.raml.v2.internal.utils.SchemaGenerator;
 
 public class SchemaValidationPhase implements Phase
 {

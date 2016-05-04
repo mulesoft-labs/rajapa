@@ -45,7 +45,7 @@ import org.raml.v2.nodes.snakeyaml.SYNullNode;
 import org.raml.v2.nodes.snakeyaml.SYObjectNode;
 import org.raml.v2.internal.framework.phase.GrammarPhase;
 import org.raml.v2.internal.framework.phase.Transformer;
-import org.raml.v2.utils.NodeSelector;
+import org.raml.v2.internal.utils.NodeSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
