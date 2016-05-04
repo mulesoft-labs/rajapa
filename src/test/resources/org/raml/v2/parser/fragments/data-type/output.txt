@@ -32,13 +32,3 @@ ObjectTypeNode (Start: 20 , End: 127, Source: SYObjectNode)
                     KeyValueNodeImpl (Start: -1 , End: -1)
                         StringNodeImpl: "displayName" (Start: -1 , End: -1)
                         SYStringNode: "age" (Start: 106 , End: 109, Source: SYStringNode)
-    KeyValueNodeImpl (Start: -1 , End: -1)
-        StringNodeImpl: "displayName" (Start: -1 , End: -1)
-        ErrorNode: "Invalid element {
-type: object,
-properties: {
-firstname:string,
-lastname:string,
-age:number
-}
-}." (Start: -1 , End: -1)

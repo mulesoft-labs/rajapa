@@ -15,7 +15,7 @@
  */
 package org.raml.v2.grammar.rule;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.raml.v2.nodes.KeyValueNode;
 import org.raml.v2.nodes.Node;
@@ -23,12 +23,17 @@ import org.raml.v2.nodes.Node;
 public class ParentKeyDefaultValue implements DefaultValue
 {
 
-    @Nonnull
+    @Nullable
     @Override
     public Node getDefaultValue(Node parent)
     {
         Node grampa = parent.getParent();
-        if (grampa == null || !(grampa instanceof KeyValueNode))
+        if (grampa == null)
+        {
+            // inside raml fragment file
+            return null;
+        }
+        if (!(grampa instanceof KeyValueNode))
         {
             return ErrorNodeFactory.createInvalidNode(parent);
         }

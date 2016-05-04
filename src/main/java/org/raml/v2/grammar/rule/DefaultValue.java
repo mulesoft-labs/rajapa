@@ -15,12 +15,19 @@
  */
 package org.raml.v2.grammar.rule;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.raml.v2.nodes.Node;
 
 public interface DefaultValue
 {
-    @Nonnull
+
+    /**
+     * Generates a default value for a missing tuple.
+     *
+     * @param parent
+     * @return The default value node or null when it cannot be generated in a fragment file
+     */
+    @Nullable
     Node getDefaultValue(Node parent);
 }

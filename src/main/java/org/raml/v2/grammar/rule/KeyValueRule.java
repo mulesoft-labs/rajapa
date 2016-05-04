@@ -174,8 +174,13 @@ public class KeyValueRule extends Rule
         {
             throw new RuntimeException("Key rule " + getKeyRule().getClass().getSimpleName() + " does not support default values");
         }
-        Node keyNode = new StringNodeImpl(((StringValueRule) getKeyRule()).getValue());
         Node valueNode = this.defaultValue.getDefaultValue(parent);
+        if (valueNode == null)
+        {
+            // default not applcable in fragment file
+            return;
+        }
+        Node keyNode = new StringNodeImpl(((StringValueRule) getKeyRule()).getValue());
         KeyValueNodeImpl newNode = new KeyValueNodeImpl(keyNode, valueNode);
         newNode.setEndPosition(DefaultPosition.emptyPosition());
         newNode.setStartPosition(DefaultPosition.emptyPosition());
