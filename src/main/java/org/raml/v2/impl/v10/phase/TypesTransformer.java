@@ -173,7 +173,7 @@ public class TypesTransformer implements Transformer
             Node unionProperties;
             if (typeNode != null)
             {
-                for (final String type : typeNode.getValue().split("\\|"))
+                for (final String type : getSplitTypes(typeNode.getValue()))
                 {
                     final String trimmedType = StringUtils.trim(type);
                     unionProperties = processType(properties.copy(), node, trimmedType);
@@ -220,13 +220,18 @@ public class TypesTransformer implements Transformer
         }
     }
 
+    private String[] getSplitTypes(String types)
+    {
+        return StringUtils.replaceEach(types, new String[] {"(", ")"}, new String[] {"", ""}).split("\\|");
+    }
+
     private void validateInheritedTypes(final StringNode typeNode)
     {
         if (typeNode != null)
         {
             if (isCustomRamlType(typeNode) && !SchemaGenerator.isSchemaNode(typeNode))
             {
-                for (final String type : typeNode.getValue().split("\\|"))
+                for (final String type : getSplitTypes(typeNode.getValue()))
                 {
                     final String trimmedType = StringUtils.trim(type);
                     final TypeNode parentTypeNode = getType(trimmedType, typeNode);
@@ -274,7 +279,7 @@ public class TypesTransformer implements Transformer
         {
             String typeElement = ((SYStringNode) typeNode).getValue();
             Set<String> splitTypes = Sets.newLinkedHashSet();
-            for (String type : typeElement.split("\\|"))
+            for (String type : getSplitTypes(typeElement))
             {
                 if (StringUtils.isNotBlank(StringUtils.trimToNull(type)))
                 {
