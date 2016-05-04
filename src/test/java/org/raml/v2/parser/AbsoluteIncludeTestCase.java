@@ -23,7 +23,7 @@ import java.io.File;
 import org.hamcrest.text.IsEqualIgnoringWhiteSpace;
 import org.junit.Assert;
 import org.junit.Test;
-import org.raml.v2.RamlBuilder;
+import org.raml.v2.internal.impl.RamlBuilder;
 import org.raml.v2.internal.impl.emitter.tck.TckEmitter;
 import org.raml.v2.nodes.Node;
 

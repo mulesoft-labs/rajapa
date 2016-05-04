@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import org.raml.v2.RamlBuilder;
+import org.raml.v2.internal.impl.RamlBuilder;
 import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.impl.commons.RamlHeader;
 import org.raml.v2.impl.commons.phase.AnnotationValidationPhase;

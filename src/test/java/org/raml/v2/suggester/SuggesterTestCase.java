@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collection;
@@ -31,7 +30,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.raml.v2.RamlSuggester;
+import org.raml.v2.internal.impl.RamlSuggester;
 import org.raml.v2.dataprovider.TestDataProvider;
 
 @RunWith(Parameterized.class)

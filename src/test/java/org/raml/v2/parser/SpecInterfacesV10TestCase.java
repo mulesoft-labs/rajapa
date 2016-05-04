@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
-import org.raml.v2.RamlBuilder;
+import org.raml.v2.internal.impl.RamlBuilder;
 import org.raml.v2.impl.commons.model.builder.ModelBuilder;
 import org.raml.v2.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.api.model.v10.api.Api;
