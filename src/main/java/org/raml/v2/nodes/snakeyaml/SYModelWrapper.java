@@ -137,7 +137,17 @@ public class SYModelWrapper
         }
         else if (Tag.INT.equals(tag))
         {
-            return new SYIntegerNode(scalarNode);
+            SYIntegerNode syIntegerNode = new SYIntegerNode(scalarNode);
+            try
+            {
+                syIntegerNode.getValue();
+                return syIntegerNode;
+            }
+            catch (NumberFormatException e)
+            {
+                // wrap with string node if number is invalid e.g: 12:30:00
+                return new SYStringNode(scalarNode);
+            }
         }
         else
         {
