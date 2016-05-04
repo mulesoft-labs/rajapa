@@ -20,7 +20,7 @@ import java.util.List;
 import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.nodes.Node;
-import org.raml.v2.phase.Phase;
+import org.raml.v2.internal.framework.phase.Phase;
 import org.raml.v2.utils.NodeValidator;
 
 public class ExampleValidationPhase implements Phase

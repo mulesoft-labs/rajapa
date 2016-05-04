@@ -21,7 +21,7 @@ import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.StringNodeImpl;
 import org.raml.v2.impl.commons.nodes.TemplateExpressionNode;
 import org.raml.v2.impl.commons.nodes.StringTemplateNode;
-import org.raml.v2.phase.Transformer;
+import org.raml.v2.internal.framework.phase.Transformer;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

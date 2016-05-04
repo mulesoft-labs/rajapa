@@ -27,14 +27,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.v2.grammar.rule.Rule;
+import org.raml.v2.internal.framework.grammar.rule.Rule;
 import org.raml.v2.internal.impl.commons.RamlHeader;
 import org.raml.v2.internal.impl.commons.RamlVersion;
 import org.raml.v2.internal.impl.v08.grammar.Raml08Grammar;
 import org.raml.v2.internal.impl.v10.grammar.Raml10Grammar;
 import org.raml.v2.api.loader.DefaultResourceLoader;
 import org.raml.v2.api.loader.ResourceLoader;
-import org.raml.v2.nodes.*;
+import org.raml.v2.internal.framework.nodes.*;
 import org.raml.v2.suggester.*;
 import org.raml.v2.utils.Inflector;
 

@@ -15,7 +15,7 @@
  */
 package org.raml.v2.impl.commons.nodes;
 
-import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.nodes.ExecutableNode;
 import org.raml.v2.nodes.ExecutionContext;
 import org.raml.v2.nodes.Node;

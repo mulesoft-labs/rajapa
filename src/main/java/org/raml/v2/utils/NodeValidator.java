@@ -19,10 +19,10 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
-import org.raml.v2.grammar.rule.AnyOfRule;
-import org.raml.v2.grammar.rule.JsonSchemaValidationRule;
-import org.raml.v2.grammar.rule.Rule;
-import org.raml.v2.grammar.rule.XmlSchemaValidationRule;
+import org.raml.v2.internal.framework.grammar.rule.AnyOfRule;
+import org.raml.v2.internal.framework.grammar.rule.JsonSchemaValidationRule;
+import org.raml.v2.internal.framework.grammar.rule.Rule;
+import org.raml.v2.internal.framework.grammar.rule.XmlSchemaValidationRule;
 import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.PayloadNode;

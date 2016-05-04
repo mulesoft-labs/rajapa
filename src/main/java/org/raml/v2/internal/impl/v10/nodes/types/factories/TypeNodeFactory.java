@@ -15,7 +15,7 @@
  */
 package org.raml.v2.impl.v10.nodes.types.factories;
 
-import org.raml.v2.grammar.rule.NodeFactory;
+import org.raml.v2.internal.framework.grammar.rule.NodeFactory;
 import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.FileTypeNode;

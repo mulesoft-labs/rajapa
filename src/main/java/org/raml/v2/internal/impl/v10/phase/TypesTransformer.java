@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.impl.commons.model.BuiltInScalarType;
 import org.raml.v2.impl.commons.nodes.PropertyNode;
 import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
@@ -37,8 +37,7 @@ import org.raml.v2.nodes.snakeyaml.SYArrayNode;
 import org.raml.v2.nodes.snakeyaml.SYNullNode;
 import org.raml.v2.nodes.snakeyaml.SYObjectNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
-import org.raml.v2.phase.Transformer;
-import org.raml.v2.utils.NodeUtils;
+import org.raml.v2.internal.framework.phase.Transformer;
 import org.raml.v2.utils.SchemaGenerator;
 
 public class TypesTransformer implements Transformer

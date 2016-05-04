@@ -24,7 +24,7 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.apache.commons.io.IOUtils;
-import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.internal.impl.commons.RamlHeader;
 import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.internal.impl.v08.Raml08Builder;
@@ -33,7 +33,7 @@ import org.raml.v2.api.loader.CompositeResourceLoader;
 import org.raml.v2.api.loader.DefaultResourceLoader;
 import org.raml.v2.api.loader.FileResourceLoader;
 import org.raml.v2.api.loader.ResourceLoader;
-import org.raml.v2.nodes.Node;
+import org.raml.v2.internal.framework.nodes.Node;
 
 /**
  * RamlBuilder create a Node representation of your raml.

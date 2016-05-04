@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.raml.v2.RamlBuilder;
-import org.raml.v2.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.impl.commons.RamlHeader;
 import org.raml.v2.impl.commons.phase.AnnotationValidationPhase;
 import org.raml.v2.impl.commons.phase.ExampleValidationPhase;
@@ -39,9 +39,9 @@ import org.raml.v2.nodes.ErrorNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
-import org.raml.v2.phase.GrammarPhase;
-import org.raml.v2.phase.Phase;
-import org.raml.v2.phase.TransformationPhase;
+import org.raml.v2.internal.framework.phase.GrammarPhase;
+import org.raml.v2.internal.framework.phase.Phase;
+import org.raml.v2.internal.framework.phase.TransformationPhase;
 import org.raml.v2.utils.StreamUtils;
 
 public class Raml10Builder

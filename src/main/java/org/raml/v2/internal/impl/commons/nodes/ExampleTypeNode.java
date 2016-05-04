@@ -19,7 +19,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.grammar.rule.AnyValueRule;
+import org.raml.v2.internal.framework.grammar.rule.AnyValueRule;
 import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.FloatTypeNode;

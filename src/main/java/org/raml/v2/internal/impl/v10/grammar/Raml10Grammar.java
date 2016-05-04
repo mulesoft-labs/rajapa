@@ -17,15 +17,15 @@ package org.raml.v2.impl.v10.grammar;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.grammar.rule.AnyOfRule;
-import org.raml.v2.grammar.rule.KeyValueRule;
-import org.raml.v2.grammar.rule.NodeReferenceFactory;
-import org.raml.v2.grammar.rule.ObjectRule;
-import org.raml.v2.grammar.rule.RegexValueRule;
-import org.raml.v2.grammar.rule.Rule;
-import org.raml.v2.grammar.rule.StringValueRule;
-import org.raml.v2.grammar.rule.TypeNodeReferenceRule;
-import org.raml.v2.grammar.rule.TypesFactory;
+import org.raml.v2.internal.framework.grammar.rule.AnyOfRule;
+import org.raml.v2.internal.framework.grammar.rule.KeyValueRule;
+import org.raml.v2.internal.framework.grammar.rule.NodeReferenceFactory;
+import org.raml.v2.internal.framework.grammar.rule.ObjectRule;
+import org.raml.v2.internal.framework.grammar.rule.RegexValueRule;
+import org.raml.v2.internal.framework.grammar.rule.Rule;
+import org.raml.v2.internal.framework.grammar.rule.StringValueRule;
+import org.raml.v2.internal.framework.grammar.rule.TypeNodeReferenceRule;
+import org.raml.v2.internal.framework.grammar.rule.TypesFactory;
 import org.raml.v2.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.v2.impl.commons.nodes.AnnotationNode;
 import org.raml.v2.impl.commons.nodes.AnnotationReferenceNode;

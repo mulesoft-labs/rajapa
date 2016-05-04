@@ -17,11 +17,11 @@ package org.raml.v2.impl.v08.grammar;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.grammar.rule.AnyOfRule;
-import org.raml.v2.grammar.rule.KeyValueRule;
-import org.raml.v2.grammar.rule.ObjectRule;
-import org.raml.v2.grammar.rule.Rule;
-import org.raml.v2.grammar.rule.StringValueRule;
+import org.raml.v2.internal.framework.grammar.rule.AnyOfRule;
+import org.raml.v2.internal.framework.grammar.rule.KeyValueRule;
+import org.raml.v2.internal.framework.grammar.rule.ObjectRule;
+import org.raml.v2.internal.framework.grammar.rule.Rule;
+import org.raml.v2.internal.framework.grammar.rule.StringValueRule;
 import org.raml.v2.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.v2.impl.v10.nodes.types.factories.TypeNodeFactory;
 import org.raml.v2.nodes.StringNodeImpl;

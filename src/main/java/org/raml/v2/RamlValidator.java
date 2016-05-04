@@ -22,9 +22,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.v2.emitter.tck.TckEmitter;
-import org.raml.v2.nodes.ErrorNode;
-import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.Position;
+import org.raml.v2.internal.framework.nodes.ErrorNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.Position;
 
 public class RamlValidator
 {

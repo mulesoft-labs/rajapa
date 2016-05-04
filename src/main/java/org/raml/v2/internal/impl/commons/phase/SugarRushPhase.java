@@ -33,7 +33,7 @@ import org.raml.v2.nodes.StringNode;
 import org.raml.v2.nodes.StringNodeImpl;
 import org.raml.v2.nodes.snakeyaml.SYNullNode;
 import org.raml.v2.nodes.snakeyaml.SYStringNode;
-import org.raml.v2.phase.Phase;
+import org.raml.v2.internal.framework.phase.Phase;
 import org.raml.v2.utils.NodeUtils;
 
 public class SugarRushPhase implements Phase

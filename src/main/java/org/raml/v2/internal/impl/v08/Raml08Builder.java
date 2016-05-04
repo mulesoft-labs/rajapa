@@ -20,13 +20,13 @@ import org.raml.v2.impl.commons.phase.ResourceTypesTraitsTransformer;
 import org.raml.v2.impl.commons.phase.StringTemplateExpressionTransformer;
 import org.raml.v2.impl.v10.phase.TypesTransformer;
 import org.raml.v2.nodes.ErrorNode;
-import org.raml.v2.phase.GrammarPhase;
+import org.raml.v2.internal.framework.phase.GrammarPhase;
 import org.raml.v2.impl.v08.grammar.Raml08Grammar;
 import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.snakeyaml.RamlNodeParser;
-import org.raml.v2.phase.Phase;
-import org.raml.v2.phase.TransformationPhase;
+import org.raml.v2.internal.framework.phase.Phase;
+import org.raml.v2.internal.framework.phase.TransformationPhase;
 
 import java.io.IOException;
 import java.util.Arrays;
