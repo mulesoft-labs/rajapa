@@ -22,7 +22,8 @@ import javax.annotation.Nonnull;
 import org.raml.v2.grammar.rule.AnyValueRule;
 import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.FloatTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.IntegerTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.TypeNodeVisitor;
@@ -54,9 +55,13 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
         {
             return visitor.visitString((StringTypeNode) typeNode);
         }
-        else if (typeNode instanceof NumericTypeNode)
+        else if (typeNode instanceof FloatTypeNode)
         {
-            return visitor.visitNumber((NumericTypeNode) typeNode);
+            return visitor.visitFloat((FloatTypeNode) typeNode);
+        }
+        else if (typeNode instanceof IntegerTypeNode)
+        {
+            return visitor.visitInteger((IntegerTypeNode) typeNode);
         }
         else if (typeNode instanceof BooleanTypeNode)
         {

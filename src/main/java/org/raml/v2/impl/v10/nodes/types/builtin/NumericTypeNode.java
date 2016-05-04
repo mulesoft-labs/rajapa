@@ -22,22 +22,21 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.raml.v2.nodes.AbstractRamlNode;
-import org.raml.v2.nodes.IntegerNode;
 import org.raml.v2.nodes.Node;
 import org.raml.v2.nodes.NodeType;
 import org.raml.v2.nodes.ObjectNode;
-import org.raml.v2.nodes.StringNode;
+import org.raml.v2.nodes.SimpleTypeNode;
 import org.raml.v2.nodes.snakeyaml.SYArrayNode;
 import org.raml.v2.utils.NodeSelector;
 
-public class NumericTypeNode extends AbstractRamlNode implements TypeNode, ObjectNode
+public abstract class NumericTypeNode<T> extends AbstractRamlNode implements TypeNode, ObjectNode
 {
 
     public NumericTypeNode()
     {
     }
 
-    private NumericTypeNode(NumericTypeNode node)
+    protected NumericTypeNode(NumericTypeNode node)
     {
         super(node);
     }
@@ -62,36 +61,22 @@ public class NumericTypeNode extends AbstractRamlNode implements TypeNode, Objec
         return NodeSelector.selectStringValue("format", getSource());
     }
 
-    @Nonnull
-    @Override
-    public Node copy()
-    {
-        return new NumericTypeNode(this);
-    }
-
     @Override
     public NodeType getType()
     {
         return NodeType.Object;
     }
 
-    @Override
-    public <T> T visit(TypeNodeVisitor<T> visitor)
-    {
-        return visitor.visitNumber(this);
-    }
-
     @Nonnull
     public List<Number> getEnumValues()
     {
-
         Node values = this.get("enum");
         List<Number> enumValues = Lists.newArrayList();
         if (values != null && values instanceof SYArrayNode)
         {
             for (Node node : values.getChildren())
             {
-                enumValues.add(((IntegerNode) node).getValue());
+                enumValues.add((Number) ((SimpleTypeNode) node).getValue());
             }
         }
         return enumValues;

@@ -27,6 +27,7 @@ import org.raml.v2.grammar.rule.AnyOfRule;
 import org.raml.v2.grammar.rule.BooleanTypeRule;
 import org.raml.v2.grammar.rule.DateValueRule;
 import org.raml.v2.grammar.rule.DivisorValueRule;
+import org.raml.v2.grammar.rule.FloatTypeRule;
 import org.raml.v2.grammar.rule.IntegerTypeRule;
 import org.raml.v2.grammar.rule.IntegerValueRule;
 import org.raml.v2.grammar.rule.KeyValueRule;
@@ -45,12 +46,13 @@ import org.raml.v2.impl.commons.nodes.PropertyNode;
 import org.raml.v2.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.FloatTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.IntegerTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.TypeNodeVisitor;
-import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
 
 
 public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
@@ -155,10 +157,21 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
     }
 
     @Override
-    public Rule visitNumber(NumericTypeNode numericTypeNode)
+    public Rule visitFloat(FloatTypeNode floatTypeNode)
+    {
+        return visitNumber(floatTypeNode, new FloatTypeRule());
+    }
+
+    @Override
+    public Rule visitInteger(IntegerTypeNode integerTypeNode)
+    {
+        return visitNumber(integerTypeNode, new IntegerTypeRule());
+    }
+
+    private Rule visitNumber(NumericTypeNode numericTypeNode, Rule numericTypeRule)
     {
         final AllOfRule typeRule = new AllOfRule();
-        typeRule.and(new IntegerTypeRule());
+        typeRule.and(numericTypeRule);
 
         if (numericTypeNode.getMinimum() != null && numericTypeNode.getMaximum() != null)
         {

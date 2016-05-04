@@ -18,7 +18,6 @@ package org.raml.v2.impl.v10.nodes.types.builtin;
 
 import java.util.List;
 
-import org.raml.v2.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.impl.commons.nodes.PropertyNode;
 
 public interface TypeNodeVisitor<T>
@@ -30,7 +29,9 @@ public interface TypeNodeVisitor<T>
 
     T visitBoolean(BooleanTypeNode booleanTypeNode);
 
-    T visitNumber(NumericTypeNode numericTypeNode);
+    T visitFloat(FloatTypeNode numericTypeNode);
+
+    T visitInteger(IntegerTypeNode numericTypeNode);
 
     T visitDate(DateTypeNode dateTypeNode);
 

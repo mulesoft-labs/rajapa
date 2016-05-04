@@ -46,7 +46,9 @@ public class RamlValidator
         validate(new File(ramlLocation));
         if (ramlCount > 1)
         {
-            System.out.format("Parsed %d raml files. %d OK, %d with Errors.", ramlCount, validRamlCount, ramlCount - validRamlCount);
+            System.out.println(StringUtils.repeat("=", 50));
+            System.out.format("Parsed %d raml files. %d OK, %d with Errors.\n", ramlCount, validRamlCount, ramlCount - validRamlCount);
+            System.out.println(StringUtils.repeat("=", 50));
         }
     }
 

@@ -21,7 +21,8 @@ import java.util.List;
 
 import org.raml.v2.impl.commons.model.BuiltInScalarType;
 import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.FloatTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.IntegerTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.v2.nodes.KeyValueNode;
@@ -225,9 +226,13 @@ public class SugarRushPhase implements Phase
         {
             return new StringTypeNode();
         }
-        else if (BuiltInScalarType.NUMBER.getType().equals(typeNode) || BuiltInScalarType.INTEGER.getType().equals(typeNode))
+        else if (BuiltInScalarType.NUMBER.getType().equals(typeNode))
         {
-            return new NumericTypeNode();
+            return new FloatTypeNode();
+        }
+        else if (BuiltInScalarType.INTEGER.getType().equals(typeNode))
+        {
+            return new IntegerTypeNode();
         }
         else if (BuiltInScalarType.BOOLEAN.getType().equals(typeNode))
         {

@@ -13,47 +13,34 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.grammar.rule;
-
-import java.util.Collections;
-import java.util.List;
+package org.raml.v2.impl.v10.nodes.types.builtin;
 
 import javax.annotation.Nonnull;
 
-import org.raml.v2.nodes.FloatingNode;
-import org.raml.v2.nodes.IntegerNode;
 import org.raml.v2.nodes.Node;
-import org.raml.v2.nodes.NodeType;
-import org.raml.v2.suggester.RamlParsingContext;
-import org.raml.v2.suggester.Suggestion;
 
-public class FloatTypeRule extends AbstractTypeRule
+public class FloatTypeNode extends NumericTypeNode
 {
 
-    @Nonnull
-    @Override
-    public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
+    public FloatTypeNode()
     {
-        return Collections.emptyList();
     }
 
-
-    @Override
-    public boolean matches(@Nonnull Node node)
+    public FloatTypeNode(FloatTypeNode node)
     {
-        return node instanceof FloatingNode || node instanceof IntegerNode;
+        super(node);
     }
 
     @Override
-    public String getDescription()
+    public <T> T visit(TypeNodeVisitor<T> visitor)
     {
-        return "Float";
+        return visitor.visitFloat(this);
     }
 
     @Nonnull
     @Override
-    NodeType getType()
+    public Node copy()
     {
-        return NodeType.Float;
+        return new FloatTypeNode(this);
     }
 }

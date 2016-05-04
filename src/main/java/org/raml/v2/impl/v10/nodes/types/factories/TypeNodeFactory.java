@@ -19,7 +19,8 @@ import org.raml.v2.grammar.rule.NodeFactory;
 import org.raml.v2.impl.v10.nodes.types.builtin.BooleanTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.DateTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.FileTypeNode;
-import org.raml.v2.impl.v10.nodes.types.builtin.NumericTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.FloatTypeNode;
+import org.raml.v2.impl.v10.nodes.types.builtin.IntegerTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.v2.impl.v10.nodes.types.builtin.UnionTypeNode;
@@ -59,8 +60,9 @@ public class TypeNodeFactory implements NodeFactory
         case "string":
             return new StringTypeNode();
         case "number":
+            return new FloatTypeNode();
         case "integer":
-            return new NumericTypeNode();
+            return new IntegerTypeNode();
         case "boolean":
             return new BooleanTypeNode();
         case "file":
