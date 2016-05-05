@@ -35,6 +35,6 @@ public interface TypeNodeVisitor<T>
 
     T visitDate(DateTypeNode dateTypeNode);
 
-    T visitExample(List<PropertyNode> properties, boolean allowsAdditionalProperties);
+    T visitExample(List<PropertyNode> properties, boolean allowsAdditionalProperties, boolean strict);
 
 }

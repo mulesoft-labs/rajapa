@@ -37,6 +37,7 @@ import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.nodes.ObjectNode;
 import org.raml.v2.internal.framework.nodes.StringNode;
 import org.raml.v2.internal.framework.nodes.snakeyaml.RamlNodeParser;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.UnionTypeNode;
 
 public class NodeValidator
 {
@@ -156,7 +157,7 @@ public class NodeValidator
         }
         else
         {
-            rule = example.visitProperties(new TypeToRuleVisitor(), type.getProperties(), type.isAllowAdditionalProperties());
+            rule = example.visitProperties(new TypeToRuleVisitor(), type.getProperties(), type.isAllowAdditionalProperties(), true);
         }
         return rule;
     }
@@ -245,7 +246,7 @@ public class NodeValidator
         List<Rule> rules = Lists.newArrayList();
         for (InheritedPropertiesInjectedNode inheritedProperties : type.getInheritedProperties())
         {
-            rules.add(example.visitProperties(new TypeToRuleVisitor(), inheritedProperties.getProperties(), type.isAllowAdditionalProperties()));
+            rules.add(example.visitProperties(new TypeToRuleVisitor(), inheritedProperties.getProperties(), type.isAllowAdditionalProperties(), type instanceof UnionTypeNode));
         }
         return rules;
     }

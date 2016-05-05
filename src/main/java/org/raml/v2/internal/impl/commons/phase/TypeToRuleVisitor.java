@@ -53,6 +53,7 @@ import org.raml.v2.internal.impl.v10.nodes.types.builtin.ObjectTypeNode;
 import org.raml.v2.internal.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNodeVisitor;
+import org.raml.v2.internal.impl.v10.nodes.types.builtin.UnionTypeNode;
 
 
 public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
@@ -102,12 +103,13 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
 
     public Rule getInheritanceRules(ObjectTypeNode objectTypeNode)
     {
+        boolean strict = objectTypeNode instanceof UnionTypeNode;
         List<Rule> rules = Lists.newArrayList();
         if (!objectTypeNode.getInheritedProperties().isEmpty())
         {
             for (InheritedPropertiesInjectedNode inheritedProperties : objectTypeNode.getInheritedProperties())
             {
-                rules.add(getPropertiesRules(inheritedProperties.getProperties()));
+                rules.add(getPropertiesRules(inheritedProperties.getProperties(), strict));
             }
         }
         else if (objectTypeNode.get("items") instanceof ObjectTypeNode)
@@ -116,25 +118,25 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
             {
                 for (InheritedPropertiesInjectedNode inheritedProperties : ((ObjectTypeNode) objectTypeNode.get("items")).getInheritedProperties())
                 {
-                    rules.add(getPropertiesRules(inheritedProperties.getProperties()));
+                    rules.add(getPropertiesRules(inheritedProperties.getProperties(), strict));
                 }
             }
             else if (!((ObjectTypeNode) objectTypeNode.get("items")).getProperties().isEmpty())
             {
-                rules.add(getPropertiesRules(((ObjectTypeNode) objectTypeNode.get("items")).getProperties()));
+                rules.add(getPropertiesRules(((ObjectTypeNode) objectTypeNode.get("items")).getProperties(), strict));
             }
         }
         if (!rules.isEmpty())
         {
             return new AnyOfRule(rules);
         }
-        return getPropertiesRules(objectTypeNode.getProperties());
+        return getPropertiesRules(objectTypeNode.getProperties(), strict);
     }
 
-    private ObjectRule getPropertiesRules(List<PropertyNode> properties)
+    private ObjectRule getPropertiesRules(List<PropertyNode> properties, boolean strict)
     {
         ObjectRule objectRule = new ObjectRule();
-        objectRule.setStrict(true);
+        objectRule.setStrict(strict);
 
         for (PropertyNode property : properties)
         {
@@ -206,9 +208,9 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
     }
 
     @Override
-    public Rule visitExample(List<PropertyNode> properties, boolean allowsAdditionalProperties)
+    public Rule visitExample(List<PropertyNode> properties, boolean allowsAdditionalProperties, boolean strict)
     {
-        ObjectRule propertiesRules = getPropertiesRules(properties);
+        ObjectRule propertiesRules = getPropertiesRules(properties, strict);
         propertiesRules.setStrict(true);
         propertiesRules.setAllowsAdditionalProperties(allowsAdditionalProperties);
         return propertiesRules;
