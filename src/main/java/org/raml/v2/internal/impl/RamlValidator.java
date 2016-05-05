@@ -83,19 +83,8 @@ public class RamlValidator
         System.out.println(ramlFile);
         System.out.println(StringUtils.repeat("=", 120));
 
-        final RamlBuilder builder = new RamlBuilder();
-        final Node raml;
-        try
-        {
-            ramlCount++;
-            raml = builder.build(ramlFile);
-        }
-        catch (IOException e)
-        {
-            System.out.println("Cannot parse raml: " + e.getMessage());
-            return;
-        }
-
+        ramlCount++;
+        final Node raml = new RamlBuilder().build(ramlFile);
         List<ErrorNode> errors = raml.findDescendantsWith(ErrorNode.class);
         if (!errors.isEmpty())
         {

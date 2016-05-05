@@ -24,16 +24,16 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.apache.commons.io.IOUtils;
-import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
-import org.raml.v2.internal.impl.commons.RamlHeader;
-import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
-import org.raml.v2.internal.impl.v08.Raml08Builder;
-import org.raml.v2.internal.impl.v10.Raml10Builder;
 import org.raml.v2.api.loader.CompositeResourceLoader;
 import org.raml.v2.api.loader.DefaultResourceLoader;
 import org.raml.v2.api.loader.FileResourceLoader;
 import org.raml.v2.api.loader.ResourceLoader;
+import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.impl.commons.RamlHeader;
+import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.internal.impl.v08.Raml08Builder;
+import org.raml.v2.internal.impl.v10.Raml10Builder;
 
 /**
  * RamlBuilder create a Node representation of your raml.
@@ -63,16 +63,22 @@ public class RamlBuilder
         this.maxPhaseNumber = maxPhaseNumber;
     }
 
-    public Node build(File ramlFile) throws IOException
+    public Node build(File ramlFile)
     {
-        final ResourceLoader resourceLoader = new CompositeResourceLoader(
-                new DefaultResourceLoader(),
-                new FileResourceLoader(ramlFile.getParent()));
-        this.resourceLoader = resourceLoader;
+        return build(ramlFile, new DefaultResourceLoader());
+    }
+
+    public Node build(File ramlFile, ResourceLoader resourceLoader)
+    {
+        this.resourceLoader = new CompositeResourceLoader(resourceLoader, new FileResourceLoader(ramlFile.getParent()));
         this.actualPath = ramlFile.getPath();
         try (FileReader reader = new FileReader(ramlFile))
         {
-            return build(reader, resourceLoader, ramlFile.getName());
+            return build(reader, this.resourceLoader, ramlFile.getName());
+        }
+        catch (IOException ioe)
+        {
+            return ErrorNodeFactory.createInvalidInput(ioe);
         }
     }
 
