@@ -27,7 +27,11 @@ import java.util.TreeSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.raml.v2.internal.framework.nodes.*;
+import org.raml.v2.internal.framework.nodes.KeyValueNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.NodeType;
+import org.raml.v2.internal.framework.nodes.NullNode;
+import org.raml.v2.internal.framework.nodes.ObjectNode;
 import org.raml.v2.internal.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.internal.framework.suggester.RamlParsingContext;
 import org.raml.v2.internal.framework.suggester.RamlParsingContextType;
