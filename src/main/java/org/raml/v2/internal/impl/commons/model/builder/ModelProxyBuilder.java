@@ -28,7 +28,7 @@ import java.util.List;
 import org.raml.v2.internal.impl.commons.model.Api;
 import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
 
-public class ModelBuilder
+public class ModelProxyBuilder
 {
 
     public static <T> T createRaml(Class<T> apiInterface, RamlDocumentNode delegateNode)

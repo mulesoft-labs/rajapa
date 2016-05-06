@@ -17,6 +17,7 @@ package org.raml.v2.parser;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -25,9 +26,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
-import org.raml.v2.internal.impl.RamlBuilder;
-import org.raml.v2.internal.impl.commons.model.builder.ModelBuilder;
-import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.api.RamlModelBuilder;
+import org.raml.v2.api.RamlModelResult;
 import org.raml.v2.api.model.common.ValidationResult;
 import org.raml.v2.api.model.v10.api.Api;
 import org.raml.v2.api.model.v10.api.DocumentationItem;
@@ -37,8 +37,6 @@ import org.raml.v2.api.model.v10.methods.Method;
 import org.raml.v2.api.model.v10.methods.Trait;
 import org.raml.v2.api.model.v10.resources.Resource;
 import org.raml.v2.api.model.v10.resources.ResourceType;
-import org.raml.v2.internal.framework.nodes.ErrorNode;
-import org.raml.v2.internal.framework.nodes.Node;
 
 public class LeaguesV10TestCase
 {
@@ -46,14 +44,12 @@ public class LeaguesV10TestCase
     @Test
     public void full() throws IOException
     {
-        final RamlBuilder builder = new RamlBuilder();
         File input = new File("src/test/resources/org/raml/v2/interfaces/leaguesV10.raml");
         assertTrue(input.isFile());
-        final Node raml = builder.build(input);
-        List<ErrorNode> errors = raml.findDescendantsWith(ErrorNode.class);
-        assertThat(errors.size(), is(0));
+        RamlModelResult ramlModelResult = new RamlModelBuilder().buildApi(input);
+        assertFalse(ramlModelResult.hasErrors());
+        Api api = ramlModelResult.getApiV10();
 
-        Api api = ModelBuilder.createRaml(Api.class, (RamlDocumentNode) raml);
         assertApi(api);
         assertDocumentation(api.documentation());
         assertTraits(api.traits());

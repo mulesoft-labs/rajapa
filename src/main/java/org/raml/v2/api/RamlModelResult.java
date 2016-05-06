@@ -24,14 +24,22 @@ import javax.annotation.Nullable;
 import org.raml.v2.api.model.common.ValidationResult;
 import org.raml.v2.api.model.v10.api.Api;
 
-public class RamlApiResult
+/**
+ * Represents the result of parsing a top level RAML descriptor.
+ *
+ * If there are no parsing errors, the <code>Api</code> model matching
+ * the RAML version is available.
+ *
+ * If there are parsing errors, the list of errors is available.
+ */
+public class RamlModelResult
 {
 
     private List<ValidationResult> validationResults = new ArrayList<>();
     private org.raml.v2.api.model.v10.api.Api apiV10;
     private org.raml.v2.api.model.v08.api.Api apiV08;
 
-    RamlApiResult(List<ValidationResult> validationResults)
+    RamlModelResult(List<ValidationResult> validationResults)
     {
         if (validationResults == null || validationResults.isEmpty())
         {
@@ -40,7 +48,7 @@ public class RamlApiResult
         this.validationResults = validationResults;
     }
 
-    RamlApiResult(org.raml.v2.api.model.v10.api.Api apiV10)
+    RamlModelResult(org.raml.v2.api.model.v10.api.Api apiV10)
     {
         if (apiV10 == null)
         {
@@ -49,7 +57,7 @@ public class RamlApiResult
         this.apiV10 = apiV10;
     }
 
-    RamlApiResult(org.raml.v2.api.model.v08.api.Api apiV08)
+    RamlModelResult(org.raml.v2.api.model.v08.api.Api apiV08)
     {
         if (apiV08 == null)
         {

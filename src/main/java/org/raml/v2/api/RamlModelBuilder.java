@@ -31,28 +31,32 @@ import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.impl.RamlBuilder;
 import org.raml.v2.internal.impl.commons.RamlVersion;
 import org.raml.v2.internal.impl.commons.model.RamlValidationResult;
-import org.raml.v2.internal.impl.commons.model.builder.ModelBuilder;
+import org.raml.v2.internal.impl.commons.model.builder.ModelProxyBuilder;
 import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.internal.utils.StreamUtils;
 
-public class RamlApiBuilder
+/**
+ * Entry point class to parse top level RAML descriptors.
+ * Supports versions 0.8 and 1.0
+ */
+public class RamlModelBuilder
 {
 
     private ResourceLoader resourceLoader;
     private RamlBuilder builder = new RamlBuilder();
 
-    public RamlApiBuilder()
+    public RamlModelBuilder()
     {
         this(new DefaultResourceLoader());
     }
 
-    public RamlApiBuilder(ResourceLoader resourceLoader)
+    public RamlModelBuilder(ResourceLoader resourceLoader)
     {
         this.resourceLoader = resourceLoader;
     }
 
     @Nonnull
-    public RamlApiResult buildApi(String ramlLocation)
+    public RamlModelResult buildApi(String ramlLocation)
     {
         if (ramlLocation == null)
         {
@@ -68,14 +72,14 @@ public class RamlApiBuilder
     }
 
     @Nonnull
-    public RamlApiResult buildApi(File ramlFile)
+    public RamlModelResult buildApi(File ramlFile)
     {
         Node ramlNode = builder.build(ramlFile, resourceLoader);
         return generateRamlApiResult(ramlNode);
     }
 
     @Nonnull
-    public RamlApiResult buildApi(String content, String ramlLocation)
+    public RamlModelResult buildApi(String content, String ramlLocation)
     {
         if (content == null)
         {
@@ -86,7 +90,7 @@ public class RamlApiBuilder
     }
 
     @Nonnull
-    public RamlApiResult buildApi(Reader content, String ramlLocation)
+    public RamlModelResult buildApi(Reader content, String ramlLocation)
     {
         if (content == null)
         {
@@ -96,7 +100,7 @@ public class RamlApiBuilder
         return generateRamlApiResult(ramlNode);
     }
 
-    private RamlApiResult generateRamlApiResult(Node ramlNode)
+    private RamlModelResult generateRamlApiResult(Node ramlNode)
     {
         List<ValidationResult> validationResults = new ArrayList<>();
         if (ramlNode instanceof ErrorNode)
@@ -119,20 +123,20 @@ public class RamlApiBuilder
                 return wrapTree((RamlDocumentNode) ramlNode);
             }
         }
-        return new RamlApiResult(validationResults);
+        return new RamlModelResult(validationResults);
     }
 
-    private RamlApiResult wrapTree(RamlDocumentNode ramlNode)
+    private RamlModelResult wrapTree(RamlDocumentNode ramlNode)
     {
         if (ramlNode.getVersion() == RamlVersion.RAML_10)
         {
-            org.raml.v2.api.model.v10.api.Api apiV10 = ModelBuilder.createRaml(org.raml.v2.api.model.v10.api.Api.class, ramlNode);
-            return new RamlApiResult(apiV10);
+            org.raml.v2.api.model.v10.api.Api apiV10 = ModelProxyBuilder.createRaml(org.raml.v2.api.model.v10.api.Api.class, ramlNode);
+            return new RamlModelResult(apiV10);
         }
         else
         {
-            org.raml.v2.api.model.v08.api.Api apiV08 = ModelBuilder.createRaml(org.raml.v2.api.model.v08.api.Api.class, ramlNode);
-            return new RamlApiResult(apiV08);
+            org.raml.v2.api.model.v08.api.Api apiV08 = ModelProxyBuilder.createRaml(org.raml.v2.api.model.v08.api.Api.class, ramlNode);
+            return new RamlModelResult(apiV08);
         }
     }
 
