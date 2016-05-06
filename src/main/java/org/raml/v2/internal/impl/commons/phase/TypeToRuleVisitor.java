@@ -42,6 +42,10 @@ import org.raml.v2.internal.framework.grammar.rule.RegexValueRule;
 import org.raml.v2.internal.framework.grammar.rule.Rule;
 import org.raml.v2.internal.framework.grammar.rule.StringTypeRule;
 import org.raml.v2.internal.framework.grammar.rule.StringValueRule;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.StringNode;
+import org.raml.v2.internal.impl.commons.model.BuiltInScalarType;
+import org.raml.v2.internal.impl.commons.model.StringType;
 import org.raml.v2.internal.impl.commons.nodes.PropertyNode;
 import org.raml.v2.internal.impl.v10.nodes.types.InheritedPropertiesInjectedNode;
 import org.raml.v2.internal.impl.v10.nodes.types.builtin.BooleanTypeNode;
@@ -54,6 +58,7 @@ import org.raml.v2.internal.impl.v10.nodes.types.builtin.StringTypeNode;
 import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNode;
 import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNodeVisitor;
 import org.raml.v2.internal.impl.v10.nodes.types.builtin.UnionTypeNode;
+import org.raml.v2.internal.utils.NodeUtils;
 
 
 public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
@@ -130,7 +135,25 @@ public class TypeToRuleVisitor implements TypeNodeVisitor<Rule>
         {
             return new AnyOfRule(rules);
         }
+        else if (isBuiltInAlias(objectTypeNode))
+        {
+            String typeName = ((StringNode) NodeUtils.getType(objectTypeNode)).getValue();
+            TypeNode type = NodeUtils.getType(typeName, objectTypeNode);
+            return type.visit(new TypeToRuleVisitor());
+        }
         return getPropertiesRules(objectTypeNode.getProperties(), strict);
+    }
+
+    private boolean isBuiltInAlias(ObjectTypeNode objectTypeNode)
+    {
+        String type = ((StringNode) NodeUtils.getType(objectTypeNode)).getValue();
+        TypeNode typeNode = NodeUtils.getType(type, objectTypeNode);
+        if (typeNode != null && NodeUtils.getType(typeNode) instanceof StringNode)
+        {
+            String originalType = ((StringNode) NodeUtils.getType(typeNode)).getValue();
+            return BuiltInScalarType.isBuiltInScalarType(originalType);
+        }
+        return false;
     }
 
     private ObjectRule getPropertiesRules(List<PropertyNode> properties, boolean strict)

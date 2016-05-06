@@ -33,7 +33,7 @@ RamlDocumentNode (Start: 11 , End: 422, Source: SYObjectNode)
     }
   }
 }
-" (Start: 61 , End: 84, Source: StringNodeImpl)
+" (Start: 61 , End: 84, Source: SchemaNodeImpl)
                     KeyValueNodeImpl (Start: 89 , End: 260)
                         SYStringNode: "examples" (Start: 89 , End: 97)
                         MultipleExampleTypeNode (Start: 105 , End: 260, Source: SYObjectNode)

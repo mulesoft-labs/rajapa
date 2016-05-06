@@ -45,25 +45,7 @@ public class InheritedPropertiesInjectedNode extends BaseNode implements ObjectN
 
     public List<PropertyNode> getProperties()
     {
-        List<PropertyNode> properties = Lists.newArrayList();
-        for (Node propertyNode : ((KeyValueNode) this.getChildren().get(0)).getValue().getChildren())
-        {
-            if (propertyNode instanceof PropertyNode)
-            {
-                properties.add((PropertyNode) propertyNode);
-            }
-            else if (propertyNode instanceof KeyValueNode)
-            {
-                for (Node property : (((KeyValueNode) propertyNode).getValue()).getChildren())
-                {
-                    if (property instanceof PropertyNode)
-                    {
-                        properties.add((PropertyNode) property);
-                    }
-                }
-            }
-        }
-        return properties;
+        return this.findDescendantsWith(PropertyNode.class);
     }
 
     @Nonnull

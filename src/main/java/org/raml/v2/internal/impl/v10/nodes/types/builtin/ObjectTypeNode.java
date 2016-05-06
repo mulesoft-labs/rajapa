@@ -39,6 +39,8 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
 
     private List<InheritedPropertiesInjectedNode> inheritedProperties = Lists.newArrayList();
 
+    private boolean resolvedType = false;
+
     public ObjectTypeNode()
     {
     }
@@ -74,7 +76,7 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
                 typeName = ((StringNode) NodeUtils.getType(this)).getValue();
             }
             Node type = NodeUtils.getType(typeName, this);
-            if (type != null)
+            if (type != null && type instanceof ObjectTypeNode)
             {
                 return ((ObjectTypeNode) type).getProperties();
             }
@@ -143,6 +145,16 @@ public class ObjectTypeNode extends AbstractRamlNode implements ObjectNode, Type
             return ((IntegerNode) this.get(facetName)).getValue();
         }
         return null;
+    }
+
+    public void markAsResolved()
+    {
+        this.resolvedType = true;
+    }
+
+    public boolean isResolved()
+    {
+        return this.resolvedType;
     }
 
     public boolean isAllowAdditionalProperties()

@@ -18,7 +18,7 @@ RamlDocumentNode (Start: 11 , End: 470, Source: SYObjectNode)
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>
-" (Start: -1 , End: -1, Source: StringNodeImpl)
+" (Start: -1 , End: -1, Source: SchemaNodeImpl)
                     KeyValueNodeImpl (Start: -1 , End: -1)
                         StringNodeImpl: "displayName" (Start: -1 , End: -1)
                         SYStringNode: "my-schema" (Start: 34 , End: 43, Source: SYStringNode)

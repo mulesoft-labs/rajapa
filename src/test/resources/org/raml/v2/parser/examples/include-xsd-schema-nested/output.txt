@@ -14,7 +14,7 @@ RamlDocumentNode (Start: 11 , End: 668, Source: SYObjectNode)
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
     <xs:include schemaLocation="refs/person.xsd"/>
-</xs:schema>" (Start: 61 , End: 86, Source: StringNodeImpl)
+</xs:schema>" (Start: 61 , End: 86, Source: SchemaNodeImpl)
                     KeyValueNodeImpl (Start: 91 , End: 437)
                         SYStringNode: "examples" (Start: 91 , End: 99)
                         MultipleExampleTypeNode (Start: 107 , End: 437, Source: SYArrayNode)

@@ -138,6 +138,11 @@ public class TypesTransformer implements Transformer
 
         if (typeNode instanceof ObjectTypeNode)
         {
+            if (!((ObjectTypeNode) typeNode).isResolved())
+            {
+                transform(typeNode);
+            }
+
             if (originalProperties == null)
             {
                 SYObjectNode newProperties = (SYObjectNode) typeNode.get("properties");
@@ -148,7 +153,15 @@ public class TypesTransformer implements Transformer
             }
             else
             {
-                List<PropertyNode> unionProperties = getTypeProperties((ObjectTypeNode) typeNode);
+                List<PropertyNode> unionProperties;
+                if (!((ObjectTypeNode) typeNode).getInheritedProperties().isEmpty())
+                {
+                    unionProperties = ((ObjectTypeNode) typeNode).getInheritedProperties().get(0).findDescendantsWith(PropertyNode.class);
+                }
+                else
+                {
+                    unionProperties = getTypeProperties((ObjectTypeNode) typeNode);
+                }
                 addProperties(originalProperties, unionProperties);
             }
         }
@@ -167,6 +180,7 @@ public class TypesTransformer implements Transformer
         validateInheritedTypes(typeNode);
 
         final Node properties = node.get("properties");
+
         if (properties != null)
         {
             Node unionProperties;
@@ -180,6 +194,7 @@ public class TypesTransformer implements Transformer
                     {
                         injectProperties((ObjectTypeNode) node, new StringNodeImpl(trimmedType), (SYObjectNode) unionProperties);
                     }
+                    ((ObjectTypeNode) node).markAsResolved();
                 }
             }
         }
@@ -207,6 +222,10 @@ public class TypesTransformer implements Transformer
                 {
                     final ObjectTypeNode parentTypeNode = (ObjectTypeNode) parentTypeNodeGeneral;
 
+                    if (!parentTypeNode.isResolved())
+                    {
+                        transform(parentTypeNode);
+                    }
                     if (!parentTypeNode.getInheritedProperties().isEmpty())
                     {
                         for (InheritedPropertiesInjectedNode inheritedProperties : parentTypeNode.getInheritedProperties())

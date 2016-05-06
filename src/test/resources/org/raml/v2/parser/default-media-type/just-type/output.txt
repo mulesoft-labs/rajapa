@@ -31,7 +31,7 @@ RamlDocumentNode (Start: 11 , End: 604, Source: SYObjectNode)
     },
     "required": ["firstName", "lastName"]
 }
-" (Start: -1 , End: -1, Source: StringNodeImpl)
+" (Start: -1 , End: -1, Source: SchemaNodeImpl)
                     KeyValueNodeImpl (Start: -1 , End: -1)
                         StringNodeImpl: "displayName" (Start: -1 , End: -1)
                         SYStringNode: "Person" (Start: 66 , End: 72, Source: SYStringNode)
