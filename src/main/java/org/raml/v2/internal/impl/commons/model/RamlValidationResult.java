@@ -48,14 +48,17 @@ public class RamlValidationResult implements org.raml.v2.api.model.common.Valida
     public String toString()
     {
         StringBuilder builder = new StringBuilder(message);
-        if (start.getResource() != null)
+        if (start != null)
         {
-            builder.append(" -- " + start.getResource());
-        }
-        if (start.getLine() != -1)
-        {
-            builder.append(" [line=").append(start.getLine() + 1)
-                   .append(", col=").append(start.getColumn() + 1).append("]");
+            if (start.getResource() != null)
+            {
+                builder.append(" -- " + start.getResource());
+            }
+            if (start.getLine() != -1)
+            {
+                builder.append(" [line=").append(start.getLine() + 1)
+                       .append(", col=").append(start.getColumn() + 1).append("]");
+            }
         }
         return builder.toString();
     }
