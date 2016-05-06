@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.raml.v2.internal.framework.nodes.ReferenceNode;
 import org.raml.v2.internal.impl.v10.RamlFragment;
 import org.raml.v2.internal.framework.nodes.EmptyErrorNode;
 import org.raml.v2.internal.framework.nodes.ErrorNode;
@@ -180,4 +181,10 @@ public class ErrorNodeFactory
     {
         return new ErrorNode("provided value " + dateValue + " is not compliant with the format " + dateFormat + " provided in " + rfc);
     }
+
+    public static ErrorNode createNonexistentReferenceTraitError(ReferenceNode traitReference)
+    {
+        return new ErrorNode("Reference to nonexistent trait '" + traitReference.getRefName() + "'");
+    }
+
 }

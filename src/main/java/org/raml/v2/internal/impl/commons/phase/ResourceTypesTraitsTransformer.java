@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
+import org.raml.v2.internal.framework.nodes.ErrorNode;
 import org.raml.v2.internal.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.v2.internal.impl.commons.nodes.BaseResourceTypeRefNode;
 import org.raml.v2.internal.impl.commons.nodes.BaseTraitRefNode;
@@ -93,20 +95,43 @@ public class ResourceTypesTraitsTransformer implements Transformer
 
     private void checkTraits(KeyValueNode resourceNode, ResourceNode baseResourceNode)
     {
-        List<MethodNode> methodNodes = findMethodNodes(resourceNode);
-        List<ReferenceNode> resourceTraitRefs = findTraitReferences(resourceNode);
+        final List<MethodNode> methodNodes = findMethodNodes(resourceNode);
+        final List<ReferenceNode> resourceTraitRefs = findTraitReferences(resourceNode);
+
+        // we should validate resource level trait refs proactively as if we don't have any method they won't be validated
+        final List<ReferenceNode> presentResourceTraitRefs = validateAndFilterResourceLevelTraitRefs(resourceTraitRefs);
 
         for (MethodNode methodNode : methodNodes)
         {
-            List<ReferenceNode> traitRefs = findTraitReferences(methodNode);
-            traitRefs.addAll(resourceTraitRefs);
-            for (ReferenceNode traitRef : traitRefs)
+            final List<ReferenceNode> traitRefs = findTraitReferences(methodNode);
+            traitRefs.addAll(presentResourceTraitRefs);
+            for (final ReferenceNode traitRef : traitRefs)
             {
-                String traitLevel = resourceTraitRefs.contains(traitRef) ? "resource" : "method";
+                final String traitLevel = presentResourceTraitRefs.contains(traitRef) ? "resource" : "method";
                 logger.debug("applying {} level trait '{}' to '{}.{}'", traitLevel, traitRef.getRefName(), resourceNode.getKey(), methodNode.getName());
                 applyTrait(methodNode, traitRef, baseResourceNode);
             }
         }
+    }
+
+    private List<ReferenceNode> validateAndFilterResourceLevelTraitRefs(final List<ReferenceNode> resourceTraitRefs)
+    {
+        // TODO - duplicated logic with validation from ResourceTypesTraitsTransformer#applyTrait -> unify :) - moliva - May 5, 2016
+        final ArrayList<ReferenceNode> presentTraitRefs = new ArrayList<>();
+        for (final ReferenceNode traitReference : resourceTraitRefs)
+        {
+            final Node refNode = traitReference.getRefNode();
+            if (refNode == null)
+            {
+                final ErrorNode errorNode = ErrorNodeFactory.createNonexistentReferenceTraitError(traitReference);
+                traitReference.replaceWith(errorNode);
+            }
+            else
+            {
+                presentTraitRefs.add(traitReference);
+            }
+        }
+        return presentTraitRefs;
     }
 
     private void applyResourceType(KeyValueNode targetNode, ReferenceNode resourceTypeReference, ResourceNode baseResourceNode)
@@ -164,7 +189,9 @@ public class ResourceTypesTraitsTransformer implements Transformer
         TraitNode refNode = (TraitNode) traitReference.getRefNode();
         if (refNode == null)
         {
-            throw new IllegalStateException("Invalid reference"); // validated by grammar
+            final ErrorNode errorNode = ErrorNodeFactory.createNonexistentReferenceTraitError(traitReference);
+            traitReference.replaceWith(errorNode);
+            return;
         }
 
         TraitNode copy = refNode.copy();
