@@ -203,6 +203,10 @@ public class TypesTransformer implements Transformer
             String trimmedType = StringUtils.trim(((StringNode) getType(node)).getValue());
             if ("array".equals(trimmedType))
             {
+                if (getType(node.get("items")) == null)
+                {
+                    return;
+                }
                 trimmedType = StringUtils.trim(((StringNode) getType(node.get("items"))).getValue());
                 if (StringUtils.isEmpty(trimmedType))
                 {
