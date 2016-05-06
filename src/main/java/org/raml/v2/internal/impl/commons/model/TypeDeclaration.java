@@ -108,6 +108,6 @@ public class TypeDeclaration extends CommonAttributes
     public String defaultValue()
     {
         Object defaultValue = ModelUtils.getSimpleValue("default", getNode());
-        return defaultValue.toString();
+        return defaultValue != null ? defaultValue.toString() : null;
     }
 }

@@ -18,6 +18,7 @@ package org.raml.v2.parser;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -140,6 +141,7 @@ public class LeaguesV10TestCase
     {
         assertThat(uriParameters.size(), is(1));
         TypeDeclaration id = uriParameters.get(0);
+        assertNull(id.defaultValue());
         List<ValidationResult> results = id.validate("acceptable");
         assertThat(results.size(), is(0));
         results = id.validate("longer than twenty characters");
