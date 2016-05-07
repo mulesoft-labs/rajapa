@@ -15,11 +15,10 @@
  */
 package org.raml.v2.api.model.v08.api;
 
-import org.raml.v2.api.model.v08.common.RAMLSimpleElement;
 import org.raml.v2.api.model.v08.system.types.MarkdownString;
 
 
-public interface DocumentationItem extends RAMLSimpleElement
+public interface DocumentationItem
 {
 
     /**

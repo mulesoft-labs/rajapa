@@ -15,10 +15,8 @@
  */
 package org.raml.v2.api.model.v08.system.types;
 
-import org.raml.v2.api.model.v08.core.AttributeNode;
 
-
-public interface ValueType extends AttributeNode
+public interface ValueType
 {
 
     /**

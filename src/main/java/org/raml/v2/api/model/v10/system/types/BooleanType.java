@@ -15,10 +15,8 @@
  */
 package org.raml.v2.api.model.v10.system.types;
 
-import org.raml.v2.api.model.v10.core.AttributeNode;
 
-
-public interface BooleanType extends AttributeNode
+public interface BooleanType
 {
 
     /**

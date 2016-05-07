@@ -15,10 +15,8 @@
  */
 package org.raml.v2.api.model.v08.security;
 
-import org.raml.v2.api.model.v08.core.BasicNode;
 
-
-public interface SecuritySchemeSettings extends BasicNode
+public interface SecuritySchemeSettings
 {
 
 

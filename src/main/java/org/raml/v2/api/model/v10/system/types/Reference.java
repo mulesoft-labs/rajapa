@@ -15,11 +15,10 @@
  */
 package org.raml.v2.api.model.v10.system.types;
 
-import org.raml.v2.api.model.v10.core.AttributeNode;
 import org.raml.v2.api.model.v10.datamodel.TypeInstance;
 
 
-public interface Reference extends AttributeNode
+public interface Reference
 {
 
     String value();

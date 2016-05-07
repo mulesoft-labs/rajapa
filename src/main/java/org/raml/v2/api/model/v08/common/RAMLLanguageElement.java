@@ -15,11 +15,10 @@
  */
 package org.raml.v2.api.model.v08.common;
 
-import org.raml.v2.api.model.v08.core.BasicNode;
 import org.raml.v2.api.model.v08.system.types.MarkdownString;
 
 
-public interface RAMLLanguageElement extends BasicNode
+public interface RAMLLanguageElement
 {
 
     /**
