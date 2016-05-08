@@ -257,7 +257,7 @@ public class RamlSuggester
 
     private List<Suggestion> getSuggestionByColumn(RamlParsingContext context, String document, int offset, int location)
     {
-        if (StringUtils.isBlank(document) && offset == -1)
+        if (offset == -1)
         {
             return getHeaderSuggestions();
         }
@@ -477,6 +477,11 @@ public class RamlSuggester
     private StringBuilder getContextLine(String document, int offset)
     {
         final StringBuilder contextLine = new StringBuilder();
+
+        if (offset < 0) // start of file detected!
+        {
+            return contextLine;
+        }
 
         int location = offset;
         char character = document.charAt(location);
