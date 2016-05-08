@@ -187,4 +187,8 @@ public class ErrorNodeFactory
         return new ErrorNode("Reference to nonexistent trait '" + traitReference.getRefName() + "'");
     }
 
+    public static ErrorNode createNonexistentReferenceResourceTypeError(ReferenceNode resourceTypeReference)
+    {
+        return new ErrorNode("Reference to nonexistent resource type '" + resourceTypeReference.getRefName() + "'");
+    }
 }

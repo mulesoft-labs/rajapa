@@ -139,7 +139,9 @@ public class ResourceTypesTraitsTransformer implements Transformer
         ResourceTypeNode refNode = (ResourceTypeNode) resourceTypeReference.getRefNode();
         if (refNode == null)
         {
-            throw new IllegalStateException("Invalid reference"); // validated by grammar
+            final ErrorNode errorNode = ErrorNodeFactory.createNonexistentReferenceResourceTypeError(resourceTypeReference);
+            resourceTypeReference.replaceWith(errorNode);
+            return;
         }
         ResourceTypeNode templateNode = refNode.copy();
         templateNode.setParent(refNode.getParent());
