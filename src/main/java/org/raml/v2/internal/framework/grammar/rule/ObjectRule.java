@@ -21,12 +21,15 @@ import com.google.common.collect.Collections2;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.raml.v2.internal.framework.nodes.ErrorNode;
 import org.raml.v2.internal.framework.nodes.KeyValueNode;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.nodes.NodeType;
@@ -37,9 +40,12 @@ import org.raml.v2.internal.framework.suggester.RamlParsingContext;
 import org.raml.v2.internal.framework.suggester.RamlParsingContextType;
 import org.raml.v2.internal.framework.suggester.Suggestion;
 import org.raml.v2.internal.utils.NodeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ObjectRule extends Rule
 {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private List<KeyValueRule> fields;
     private ConditionalRules conditionalRules;
@@ -178,7 +184,35 @@ public class ObjectRule extends Rule
                 }
             }
 
+            validateKeysUniquity(result);
+
             return result;
+        }
+    }
+
+    private void validateKeysUniquity(final Node node)
+    {
+        final List<Node> children = node.getChildren();
+
+        final Set<String> gotcha = new HashSet<>();
+        for (final Node child : children)
+        {
+            if (child instanceof KeyValueNode)
+            {
+                final String key = ((KeyValueNode) child).getKey().toString();
+                if (gotcha.contains(key))
+                {
+                    child.replaceWith(new ErrorNode("Duplicated key '" + key + "'"));
+                }
+                else
+                {
+                    gotcha.add(key);
+                }
+            }
+            else
+            {
+                logger.error("Child '" + child + "' not a key value node");
+            }
         }
     }
 
