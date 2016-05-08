@@ -198,7 +198,17 @@ public class RamlSuggester
             if (rootNode instanceof StringNode)
             {
                 // File still doesn't have any mapping and will not generate any suggestions so we'll force the parsing to make it a mapping
-                return ramlBuilder.build(stripLastChanges(document, offset, location) + "\n\nstub: stub", resourceLoader, ""); // we add an invalid key so as to force the creation of the root node
+                final Node rootNode2 = ramlBuilder.build(stripLastChanges(document, offset, location) + "\n\nstub: stub", resourceLoader, ""); // we add an invalid key so as to enforce the creation of
+                                                                                                                                               // the root node
+                if (rootNode2 instanceof ErrorNode)
+                {
+                    // Otherwise let's just try to remove the whole line starting from where we are located
+                    return ramlBuilder.build(removeChangedLine(document, offset, location) + "\n\nstub: stub", resourceLoader, "");
+                }
+                else
+                {
+                    return rootNode2;
+                }
             }
             else if (!(rootNode instanceof ErrorNode))
             {
@@ -208,6 +218,11 @@ public class RamlSuggester
             {
                 // File is not corrupted but just empty, we should suggest initial keys for the current file
                 return ramlBuilder.build(document + "\n\nstub: stub", resourceLoader, ""); // we add an invalid key so as to force the creation of the root node
+            }
+            else if (rootNode instanceof ErrorNode)
+            {
+                // let's just try to remove the whole line starting from where we are located
+                return ramlBuilder.build(removeChangedLine(document, offset, location) + "\n\nstub: stub", resourceLoader, "");
             }
             else
             {
@@ -220,6 +235,15 @@ public class RamlSuggester
             // We remove some current keywords to see if it parses
             return ramlBuilder.build(stripLastChanges(document, offset, location), resourceLoader, "");
         }
+    }
+
+    private String removeChangedLine(String document, int offset, int location)
+    {
+        final String header = document.substring(0, location + 1);
+        final String footer = getFooter1(document, offset);
+        final String realDocument = header + footer;
+
+        return realDocument;
     }
 
     private String stripLastChanges(String document, int offset, int location)
@@ -399,6 +423,24 @@ public class RamlSuggester
     private String getFooter(String document, int offset)
     {
         int loc = offset;
+        char current = document.charAt(loc);
+        while (loc < document.length() && current != '\n' && current != '}' && current != ']' && current != ',')
+        {
+            loc++;
+            if (loc == document.length())
+            {
+                break;
+            }
+            current = document.charAt(loc);
+        }
+
+        return loc < document.length() ? document.substring(loc) : "";
+    }
+
+    @Nonnull
+    private String getFooter1(String document, int offset)
+    {
+        int loc = offset + 1;
         char current = document.charAt(loc);
         while (loc < document.length() && current != '\n' && current != '}' && current != ']' && current != ',')
         {
