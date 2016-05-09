@@ -23,12 +23,16 @@ import javax.annotation.Nonnull;
 import org.raml.v2.internal.framework.nodes.BooleanNode;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.nodes.NodeType;
+import org.raml.v2.internal.framework.nodes.StringNode;
 import org.raml.v2.internal.framework.suggester.DefaultSuggestion;
 import org.raml.v2.internal.framework.suggester.RamlParsingContext;
 import org.raml.v2.internal.framework.suggester.Suggestion;
 
 public class BooleanTypeRule extends AbstractTypeRule
 {
+    private final static String TRUE = "true";
+    private final static String FALSE = "false";
+
     @Nonnull
     @Override
     public List<Suggestion> getSuggestions(Node node, RamlParsingContext context)
@@ -39,6 +43,11 @@ public class BooleanTypeRule extends AbstractTypeRule
     @Override
     public boolean matches(@Nonnull Node node)
     {
+        if (node instanceof StringNode)
+        {
+            String value = ((StringNode) node).getValue();
+            return TRUE.equals(value) || FALSE.equals(value);
+        }
         return node instanceof BooleanNode;
     }
 

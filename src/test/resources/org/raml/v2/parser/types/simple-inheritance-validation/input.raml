@@ -10,7 +10,7 @@ types:
     type: Person
     properties:
       id:
-        type: string
+        type: integer
 /resource:
   get:
     responses: 
@@ -18,5 +18,10 @@ types:
         body:
           application/json:
             type: Employee
-            example:
-              name: carlos
+            examples:
+              good:
+                name: carlos
+                id: 1
+              bad:
+                name: 1234
+                id: juan

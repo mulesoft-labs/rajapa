@@ -209,7 +209,7 @@ public class ObjectRule extends Rule
                     gotcha.add(key);
                 }
             }
-            else
+            else if (!(child instanceof ErrorNode))
             {
                 logger.error("Child '" + child + "' not a key value node");
             }
