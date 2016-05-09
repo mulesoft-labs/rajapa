@@ -91,6 +91,8 @@ public class RamlSuggester
     {
         switch (context.getContextType())
         {
+        case HEADER:
+            return getSuggestionsAtHeaderLevel(context, document, offset, location);
         case FUNCTION_CALL:
             return getFunctionCallSuggestions();
         case STRING_TEMPLATE:
@@ -103,6 +105,11 @@ public class RamlSuggester
             return getSuggestionByColumn(context, document, offset, location);
 
         }
+    }
+
+    private List<Suggestion> getSuggestionsAtHeaderLevel(RamlParsingContext context, String document, int offset, int location)
+    {
+        return getHeaderSuggestions();
     }
 
     @Nonnull
@@ -257,11 +264,6 @@ public class RamlSuggester
 
     private List<Suggestion> getSuggestionByColumn(RamlParsingContext context, String document, int offset, int location)
     {
-        if (offset == -1)
-        {
-            return getHeaderSuggestions();
-        }
-
         // // I don't care column number unless is an empty new line
         int columnNumber = getColumnNumber(document, offset);
         final Node root = getRootNode(document, offset, location);
@@ -281,6 +283,27 @@ public class RamlSuggester
         {
             return Collections.emptyList();
         }
+    }
+
+    private int getLineNumber(final String document, final int offset)
+    {
+        int lineNumber = 0;
+        for (int currentIndex = 0; currentIndex <= offset; ++currentIndex)
+        {
+            if (currentIndex - 1 == offset || //
+                currentIndex >= document.length()) // should never be possible if offset is legal
+            {
+                return lineNumber;
+            }
+
+            if (document.charAt(currentIndex) == '\n')
+            {
+                ++lineNumber;
+            }
+        }
+
+        // should never reach this
+        return lineNumber;
     }
 
     private List<Suggestion> getHeaderSuggestions()
@@ -304,6 +327,12 @@ public class RamlSuggester
     @Nonnull
     private RamlParsingContext getContext(String document, int offset)
     {
+        if (offset == -1 || getLineNumber(document, offset) == 0)
+        {
+            final String content = offset < 0 || document.isEmpty() ? "" : document.substring(0, offset + 1);
+            return new RamlParsingContext(RamlParsingContextType.HEADER, content, offset);
+        }
+
         RamlParsingContext context = null;
         int location = offset;
         final StringBuilder content = new StringBuilder();

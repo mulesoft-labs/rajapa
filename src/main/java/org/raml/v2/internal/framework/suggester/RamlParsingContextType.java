@@ -17,5 +17,5 @@ package org.raml.v2.internal.framework.suggester;
 
 public enum RamlParsingContextType
 {
-    FUNCTION_CALL, LIBRARY_CALL, VALUE, ITEM, STRING_TEMPLATE, ANY
+    FUNCTION_CALL, LIBRARY_CALL, VALUE, ITEM, STRING_TEMPLATE, HEADER, ANY
 }
