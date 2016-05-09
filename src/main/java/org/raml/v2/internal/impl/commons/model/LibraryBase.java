@@ -20,6 +20,16 @@ import java.util.List;
 public abstract class LibraryBase extends CommonAttributes
 {
 
+    public List<TypeDeclaration> schemas()
+    {
+        return getList("schemas", TypeDeclaration.class);
+    }
+
+    public List<TypeDeclaration> types()
+    {
+        return getList("types", TypeDeclaration.class);
+    }
+
     public List<Trait> traits()
     {
         return getList("traits", Trait.class);
@@ -29,4 +39,15 @@ public abstract class LibraryBase extends CommonAttributes
     {
         return getList("resourceTypes", ResourceType.class);
     }
+
+    public List<TypeDeclaration> annotationTypes()
+    {
+        return getList("annotationTypes", TypeDeclaration.class);
+    }
+
+    public List<SecurityScheme> securitySchemes()
+    {
+        return getList("securitySchemes", SecurityScheme.class);
+    }
+
 }

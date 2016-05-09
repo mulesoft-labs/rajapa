@@ -21,12 +21,10 @@ import org.raml.v2.api.model.v10.datamodel.TypeInstance;
 public interface Reference
 {
 
-    String value();
-
-
     /**
      * Returns a structured object if the reference point to one.
      **/
+    // TODO check if useful
     TypeInstance structuredValue();
 
 

@@ -39,4 +39,8 @@ public enum RamlVersion
         this.number = number;
     }
 
+    public String value()
+    {
+        return number;
+    }
 }

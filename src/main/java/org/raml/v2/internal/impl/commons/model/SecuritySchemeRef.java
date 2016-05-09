@@ -16,15 +16,20 @@
 package org.raml.v2.internal.impl.commons.model;
 
 import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.NullNode;
+import org.raml.v2.internal.impl.commons.nodes.SecuritySchemeRefNode;
 
 public class SecuritySchemeRef extends BaseModelElement
 {
 
-    private Node node;
+    private SecuritySchemeRefNode node;
 
     public SecuritySchemeRef(Node node)
     {
-        this.node = node;
+        if (!(node instanceof NullNode))
+        {
+            this.node = (SecuritySchemeRefNode) node;
+        }
     }
 
     @Override
@@ -32,4 +37,23 @@ public class SecuritySchemeRef extends BaseModelElement
     {
         return node;
     }
+
+    public String name()
+    {
+        if (node == null)
+        {
+            return "null";
+        }
+        return node.getRefName();
+    }
+
+    public SecurityScheme securityScheme()
+    {
+        if (node == null)
+        {
+            return null;
+        }
+        return new SecurityScheme(node.getRefNode());
+    }
+
 }

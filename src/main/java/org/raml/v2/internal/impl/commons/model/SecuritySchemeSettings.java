@@ -19,14 +19,13 @@ import java.util.List;
 
 import org.raml.v2.internal.framework.nodes.KeyValueNode;
 import org.raml.v2.internal.framework.nodes.Node;
-import org.raml.v2.internal.framework.nodes.SimpleTypeNode;
 
-public class Response extends CommonAttributes
+public class SecuritySchemeSettings extends BaseModelElement
 {
 
     private KeyValueNode node;
 
-    public Response(Node node)
+    public SecuritySchemeSettings(Node node)
     {
         this.node = (KeyValueNode) node;
     }
@@ -37,23 +36,38 @@ public class Response extends CommonAttributes
         return node.getValue();
     }
 
-    public StringType code()
+    public StringType requestTokenUri()
     {
-        return new StringType(((SimpleTypeNode) node.getKey()).getLiteralValue());
+        return getStringTypeValue("requestTokenUri");
     }
 
-    public List<TypeDeclaration> body()
+    public StringType authorizationUri()
     {
-        return getList("body", TypeDeclaration.class);
+        return getStringTypeValue("authorizationUri");
     }
 
-    public List<BodyLike> bodyV08()
+    public StringType tokenCredentialsUri()
     {
-        return getList("body", BodyLike.class);
+        return getStringTypeValue("tokenCredentialsUri");
     }
 
-    public List<TypeDeclaration> headers()
+    public StringType accessTokenUri()
     {
-        return getList("headers", TypeDeclaration.class);
+        return getStringTypeValue("accessTokenUri");
+    }
+
+    public List<String> authorizationGrants()
+    {
+        return getStringList("authorizationGrants");
+    }
+
+    public List<String> scopes()
+    {
+        return getStringList("scopes");
+    }
+
+    public List<String> signatures()
+    {
+        return getStringList("signatures");
     }
 }

@@ -13,15 +13,27 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.api.model.v10.api;
+package org.raml.v2.internal.impl.commons.model;
 
-import java.util.List;
-import org.raml.v2.api.model.v10.common.Annotable;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.impl.commons.nodes.TraitRefNode;
 
-
-public interface FragmentDeclaration extends Annotable
+public class TraitRef
 {
+    private TraitRefNode node;
 
-    List<UsesDeclaration> uses();
+    public TraitRef(Node node)
+    {
+        this.node = (TraitRefNode) node;
+    }
 
+    public Trait trait()
+    {
+        return new Trait(node.getRefNode());
+    }
+
+    public String name()
+    {
+        return node.getRefName();
+    }
 }

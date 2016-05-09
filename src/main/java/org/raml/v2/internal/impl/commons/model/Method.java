@@ -15,29 +15,21 @@
  */
 package org.raml.v2.internal.impl.commons.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.impl.commons.nodes.MethodNode;
 import org.raml.v2.internal.impl.commons.nodes.ResourceNode;
-import org.raml.v2.internal.framework.nodes.KeyValueNode;
-import org.raml.v2.internal.framework.nodes.Node;
-import org.raml.v2.internal.utils.NodeSelector;
 
-public class Method extends CommonAttributes
+public class Method extends Operation
 {
 
     private MethodNode node;
 
     public Method(MethodNode node)
     {
+        super(node);
         this.node = node;
-    }
-
-    @Override
-    protected Node getNode()
-    {
-        return node.getValue();
     }
 
     public String method()
@@ -47,44 +39,12 @@ public class Method extends CommonAttributes
 
     public List<TypeDeclaration> body()
     {
-        ArrayList<TypeDeclaration> result = new ArrayList<>();
-        Node body = NodeSelector.selectFrom("body", node.getValue());
-        if (body != null)
-        {
-            for (Node child : body.getChildren())
-            {
-                result.add(new TypeDeclaration((KeyValueNode) child));
-            }
-        }
-        return result;
+        return getList("body", TypeDeclaration.class);
     }
 
     public List<BodyLike> bodyV08()
     {
-        ArrayList<BodyLike> result = new ArrayList<>();
-        Node body = NodeSelector.selectFrom("body", node.getValue());
-        if (body != null)
-        {
-            for (Node child : body.getChildren())
-            {
-                result.add(new BodyLike((KeyValueNode) child));
-            }
-        }
-        return result;
-    }
-
-    public List<Response> responses()
-    {
-        ArrayList<Response> result = new ArrayList<>();
-        Node responses = NodeSelector.selectFrom("responses", node.getValue());
-        if (responses != null)
-        {
-            for (Node child : responses.getChildren())
-            {
-                result.add(new Response((KeyValueNode) child));
-            }
-        }
-        return result;
+        return getList("body", BodyLike.class);
     }
 
     public Resource resource()
@@ -100,35 +60,4 @@ public class Method extends CommonAttributes
         return null;
     }
 
-    public List<TypeDeclaration> queryParameters()
-    {
-        ArrayList<TypeDeclaration> result = new ArrayList<>();
-        Node queryParamsNode = NodeSelector.selectFrom("queryParameters", node.getValue());
-        if (queryParamsNode != null)
-        {
-            for (Node child : queryParamsNode.getChildren())
-            {
-                result.add(new TypeDeclaration((KeyValueNode) child));
-            }
-        }
-        return result;
-    }
-
-    public List<TypeDeclaration> headers()
-    {
-        ArrayList<TypeDeclaration> result = new ArrayList<>();
-        Node headersNode = NodeSelector.selectFrom("headers", node.getValue());
-        if (headersNode != null)
-        {
-            for (Node child : headersNode.getChildren())
-            {
-                result.add(new TypeDeclaration((KeyValueNode) child));
-            }
-        }
-        return result;
-    }
-
-    // TODO
-    // public List<Parameter> queryParametersV08();
-    // public List<Parameter> headersV08();
 }

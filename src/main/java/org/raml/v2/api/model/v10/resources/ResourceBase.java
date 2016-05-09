@@ -45,8 +45,7 @@ public interface ResourceBase extends Annotable
     ResourceTypeRef type();
 
 
-    // TODO --def-system-bug--
-    // String description();
+    // --def-system-mod--
     MarkdownString description();
 
 

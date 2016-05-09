@@ -35,9 +35,9 @@ public class TypeDeclaration extends CommonAttributes
 
     private KeyValueNode node;
 
-    public TypeDeclaration(KeyValueNode node)
+    public TypeDeclaration(Node node)
     {
-        this.node = node;
+        this.node = (KeyValueNode) node;
     }
 
     @Override
@@ -66,15 +66,31 @@ public class TypeDeclaration extends CommonAttributes
         return getList("examples", ExampleSpec.class);
     }
 
-    public String schema()
+    public String schemaContent()
     {
-        return getStringValue("schema");
+        List<String> type = type("type");
+        type.addAll(type("schema"));
+        if (!type.isEmpty())
+        {
+            return type.get(0);
+        }
+        return null;
+    }
+
+    public List<String> schema()
+    {
+        return type("schema");
     }
 
     public List<String> type()
     {
+        return type("type");
+    }
+
+    private List<String> type(String key)
+    {
         List<String> result = new ArrayList<>();
-        Node type = NodeSelector.selectFrom("type", getNode());
+        Node type = NodeSelector.selectFrom(key, getNode());
         if (type instanceof SimpleTypeNode)
         {
             result.add(((SimpleTypeNode) type).getLiteralValue());
@@ -102,7 +118,7 @@ public class TypeDeclaration extends CommonAttributes
     public Boolean required()
     {
         Boolean required = ModelUtils.getSimpleValue("required", getNode());
-        return required == null ? false : required;
+        return required == null ? true : required;
     }
 
     public String defaultValue()

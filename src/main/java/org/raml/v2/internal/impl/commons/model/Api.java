@@ -18,11 +18,9 @@ package org.raml.v2.internal.impl.commons.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.internal.impl.commons.nodes.ResourceNode;
-import org.raml.v2.internal.framework.nodes.KeyValueNode;
-import org.raml.v2.internal.framework.nodes.Node;
-import org.raml.v2.internal.utils.NodeSelector;
 
 public class Api extends LibraryBase
 {
@@ -80,13 +78,7 @@ public class Api extends LibraryBase
 
     public List<String> protocols()
     {
-        ArrayList<String> resultList = new ArrayList<>();
-        Node parent = NodeSelector.selectFrom("protocols", node);
-        for (Node child : parent.getChildren())
-        {
-            resultList.add(child.toString());
-        }
-        return resultList;
+        return getStringList("protocols");
     }
 
     public List<SecuritySchemeRef> securedBy()
@@ -94,42 +86,19 @@ public class Api extends LibraryBase
         return getList("securedBy", SecuritySchemeRef.class);
     }
 
-    public List<TypeDeclaration> types()
-    {
-        return getTypeDeclarations("types");
-    }
-
-    public List<TypeDeclaration> schemas()
-    {
-        return getTypeDeclarations("schemas");
-    }
-
-    private List<TypeDeclaration> getTypeDeclarations(String rootTypesName)
-    {
-        List<TypeDeclaration> result = new ArrayList<>();
-        Node typesNode = NodeSelector.selectFrom(rootTypesName, node);
-        if (typesNode != null)
-        {
-            for (Node child : typesNode.getChildren())
-            {
-                result.add(new TypeDeclaration((KeyValueNode) child));
-            }
-        }
-        return result;
-    }
-
     public List<GlobalSchema> schemasV08()
     {
-        List<GlobalSchema> result = new ArrayList<>();
-        Node typesNode = NodeSelector.selectFrom("schemas", node);
-        if (typesNode != null)
-        {
-            for (Node child : typesNode.getChildren())
-            {
-                result.add(new GlobalSchema((KeyValueNode) child));
-            }
-        }
-        return result;
+        return getList("schemas", GlobalSchema.class);
+    }
+
+    public List<TypeDeclaration> baseUriParameters()
+    {
+        return getList("baseUriParameters", TypeDeclaration.class);
+    }
+
+    public String ramlVersion()
+    {
+        return node.getVersion().value();
     }
 
 }

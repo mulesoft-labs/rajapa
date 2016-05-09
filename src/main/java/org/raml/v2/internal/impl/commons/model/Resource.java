@@ -76,6 +76,26 @@ public class Resource extends CommonAttributes
         return resultList;
     }
 
+    public ResourceTypeRef type()
+    {
+        Node type = NodeSelector.selectFrom("type", getNode());
+        if (type == null)
+        {
+            return null;
+        }
+        return new ResourceTypeRef(type);
+    }
+
+    public List<TraitRef> is()
+    {
+        return getList("is", TraitRef.class);
+    }
+
+    public List<SecuritySchemeRef> securedBy()
+    {
+        return getList("securedBy", SecuritySchemeRef.class);
+    }
+
     public List<TypeDeclaration> uriParameters()
     {
         ArrayList<TypeDeclaration> result = new ArrayList<>();

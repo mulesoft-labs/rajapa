@@ -19,14 +19,13 @@ import java.util.List;
 
 import org.raml.v2.internal.framework.nodes.KeyValueNode;
 import org.raml.v2.internal.framework.nodes.Node;
-import org.raml.v2.internal.framework.nodes.SimpleTypeNode;
 
-public class Response extends CommonAttributes
+public class Operation extends CommonAttributes
 {
 
     private KeyValueNode node;
 
-    public Response(Node node)
+    public Operation(Node node)
     {
         this.node = (KeyValueNode) node;
     }
@@ -37,23 +36,23 @@ public class Response extends CommonAttributes
         return node.getValue();
     }
 
-    public StringType code()
+    public List<Response> responses()
     {
-        return new StringType(((SimpleTypeNode) node.getKey()).getLiteralValue());
+        return getList("responses", Response.class);
     }
 
-    public List<TypeDeclaration> body()
+    public List<TypeDeclaration> queryParameters()
     {
-        return getList("body", TypeDeclaration.class);
-    }
-
-    public List<BodyLike> bodyV08()
-    {
-        return getList("body", BodyLike.class);
+        return getList("queryParameters", TypeDeclaration.class);
     }
 
     public List<TypeDeclaration> headers()
     {
         return getList("headers", TypeDeclaration.class);
     }
+
+    // TODO
+    // public List<Parameter> queryParametersV08();
+    // public List<Parameter> headersV08();
+
 }

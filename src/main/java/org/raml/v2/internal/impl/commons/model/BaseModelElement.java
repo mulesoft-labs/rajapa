@@ -38,6 +38,20 @@ public abstract class BaseModelElement
         return ModelUtils.getStringTypeValue(key, getNode());
     }
 
+    protected List<String> getStringList(String key)
+    {
+        List<String> result = new ArrayList<>();
+        Node node = NodeSelector.selectFrom(key, getNode());
+        if (node != null)
+        {
+            for (Node child : node.getChildren())
+            {
+                result.add(String.valueOf(child));
+            }
+        }
+        return result;
+    }
+
     protected <T> List<T> getList(String key, Class<T> clazz)
     {
         ArrayList<T> resultList = new ArrayList<>();

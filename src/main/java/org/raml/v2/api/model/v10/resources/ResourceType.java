@@ -18,7 +18,7 @@ package org.raml.v2.api.model.v10.resources;
 import org.raml.v2.api.model.v10.datamodel.TypeInstance;
 
 
-public interface ResourceType extends ResourceBase
+public interface ResourceType
 {
 
     /**

@@ -87,7 +87,7 @@
                 <artifactId>formatter-maven-plugin</artifactId>
                 <version>0.5.2</version>
                 <configuration>
-                    <configFile>${project.basedir}/mule_eclipse_formatter.xml</configFile>
+                    <configFile>${project.basedir}/eclipse_formatter.xml</configFile>
                 </configuration>
                 <executions>
                     <execution>

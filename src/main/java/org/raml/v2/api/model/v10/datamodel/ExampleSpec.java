@@ -21,31 +21,16 @@ import org.raml.v2.api.model.v10.common.Annotable;
 public interface ExampleSpec extends Annotable
 {
 
-    /*
-     * --def-system-bug-- raml-java-parser-interfaces/issues/3
-     */
     /**
      * String representation of example
      **/
-    // Object value();
+    // --def-system-mod--
     String value();
-
-
-    /**
-     * By default, examples are validated against any type declaration. Set this to false to allow examples that need not validate.
-     **/
-    Boolean strict();
 
 
     /**
      * Example identifier, if specified
      **/
     String name();
-
-
-    /**
-     * Returns object representation of example, if possible
-     **/
-    TypeInstance structuredContent();
 
 }

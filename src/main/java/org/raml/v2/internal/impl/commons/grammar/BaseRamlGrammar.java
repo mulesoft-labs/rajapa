@@ -178,6 +178,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
                                            string("Pass Through").description("Headers or Query Parameters are passed through to the API based on a defined object."),
                                            regex("x-.+").description("The API's authentication uses an authentication method not listed above.")
                                    )))
+                           .with(displayNameField())
                            .with(field(string("describedBy"), securitySchemePart()))
                            .with(field(string("settings"), securitySchemeSettings()));
     }

@@ -75,3 +75,6 @@ the "Authorization" header
                                 SYStringNode: "authorizationGrants" (Start: 822 , End: 841)
                                 SYArrayNode (Start: 843 , End: 851)
                                     SYStringNode: "code" (Start: 845 , End: 849)
+                    KeyValueNodeImpl (Start: -1 , End: -1)
+                        StringNodeImpl: "displayName" (Start: -1 , End: -1)
+                        SYStringNode: "oauth_2_0" (Start: 128 , End: 137, Source: SYStringNode)

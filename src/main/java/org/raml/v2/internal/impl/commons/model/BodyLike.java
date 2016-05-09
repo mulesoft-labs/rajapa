@@ -26,9 +26,9 @@ public class BodyLike extends BaseModelElement
 
     private KeyValueNode node;
 
-    public BodyLike(KeyValueNode node)
+    public BodyLike(Node node)
     {
-        this.node = node;
+        this.node = (KeyValueNode) node;
     }
 
     @Override

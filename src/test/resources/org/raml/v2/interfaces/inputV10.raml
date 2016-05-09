@@ -1,9 +1,17 @@
 #%RAML 1.0
 title: api title
 version: v1
-baseUri: http://base.uri
+baseUri: http://base.uri/{version}/{param1}
 mediaType: application/json
 protocols: [HTTP, HTTPS]
+
+baseUriParameters:
+    param1:
+        displayName: Param 1
+        description: some description
+        type: string
+        maxLength: 10
+        example: one
 
 documentation:
     - title: doc title 1
@@ -12,6 +20,20 @@ documentation:
       content: |
            multi
            line
+
+annotationTypes:
+  hypermedia:
+    allowedTargets: [ API, Resource ]
+    properties:
+      controls:
+        description: where is hypermedia
+        properties:
+          url?:
+            default: href
+          property:
+      permanentUri?:
+        type: boolean
+        default: true
 
 types:
     User:
@@ -32,11 +54,63 @@ resourceTypes:
     first:
         usage: first usage
 
+securitySchemes:
+  oauth_2_0:
+    displayName: OAuth2
+    description: oauth 2.0
+    type: OAuth 2.0
+    describedBy:
+      headers:
+        Authorization:
+          description: |
+             Used to send a valid OAuth 2 access token. Do not use
+             with the "access_token" query string parameter.
+          type: string
+      queryParameters:
+        access_token:
+          description: |
+             Used to send a valid OAuth 2 access token. Do not use with
+             the "Authorization" header.
+          type: string
+      responses:
+        401:
+          description: |
+              Bad or expired token. This can happen if the user or Dropbox
+              revoked or expired an access token. To fix, re-authenticate
+              the user.
+        403:
+          description: |
+              Bad OAuth request (wrong consumer key, bad nonce, expired
+              timestamp...). Unfortunately, re-authenticating the user won't help here.
+    settings:
+      authorizationUri: https://www.dropbox.com/1/oauth2/authorize
+      accessTokenUri: https://api.dropbox.com/1/oauth2/token
+      authorizationGrants: [ authorization_code, refresh_token ]
+  oauth_1_0:
+    description: |
+      OAuth 1.0 continues to be supported for all API requests, but OAuth 2.0 is now preferred.
+    type: OAuth 1.0
+    settings:
+      requestTokenUri: https://api.dropbox.com/1/oauth/request_token
+      authorizationUri: https://www.dropbox.com/1/oauth/authorize
+      tokenCredentialsUri: https://api.dropbox.com/1/oauth/access_token
+
+securedBy: [oauth_2_0, null]
+
 /top:
     description: top description
     type: first
+    is: [one, two]
     get:
         description: get something
+        queryParameters:
+            one:
+                displayName: The One
+            two:
+        headers: &headersGet
+            one:
+            two:
+                displayName: The Second
     post:
         description: post something
         body: &bodyPost
@@ -63,8 +137,10 @@ resourceTypes:
         responses:
             200:
                 body: *bodyPost
+                headers: *headersGet
             400:
 
 
     /child:
+        securedBy: [oauth_2_0, null]
         description: child description

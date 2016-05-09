@@ -22,12 +22,6 @@ public interface SecuritySchemeRef extends Reference
 {
 
     /**
-     * Returns the name of security scheme, this reference refers to.
-     **/
-    String securitySchemeName();
-
-
-    /**
      * Returns AST node of security scheme, this reference refers to, or null.
      **/
     AbstractSecurityScheme securityScheme();

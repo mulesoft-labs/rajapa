@@ -13,11 +13,28 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.raml.v2.api.model.v10.security;
+package org.raml.v2.internal.impl.commons.model;
 
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.impl.commons.nodes.ResourceTypeRefNode;
 
-public interface PassThroughSecurityScheme extends AbstractSecurityScheme
+public class ResourceTypeRef
 {
 
+    private ResourceTypeRefNode node;
 
+    public ResourceTypeRef(Node node)
+    {
+        this.node = (ResourceTypeRefNode) node;
+    }
+
+    public String name()
+    {
+        return node.getRefName();
+    }
+
+    public ResourceType resourceType()
+    {
+        return new ResourceType(node.getRefNode());
+    }
 }

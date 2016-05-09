@@ -83,6 +83,7 @@ public interface Api extends LibraryBase
     /**
      * Returns RAML version. "RAML10" string is returned for RAML 1.0. "RAML08" string is returned for RAML 0.8.
      **/
-    String RAMLVersion();
+    // --def-system-mod--
+    String ramlVersion();
 
 }
