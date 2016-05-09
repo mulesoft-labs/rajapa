@@ -16,6 +16,7 @@
 package org.raml.v2.api;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -23,16 +24,21 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.io.IOUtils;
+import org.raml.v2.api.loader.CompositeResourceLoader;
 import org.raml.v2.api.loader.DefaultResourceLoader;
+import org.raml.v2.api.loader.FileResourceLoader;
 import org.raml.v2.api.loader.ResourceLoader;
 import org.raml.v2.api.model.common.ValidationResult;
 import org.raml.v2.internal.framework.nodes.ErrorNode;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.impl.RamlBuilder;
+import org.raml.v2.internal.impl.commons.RamlHeader;
 import org.raml.v2.internal.impl.commons.RamlVersion;
 import org.raml.v2.internal.impl.commons.model.RamlValidationResult;
 import org.raml.v2.internal.impl.commons.model.builder.ModelProxyBuilder;
 import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
+import org.raml.v2.internal.impl.v10.RamlFragment;
 import org.raml.v2.internal.utils.StreamUtils;
 
 /**
@@ -58,24 +64,34 @@ public class RamlModelBuilder
     @Nonnull
     public RamlModelResult buildApi(String ramlLocation)
     {
-        if (ramlLocation == null)
-        {
-            throw new IllegalArgumentException("ramlLocation cannot be null");
-        }
-        Node ramlNode = null;
         String content = getRamlContent(ramlLocation);
-        if (content != null)
+        if (content == null)
         {
-            ramlNode = builder.build(content, resourceLoader, ramlLocation);
+            return generateRamlApiResult("Raml does not exist at: " + ramlLocation);
         }
-        return generateRamlApiResult(ramlNode);
+        return buildApi(content, ramlLocation);
     }
 
     @Nonnull
     public RamlModelResult buildApi(File ramlFile)
     {
-        Node ramlNode = builder.build(ramlFile, resourceLoader);
-        return generateRamlApiResult(ramlNode);
+        String content = getRamlContent(ramlFile);
+        if (content == null)
+        {
+            return generateRamlApiResult("Files does not exist or is not a regular file: " + ramlFile.getPath());
+        }
+        return buildApi(content, ramlFile.getPath());
+    }
+
+    @Nonnull
+    public RamlModelResult buildApi(Reader reader, String ramlLocation)
+    {
+        String content = getRamlContent(reader);
+        if (content == null)
+        {
+            return generateRamlApiResult("Invalid reader provided with location: " + ramlLocation);
+        }
+        return buildApi(content, ramlLocation);
     }
 
     @Nonnull
@@ -86,17 +102,21 @@ public class RamlModelBuilder
             return buildApi(ramlLocation);
         }
         Node ramlNode = builder.build(content, resourceLoader, ramlLocation);
-        return generateRamlApiResult(ramlNode);
-    }
-
-    @Nonnull
-    public RamlModelResult buildApi(Reader content, String ramlLocation)
-    {
-        if (content == null)
+        if (!(ramlNode instanceof RamlDocumentNode))
         {
-            return buildApi(ramlLocation);
+            try
+            {
+                RamlHeader ramlHeader = RamlHeader.parse(content);
+                if (ramlHeader.getVersion() == RamlVersion.RAML_10 && ramlHeader.getFragment() != RamlFragment.Default)
+                {
+                    return generateRamlApiResult("Raml file is not a root document.");
+                }
+            }
+            catch (RamlHeader.InvalidHeaderException e)
+            {
+                // ignore, already handled by builder
+            }
         }
-        Node ramlNode = builder.build(content, resourceLoader, ramlLocation);
         return generateRamlApiResult(ramlNode);
     }
 
@@ -106,10 +126,6 @@ public class RamlModelBuilder
         if (ramlNode instanceof ErrorNode)
         {
             validationResults.add(new RamlValidationResult((ErrorNode) ramlNode));
-        }
-        else if (!(ramlNode instanceof RamlDocumentNode))
-        {
-            validationResults.add(new RamlValidationResult("Raml file is not a root document."));
         }
         else
         {
@@ -123,6 +139,13 @@ public class RamlModelBuilder
                 return wrapTree((RamlDocumentNode) ramlNode);
             }
         }
+        return new RamlModelResult(validationResults);
+    }
+
+    private RamlModelResult generateRamlApiResult(String errorMessage)
+    {
+        List<ValidationResult> validationResults = new ArrayList<>();
+        validationResults.add(new RamlValidationResult(errorMessage));
         return new RamlModelResult(validationResults);
     }
 
@@ -140,9 +163,48 @@ public class RamlModelBuilder
         }
     }
 
+    private String getRamlContent(File ramlFile)
+    {
+        if (ramlFile == null || !ramlFile.isFile())
+        {
+            return null;
+        }
+        ResourceLoader fileLoader = new CompositeResourceLoader(resourceLoader, new FileResourceLoader(ramlFile.getParent()));
+        return getRamlContent(ramlFile.getName(), fileLoader);
+    }
+
+    private String getRamlContent(Reader ramlReader)
+    {
+        if (ramlReader == null)
+        {
+            return null;
+        }
+        try
+        {
+            return IOUtils.toString(ramlReader);
+        }
+        catch (IOException e)
+        {
+            return null;
+        }
+        finally
+        {
+            IOUtils.closeQuietly(ramlReader);
+        }
+    }
+
     private String getRamlContent(String ramlLocation)
     {
-        InputStream ramlStream = resourceLoader.fetchResource(ramlLocation);
+        return getRamlContent(ramlLocation, resourceLoader);
+    }
+
+    private String getRamlContent(String ramlLocation, ResourceLoader loader)
+    {
+        if (ramlLocation == null)
+        {
+            return null;
+        }
+        InputStream ramlStream = loader.fetchResource(ramlLocation);
         if (ramlStream != null)
         {
             return StreamUtils.toString(ramlStream);
