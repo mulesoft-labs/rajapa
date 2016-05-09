@@ -50,28 +50,7 @@ public class ExampleTypeNode extends AbstractRamlNode implements ObjectNode, Typ
     @Override
     public <T> T visit(TypeNodeVisitor<T> visitor)
     {
-        Node typeNode = this.getTypeNode();
-        if (typeNode instanceof StringTypeNode)
-        {
-            return visitor.visitString((StringTypeNode) typeNode);
-        }
-        else if (typeNode instanceof FloatTypeNode)
-        {
-            return visitor.visitFloat((FloatTypeNode) typeNode);
-        }
-        else if (typeNode instanceof IntegerTypeNode)
-        {
-            return visitor.visitInteger((IntegerTypeNode) typeNode);
-        }
-        else if (typeNode instanceof BooleanTypeNode)
-        {
-            return visitor.visitBoolean((BooleanTypeNode) typeNode);
-        }
-        else if (typeNode instanceof DateTypeNode)
-        {
-            return visitor.visitDate((DateTypeNode) typeNode);
-        }
-        return (T) new AnyValueRule();
+        return ((TypeNode) this.getTypeNode()).visit(visitor);
     }
 
     public <T> T visitProperties(TypeNodeVisitor<T> visitor, List<PropertyNode> properties, boolean allowsAdditionalProperties, boolean strict)

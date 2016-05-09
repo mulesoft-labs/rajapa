@@ -33,7 +33,6 @@ import org.raml.v2.internal.framework.grammar.rule.ConditionalRule;
 import org.raml.v2.internal.framework.grammar.rule.ConditionalRules;
 import org.raml.v2.internal.framework.grammar.rule.DefaultValue;
 import org.raml.v2.internal.framework.grammar.rule.DiscriminatorRule;
-import org.raml.v2.internal.framework.grammar.rule.ExampleRule;
 import org.raml.v2.internal.framework.grammar.rule.FieldPresentRule;
 import org.raml.v2.internal.framework.grammar.rule.FirstOfRule;
 import org.raml.v2.internal.framework.grammar.rule.FloatTypeRule;
@@ -65,11 +64,6 @@ public class BaseGrammar
     public ObjectRule objectType()
     {
         return new ObjectRule();
-    }
-
-    public ExampleRule exampleType()
-    {
-        return new ExampleRule();
     }
 
     public ObjectRule objectType(String name)
