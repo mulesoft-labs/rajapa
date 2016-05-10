@@ -47,8 +47,10 @@ traits:
     one:
         displayName: uno
         description: method description
+        usage: late night
     two:
         displayName: dos
+        description: <<text>>
 
 resourceTypes:
     first:
@@ -100,9 +102,11 @@ securedBy: [oauth_2_0, null]
 /top:
     description: top description
     type: first
-    is: [one, two]
+    is: ["one", {"two": {"text": "hola"}}]
     get:
         description: get something
+        protocols: HTTPS
+        securedBy: oauth_2_0
         queryParameters:
             one:
                 displayName: The One
@@ -113,6 +117,13 @@ securedBy: [oauth_2_0, null]
                 displayName: The Second
     post:
         description: post something
+        is:
+            two:
+                text: picky
+        queryString:
+            properties:
+                lat: number
+                long: number
         body: &bodyPost
             application/json:
                 type: User

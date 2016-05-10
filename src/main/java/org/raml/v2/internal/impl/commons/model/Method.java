@@ -24,17 +24,19 @@ import org.raml.v2.internal.impl.commons.nodes.ResourceNode;
 public class Method extends Operation
 {
 
-    private MethodNode node;
-
     public Method(MethodNode node)
     {
         super(node);
-        this.node = node;
+    }
+
+    protected MethodNode getMethodNode()
+    {
+        return (MethodNode) super.getNode().getParent();
     }
 
     public String method()
     {
-        return node.getName();
+        return getMethodNode().getName();
     }
 
     public List<TypeDeclaration> body()
@@ -47,9 +49,24 @@ public class Method extends Operation
         return getList("body", BodyLike.class);
     }
 
+    public List<String> protocols()
+    {
+        return getStringList("protocols");
+    }
+
+    public List<TraitRef> is()
+    {
+        return getListFromSeq("is", TraitRef.class);
+    }
+
+    public List<SecuritySchemeRef> securedBy()
+    {
+        return getListFromSeq("securedBy", SecuritySchemeRef.class);
+    }
+
     public Resource resource()
     {
-        Node parent = node.getParent();
+        Node parent = getMethodNode().getParent();
         if (parent != null)
         {
             if (parent.getParent() instanceof ResourceNode)

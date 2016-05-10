@@ -51,6 +51,11 @@ public class SecuritySchemeSettings extends BaseModelElement
         return getStringTypeValue("tokenCredentialsUri");
     }
 
+    public List<String> signatures()
+    {
+        return getStringList("signatures");
+    }
+
     public StringType accessTokenUri()
     {
         return getStringTypeValue("accessTokenUri");
@@ -64,10 +69,5 @@ public class SecuritySchemeSettings extends BaseModelElement
     public List<String> scopes()
     {
         return getStringList("scopes");
-    }
-
-    public List<String> signatures()
-    {
-        return getStringList("signatures");
     }
 }

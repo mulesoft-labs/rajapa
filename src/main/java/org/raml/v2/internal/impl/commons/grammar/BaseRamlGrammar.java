@@ -432,7 +432,8 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule securedByField()
     {
-        return field(securedByKey(), array(anyOf(nullValue(), scalarType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class)), any())));
+        AnyOfRule securedBy = anyOf(nullValue(), scalarType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class)), any());
+        return field(securedByKey(), anyOf(array(securedBy), securedBy));
     }
 
     protected KeyValueRule usageField()
@@ -442,7 +443,8 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule isField()
     {
-        return field(isKey(), array(anyTypeReference(TRAITS_KEY_NAME, TraitRefNode.class, ParametrizedTraitRefNode.class)));
+        Rule traitRef = anyTypeReference(TRAITS_KEY_NAME, TraitRefNode.class, ParametrizedTraitRefNode.class);
+        return field(isKey(), anyOf(traitRef, array(traitRef)));
     }
 
     protected KeyValueRule resourceTypeReferenceField()
@@ -595,7 +597,8 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected Rule protocols()
     {
-        return array(anyOf(string("HTTP"), string("HTTPS")));
+        AnyOfRule protocols = anyOf(string("HTTP"), string("HTTPS"));
+        return anyOf(protocols, array(protocols));
     }
 
     protected Rule responseCodes()

@@ -19,8 +19,10 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.raml.v2.internal.impl.commons.model.builder.ModelUtils;
+import org.raml.v2.internal.framework.nodes.ArrayNode;
 import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.SimpleTypeNode;
+import org.raml.v2.internal.impl.commons.model.builder.ModelUtils;
 import org.raml.v2.internal.utils.NodeSelector;
 
 public abstract class BaseModelElement
@@ -44,12 +46,46 @@ public abstract class BaseModelElement
         Node node = NodeSelector.selectFrom(key, getNode());
         if (node != null)
         {
-            for (Node child : node.getChildren())
+            if (node instanceof SimpleTypeNode)
             {
-                result.add(String.valueOf(child));
+                // case when using syntactic sugar for single element
+                // that does not require to be in a sequence
+                result.add(((SimpleTypeNode) node).getLiteralValue());
+            }
+            else
+            {
+                for (Node child : node.getChildren())
+                {
+                    result.add(String.valueOf(child));
+                }
             }
         }
         return result;
+    }
+
+    protected <T> List<T> getListFromSeq(String key, Class<T> clazz)
+    {
+        ArrayList<T> resultList = new ArrayList<>();
+        Node parent = NodeSelector.selectFrom(key, getNode());
+        if (parent != null)
+        {
+            if (parent instanceof ArrayNode)
+            {
+                return getList(key, clazz);
+            }
+            try
+            {
+                // case when using syntactic sugar for single element
+                // that does not require to be in a sequence
+                Constructor<T> constructor = clazz.getConstructor(Node.class);
+                resultList.add(constructor.newInstance(parent));
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        return resultList;
     }
 
     protected <T> List<T> getList(String key, Class<T> clazz)
@@ -58,18 +94,7 @@ public abstract class BaseModelElement
         Node parent = NodeSelector.selectFrom(key, getNode());
         if (parent != null)
         {
-            List<Node> nodes = new ArrayList<>();
-            if (parent.getChildren().isEmpty())
-            {
-                // case when using syntactic sugar for single element
-                // that does not require to be in a sequence
-                nodes.add(parent);
-            }
-            else
-            {
-                nodes = parent.getChildren();
-            }
-            for (Node child : nodes)
+            for (Node child : parent.getChildren())
             {
                 try
                 {
@@ -83,6 +108,24 @@ public abstract class BaseModelElement
             }
         }
         return resultList;
+    }
+
+    protected <T> T getObject(String key, Class<T> clazz)
+    {
+        Node settings = NodeSelector.selectFrom(key, getNode());
+        if (settings != null)
+        {
+            try
+            {
+                Constructor<T> constructor = clazz.getConstructor(Node.class);
+                return constructor.newInstance(settings.getParent());
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        return null;
     }
 
 }

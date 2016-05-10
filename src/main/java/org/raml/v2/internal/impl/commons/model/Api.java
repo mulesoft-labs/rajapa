@@ -55,7 +55,7 @@ public class Api extends LibraryBase
 
     public List<StringType> mediaType()
     {
-        return getList("mediaType", StringType.class);
+        return getListFromSeq("mediaType", StringType.class);
     }
 
     public List<DocumentationItem> documentation()

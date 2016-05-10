@@ -16,16 +16,16 @@
 package org.raml.v2.internal.impl.commons.model;
 
 import org.raml.v2.internal.framework.nodes.Node;
-import org.raml.v2.internal.impl.commons.nodes.ResourceTypeRefNode;
+import org.raml.v2.internal.impl.commons.nodes.BaseResourceTypeRefNode;
 
 public class ResourceTypeRef
 {
 
-    private ResourceTypeRefNode node;
+    private BaseResourceTypeRefNode node;
 
     public ResourceTypeRef(Node node)
     {
-        this.node = (ResourceTypeRefNode) node;
+        this.node = (BaseResourceTypeRefNode) node;
     }
 
     public String name()

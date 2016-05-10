@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableSet;
 import java.util.Set;
 
 import org.raml.v2.internal.framework.nodes.ArrayNode;
+import org.raml.v2.internal.framework.nodes.ErrorNode;
 import org.raml.v2.internal.framework.nodes.KeyValueNode;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.nodes.NullNode;
@@ -51,7 +52,7 @@ public class ResourceTypesTraitsMerger
         {
             merge((ArrayNode) baseNode, (ArrayNode) copyNode);
         }
-        else if (baseNode instanceof NullNode)
+        else if ((baseNode instanceof NullNode) || (copyNode instanceof ErrorNode))
         {
             baseNode.replaceWith(copyNode);
         }
@@ -74,6 +75,13 @@ public class ResourceTypesTraitsMerger
     {
         for (Node child : copyNode.getChildren())
         {
+            if (child instanceof ErrorNode)
+            {
+                logger.debug("Adding ErrorNode");
+                baseNode.addChild(child);
+                continue;
+
+            }
             if (!(child instanceof KeyValueNode))
             {
                 throw new RuntimeException("only expecting KeyValueNode");

@@ -42,4 +42,9 @@ public class Trait extends CommonAttributes
     {
         return node.getName();
     }
+
+    public String usage()
+    {
+        return getStringValue("usage");
+    }
 }

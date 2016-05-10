@@ -16,15 +16,15 @@
 package org.raml.v2.internal.impl.commons.model;
 
 import org.raml.v2.internal.framework.nodes.Node;
-import org.raml.v2.internal.impl.commons.nodes.TraitRefNode;
+import org.raml.v2.internal.impl.commons.nodes.BaseTraitRefNode;
 
 public class TraitRef
 {
-    private TraitRefNode node;
+    private BaseTraitRefNode node;
 
     public TraitRef(Node node)
     {
-        this.node = (TraitRefNode) node;
+        this.node = (BaseTraitRefNode) node;
     }
 
     public Trait trait()

@@ -51,6 +51,11 @@ public class Operation extends CommonAttributes
         return getList("headers", TypeDeclaration.class);
     }
 
+    public TypeDeclaration queryString()
+    {
+        return getObject("queryString", TypeDeclaration.class);
+    }
+
     // TODO
     // public List<Parameter> queryParametersV08();
     // public List<Parameter> headersV08();

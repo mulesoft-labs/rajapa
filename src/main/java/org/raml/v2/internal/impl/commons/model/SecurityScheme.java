@@ -17,7 +17,6 @@ package org.raml.v2.internal.impl.commons.model;
 
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.impl.commons.nodes.SecuritySchemeNode;
-import org.raml.v2.internal.utils.NodeSelector;
 
 public class SecurityScheme extends CommonAttributes
 {
@@ -47,22 +46,12 @@ public class SecurityScheme extends CommonAttributes
 
     public Operation describedBy()
     {
-        // TODO create/use helper method
-        Node describedBy = NodeSelector.selectFrom("describedBy", getNode());
-        if (describedBy != null)
-        {
-            return new Operation(describedBy.getParent());
-        }
-        return null;
+        return getObject("describedBy", Operation.class);
     }
 
     public SecuritySchemeSettings settings()
     {
-        Node settings = NodeSelector.selectFrom("settings", getNode());
-        if (settings != null)
-        {
-            return new SecuritySchemeSettings(settings.getParent());
-        }
-        return null;
+        return getObject("settings", SecuritySchemeSettings.class);
     }
+
 }

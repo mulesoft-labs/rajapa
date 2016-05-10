@@ -237,10 +237,19 @@ public class ResourceTypesTraitsTransformer implements Transformer
         Node isNode = NodeSelector.selectFrom("is", keyValueNode.getValue());
         if (isNode != null)
         {
-            List<Node> children = isNode.getChildren();
-            for (Node child : children)
+            if (isNode instanceof ReferenceNode)
             {
-                result.add((ReferenceNode) child);
+                // case when using syntactic sugar for single element
+                // that does not require to be in a sequence
+                result.add((ReferenceNode) isNode);
+            }
+            else
+            {
+                List<Node> children = isNode.getChildren();
+                for (Node child : children)
+                {
+                    result.add((ReferenceNode) child);
+                }
             }
         }
         return result;

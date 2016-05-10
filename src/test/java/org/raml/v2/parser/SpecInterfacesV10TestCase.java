@@ -175,6 +175,7 @@ public class SpecInterfacesV10TestCase
         assertThat(traits.size(), is(2));
         assertThat(traits.get(0).displayName(), is("uno"));
         assertThat(traits.get(0).description().value(), is("method description"));
+        assertThat(traits.get(0).usage(), is("late night"));
     }
 
     private void assertResourceTypes(List<ResourceType> resourceTypes)
@@ -221,10 +222,14 @@ public class SpecInterfacesV10TestCase
     {
         assertThat(methods.size(), is(2));
         Method get = methods.get(0);
-        assertThat(get.description().value(), is("get something"));
-        assertThat(get.displayName(), is("get"));
         assertThat(get.method(), is("get"));
         assertThat(get.resource().relativeUri().value(), is("/top"));
+        assertThat(get.description().value(), is("get something"));
+        assertThat(get.displayName(), is("get"));
+        assertThat(get.protocols().size(), is(1));
+        assertThat(get.protocols().get(0), is("HTTPS"));
+        assertThat(get.securedBy().size(), is(1));
+        assertThat(get.securedBy().get(0).name(), is("oauth_2_0"));
         assertQueryParameters(get.queryParameters());
         assertHeaders(get.headers());
 
@@ -232,6 +237,9 @@ public class SpecInterfacesV10TestCase
         assertThat(post.method(), is("post"));
         assertBody(post.body());
         assertResponses(post.responses());
+        assertThat(post.is().size(), is(1));
+        assertThat(post.is().get(0).name(), is("two"));
+        assertThat(post.queryString().type().get(0), is("object"));
     }
 
     private void assertQueryParameters(List<TypeDeclaration> queryParameters)
