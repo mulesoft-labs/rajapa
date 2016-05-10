@@ -1,7 +1,7 @@
 RamlDocumentNode (Start: 11 , End: 239, Source: SYObjectNode)
     KeyValueNodeImpl (Start: 11 , End: 52)
         SYStringNode: "title" (Start: 11 , End: 16)
-        SYStringNode: "Álainn Cosmetics Mobile Orders API" (Start: 18 , End: 52)
+        SYStringNode: "Alainn Cosmetics Mobile Orders API" (Start: 18 , End: 52)
     KeyValueNodeImpl (Start: 53 , End: 63)
         SYStringNode: "version" (Start: 53 , End: 60)
         StringNodeImpl: "1" (Start: 62 , End: 63, Source: SYIntegerNode)
