@@ -33,7 +33,7 @@ public class SecuritySchemeRef extends BaseModelElement
     }
 
     @Override
-    protected Node getNode()
+    protected SecuritySchemeRefNode getNode()
     {
         return node;
     }
@@ -55,5 +55,11 @@ public class SecuritySchemeRef extends BaseModelElement
         }
         return new SecurityScheme(node.getRefNode());
     }
+
+    public TypeInstance structuredValue()
+    {
+        return new TypeInstance(getNode().getParametersNode());
+    }
+
 
 }

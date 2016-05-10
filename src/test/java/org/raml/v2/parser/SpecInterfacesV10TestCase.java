@@ -35,6 +35,9 @@ import org.raml.v2.api.model.v10.api.DocumentationItem;
 import org.raml.v2.api.model.v10.bodies.Response;
 import org.raml.v2.api.model.v10.datamodel.ExampleSpec;
 import org.raml.v2.api.model.v10.datamodel.TypeDeclaration;
+import org.raml.v2.api.model.v10.datamodel.TypeInstance;
+import org.raml.v2.api.model.v10.datamodel.TypeInstanceProperty;
+import org.raml.v2.api.model.v10.declarations.AnnotationRef;
 import org.raml.v2.api.model.v10.methods.Method;
 import org.raml.v2.api.model.v10.methods.Trait;
 import org.raml.v2.api.model.v10.methods.TraitRef;
@@ -63,9 +66,12 @@ public class SpecInterfacesV10TestCase
 
     private void assertAnnotationTypes(List<TypeDeclaration> annotationTypes)
     {
-        assertThat(annotationTypes.size(), is(1));
-        TypeDeclaration hipermedia = annotationTypes.get(0);
-        assertThat(hipermedia.name(), is("hypermedia"));
+        assertThat(annotationTypes.size(), is(2));
+        TypeDeclaration basic = annotationTypes.get(0);
+        assertThat(basic.name(), is("basic"));
+        assertThat(basic.type().get(0), is("string"));
+        TypeDeclaration hipermedia = annotationTypes.get(1);
+        assertThat(hipermedia.name(), is("complex"));
     }
 
     private void assertApi(Api api)
@@ -91,6 +97,41 @@ public class SpecInterfacesV10TestCase
         assertResourceTypes(api.resourceTypes());
         assertAnnotationTypes(api.annotationTypes());
         assertSecuritySchemes(api.securitySchemes());
+        assertAnnotations(api.annotations());
+    }
+
+    private void assertAnnotations(List<AnnotationRef> annotations)
+    {
+        assertThat(annotations.size(), is(2));
+
+        AnnotationRef basic = annotations.get(0);
+        assertThat(basic.name(), is("(basic)"));
+        assertThat(basic.annotation().name(), is("basic"));
+        TypeInstance basicValue = basic.structuredValue();
+        assertTrue(basicValue.isScalar());
+        assertThat(basicValue.value().toString(), is("sometimes"));
+        assertThat(basic.annotation().type().get(0), is("string"));
+
+        TypeInstance complexValue = annotations.get(1).structuredValue();
+        assertThat(complexValue.properties().size(), is(2));
+        assertThat(complexValue.properties().get(0).name(), is("controls"));
+        assertThat(complexValue.properties().get(1).name(), is("permanentUri"));
+        assertThat(complexValue.properties().get(1).value().isScalar(), is(true));
+        assertThat(complexValue.properties().get(1).value().value().toString(), is("false"));
+        List<TypeInstanceProperty> controlProps = complexValue.properties().get(0).value().properties();
+        assertThat(controlProps.size(), is(3));
+        assertThat(controlProps.get(0).name(), is("url"));
+        assertThat(controlProps.get(0).value().isScalar(), is(true));
+        assertThat(controlProps.get(0).value().value().toString(), is("here"));
+        assertThat(controlProps.get(1).name(), is("property"));
+        assertThat(controlProps.get(1).value().isScalar(), is(true));
+        assertThat(controlProps.get(1).value().value().toString(), is("off"));
+        assertThat(controlProps.get(2).name(), is("names"));
+        assertThat(controlProps.get(2).isArray(), is(true));
+        assertThat(controlProps.get(2).values().size(), is(2));
+        assertThat(controlProps.get(2).values().get(0).isScalar(), is(true));
+        assertThat(controlProps.get(2).values().get(0).value().toString(), is("one"));
+
     }
 
     private void assertSecuritySchemes(List<AbstractSecurityScheme> securitySchemes)
@@ -216,6 +257,14 @@ public class SpecInterfacesV10TestCase
         assertThat(traitRefs.size(), is(2));
         assertThat(traitRefs.get(0).name(), is("one"));
         assertThat(traitRefs.get(0).trait().description().value(), is("method description"));
+
+        assertThat(traitRefs.get(1).name(), is("two"));
+        TypeInstance param = traitRefs.get(1).structuredValue();
+        assertThat(param.properties().size(), is(1));
+        assertThat(param.properties().get(0).name(), is("text"));
+        assertThat(param.properties().get(0).value().isScalar(), is(true));
+        assertThat(param.properties().get(0).value().value().toString(), is("hola"));
+
     }
 
     private void assertMethods(List<Method> methods)

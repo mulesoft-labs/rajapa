@@ -15,8 +15,6 @@
  */
 package org.raml.v2.internal.impl.commons.nodes;
 
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 
 import org.raml.v2.internal.framework.nodes.Node;
@@ -41,12 +39,6 @@ public class ParametrizedResourceTypeRefNode extends BaseResourceTypeRefNode imp
     public Node copy()
     {
         return new ParametrizedResourceTypeRefNode(this);
-    }
-
-    @Override
-    public Map<String, String> getParameters()
-    {
-        return getParameters(this);
     }
 
 }

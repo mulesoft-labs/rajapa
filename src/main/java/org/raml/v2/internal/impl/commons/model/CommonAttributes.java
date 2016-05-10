@@ -15,7 +15,7 @@
  */
 package org.raml.v2.internal.impl.commons.model;
 
-public abstract class CommonAttributes extends BaseModelElement
+public abstract class CommonAttributes extends Annotable
 {
 
     public String displayName()

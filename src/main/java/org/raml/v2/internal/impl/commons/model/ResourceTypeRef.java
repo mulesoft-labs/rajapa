@@ -16,25 +16,22 @@
 package org.raml.v2.internal.impl.commons.model;
 
 import org.raml.v2.internal.framework.nodes.Node;
-import org.raml.v2.internal.impl.commons.nodes.BaseResourceTypeRefNode;
 
-public class ResourceTypeRef
+public class ResourceTypeRef extends Reference
 {
-
-    private BaseResourceTypeRefNode node;
 
     public ResourceTypeRef(Node node)
     {
-        this.node = (BaseResourceTypeRefNode) node;
+        super(node);
     }
 
     public String name()
     {
-        return node.getRefName();
+        return getNode().getRefName();
     }
 
     public ResourceType resourceType()
     {
-        return new ResourceType(node.getRefNode());
+        return new ResourceType(getNode().getRefNode());
     }
 }

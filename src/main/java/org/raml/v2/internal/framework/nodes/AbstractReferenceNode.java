@@ -52,33 +52,34 @@ public abstract class AbstractReferenceNode extends AbstractRamlNode implements 
         return NodeType.Reference;
     }
 
-    public static Map<String, String> getParameters(ParametrizedReferenceNode refNode)
+    public Map<String, String> getParameters()
     {
         Map<String, String> params = new HashMap<>();
 
-        for (Node node : getParamNodes(refNode))
+        Node parametersNode = getParametersNode();
+        if (parametersNode != null)
         {
-            KeyValueNode keyValueNode = (KeyValueNode) node;
-            params.put(keyValueNode.getKey().toString(), keyValueNode.getValue().toString());
+            for (Node node : parametersNode.getChildren())
+            {
+                KeyValueNode keyValueNode = (KeyValueNode) node;
+                params.put(keyValueNode.getKey().toString(), keyValueNode.getValue().toString());
+            }
         }
         return params;
     }
 
-    private static List<Node> getParamNodes(Node refNode)
+    public Node getParametersNode()
     {
-        List<Node> children = refNode.getChildren();
+        List<Node> children = getChildren();
         if (children.size() == 1)
         {
-            return ((KeyValueNode) children.get(0)).getValue().getChildren();
+            return ((KeyValueNode) children.get(0)).getValue();
         }
         if (children.size() == 2 && children.get(0) instanceof LibraryRefNode)
         {
-            return ((KeyValueNode) children.get(1)).getValue().getChildren();
+            return ((KeyValueNode) children.get(1)).getValue();
         }
-        if (children.size() == 0)
-        {
-            throw new IllegalStateException("Parameterized reference node has no children");
-        }
-        throw new IllegalStateException("Parameterized reference node has invalid children types");
+        return null;
     }
+
 }

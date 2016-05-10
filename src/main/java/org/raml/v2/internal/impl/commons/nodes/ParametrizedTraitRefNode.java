@@ -15,8 +15,6 @@
  */
 package org.raml.v2.internal.impl.commons.nodes;
 
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 
 import org.raml.v2.internal.framework.nodes.Node;
@@ -43,9 +41,4 @@ public class ParametrizedTraitRefNode extends BaseTraitRefNode implements Parame
         return new ParametrizedTraitRefNode(this);
     }
 
-    @Override
-    public Map<String, String> getParameters()
-    {
-        return getParameters(this);
-    }
 }

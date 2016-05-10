@@ -24,7 +24,6 @@ public interface Reference
     /**
      * Returns a structured object if the reference point to one.
      **/
-    // TODO check if useful
     TypeInstance structuredValue();
 
 

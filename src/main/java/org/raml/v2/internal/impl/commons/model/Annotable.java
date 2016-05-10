@@ -15,28 +15,25 @@
  */
 package org.raml.v2.internal.impl.commons.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.impl.commons.nodes.AnnotationNode;
 
-public class TraitRef extends Reference
+public abstract class Annotable extends BaseModelElement
 {
-    public TraitRef(Node node)
-    {
-        super(node);
-    }
 
-    public Trait trait()
+    public List<AnnotationRef> annotations()
     {
-        return new Trait(getNode().getRefNode());
+        List<AnnotationRef> result = new ArrayList<>();
+        for (Node child : getNode().getChildren())
+        {
+            if (child instanceof AnnotationNode)
+            {
+                result.add(new AnnotationRef(child));
+            }
+        }
+        return result;
     }
-
-    public String name()
-    {
-        return getNode().getRefName();
-    }
-
-    public TypeInstance structuredValue()
-    {
-        return new TypeInstance(getNode().getParametersNode());
-    }
-
 }

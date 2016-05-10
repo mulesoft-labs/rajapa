@@ -15,28 +15,27 @@
  */
 package org.raml.v2.internal.impl.commons.model;
 
+import org.raml.v2.internal.framework.nodes.AbstractReferenceNode;
 import org.raml.v2.internal.framework.nodes.Node;
 
-public class TraitRef extends Reference
+public class Reference
 {
-    public TraitRef(Node node)
+
+    private AbstractReferenceNode node;
+
+    public Reference(Node node)
     {
-        super(node);
+        this.node = (AbstractReferenceNode) node;
     }
 
-    public Trait trait()
+    protected AbstractReferenceNode getNode()
     {
-        return new Trait(getNode().getRefNode());
-    }
-
-    public String name()
-    {
-        return getNode().getRefName();
+        return node;
     }
 
     public TypeInstance structuredValue()
     {
-        return new TypeInstance(getNode().getParametersNode());
+        return new TypeInstance(node.getParametersNode());
     }
 
 }

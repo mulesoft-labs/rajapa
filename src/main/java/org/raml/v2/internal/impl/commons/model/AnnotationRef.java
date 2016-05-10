@@ -16,27 +16,30 @@
 package org.raml.v2.internal.impl.commons.model;
 
 import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.impl.commons.nodes.AnnotationNode;
 
-public class TraitRef extends Reference
+public class AnnotationRef
 {
-    public TraitRef(Node node)
+
+    private AnnotationNode node;
+
+    public AnnotationRef(Node node)
     {
-        super(node);
+        this.node = (AnnotationNode) node;
     }
 
-    public Trait trait()
+    public TypeDeclaration annotation()
     {
-        return new Trait(getNode().getRefNode());
+        return new TypeDeclaration(node.getAnnotationTypeNode());
     }
 
     public String name()
     {
-        return getNode().getRefName();
+        return node.getKey().getValue();
     }
 
     public TypeInstance structuredValue()
     {
-        return new TypeInstance(getNode().getParametersNode());
+        return new TypeInstance(node.getValue());
     }
-
 }

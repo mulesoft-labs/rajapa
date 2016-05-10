@@ -15,59 +15,54 @@
  */
 package org.raml.v2.internal.impl.commons.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.raml.v2.internal.framework.nodes.ArrayNode;
 import org.raml.v2.internal.framework.nodes.KeyValueNode;
 import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.SimpleTypeNode;
 
-public class SecuritySchemeSettings extends Annotable
+public class TypeInstanceProperty
 {
 
     private KeyValueNode node;
 
-    public SecuritySchemeSettings(Node node)
+    public TypeInstanceProperty(Node node)
     {
         this.node = (KeyValueNode) node;
     }
 
-    @Override
-    protected Node getNode()
+    public String name()
     {
-        return node.getValue();
+        return ((SimpleTypeNode) node.getKey()).getLiteralValue();
     }
 
-    public StringType requestTokenUri()
+    public TypeInstance value()
     {
-        return getStringTypeValue("requestTokenUri");
+        if (!isArray())
+        {
+            return new TypeInstance(node.getValue());
+        }
+        return null;
     }
 
-    public StringType authorizationUri()
+    public List<TypeInstance> values()
     {
-        return getStringTypeValue("authorizationUri");
+        List<TypeInstance> result = null;
+        if (isArray())
+        {
+            result = new ArrayList<>();
+            for (Node child : node.getValue().getChildren())
+            {
+                result.add(new TypeInstance(child));
+            }
+        }
+        return result;
     }
 
-    public StringType tokenCredentialsUri()
+    public Boolean isArray()
     {
-        return getStringTypeValue("tokenCredentialsUri");
-    }
-
-    public List<String> signatures()
-    {
-        return getStringList("signatures");
-    }
-
-    public StringType accessTokenUri()
-    {
-        return getStringTypeValue("accessTokenUri");
-    }
-
-    public List<String> authorizationGrants()
-    {
-        return getStringList("authorizationGrants");
-    }
-
-    public List<String> scopes()
-    {
-        return getStringList("scopes");
+        return node.getValue() instanceof ArrayNode;
     }
 }

@@ -19,7 +19,7 @@ import org.raml.v2.internal.framework.nodes.KeyValueNode;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNode;
 
-public class ExampleSpec
+public class ExampleSpec extends Annotable
 {
 
     private KeyValueNode node;
@@ -31,11 +31,17 @@ public class ExampleSpec
 
     public String value()
     {
-        return node.getValue() != null ? node.getValue().toString() : null;
+        return getNode() != null ? getNode().toString() : null;
     }
 
     public String name()
     {
         return (node.getParent() instanceof TypeNode) ? null : String.valueOf(node.getKey());
+    }
+
+    @Override
+    protected Node getNode()
+    {
+        return node.getValue();
     }
 }

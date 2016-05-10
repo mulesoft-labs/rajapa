@@ -21,20 +21,6 @@ documentation:
            multi
            line
 
-annotationTypes:
-  hypermedia:
-    allowedTargets: [ API, Resource ]
-    properties:
-      controls:
-        description: where is hypermedia
-        properties:
-          url?:
-            default: href
-          property:
-      permanentUri?:
-        type: boolean
-        default: true
-
 types:
     User:
         type: object
@@ -98,6 +84,33 @@ securitySchemes:
       tokenCredentialsUri: https://api.dropbox.com/1/oauth/access_token
 
 securedBy: [oauth_2_0, null]
+
+annotationTypes:
+  basic:
+    type: string
+  complex:
+    allowedTargets: [ API, Resource ]
+    properties:
+      controls:
+        description: where is hypermedia
+        properties:
+          url?:
+            default: href
+          property:
+          names:
+            type: string[]
+      permanentUri?:
+        type: boolean
+        default: true
+
+(basic): sometimes
+
+(complex):
+    controls:
+        url: here
+        property: off
+        names: [one, two]
+    permanentUri: false
 
 /top:
     description: top description

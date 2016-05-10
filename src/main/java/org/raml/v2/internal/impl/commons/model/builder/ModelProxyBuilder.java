@@ -60,7 +60,7 @@ public class ModelProxyBuilder
             Type genericReturnType = method.getGenericReturnType();
             Method delegateMethod = findMatchingMethod(method);
 
-            if (isPrimitiveOrWrapperOrString(returnType))
+            if (isPrimitiveOrWrapperOrString(returnType) || isObject(returnType))
             {
                 return delegateMethod.invoke(delegate, args);
             }
@@ -106,6 +106,11 @@ public class ModelProxyBuilder
             }
 
             throw new RuntimeException("case not handled yet... " + returnType.getName());
+        }
+
+        private boolean isObject(Class<?> type)
+        {
+            return "java.lang.Object".equals(type.getName());
         }
 
         private Method findMatchingMethod(Method method)
