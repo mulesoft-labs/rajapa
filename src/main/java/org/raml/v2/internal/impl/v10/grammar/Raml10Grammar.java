@@ -34,6 +34,7 @@ import org.raml.v2.internal.impl.commons.nodes.ExampleTypeNode;
 import org.raml.v2.internal.impl.commons.nodes.ExtendsNode;
 import org.raml.v2.internal.impl.commons.nodes.MultipleExampleTypeNode;
 import org.raml.v2.internal.impl.commons.nodes.PropertyNode;
+import org.raml.v2.internal.impl.v10.nodes.LibraryNode;
 import org.raml.v2.internal.impl.v10.nodes.types.factories.TypeNodeFactory;
 import org.raml.v2.internal.framework.nodes.StringNodeImpl;
 
@@ -136,7 +137,9 @@ public class Raml10Grammar extends BaseRamlGrammar
     // Library
     public Rule library()
     {
-        return objectType("library").with(field(scalarType(), libraryValue()));
+        return objectType("library").with(
+                field(scalarType(), libraryValue()).then(LibraryNode.class)
+                                    );
     }
 
     public Rule libraryValue()
@@ -194,9 +197,7 @@ public class Raml10Grammar extends BaseRamlGrammar
         // TODO schema example examples missing
         // TODO missing descriptions
 
-        return anyOf("type", stringType().then(new TypesFactory()), explicitType()
-
-        );
+        return anyOf("type", stringType().then(new TypesFactory()), explicitType());
     }
 
     private ObjectRule explicitType()
