@@ -34,9 +34,8 @@ Validation of XML examples against types defined in YAML are not supported. XML 
 
 ## Parser API navigation gaps
 
-Though the parser may support and validate certain features, there's no way to fully navigate them through the API at the moment:
+The features in the following list cannot be fully navigated through the API at the moment:
 
-- Libraries
 - Resource Types
 - Traits
 - Types
