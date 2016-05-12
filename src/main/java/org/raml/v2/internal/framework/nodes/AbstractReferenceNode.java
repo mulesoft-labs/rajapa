@@ -21,10 +21,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.raml.v2.internal.impl.v10.nodes.LibraryRefNode;
 
 public abstract class AbstractReferenceNode extends AbstractRamlNode implements ReferenceNode
 {
+
+    private Node refNode;
 
     public AbstractReferenceNode()
     {
@@ -34,6 +38,21 @@ public abstract class AbstractReferenceNode extends AbstractRamlNode implements 
     {
         super(node);
     }
+
+    @Nullable
+    @Override
+    public final Node getRefNode()
+    {
+        if (refNode == null)
+        {
+            refNode = resolveReference();
+        }
+        return refNode;
+    }
+
+    @Nullable
+    public abstract Node resolveReference();
+
 
     public Node getRelativeNode()
     {
