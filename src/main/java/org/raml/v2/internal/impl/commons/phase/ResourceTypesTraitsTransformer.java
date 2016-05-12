@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.raml.v2.internal.framework.grammar.rule.ErrorNodeFactory;
 import org.raml.v2.internal.framework.nodes.ErrorNode;
+import org.raml.v2.internal.framework.phase.Phase;
 import org.raml.v2.internal.framework.phase.TransformationPhase;
 import org.raml.v2.internal.impl.commons.grammar.BaseRamlGrammar;
 import org.raml.v2.internal.impl.commons.nodes.BaseResourceTypeRefNode;
@@ -158,11 +159,13 @@ public class ResourceTypesTraitsTransformer implements Transformer
 
         // apply grammar phase to generate method nodes
         GrammarPhase validatePhase = new GrammarPhase(ramlGrammar.resourceTypeParamsResolved());
-        validatePhase.apply(templateNode.getValue());
-
         // resolve references
         TransformationPhase referenceResolution = new TransformationPhase(new ReferenceResolverTransformer());
-        referenceResolution.apply(templateNode.getValue());
+        // resolves types
+        TransformationPhase typeResolution = new TransformationPhase(new TypesTransformer(""));
+
+        applyPhases(templateNode, validatePhase, referenceResolution, typeResolution);
+
 
         // apply traits
         checkTraits(templateNode, baseResourceNode);
@@ -175,6 +178,20 @@ public class ResourceTypesTraitsTransformer implements Transformer
         }
 
         merge(targetNode.getValue(), templateNode.getValue());
+    }
+
+    private void applyPhases(KeyValueNode templateNode, Phase... phases)
+    {
+        for (Phase phase : phases)
+        {
+            phase.apply(templateNode.getValue());
+            List<ErrorNode> errorNodes = templateNode.findDescendantsWith(ErrorNode.class);
+            if (!errorNodes.isEmpty())
+            {
+                return;
+            }
+        }
+
     }
 
     private Map<String, String> getBuiltinResourceTypeParameters(ResourceNode resourceNode)

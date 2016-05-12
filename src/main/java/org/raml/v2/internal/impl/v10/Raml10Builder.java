@@ -139,8 +139,9 @@ public class Raml10Builder
         final TransformationPhase referenceCheck = new TransformationPhase(new ReferenceResolverTransformer());
 
         // Applies resourceTypes and Traits Library
-        final TransformationPhase third = new TransformationPhase(new ResourceTypesTraitsTransformer(raml10Grammar),
-                new TypesTransformer(resourceLocation));
+        final TransformationPhase third = new TransformationPhase(new ResourceTypesTraitsTransformer(raml10Grammar));
+
+        final Phase typesTransformation = new TransformationPhase(new TypesTransformer(resourceLocation));
 
         // Run grammar again to re-validate tree
         final Phase thirdAndAHalf = second;
@@ -155,7 +156,7 @@ public class Raml10Builder
 
         final ExampleValidationPhase seventh = new ExampleValidationPhase(resourceLoader);
 
-        return Arrays.asList(first, sugar, second, referenceCheck, third, thirdAndAHalf, fourth, fifth, sixth, seventh);
+        return Arrays.asList(first, sugar, second, referenceCheck, third, typesTransformation, thirdAndAHalf, fourth, fifth, sixth, seventh);
 
     }
 }
