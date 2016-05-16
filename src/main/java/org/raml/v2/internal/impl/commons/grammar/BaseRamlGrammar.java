@@ -108,7 +108,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
         return field(mediaTypeKey(), scalarType());
     }
 
-    public Rule resourceType()
+    public ObjectRule resourceType()
     {
         // TODO fine grained matching supporting parameters
         return objectType()
@@ -145,7 +145,7 @@ public abstract class BaseRamlGrammar extends BaseGrammar
         return array(documentation());
     }
 
-    public Rule documentation()
+    public ObjectRule documentation()
     {
         return objectType()
                            .with(titleField().description("Title of documentation section."))
@@ -214,11 +214,10 @@ public abstract class BaseRamlGrammar extends BaseGrammar
     // Traits
     protected abstract Rule traitsValue();
 
-    public Rule trait()
+    public ObjectRule trait()
     {
         return objectType("trait")
-                                  .with(field(scalarType(), any())
-                                                                  .then(TraitNode.class));
+                                  .with(field(scalarType(), any()).then(TraitNode.class));
     }
 
     // Resource Types

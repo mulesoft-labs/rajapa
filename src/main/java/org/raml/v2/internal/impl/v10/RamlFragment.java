@@ -17,6 +17,7 @@ package org.raml.v2.internal.impl.v10;
 
 import org.apache.commons.lang.StringUtils;
 import org.raml.v2.internal.framework.grammar.rule.Rule;
+import org.raml.v2.internal.impl.commons.nodes.RamlFragmentNode;
 import org.raml.v2.internal.impl.v10.grammar.Raml10Grammar;
 
 import javax.annotation.Nullable;
@@ -28,7 +29,8 @@ public enum RamlFragment
         @Override
         public Rule getRule(Raml10Grammar grammar)
         {
-            return grammar.documentation();
+            return grammar.documentation()
+                          .with(grammar.usesField());
         }
     },
     DataType
@@ -36,7 +38,7 @@ public enum RamlFragment
         @Override
         public Rule getRule(Raml10Grammar grammar)
         {
-            return grammar.type();
+            return grammar.explicitType().with(grammar.usesField());
         }
     },
     NamedExample
@@ -52,7 +54,7 @@ public enum RamlFragment
         @Override
         public Rule getRule(Raml10Grammar grammar)
         {
-            return grammar.resourceType();
+            return grammar.resourceType().with(grammar.usesField()).then(RamlFragmentNode.class);
         }
     },
     Trait
@@ -60,7 +62,7 @@ public enum RamlFragment
         @Override
         public Rule getRule(Raml10Grammar grammar)
         {
-            return grammar.trait();
+            return grammar.trait().with(grammar.usesField()).then(RamlFragmentNode.class);
         }
     },
     AnnotationTypeDeclaration
@@ -68,7 +70,7 @@ public enum RamlFragment
         @Override
         public Rule getRule(Raml10Grammar grammar)
         {
-            return grammar.type();
+            return grammar.explicitType().with(grammar.usesField());
         }
     },
     Library
@@ -84,7 +86,7 @@ public enum RamlFragment
         @Override
         public Rule getRule(Raml10Grammar grammar)
         {
-            return grammar.extension(); // TODO overlay extra validations
+            return grammar.extension().with(grammar.usesField()); // TODO overlay extra validations
         }
     },
     Extension
@@ -92,7 +94,7 @@ public enum RamlFragment
         @Override
         public Rule getRule(Raml10Grammar grammar)
         {
-            return grammar.extension();
+            return grammar.extension().with(grammar.usesField());
         }
     },
     Default

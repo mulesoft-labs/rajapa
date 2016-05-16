@@ -26,6 +26,7 @@ import org.raml.v2.internal.framework.nodes.ErrorNode;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.nodes.ObjectNode;
 import org.raml.v2.internal.framework.nodes.StringNode;
+import org.raml.v2.internal.impl.commons.nodes.ContextProviderNode;
 import org.raml.v2.internal.impl.commons.nodes.RamlDocumentNode;
 import org.raml.v2.internal.impl.v10.nodes.LibraryNode;
 import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNode;
@@ -124,7 +125,7 @@ public class NodeUtils
             String navigationPath = typeName.substring(0, typeName.lastIndexOf("."));
             if (!navigationPath.contains("."))
             {
-                return resolution != null && resolution.get(navigationPath) != null && getTypes(resolution.get(navigationPath)) != null &&
+                return resolution.get(navigationPath) != null && getTypes(resolution.get(navigationPath)) != null &&
                        getTypes(resolution.get(navigationPath)).get(objectName) instanceof TypeNode ? (TypeNode) getTypes(resolution.get(navigationPath)).get(objectName) : null;
             }
             for (String path : navigationPath.split("."))
@@ -145,13 +146,13 @@ public class NodeUtils
 
     public static Node getContextNode(Node node)
     {
-        if (node instanceof LibraryNode)
-        {
-            return ((LibraryNode) node).getValue();
-        }
-        else if (node instanceof RamlDocumentNode || node.getParent() == null)
+        if (node.getParent() == null)
         {
             return node;
+        }
+        else if (node instanceof ContextProviderNode)
+        {
+            return ((ContextProviderNode) node).getContextNode();
         }
         else
         {
