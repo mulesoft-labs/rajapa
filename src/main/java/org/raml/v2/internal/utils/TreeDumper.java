@@ -54,6 +54,7 @@ public class TreeDumper
         dump.append(" (");
         dump.append("Start: ").append(node.getStartPosition().getIndex());
         dump.append(" , End: ").append(node.getEndPosition().getIndex());
+        dump.append(", On: ").append(node.getStartPosition().getResource());
         if (node.getSource() != null)
         {
             dump.append(", Source: ");

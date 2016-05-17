@@ -22,10 +22,12 @@ public class SYPosition extends AbstractPosition
 {
 
     private Mark mark;
+    private String resourcePath;
 
-    public SYPosition(Mark mark)
+    public SYPosition(Mark mark, String resourcePath)
     {
         this.mark = mark;
+        this.resourcePath = resourcePath;
     }
 
     @Override
@@ -49,8 +51,7 @@ public class SYPosition extends AbstractPosition
     @Override
     public String getResource()
     {
-        // TODO add the resource where this position belongs too
-        return null;
+        return resourcePath;
     }
 
 }
