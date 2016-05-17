@@ -15,12 +15,12 @@
  */
 package org.raml.v2.internal.impl.v10.nodes;
 
-import javax.annotation.Nonnull;
-
 import org.raml.v2.internal.framework.nodes.KeyValueNodeImpl;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.framework.nodes.StringNode;
 import org.raml.v2.internal.impl.commons.nodes.ContextProviderNode;
+
+import javax.annotation.Nonnull;
 
 public class LibraryNode extends KeyValueNodeImpl implements ContextProviderNode
 {
@@ -47,6 +47,7 @@ public class LibraryNode extends KeyValueNodeImpl implements ContextProviderNode
         return new LibraryNode(this);
     }
 
+    @Nonnull
     @Override
     public Node getContextNode()
     {

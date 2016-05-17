@@ -15,31 +15,40 @@
  */
 package org.raml.v2.internal.impl.commons.nodes;
 
-import org.raml.v2.internal.framework.nodes.*;
+import org.raml.v2.internal.framework.nodes.AbstractRamlNode;
+import org.raml.v2.internal.framework.nodes.Node;
+import org.raml.v2.internal.framework.nodes.NodeType;
+import org.raml.v2.internal.framework.nodes.ObjectNode;
+import org.raml.v2.internal.impl.v10.RamlFragment;
 import org.raml.v2.internal.impl.v10.grammar.Raml10Grammar;
 import org.raml.v2.internal.utils.NodeSelector;
 import org.raml.v2.internal.utils.NodeUtils;
 
 import javax.annotation.Nonnull;
 
-public class RamlFragmentNode extends AbstractRamlNode implements ObjectNode, ContextProviderNode, LibraryNodeProvider
+public class RamlTypedFragmentNode extends AbstractRamlNode implements ObjectNode, LibraryNodeProvider, ContextProviderNode
 {
+
+    private final RamlFragment fragment;
     private Node libraryNode;
 
-    public RamlFragmentNode()
+    public RamlTypedFragmentNode(RamlFragment fragment)
     {
+        this.fragment = fragment;
     }
 
-    public RamlFragmentNode(AbstractRamlNode node)
+    private RamlTypedFragmentNode(RamlTypedFragmentNode node, Node libraryNode)
     {
         super(node);
+        this.fragment = node.getFragment();
+        this.libraryNode = libraryNode;
     }
 
     @Nonnull
     @Override
     public Node copy()
     {
-        return new RamlFragmentNode(this);
+        return new RamlTypedFragmentNode(this, libraryNode);
     }
 
     @Override
@@ -48,6 +57,7 @@ public class RamlFragmentNode extends AbstractRamlNode implements ObjectNode, Co
         return NodeType.Object;
     }
 
+    @Nonnull
     @Override
     public Node getContextNode()
     {
@@ -60,15 +70,22 @@ public class RamlFragmentNode extends AbstractRamlNode implements ObjectNode, Co
         return libraryNode;
     }
 
-    public void resolveInternalLibraryNode()
+    public void resolveLibraryReference()
     {
         if (libraryNode == null)
         {
             libraryNode = NodeSelector.selectFrom(Raml10Grammar.USES_KEY_NAME, this);
             if (libraryNode != null)
             {
-                children.remove(libraryNode);
+                // The parent is the key value pair
+                final Node parent = libraryNode.getParent();
+                removeChild(parent);
             }
         }
+    }
+
+    public RamlFragment getFragment()
+    {
+        return fragment;
     }
 }

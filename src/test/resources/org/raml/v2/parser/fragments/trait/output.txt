@@ -1,4 +1,4 @@
-RamlFragmentNode (Start: 18 , End: 222, Source: SYObjectNode)
+SYObjectNode (Start: 18 , End: 222)
     TraitNode (Start: 18 , End: 74, Source: KeyValueNodeImpl)
         SYStringNode: "usage" (Start: 18 , End: 23)
         SYStringNode: "Apply this to any method that needs to be secured" (Start: 25 , End: 74)

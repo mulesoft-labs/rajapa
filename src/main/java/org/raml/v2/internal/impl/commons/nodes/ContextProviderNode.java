@@ -17,14 +17,17 @@ package org.raml.v2.internal.impl.commons.nodes;
 
 import org.raml.v2.internal.framework.nodes.Node;
 
+import javax.annotation.Nonnull;
+
 /**
- * A specific node may overwrite the context where to search libraries.
+ * Defines a scope for all its children where to search references.
  */
 public interface ContextProviderNode
 {
     /**
-     * The node where to search libraries
-     * @return The node where libraries are defined.
+     * Returns the node that defines the naming reference scope for this node.
+     * @return The context node for this node.
      */
+    @Nonnull
     Node getContextNode();
 }

@@ -74,6 +74,7 @@ public class RamlDocumentNode extends AbstractRamlNode implements ObjectNode, Co
         this.resourceLoader = resourceLoader;
     }
 
+    @Nonnull
     @Override
     public Node getContextNode()
     {

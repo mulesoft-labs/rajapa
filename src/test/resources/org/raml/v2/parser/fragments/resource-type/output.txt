@@ -1,4 +1,4 @@
-RamlFragmentNode (Start: 81 , End: 299, Source: SYObjectNode)
+SYObjectNode (Start: 81 , End: 299)
     KeyValueNodeImpl (Start: 81 , End: 115)
         SYStringNode: "description" (Start: 81 , End: 92)
         SYStringNode: "A collection resource" (Start: 94 , End: 115)

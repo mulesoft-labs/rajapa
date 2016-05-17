@@ -17,11 +17,19 @@ package org.raml.v2.internal.impl.commons.nodes;
 
 import org.raml.v2.internal.framework.nodes.Node;
 
+/**
+ * Provides a custom way to resolve the node where the libraries are defined
+ */
 public interface LibraryNodeProvider
 {
     /**
-     *
-     * @return
+     * The libraries node
+     * @return The libraries node
      */
     Node getLibraryNode();
+
+    /**
+     * Method invoke for this node to resolve the reference
+     */
+    void resolveLibraryReference();
 }

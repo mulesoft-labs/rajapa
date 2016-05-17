@@ -53,7 +53,8 @@ public class LibraryRefNode extends AbstractReferenceNode
         final Node relativeNode = getRelativeNode();
         if (relativeNode instanceof LibraryNodeProvider)
         {
-            return NodeSelector.selectFrom(name, ((LibraryNodeProvider) relativeNode).getLibraryNode());
+            final Node libraryNode = ((LibraryNodeProvider) relativeNode).getLibraryNode();
+            return NodeSelector.selectFrom(name, libraryNode);
         }
         else
         {
