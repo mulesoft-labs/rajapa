@@ -17,7 +17,7 @@ package org.raml.v2.internal.impl.commons.model;
 
 import org.raml.v2.internal.framework.nodes.KeyValueNode;
 import org.raml.v2.internal.framework.nodes.Node;
-import org.raml.v2.internal.impl.v10.nodes.types.builtin.TypeNode;
+
 
 public class ExampleSpec extends Annotable
 {
@@ -36,7 +36,7 @@ public class ExampleSpec extends Annotable
 
     public String name()
     {
-        return (node.getParent() instanceof TypeNode) ? null : String.valueOf(node.getKey());
+        return String.valueOf(node.getKey());
     }
 
     @Override
