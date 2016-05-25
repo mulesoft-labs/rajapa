@@ -13,7 +13,7 @@
       "name": "basic",
       "required": true,
       "schema": [],
-      "schemaContent": "string",
+      "schemaContent": null,
       "type": [
         "string"
       ]
@@ -38,7 +38,7 @@
       "name": "complex",
       "required": true,
       "schema": [],
-      "schemaContent": "object",
+      "schemaContent": null,
       "type": [
         "object"
       ]
@@ -59,7 +59,7 @@
         "name": "basic",
         "required": true,
         "schema": [],
-        "schemaContent": "string",
+        "schemaContent": null,
         "type": [
           "string"
         ]
@@ -92,7 +92,7 @@
         "name": "complex",
         "required": true,
         "schema": [],
-        "schemaContent": "object",
+        "schemaContent": null,
         "type": [
           "object"
         ]
@@ -187,7 +187,7 @@
       "name": "param1",
       "required": true,
       "schema": [],
-      "schemaContent": "string",
+      "schemaContent": null,
       "type": [
         "string"
       ]
@@ -313,7 +313,7 @@
               "annotations": [],
               "defaultValue": null,
               "description": null,
-              "displayName": null,
+              "displayName": "one",
               "example": null,
               "examples": [],
               "fixedFacets": null,
@@ -322,7 +322,9 @@
               "required": true,
               "schema": [],
               "schemaContent": null,
-              "type": []
+              "type": [
+                "string"
+              ]
             },
             {
               "allowedTargets": [],
@@ -338,7 +340,9 @@
               "required": true,
               "schema": [],
               "schemaContent": null,
-              "type": []
+              "type": [
+                "string"
+              ]
             }
           ],
           "is": [],
@@ -360,7 +364,7 @@
               "name": "one",
               "required": true,
               "schema": [],
-              "schemaContent": "number",
+              "schemaContent": null,
               "type": [
                 "number"
               ]
@@ -370,7 +374,7 @@
               "annotations": [],
               "defaultValue": null,
               "description": null,
-              "displayName": null,
+              "displayName": "two",
               "example": null,
               "examples": [],
               "fixedFacets": null,
@@ -379,7 +383,9 @@
               "required": true,
               "schema": [],
               "schemaContent": null,
-              "type": []
+              "type": [
+                "string"
+              ]
             }
           ],
           "queryString": null,
@@ -407,7 +413,7 @@
                       "name": "Authorization",
                       "required": true,
                       "schema": [],
-                      "schemaContent": "string",
+                      "schemaContent": null,
                       "type": [
                         "string"
                       ]
@@ -429,7 +435,7 @@
                       "name": "access_token",
                       "required": true,
                       "schema": [],
-                      "schemaContent": "string",
+                      "schemaContent": null,
                       "type": [
                         "string"
                       ]
@@ -513,7 +519,7 @@
               "name": "application/json",
               "required": true,
               "schema": [],
-              "schemaContent": "User",
+              "schemaContent": null,
               "type": [
                 "User"
               ]
@@ -528,12 +534,12 @@
               "examples": [
                 {
                   "annotations": [],
-                  "name": null,
+                  "name": "first",
                   "value": "<first/>\n"
                 },
                 {
                   "annotations": [],
-                  "name": null,
+                  "name": "second",
                   "value": "<second/>\n"
                 }
               ],
@@ -608,7 +614,7 @@
             "name": "queryString",
             "required": true,
             "schema": [],
-            "schemaContent": "object",
+            "schemaContent": null,
             "type": [
               "object"
             ]
@@ -634,7 +640,7 @@
                   "name": "application/json",
                   "required": true,
                   "schema": [],
-                  "schemaContent": "User",
+                  "schemaContent": null,
                   "type": [
                     "User"
                   ]
@@ -649,12 +655,12 @@
                   "examples": [
                     {
                       "annotations": [],
-                      "name": null,
+                      "name": "first",
                       "value": "<first/>\n"
                     },
                     {
                       "annotations": [],
-                      "name": null,
+                      "name": "second",
                       "value": "<second/>\n"
                     }
                   ],
@@ -679,7 +685,7 @@
                   "annotations": [],
                   "defaultValue": null,
                   "description": null,
-                  "displayName": null,
+                  "displayName": "one",
                   "example": null,
                   "examples": [],
                   "fixedFacets": null,
@@ -688,7 +694,9 @@
                   "required": true,
                   "schema": [],
                   "schemaContent": null,
-                  "type": []
+                  "type": [
+                    "string"
+                  ]
                 },
                 {
                   "allowedTargets": [],
@@ -704,7 +712,9 @@
                   "required": true,
                   "schema": [],
                   "schemaContent": null,
-                  "type": []
+                  "type": [
+                    "string"
+                  ]
                 }
               ]
             },
@@ -762,7 +772,7 @@
                       "name": "Authorization",
                       "required": true,
                       "schema": [],
-                      "schemaContent": "string",
+                      "schemaContent": null,
                       "type": [
                         "string"
                       ]
@@ -784,7 +794,7 @@
                       "name": "access_token",
                       "required": true,
                       "schema": [],
-                      "schemaContent": "string",
+                      "schemaContent": null,
                       "type": [
                         "string"
                       ]
@@ -894,7 +904,7 @@
               "name": "Authorization",
               "required": true,
               "schema": [],
-              "schemaContent": "string",
+              "schemaContent": null,
               "type": [
                 "string"
               ]
@@ -916,7 +926,7 @@
               "name": "access_token",
               "required": true,
               "schema": [],
-              "schemaContent": "string",
+              "schemaContent": null,
               "type": [
                 "string"
               ]
@@ -1001,7 +1011,7 @@
             "name": "Authorization",
             "required": true,
             "schema": [],
-            "schemaContent": "string",
+            "schemaContent": null,
             "type": [
               "string"
             ]
@@ -1023,7 +1033,7 @@
             "name": "access_token",
             "required": true,
             "schema": [],
-            "schemaContent": "string",
+            "schemaContent": null,
             "type": [
               "string"
             ]
@@ -1159,7 +1169,7 @@
       "name": "User",
       "required": true,
       "schema": [],
-      "schemaContent": "object",
+      "schemaContent": null,
       "type": [
         "object"
       ]

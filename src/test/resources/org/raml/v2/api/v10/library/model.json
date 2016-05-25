@@ -56,7 +56,7 @@
                     "displayName": null,
                     "example": {
                       "annotations": [],
-                      "name": "example",
+                      "name": null,
                       "value": "10"
                     },
                     "examples": [],
@@ -65,7 +65,7 @@
                     "name": "size",
                     "required": false,
                     "schema": [],
-                    "schemaContent": "integer",
+                    "schemaContent": null,
                     "type": [
                       "integer"
                     ]
@@ -80,7 +80,7 @@
                     "displayName": null,
                     "example": {
                       "annotations": [],
-                      "name": "example",
+                      "name": null,
                       "value": "0"
                     },
                     "examples": [],
@@ -89,7 +89,7 @@
                     "name": "page",
                     "required": false,
                     "schema": [],
-                    "schemaContent": "integer",
+                    "schemaContent": null,
                     "type": [
                       "integer"
                     ]
@@ -124,7 +124,7 @@
               "name": "userId",
               "required": true,
               "schema": [],
-              "schemaContent": "string",
+              "schemaContent": null,
               "type": [
                 "string"
               ]
@@ -148,7 +148,7 @@
               "name": "size",
               "required": false,
               "schema": [],
-              "schemaContent": "integer",
+              "schemaContent": null,
               "type": [
                 "integer"
               ]
@@ -172,7 +172,7 @@
               "name": "page",
               "required": false,
               "schema": [],
-              "schemaContent": "integer",
+              "schemaContent": null,
               "type": [
                 "integer"
               ]
@@ -193,12 +193,12 @@
                   "examples": [
                     {
                       "annotations": [],
-                      "name": null,
+                      "name": "single-order",
                       "value": "{\norders: Array[{\norder_id: ORDER-437563756,\ncreation_date: 2016-03-30,\nitems: Array[{\nproduct_id: PRODUCT-1,\nquantity: 5\n},{\nproduct_id: PRODUCT-2,\nquantity: 2\n}]\n}]\n}"
                     },
                     {
                       "annotations": [],
-                      "name": null,
+                      "name": "multiple-orders",
                       "value": "{\norders: Array[{\norder_id: ORDER-437563756,\ncreation_date: 2016-03-30,\nitems: Array[{\nproduct_id: PRODUCT-1,\nquantity: 5\n},{\nproduct_id: PRODUCT-2,\nquantity: 2\n}]\n},{\norder_id: ORDER-437542111,\ncreation_date: 2016-03-30,\nitems: Array[{\nproduct_id: PRODUCT-7,\nquantity: 2\n}]\n}]\n}"
                     }
                   ],
@@ -207,7 +207,7 @@
                   "name": "application/json",
                   "required": true,
                   "schema": [],
-                  "schemaContent": "assets.Orders",
+                  "schemaContent": null,
                   "type": [
                     "assets.Orders"
                   ]
@@ -269,7 +269,7 @@
               "displayName": null,
               "example": {
                 "annotations": [],
-                "name": "example",
+                "name": null,
                 "value": "10"
               },
               "examples": [],
@@ -278,7 +278,7 @@
               "name": "size",
               "required": false,
               "schema": [],
-              "schemaContent": "integer",
+              "schemaContent": null,
               "type": [
                 "integer"
               ]
@@ -293,7 +293,7 @@
               "displayName": null,
               "example": {
                 "annotations": [],
-                "name": "example",
+                "name": null,
                 "value": "0"
               },
               "examples": [],
@@ -302,7 +302,7 @@
               "name": "page",
               "required": false,
               "schema": [],
-              "schemaContent": "integer",
+              "schemaContent": null,
               "type": [
                 "integer"
               ]
@@ -328,7 +328,7 @@
           "name": "ProductItem",
           "required": true,
           "schema": [],
-          "schemaContent": "object",
+          "schemaContent": null,
           "type": [
             "object"
           ]
@@ -346,7 +346,7 @@
           "name": "Order",
           "required": true,
           "schema": [],
-          "schemaContent": "object",
+          "schemaContent": null,
           "type": [
             "object"
           ]
@@ -364,7 +364,7 @@
           "name": "Orders",
           "required": true,
           "schema": [],
-          "schemaContent": "object",
+          "schemaContent": null,
           "type": [
             "object"
           ]
@@ -382,7 +382,7 @@
           "name": "Inherit",
           "required": true,
           "schema": [],
-          "schemaContent": "Order",
+          "schemaContent": null,
           "type": [
             "Order"
           ]

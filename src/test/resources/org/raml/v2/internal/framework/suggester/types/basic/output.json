@@ -1,56 +1,66 @@
 [ {
   "label" : "Array",
-  "description" : null,
+  "description" : "",
   "value" : "array",
   "prefix" : ""
 }, {
   "label" : "Boolean",
-  "description" : null,
+  "description" : "",
   "value" : "boolean",
   "prefix" : ""
 }, {
+  "label" : "Choice",
+  "description" : "",
+  "value" : "Choice",
+  "prefix" : ""
+}, {
   "label" : "Date-only",
-  "description" : null,
+  "description" : "",
   "value" : "date-only",
   "prefix" : ""
 }, {
   "label" : "Datetime",
-  "description" : null,
+  "description" : "",
   "value" : "datetime",
   "prefix" : ""
 }, {
   "label" : "Datetime-only",
-  "description" : null,
+  "description" : "",
   "value" : "datetime-only",
   "prefix" : ""
 }, {
   "label" : "File",
-  "description" : null,
+  "description" : "",
   "value" : "file",
   "prefix" : ""
 }, {
   "label" : "Integer",
-  "description" : null,
+  "description" : "",
   "value" : "integer",
   "prefix" : ""
 }, {
+  "label" : "Null",
+  "description" : "",
+  "value" : "null",
+  "prefix" : ""
+}, {
   "label" : "Number",
-  "description" : null,
+  "description" : "",
   "value" : "number",
   "prefix" : ""
 }, {
   "label" : "Object",
-  "description" : null,
+  "description" : "",
   "value" : "object",
   "prefix" : ""
 }, {
   "label" : "String",
-  "description" : null,
+  "description" : "",
   "value" : "string",
   "prefix" : ""
 }, {
   "label" : "Time-only",
-  "description" : null,
+  "description" : "",
   "value" : "time-only",
   "prefix" : ""
 } ]
