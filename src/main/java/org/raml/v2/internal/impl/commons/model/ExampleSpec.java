@@ -51,7 +51,7 @@ public class ExampleSpec extends Annotable
     }
 
 
-    public Node getExampleValue()
+    private Node getExampleValue()
     {
         if (isExplicitExample())
         {
@@ -63,7 +63,7 @@ public class ExampleSpec extends Annotable
         }
     }
 
-    public String getName()
+    private String getName()
     {
         final Node ancestor = NodeUtils.getAncestor(node, 2);
         if (ancestor instanceof KeyValueNode && ((KeyValueNode) ancestor).getKey().toString().equals("examples"))
@@ -76,7 +76,7 @@ public class ExampleSpec extends Annotable
         }
     }
 
-    public boolean isExplicitExample()
+    private boolean isExplicitExample()
     {
         if (node.getValue() instanceof ObjectNode)
         {
@@ -89,17 +89,4 @@ public class ExampleSpec extends Annotable
         return false;
     }
 
-    @Nonnull
-    public Boolean isStrict()
-    {
-        if (isExplicitExample())
-        {
-            final Boolean strict = NodeSelector.selectBooleanValue("strict", node.getValue());
-            return strict != null ? strict : false;
-        }
-        else
-        {
-            return false;
-        }
-    }
 }
