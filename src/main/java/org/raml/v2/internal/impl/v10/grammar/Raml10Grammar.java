@@ -23,6 +23,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.raml.v2.internal.framework.grammar.RuleFactory;
+import org.raml.v2.internal.framework.grammar.rule.AllOfRule;
 import org.raml.v2.internal.framework.grammar.rule.AnyOfRule;
 import org.raml.v2.internal.framework.grammar.rule.ArrayWrapperFactory;
 import org.raml.v2.internal.framework.grammar.rule.KeyValueRule;
@@ -94,7 +95,7 @@ public class Raml10Grammar extends BaseRamlGrammar
     protected ObjectRule methodValue()
     {
         return super.methodValue()
-                    .with(field(queryStringKey(), anyOf(scalarType(), type())))
+                    .with(field(queryStringKey(), type()))
                     .with(annotationField());
     }
 
@@ -716,13 +717,37 @@ public class Raml10Grammar extends BaseRamlGrammar
     @Override
     protected Rule descriptionValue()
     {
-        return super.descriptionValue().then(new OverlayableSimpleTypeFactory());
+        Rule scalarDescription = super.scalarType().then(new OverlayableSimpleTypeFactory());
+        return firstOf(scalarDescription, annotatedScalarType(scalarDescription));
     }
 
     @Override
     protected Rule titleValue()
     {
-        return super.titleValue().then(new OverlayableSimpleTypeFactory());
+        AllOfRule scalar = allOf(super.scalarType().then(new OverlayableSimpleTypeFactory()), minLength(1));
+        return firstOf(scalar, annotatedScalarType(scalar));
+    }
+
+    @Override
+    public Rule scalarType()
+    {
+        return firstOf(super.scalarType(), annotatedScalarType());
+    }
+
+    protected Rule annotatedScalarType()
+    {
+        return annotatedScalarType(null);
+    }
+
+    protected Rule annotatedScalarType(Rule customScalarRule)
+    {
+        if (customScalarRule == null)
+        {
+            customScalarRule = super.scalarType();
+        }
+        return objectType()
+                           .with(field(string("value"), customScalarRule))
+                           .with(annotationField());
     }
 
 }

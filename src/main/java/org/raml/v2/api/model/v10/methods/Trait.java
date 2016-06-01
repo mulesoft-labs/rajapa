@@ -16,6 +16,7 @@
 package org.raml.v2.api.model.v10.methods;
 
 import org.raml.v2.api.model.v10.datamodel.TypeInstance;
+import org.raml.v2.api.model.v10.system.types.StringType;
 
 
 public interface Trait extends MethodBase
@@ -30,7 +31,7 @@ public interface Trait extends MethodBase
     /**
      * Instructions on how and when the trait should be used.
      **/
-    String usage();
+    StringType usage();
 
 
     /**

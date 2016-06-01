@@ -2,6 +2,7 @@
  "annotationTypes": [],
  "annotations": [],
  "baseUri": {
+  "annotations": [],
   "value": "http://localhost:8081/api"
  },
  "baseUriParameters": [],
@@ -14,18 +15,26 @@
   {
    "annotations": [],
    "description": {
+    "annotations": [],
     "value": "Orders collection resource used to create new orders."
    },
-   "displayName": "Orders",
+   "displayName": {
+    "annotations": [],
+    "value": "Orders"
+   },
    "is": [],
    "methods": [
     {
      "annotations": [],
      "body": [],
      "description": {
+      "annotations": [],
       "value": "lists all orders of a specific user"
      },
-     "displayName": "get",
+     "displayName": {
+      "annotations": [],
+      "value": "get"
+     },
      "headers": [],
      "is": [
       {
@@ -51,6 +60,7 @@
           "annotations": [],
           "defaultValue": null,
           "description": {
+           "annotations": [],
            "value": "the amount of elements of each result page"
           },
           "displayName": null,
@@ -80,6 +90,7 @@
           "annotations": [],
           "defaultValue": null,
           "description": {
+           "annotations": [],
            "value": "the page number"
           },
           "displayName": null,
@@ -120,9 +131,13 @@
        "annotations": [],
        "defaultValue": null,
        "description": {
+        "annotations": [],
         "value": "use to query all orders of a user"
        },
-       "displayName": "userId",
+       "displayName": {
+        "annotations": [],
+        "value": "userId"
+       },
        "example": {
         "annotations": [],
         "name": null,
@@ -149,9 +164,13 @@
        "annotations": [],
        "defaultValue": null,
        "description": {
+        "annotations": [],
         "value": "the amount of elements of each result page"
        },
-       "displayName": "size",
+       "displayName": {
+        "annotations": [],
+        "value": "size"
+       },
        "example": {
         "annotations": [],
         "name": null,
@@ -178,9 +197,13 @@
        "annotations": [],
        "defaultValue": null,
        "description": {
+        "annotations": [],
         "value": "the page number"
        },
-       "displayName": "page",
+       "displayName": {
+        "annotations": [],
+        "value": "page"
+       },
        "example": {
         "annotations": [],
         "name": null,
@@ -213,7 +236,10 @@
          "annotations": [],
          "defaultValue": null,
          "description": null,
-         "displayName": "application/json",
+         "displayName": {
+          "annotations": [],
+          "value": "application/json"
+         },
          "example": null,
          "examples": [
           {
@@ -494,6 +520,7 @@
         }
        ],
        "code": {
+        "annotations": [],
         "value": "200"
        },
        "description": null,
@@ -504,6 +531,7 @@
     }
    ],
    "relativeUri": {
+    "annotations": [],
     "value": "/orders"
    },
    "resourcePath": "/orders",
@@ -516,7 +544,10 @@
  "schemas": [],
  "securedBy": [],
  "securitySchemes": [],
- "title": "Mobile Order API",
+ "title": {
+  "annotations": [],
+  "value": "Mobile Order API"
+ },
  "traits": [],
  "types": [],
  "uses": [
@@ -544,6 +575,7 @@
        "annotations": [],
        "defaultValue": null,
        "description": {
+        "annotations": [],
         "value": "the amount of elements of each result page"
        },
        "displayName": null,
@@ -573,6 +605,7 @@
        "annotations": [],
        "defaultValue": null,
        "description": {
+        "annotations": [],
         "value": "the page number"
        },
        "displayName": null,
@@ -610,7 +643,10 @@
      "annotations": [],
      "defaultValue": null,
      "description": null,
-     "displayName": "ProductItem",
+     "displayName": {
+      "annotations": [],
+      "value": "ProductItem"
+     },
      "example": null,
      "examples": [],
      "fixedFacets": null,
@@ -628,7 +664,10 @@
      "annotations": [],
      "defaultValue": null,
      "description": null,
-     "displayName": "Order",
+     "displayName": {
+      "annotations": [],
+      "value": "Order"
+     },
      "example": null,
      "examples": [],
      "fixedFacets": null,
@@ -646,7 +685,10 @@
      "annotations": [],
      "defaultValue": null,
      "description": null,
-     "displayName": "Orders",
+     "displayName": {
+      "annotations": [],
+      "value": "Orders"
+     },
      "example": null,
      "examples": [],
      "fixedFacets": null,
@@ -664,7 +706,10 @@
      "annotations": [],
      "defaultValue": null,
      "description": null,
-     "displayName": "Inherit",
+     "displayName": {
+      "annotations": [],
+      "value": "Inherit"
+     },
      "example": null,
      "examples": [],
      "fixedFacets": null,
@@ -682,5 +727,8 @@
    "uses": []
   }
  ],
- "version": "1.0"
+ "version": {
+  "annotations": [],
+  "value": "1.0"
+ }
 }

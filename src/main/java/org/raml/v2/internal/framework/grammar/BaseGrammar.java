@@ -162,7 +162,7 @@ public class BaseGrammar
         return new KeyValueRule(keyRule, valueRule).required();
     }
 
-    public ScalarTypeRule scalarType()
+    public Rule scalarType()
     {
         return new ScalarTypeRule();
     }

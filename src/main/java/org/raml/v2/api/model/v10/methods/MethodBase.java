@@ -19,6 +19,7 @@ import java.util.List;
 import org.raml.v2.api.model.v10.datamodel.TypeDeclaration;
 import org.raml.v2.api.model.v10.security.SecuritySchemeRef;
 import org.raml.v2.api.model.v10.system.types.MarkdownString;
+import org.raml.v2.api.model.v10.system.types.StringType;
 
 
 public interface MethodBase extends Operation
@@ -51,6 +52,6 @@ public interface MethodBase extends Operation
     MarkdownString description();
 
 
-    String displayName();
+    StringType displayName();
 
 }

@@ -21,6 +21,7 @@ import org.raml.v2.api.model.v10.datamodel.TypeDeclaration;
 import org.raml.v2.api.model.v10.resources.Resource;
 import org.raml.v2.api.model.v10.security.SecuritySchemeRef;
 import org.raml.v2.api.model.v10.system.types.FullUriTemplateString;
+import org.raml.v2.api.model.v10.system.types.StringType;
 
 
 public interface Api extends LibraryBase
@@ -29,13 +30,13 @@ public interface Api extends LibraryBase
     /**
      * Short plain-text label for the API
      **/
-    String title();
+    StringType title();
 
 
     /**
      * The version of the API, e.g. 'v1'
      **/
-    String version();
+    StringType version();
 
 
     /**

@@ -16,7 +16,9 @@
 package org.raml.v2.api.model.v10.system.types;
 
 
-public interface StringType
+import org.raml.v2.api.model.v10.common.Annotable;
+
+public interface StringType extends Annotable
 {
 
     /**

@@ -32,6 +32,7 @@ import org.raml.v2.internal.framework.grammar.rule.ObjectRule;
 import org.raml.v2.internal.framework.grammar.rule.ParametrizedNodeReferenceRule;
 import org.raml.v2.internal.framework.grammar.rule.RegexValueRule;
 import org.raml.v2.internal.framework.grammar.rule.Rule;
+import org.raml.v2.internal.framework.grammar.rule.ScalarTypeRule;
 import org.raml.v2.internal.framework.grammar.rule.StringValueRule;
 import org.raml.v2.internal.framework.nodes.Node;
 import org.raml.v2.internal.impl.commons.nodes.BodyNode;
@@ -101,12 +102,12 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule titleField()
     {
-        return requiredField(titleKey(), allOf(titleValue(), minLength(1)));
+        return requiredField(titleKey(), titleValue());
     }
 
     protected Rule titleValue()
     {
-        return scalarType();
+        return allOf(scalarType(), minLength(1));
     }
 
     protected KeyValueRule resourceField()
@@ -472,10 +473,15 @@ public abstract class BaseRamlGrammar extends BaseGrammar
 
     protected KeyValueRule securedByField()
     {
-        AnyOfRule securedBy = anyOf(nullValue(), scalarType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class)), any());
+        AnyOfRule securedBy = anyOf(nullValue(), rawScalarType().then(new NodeReferenceFactory(SecuritySchemeRefNode.class)), any());
         return field(securedByKey(),
                 anyOf(array(securedBy), securedBy)
                                                   .then(new ArrayWrapperFactory()));
+    }
+
+    private Rule rawScalarType()
+    {
+        return new ScalarTypeRule();
     }
 
     protected KeyValueRule usageField()

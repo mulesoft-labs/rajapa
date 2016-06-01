@@ -15,6 +15,10 @@
  */
 package org.raml.v2.internal.impl.commons.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.raml.v2.api.model.v10.declarations.AnnotationRef;
 import org.raml.v2.internal.framework.nodes.SimpleTypeNode;
 
 public class StringType
@@ -35,4 +39,11 @@ public class StringType
     {
         return value;
     }
+
+    // DefaultModelElement is used when "value" is defined
+    public List<AnnotationRef> annotations()
+    {
+        return new ArrayList<>();
+    }
+
 }
